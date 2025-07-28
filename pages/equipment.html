@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备管理 - MOM系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面标题 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">设备管理</h1>
+                <p class="text-gray-600">设备监控、维护计划和故障管理</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>添加设备
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-wrench mr-2"></i>维护计划
+                </button>
+            </div>
+        </div>
+        
+        <!-- 设备状态概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-green-600 mb-2">15</div>
+                <div class="text-gray-600">运行中设备</div>
+                <div class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+1 较昨日
+                </div>
+            </div>
+            
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-yellow-600 mb-2">2</div>
+                <div class="text-gray-600">空闲设备</div>
+                <div class="text-sm text-yellow-600 mt-1">
+                    <i class="fas fa-minus mr-1"></i>持平
+                </div>
+            </div>
+            
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-orange-600 mb-2">1</div>
+                <div class="text-gray-600">维护中设备</div>
+                <div class="text-sm text-orange-600 mt-1">
+                    <i class="fas fa-arrow-down mr-1"></i>-1 较昨日
+                </div>
+            </div>
+            
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-red-600 mb-2">0</div>
+                <div class="text-gray-600">故障设备</div>
+                <div class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-check mr-1"></i>无故障
+                </div>
+            </div>
+        </div>
+        
+        <!-- 设备列表 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h3 class="card-title">设备列表</h3>
+                    <div class="flex space-x-3">
+                        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                            <option>全部状态</option>
+                            <option>运行中</option>
+                            <option>空闲</option>
+                            <option>维护中</option>
+                            <option>故障</option>
+                        </select>
+                        <input type="text" placeholder="搜索设备..." 
+                               class="border border-gray-300 rounded-lg px-3 py-2 text-sm w-64">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>设备编号</th>
+                            <th>设备名称</th>
+                            <th>设备类型</th>
+                            <th>所在产线</th>
+                            <th>运行状态</th>
+                            <th>利用率</th>
+                            <th>最后维护</th>
+                            <th>下次维护</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium">EQ-001</td>
+                            <td>注塑机A1</td>
+                            <td>注塑设备</td>
+                            <td>生产线A</td>
+                            <td>
+                                <div class="equipment-status">
+                                    <div class="equipment-status-dot equipment-running"></div>
+                                    <span class="text-green-600 font-medium">运行中</span>
+                                </div>
+                            </td>
+                            <td><span class="font-semibold">95%</span></td>
+                            <td>2024-06-20</td>
+                            <td>2024-07-20</td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800 mr-2">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-800">
+                                    <i class="fas fa-wrench"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="font-medium">EQ-002</td>
+                            <td>冲压机B1</td>
+                            <td>冲压设备</td>
+                            <td>生产线B</td>
+                            <td>
+                                <div class="equipment-status">
+                                    <div class="equipment-status-dot equipment-running"></div>
+                                    <span class="text-green-600 font-medium">运行中</span>
+                                </div>
+                            </td>
+                            <td><span class="font-semibold">88%</span></td>
+                            <td>2024-06-15</td>
+                            <td>2024-07-15</td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800 mr-2">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-800">
+                                    <i class="fas fa-wrench"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="font-medium">EQ-003</td>
+                            <td>装配机C1</td>
+                            <td>装配设备</td>
+                            <td>生产线C</td>
+                            <td>
+                                <div class="equipment-status">
+                                    <div class="equipment-status-dot equipment-maintenance"></div>
+                                    <span class="text-orange-600 font-medium">维护中</span>
+                                </div>
+                            </td>
+                            <td><span class="font-semibold">0%</span></td>
+                            <td>2024-06-28</td>
+                            <td>2024-07-28</td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800 mr-2">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-800">
+                                    <i class="fas fa-wrench"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="font-medium">EQ-004</td>
+                            <td>检测设备D1</td>
+                            <td>检测设备</td>
+                            <td>质检区</td>
+                            <td>
+                                <div class="equipment-status">
+                                    <div class="equipment-status-dot equipment-running"></div>
+                                    <span class="text-green-600 font-medium">运行中</span>
+                                </div>
+                            </td>
+                            <td><span class="font-semibold">92%</span></td>
+                            <td>2024-06-10</td>
+                            <td>2024-07-10</td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800 mr-2">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-800">
+                                    <i class="fas fa-wrench"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="font-medium">EQ-005</td>
+                            <td>包装机E1</td>
+                            <td>包装设备</td>
+                            <td>包装线</td>
+                            <td>
+                                <div class="equipment-status">
+                                    <div class="equipment-status-dot equipment-idle"></div>
+                                    <span class="text-yellow-600 font-medium">空闲</span>
+                                </div>
+                            </td>
+                            <td><span class="font-semibold">45%</span></td>
+                            <td>2024-06-25</td>
+                            <td>2024-07-25</td>
+                            <td>
+                                <button class="text-blue-600 hover:text-blue-800 mr-2">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-800">
+                                    <i class="fas fa-wrench"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- 维护计划和设备效率 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 维护计划 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">近期维护计划</h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 border-l-4 border-yellow-400">
+                        <div>
+                            <div class="font-medium text-yellow-700">注塑机A2 - 定期保养</div>
+                            <div class="text-sm text-gray-600">计划时间：2024-07-01 08:00</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="status-indicator status-warning">待执行</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-blue-50 border-l-4 border-blue-400">
+                        <div>
+                            <div class="font-medium text-blue-700">冲压机B2 - 零件更换</div>
+                            <div class="text-sm text-gray-600">计划时间：2024-07-03 14:00</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="status-indicator status-info">已安排</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-green-50 border-l-4 border-green-400">
+                        <div>
+                            <div class="font-medium text-green-700">装配机C1 - 维护中</div>
+                            <div class="text-sm text-gray-600">开始时间：2024-06-28 09:00</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="status-indicator status-success">进行中</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-gray-50 border-l-4 border-gray-400">
+                        <div>
+                            <div class="font-medium text-gray-700">检测设备D2 - 校准</div>
+                            <div class="text-sm text-gray-600">计划时间：2024-07-05 10:00</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="status-indicator status-info">待安排</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 设备效率分析 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">设备效率分析</h3>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-600">平均设备利用率</span>
+                        <span class="font-semibold text-blue-600">87.5%</span>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>注塑机A1</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>冲压机B1</span>
+                                <span>88%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>检测设备D1</span>
+                                <span>92%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>包装机E1</span>
+                                <span>45%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill bg-yellow-500" style="width: 45%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 p-3 bg-blue-50 rounded-lg">
+                        <div class="text-sm text-blue-700">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            建议：包装机E1利用率偏低，建议优化生产排程
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

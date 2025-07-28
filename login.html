@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>慧新全智厂园一体平台 - 登录</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .bg-gradient-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .login-card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        
+        .floating-animation {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-custom min-h-screen flex items-center justify-center p-4">
+    <!-- 背景装饰 -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute -top-40 -right-40 w-80 h-80 bg-white opacity-10 rounded-full floating-animation"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-white opacity-5 rounded-full floating-animation" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/4 w-32 h-32 bg-white opacity-10 rounded-full floating-animation" style="animation-delay: 2s;"></div>
+    </div>
+
+    <!-- 登录卡片 -->
+    <div class="login-card rounded-2xl shadow-2xl p-6 w-full max-w-md relative z-10">
+        <!-- 平台Logo和标题 -->
+        <div class="text-center mb-6">
+            <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                <i class="fas fa-industry text-white text-2xl"></i>
+            </div>
+            <h1 class="text-xl font-bold text-gray-800 mb-2">慧新全智厂园一体平台</h1>
+            <p class="text-gray-600 text-sm">面向制造业，全流程管理工厂、园区业务</p>
+        </div>
+
+        <!-- 登录表单 -->
+        <form id="loginForm" class="space-y-4">
+            <!-- 用户名输入框 -->
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-1">
+                    <i class="fas fa-user mr-2 text-primary"></i>用户名
+                </label>
+                <input type="text" id="username" name="username" required
+                       class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                       placeholder="请输入用户名" value="admin">
+            </div>
+
+            <!-- 密码输入框 -->
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">
+                    <i class="fas fa-lock mr-2 text-primary"></i>密码
+                </label>
+                <div class="relative">
+                    <input type="password" id="password" name="password" required
+                           class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 pr-12"
+                           placeholder="请输入密码" value="admin">
+                    <button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary transition-colors">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 行业版本选择 -->
+            <div>
+                <label for="industryVersion" class="block text-sm font-medium text-gray-700 mb-1">
+                    <i class="fas fa-cogs mr-2 text-primary"></i>行业版本
+                </label>
+                <select id="industryVersion" name="industryVersion"
+                        class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200">
+                    <option value="general">通用行业</option>
+                    <option value="automotive">汽车零部件行业</option>
+                    <option value="optoelectronics">光电行业</option>
+                    <option value="inverter">逆变器行业</option>
+                </select>
+            </div>
+
+            <!-- 记住登录状态 -->
+            <div class="flex items-center justify-between">
+                <label class="flex items-center">
+                    <input type="checkbox" id="rememberMe" class="rounded border-gray-300 text-primary focus:ring-primary">
+                    <span class="ml-2 text-sm text-gray-600">记住登录状态</span>
+                </label>
+                <a href="#" class="text-sm text-primary hover:text-primary-light transition-colors">忘记密码？</a>
+            </div>
+
+            <!-- 登录按钮 -->
+            <button type="submit" id="loginButton"
+                    class="w-full bg-primary text-white py-2.5 px-4 rounded-lg font-medium hover:bg-primary-light focus:ring-4 focus:ring-primary/20 transition-all duration-200 transform hover:scale-105">
+                <i class="fas fa-sign-in-alt mr-2"></i>登录
+            </button>
+        </form>
+
+        <!-- 版本信息 -->
+        <div class="mt-6 text-center text-xs text-gray-500">
+            <p>慧新全智厂园一体平台 v1.2.0</p>
+            <p class="mt-1">© 2025 数字工厂一体化平台. All rights reserved.</p>
+        </div>
+    </div>
+
+    <!-- 加载提示 -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg p-6 flex items-center space-x-3">
+            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+            <span class="text-gray-700">登录中...</span>
+        </div>
+    </div>
+
+    <script>
+        // 行业版本配置
+        const industryVersions = {
+            general: {
+                id: 'general',
+                name: '通用行业',
+                title: '数字工厂一体化平台',
+                description: '基于变频器生产制造场景的智能制造执行系统'
+            },
+            automotive: {
+                id: 'automotive',
+                name: '汽车零部件行业',
+                title: '汽车零部件智能制造平台',
+                description: '专注汽车零部件制造的智能工厂管理系统'
+            },
+            optoelectronics: {
+                id: 'optoelectronics',
+                name: '光电行业',
+                title: '光电制造智能管理平台',
+                description: '面向光电器件制造的数字化工厂解决方案'
+            },
+            inverter: {
+                id: 'inverter',
+                name: '逆变器行业',
+                title: '逆变器智能制造平台',
+                description: '专业的逆变器生产制造管理系统'
+            }
+        };
+
+        // 密码显示/隐藏切换
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        });
+
+        // 登录表单提交处理
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const industryVersion = document.getElementById('industryVersion').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            // 显示加载提示
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+            
+            // 模拟登录验证
+            setTimeout(() => {
+                if (username === 'admin' && password === 'admin') {
+                    // 登录成功
+                    const loginData = {
+                        username: username,
+                        industryVersion: industryVersion,
+                        versionInfo: industryVersions[industryVersion],
+                        loginTime: new Date().toISOString(),
+                        isLoggedIn: true
+                    };
+                    
+                    // 存储登录信息
+                    if (rememberMe) {
+                        localStorage.setItem('loginData', JSON.stringify(loginData));
+                    } else {
+                        sessionStorage.setItem('loginData', JSON.stringify(loginData));
+                    }
+                    
+                    // 跳转到主页面
+                    window.location.href = 'index.html';
+                } else {
+                    // 登录失败
+                    document.getElementById('loadingOverlay').classList.add('hidden');
+                    showError('用户名或密码错误，请重试！');
+                }
+            }, 1500);
+        });
+
+        // 显示错误信息
+        function showError(message) {
+            // 移除之前的错误提示
+            const existingError = document.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+            
+            // 创建错误提示
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mt-4';
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i>${message}`;
+            
+            // 插入到表单后面
+            document.getElementById('loginForm').appendChild(errorDiv);
+            
+            // 3秒后自动移除
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 3000);
+        }
+
+        // 页面加载时检查是否已登录
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginData = localStorage.getItem('loginData') || sessionStorage.getItem('loginData');
+            if (loginData) {
+                const data = JSON.parse(loginData);
+                if (data.isLoggedIn) {
+                    // 已登录，直接跳转到主页面
+                    window.location.href = 'index.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

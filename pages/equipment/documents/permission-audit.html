@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术资料权限审计 - 数字工厂平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面操作栏 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">技术资料权限审计</h1>
+                <p class="text-gray-600">审计逆变器生产设备技术资料的访问权限和操作记录</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-shield-alt mr-2"></i>权限设置
+                </button>
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-search mr-2"></i>审计查询
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-download mr-2"></i>导出日志
+                </button>
+            </div>
+        </div>
+        
+        <!-- 权限审计概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-blue-600 mb-1">8,456</div>
+                <div class="text-sm text-gray-600">本月访问次数</div>
+                <div class="text-xs text-blue-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+12% 较上月
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-green-600 mb-1">156</div>
+                <div class="text-sm text-gray-600">活跃用户数</div>
+                <div class="text-xs text-green-600 mt-1">本月访问</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-yellow-600 mb-1">28</div>
+                <div class="text-sm text-gray-600">权限异常</div>
+                <div class="text-xs text-yellow-600 mt-1">需要处理</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">5</div>
+                <div class="text-sm text-gray-600">安全事件</div>
+                <div class="text-xs text-red-600 mt-1">本月发生</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-purple-600 mb-1">98.2%</div>
+                <div class="text-sm text-gray-600">合规率</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+1.5% 较上月
+                </div>
+            </div>
+        </div>
+        
+        <!-- 筛选条件区域 -->
+        <div class="card">
+            <div class="p-4">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                    <div class="flex-1">
+                        <input type="text" placeholder="搜索用户名、文档名称..." 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部操作类型</option>
+                        <option>查看</option>
+                        <option>下载</option>
+                        <option>编辑</option>
+                        <option>删除</option>
+                        <option>权限变更</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部用户角色</option>
+                        <option>管理员</option>
+                        <option>工程师</option>
+                        <option>技术员</option>
+                        <option>操作员</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部时间</option>
+                        <option>今日</option>
+                        <option>本周</option>
+                        <option>本月</option>
+                        <option>自定义</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部状态</option>
+                        <option>成功</option>
+                        <option>失败</option>
+                        <option>异常</option>
+                        <option>被拒绝</option>
+                    </select>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 权限审计列表 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h3 class="card-title">技术资料权限审计日志</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            <i class="fas fa-chart-bar"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>用户名</th>
+                            <th>用户角色</th>
+                            <th>操作类型</th>
+                            <th>文档名称</th>
+                            <th>IP地址</th>
+                            <th>操作时间</th>
+                            <th>操作结果</th>
+                            <th>风险等级</th>
+                            <th>详细信息</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-green-50">
+                            <td class="font-medium">张工程师</td>
+                            <td>工程师</td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-eye text-blue-600"></i>
+                                    <span>查看</span>
+                                </div>
+                            </td>
+                            <td>SMT贴片机操作手册</td>
+                            <td>192.168.1.101</td>
+                            <td>2024-06-28 14:30:25</td>
+                            <td><span class="status-indicator status-success">成功</span></td>
+                            <td><span class="status-indicator status-success">低</span></td>
+                            <td>正常业务访问</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="用户轨迹">
+                                        <i class="fas fa-route"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-blue-50">
+                            <td class="font-medium">李技术员</td>
+                            <td>技术员</td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-download text-green-600"></i>
+                                    <span>下载</span>
+                                </div>
+                            </td>
+                            <td>AOI检测设备维护指南</td>
+                            <td>192.168.1.105</td>
+                            <td>2024-06-28 13:45:12</td>
+                            <td><span class="status-indicator status-success">成功</span></td>
+                            <td><span class="status-indicator status-success">低</span></td>
+                            <td>维护作业需要</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="用户轨迹">
+                                        <i class="fas fa-route"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-yellow-50">
+                            <td class="font-medium">王操作员</td>
+                            <td>操作员</td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-eye text-blue-600"></i>
+                                    <span>查看</span>
+                                </div>
+                            </td>
+                            <td>功率测试台电路图</td>
+                            <td>192.168.1.108</td>
+                            <td>2024-06-28 12:20:45</td>
+                            <td><span class="status-indicator status-danger">被拒绝</span></td>
+                            <td><span class="status-indicator status-warning">中</span></td>
+                            <td>权限不足，尝试访问机密文档</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-yellow-600 hover:text-yellow-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-800" title="安全警告">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-purple-50">
+                            <td class="font-medium">陈主管</td>
+                            <td>管理员</td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-shield-alt text-purple-600"></i>
+                                    <span>权限变更</span>
+                                </div>
+                            </td>
+                            <td>波峰焊操作培训视频</td>
+                            <td>192.168.1.102</td>
+                            <td>2024-06-28 11:15:30</td>
+                            <td><span class="status-indicator status-success">成功</span></td>
+                            <td><span class="status-indicator status-info">中</span></td>
+                            <td>为新员工分配查看权限</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="权限历史">
+                                        <i class="fas fa-history"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-red-50">
+                            <td class="font-medium">未知用户</td>
+                            <td>-</td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-download text-red-600"></i>
+                                    <span>下载</span>
+                                </div>
+                            </td>
+                            <td>老化测试标准操作规程</td>
+                            <td>203.45.67.89</td>
+                            <td>2024-06-28 10:30:15</td>
+                            <td><span class="status-indicator status-danger">异常</span></td>
+                            <td><span class="status-indicator status-danger">高</span></td>
+                            <td>外部IP尝试非法访问</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-red-600 hover:text-red-800" title="安全事件">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                    <button class="text-blue-600 hover:text-blue-800" title="IP追踪">
+                                        <i class="fas fa-search-location"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+                <div class="text-sm text-gray-600">
+                    显示 1-5 条，共 8,456 条审计记录
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

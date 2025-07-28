@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生产异常管理 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">生产异常管理系统</h1>
+            <p class="text-gray-600">基于Process.md 2.3.4流程：ANDON呼叫→异常分级→快速响应→升级处理→多媒体告警，实现智能化异常管理</p>
+        </div>
+
+        <!-- 异常处理流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">异常处理流程</h3>
+                    <span class="text-sm text-gray-600">ANDON智能呼叫系统</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-6">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">异常发现</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">ANDON呼叫</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">快速响应</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">问题解决</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="andonCallBtn" class="bg-danger text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                ANDON呼叫
+            </button>
+            <button id="exceptionClassifyBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-tags mr-2"></i>
+                异常分级
+            </button>
+            <button id="responseTeamBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-users mr-2"></i>
+                响应团队
+            </button>
+            <button id="escalationBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-level-up-alt mr-2"></i>
+                异常升级
+            </button>
+            <button id="multimediaAlarmBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-volume-up mr-2"></i>
+                多媒体告警
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 异常统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">15</div>
+                        <div class="text-sm text-gray-600">活跃异常</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">8</div>
+                        <div class="text-sm text-gray-600">ANDON呼叫</div>
+                        <div class="text-xs text-gray-500">今日次数</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bell text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">3.5</div>
+                        <div class="text-sm text-gray-600">平均响应</div>
+                        <div class="text-xs text-gray-500">分钟</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">89%</div>
+                        <div class="text-sm text-gray-600">解决率</div>
+                        <div class="text-xs text-gray-500">当日统计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">5</div>
+                        <div class="text-sm text-gray-600">升级异常</div>
+                        <div class="text-xs text-gray-500">需要关注</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-level-up-alt text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">12</div>
+                        <div class="text-sm text-gray-600">停线次数</div>
+                        <div class="text-xs text-gray-500">今日统计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-stop-circle text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ANDON看板和响应状态 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- ANDON实时看板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">ANDON实时看板</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-red-500 rounded-full mr-3 animate-pulse"></div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">产线1 - 工位3</div>
+                                <div class="text-xs text-gray-500">设备故障 | 呼叫时间: 14:25</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">紧急</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">产线2 - 工位5</div>
+                                <div class="text-xs text-gray-500">质量异常 | 呼叫时间: 14:30</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">一般</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">产线3 - 工位2</div>
+                                <div class="text-xs text-gray-500">物料缺料 | 呼叫时间: 14:32</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">响应中</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 响应团队状态 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">响应团队状态</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-user-cog text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">设备维修组</div>
+                                <div class="text-xs text-gray-500">张工程师 | 在线</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">可用</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-user-check text-red-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">质量检验组</div>
+                                <div class="text-xs text-gray-500">李检验员 | 处理中</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">忙碌</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-user-tie text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">生产主管</div>
+                                <div class="text-xs text-gray-500">王主管 | 在线</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">可用</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 异常管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">异常管理记录</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>待处理</option>
+                        <option>处理中</option>
+                        <option>已解决</option>
+                        <option>已升级</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部级别</option>
+                        <option>紧急</option>
+                        <option>重要</option>
+                        <option>一般</option>
+                        <option>轻微</option>
+                    </select>
+                    <input type="text" placeholder="搜索异常描述、产线..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">异常编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产线/工位</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">异常类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">异常描述</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">级别</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">响应人员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="exceptionTableBody">
+                        <!-- 异常数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.3.4的生产异常数据模型
+        const exceptionData = [
+            {
+                id: 'EXC202501001',
+                productionLine: '逆变器产线1',
+                workstation: '工位3',
+                exceptionType: 'equipment',
+                exceptionTypeName: '设备故障',
+                description: '拧紧设备扭矩传感器异常',
+                level: 'urgent',
+                status: 'processing',
+                reportTime: '2025-01-16 14:25:30',
+                responseTime: '2025-01-16 14:27:15',
+                resolveTime: null,
+                reporter: '张操作员',
+                responder: '李维修工',
+                andonCalled: true,
+                escalated: false,
+                escalationLevel: 0,
+                estimatedDuration: 30,
+                actualDuration: null,
+                impact: 'production_stop',
+                rootCause: null,
+                solution: null
+            },
+            {
+                id: 'EXC202501002',
+                productionLine: '逆变器产线2',
+                workstation: '工位5',
+                exceptionType: 'quality',
+                exceptionTypeName: '质量异常',
+                description: '产品外观检测发现划痕',
+                level: 'normal',
+                status: 'pending',
+                reportTime: '2025-01-16 14:30:45',
+                responseTime: null,
+                resolveTime: null,
+                reporter: '王检验员',
+                responder: null,
+                andonCalled: true,
+                escalated: false,
+                escalationLevel: 0,
+                estimatedDuration: 15,
+                actualDuration: null,
+                impact: 'quality_risk',
+                rootCause: null,
+                solution: null
+            },
+            {
+                id: 'EXC202501003',
+                productionLine: '逆变器产线3',
+                workstation: '工位2',
+                exceptionType: 'material',
+                exceptionTypeName: '物料异常',
+                description: '线边库M6螺栓库存不足',
+                level: 'important',
+                status: 'responding',
+                reportTime: '2025-01-16 14:32:20',
+                responseTime: '2025-01-16 14:33:00',
+                resolveTime: null,
+                reporter: '系统自动',
+                responder: '赵配送员',
+                andonCalled: false,
+                escalated: false,
+                escalationLevel: 0,
+                estimatedDuration: 20,
+                actualDuration: null,
+                impact: 'potential_stop',
+                rootCause: null,
+                solution: null
+            },
+            {
+                id: 'EXC202501004',
+                productionLine: '控制器产线',
+                workstation: '工位1',
+                exceptionType: 'process',
+                exceptionTypeName: '工艺异常',
+                description: '焊接温度超出工艺范围',
+                level: 'urgent',
+                status: 'escalated',
+                reportTime: '2025-01-16 13:45:10',
+                responseTime: '2025-01-16 13:46:30',
+                resolveTime: null,
+                reporter: '刘操作员',
+                responder: '陈工程师',
+                andonCalled: true,
+                escalated: true,
+                escalationLevel: 2,
+                estimatedDuration: 45,
+                actualDuration: null,
+                impact: 'quality_risk',
+                rootCause: '设备参数漂移',
+                solution: '重新校准设备参数'
+            },
+            {
+                id: 'EXC202501005',
+                productionLine: '逆变器产线1',
+                workstation: '工位7',
+                exceptionType: 'safety',
+                exceptionTypeName: '安全异常',
+                description: '防护门未正常关闭',
+                level: 'urgent',
+                status: 'resolved',
+                reportTime: '2025-01-16 13:20:00',
+                responseTime: '2025-01-16 13:21:15',
+                resolveTime: '2025-01-16 13:25:30',
+                reporter: '安全系统',
+                responder: '孙安全员',
+                andonCalled: true,
+                escalated: false,
+                escalationLevel: 0,
+                estimatedDuration: 10,
+                actualDuration: 5,
+                impact: 'safety_risk',
+                rootCause: '传感器故障',
+                solution: '更换传感器'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            pending: { text: '待处理', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-clock' },
+            responding: { text: '响应中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-running' },
+            processing: { text: '处理中', class: 'bg-purple-100 text-purple-800', icon: 'fas fa-cogs' },
+            escalated: { text: '已升级', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-level-up-alt' },
+            resolved: { text: '已解决', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            closed: { text: '已关闭', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-times-circle' }
+        };
+
+        // 级别映射
+        const levelMap = {
+            urgent: { text: '紧急', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            important: { text: '重要', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-exclamation' },
+            normal: { text: '一般', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-info-circle' },
+            minor: { text: '轻微', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-minus-circle' }
+        };
+
+        // 异常类型映射
+        const exceptionTypeMap = {
+            equipment: { text: '设备故障', icon: 'fas fa-cogs', color: 'text-red-600' },
+            quality: { text: '质量异常', icon: 'fas fa-search', color: 'text-orange-600' },
+            material: { text: '物料异常', icon: 'fas fa-boxes', color: 'text-blue-600' },
+            process: { text: '工艺异常', icon: 'fas fa-industry', color: 'text-purple-600' },
+            safety: { text: '安全异常', icon: 'fas fa-shield-alt', color: 'text-green-600' },
+            environment: { text: '环境异常', icon: 'fas fa-thermometer-half', color: 'text-yellow-600' }
+        };
+
+        let filteredData = [...exceptionData];
+
+        // 渲染异常管理表格
+        function renderExceptionTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('exceptionTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(exception => {
+                const status = statusMap[exception.status];
+                const level = levelMap[exception.level];
+                const exceptionType = exceptionTypeMap[exception.exceptionType];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                // 计算响应时间
+                const responseTimeMinutes = exception.responseTime ?
+                    Math.round((new Date(exception.responseTime) - new Date(exception.reportTime)) / 60000) : null;
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewExceptionDetail('${exception.id}')">
+                            ${exception.id}
+                        </div>
+                        <div class="text-xs text-gray-500">${exception.reportTime}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${exception.productionLine}</div>
+                        <div class="text-xs text-gray-500">${exception.workstation}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${exceptionType.icon} ${exceptionType.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${exceptionType.text}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="text-sm text-gray-900">${exception.description}</div>
+                        ${exception.rootCause ? `<div class="text-xs text-gray-500 mt-1">根因: ${exception.rootCause}</div>` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${level.class}">
+                            <i class="${level.icon} mr-1"></i>
+                            ${level.text}
+                        </span>
+                        ${exception.escalated ? `
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-1 py-0.5 text-xs rounded-full bg-orange-100 text-orange-800">
+                                    升级${exception.escalationLevel}级
+                                </span>
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${exception.andonCalled ? `
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-1 py-0.5 text-xs rounded-full bg-red-100 text-red-800">
+                                    <i class="fas fa-bell mr-1"></i>ANDON
+                                </span>
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">报告: ${exception.reporter}</div>
+                        ${exception.responder ? `
+                            <div class="text-xs text-gray-500">响应: ${exception.responder}</div>
+                        ` : `
+                            <div class="text-xs text-red-500">未分配</div>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">
+                            ${exception.resolveTime ? `解决: ${exception.resolveTime.split(' ')[1]}` :
+                              exception.responseTime ? `响应: ${exception.responseTime.split(' ')[1]}` : '未响应'}
+                        </div>
+                        ${responseTimeMinutes !== null ? `
+                            <div class="text-xs ${responseTimeMinutes <= 5 ? 'text-green-600' : responseTimeMinutes <= 10 ? 'text-yellow-600' : 'text-red-600'}">
+                                响应: ${responseTimeMinutes}分钟
+                            </div>
+                        ` : ''}
+                        ${exception.actualDuration ? `
+                            <div class="text-xs text-gray-500">用时: ${exception.actualDuration}分钟</div>
+                        ` : exception.estimatedDuration ? `
+                            <div class="text-xs text-gray-500">预计: ${exception.estimatedDuration}分钟</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewExceptionDetail('${exception.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${exception.status === 'pending' ? `
+                                <button onclick="assignResponder('${exception.id}')" class="text-green-600 hover:text-green-900 p-1" title="分配响应人员">
+                                    <i class="fas fa-user-plus"></i>
+                                </button>
+                            ` : ''}
+                            ${exception.status === 'responding' || exception.status === 'processing' ? `
+                                <button onclick="updateProgress('${exception.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="更新进度">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            ` : ''}
+                            ${(exception.status === 'processing' || exception.status === 'responding') && !exception.escalated ? `
+                                <button onclick="escalateException('${exception.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="升级异常">
+                                    <i class="fas fa-level-up-alt"></i>
+                                </button>
+                            ` : ''}
+                            ${exception.status === 'processing' || exception.status === 'escalated' ? `
+                                <button onclick="resolveException('${exception.id}')" class="text-green-600 hover:text-green-900 p-1" title="解决异常">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            ${!exception.andonCalled && exception.level === 'urgent' ? `
+                                <button onclick="triggerAndon('${exception.id}')" class="text-red-600 hover:text-red-900 p-1" title="触发ANDON">
+                                    <i class="fas fa-bell"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${exceptionData.length} 条记录`;
+        }
+
+        // 异常操作函数
+        function viewExceptionDetail(exceptionId) {
+            const exception = exceptionData.find(e => e.id === exceptionId);
+            if (exception) {
+                alert(`异常详情：\n编号: ${exception.id}\n产线: ${exception.productionLine} - ${exception.workstation}\n类型: ${exceptionTypeMap[exception.exceptionType].text}\n描述: ${exception.description}\n级别: ${levelMap[exception.level].text}\n状态: ${statusMap[exception.status].text}\n报告人: ${exception.reporter}\n响应人: ${exception.responder || '未分配'}\n报告时间: ${exception.reportTime}\n${exception.rootCause ? `根本原因: ${exception.rootCause}\n` : ''}${exception.solution ? `解决方案: ${exception.solution}` : ''}`);
+            }
+        }
+
+        function assignResponder(exceptionId) {
+            const responders = ['张维修工', '李检验员', '王工程师', '赵主管', '孙安全员'];
+            const selectedResponder = prompt(`请选择响应人员：\n${responders.map((r, index) => `${index + 1}. ${r}`).join('\n')}\n\n请输入序号 (1-${responders.length}):`);
+
+            if (selectedResponder && selectedResponder >= 1 && selectedResponder <= responders.length) {
+                const exception = exceptionData.find(e => e.id === exceptionId);
+                if (exception) {
+                    exception.responder = responders[selectedResponder - 1];
+                    exception.status = 'responding';
+                    exception.responseTime = new Date().toLocaleString('zh-CN');
+                    renderExceptionTable();
+                    alert(`已分配 ${exception.responder} 响应异常 ${exceptionId}！`);
+                }
+            }
+        }
+
+        function updateProgress(exceptionId) {
+            const progress = prompt('请输入处理进度描述：');
+            if (progress) {
+                const exception = exceptionData.find(e => e.id === exceptionId);
+                if (exception) {
+                    exception.status = 'processing';
+                    renderExceptionTable();
+                    alert(`异常 ${exceptionId} 进度已更新：${progress}`);
+                }
+            }
+        }
+
+        function escalateException(exceptionId) {
+            if (confirm('确认升级此异常？升级后将通知更高级别的管理人员。')) {
+                const exception = exceptionData.find(e => e.id === exceptionId);
+                if (exception) {
+                    exception.escalated = true;
+                    exception.escalationLevel = (exception.escalationLevel || 0) + 1;
+                    exception.status = 'escalated';
+                    renderExceptionTable();
+                    alert(`异常 ${exceptionId} 已升级到第 ${exception.escalationLevel} 级！`);
+                }
+            }
+        }
+
+        function resolveException(exceptionId) {
+            const solution = prompt('请输入解决方案：');
+            if (solution) {
+                const exception = exceptionData.find(e => e.id === exceptionId);
+                if (exception) {
+                    exception.status = 'resolved';
+                    exception.resolveTime = new Date().toLocaleString('zh-CN');
+                    exception.solution = solution;
+                    exception.actualDuration = Math.round((new Date() - new Date(exception.responseTime || exception.reportTime)) / 60000);
+                    renderExceptionTable();
+                    alert(`异常 ${exceptionId} 已解决！解决方案：${solution}`);
+                }
+            }
+        }
+
+        function triggerAndon(exceptionId) {
+            if (confirm('确认触发ANDON呼叫？将发出声光报警并通知相关人员。')) {
+                const exception = exceptionData.find(e => e.id === exceptionId);
+                if (exception) {
+                    exception.andonCalled = true;
+                    renderExceptionTable();
+                    alert(`ANDON呼叫已触发！异常 ${exceptionId} 的声光报警已启动。`);
+                }
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderExceptionTable();
+
+            // ANDON呼叫
+            document.getElementById('andonCallBtn').addEventListener('click', function() {
+                alert('ANDON呼叫功能：\n- 一键紧急呼叫\n- 声光报警启动\n- 自动通知响应团队\n- 实时状态显示\n- 响应时间记录');
+            });
+
+            // 异常分级
+            document.getElementById('exceptionClassifyBtn').addEventListener('click', function() {
+                alert('异常分级功能：\n- 紧急：影响安全或停产\n- 重要：影响质量或效率\n- 一般：轻微影响生产\n- 轻微：不影响正常生产\n- 自动分级算法');
+            });
+
+            // 响应团队
+            document.getElementById('responseTeamBtn').addEventListener('click', function() {
+                alert('响应团队管理：\n- 设备维修组\n- 质量检验组\n- 工艺工程师\n- 生产主管\n- 安全管理员\n- 智能分配机制');
+            });
+
+            // 异常升级
+            document.getElementById('escalationBtn').addEventListener('click', function() {
+                alert('异常升级机制：\n- 超时自动升级\n- 手动升级申请\n- 多级升级路径\n- 升级通知机制\n- 升级决策支持');
+            });
+
+            // 多媒体告警
+            document.getElementById('multimediaAlarmBtn').addEventListener('click', function() {
+                alert('多媒体告警系统：\n- LED显示屏告警\n- 声音报警器\n- 手机短信通知\n- 邮件自动发送\n- 微信群消息推送');
+            });
+        });
+    </script>
+</body>
+</html>

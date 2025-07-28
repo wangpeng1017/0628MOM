@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产线工艺管理 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">产线工艺管理</h1>
+            <p class="text-gray-600">基于Process.md 2.3.1节，实现产线工艺规划和设备集成控制系统管理</p>
+        </div>
+
+        <!-- 工艺管理概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">8</div>
+                        <div class="text-sm text-gray-600">生产线数量</div>
+                        <div class="text-xs text-gray-500">已配置</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-industry text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">95%</div>
+                        <div class="text-sm text-gray-600">设备运行率</div>
+                        <div class="text-xs text-gray-500">当前状态</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cogs text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">156</div>
+                        <div class="text-sm text-gray-600">工艺参数</div>
+                        <div class="text-xs text-gray-500">已设定</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-sliders-h text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">3</div>
+                        <div class="text-sm text-gray-600">工艺异常</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 产线工艺配置 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-800">产线工艺配置</h3>
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="addProcessConfig()">
+                        <i class="fas fa-plus mr-2"></i>新增工艺
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产线信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工艺类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工艺参数</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">运行状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-industry text-blue-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="text-sm font-medium text-gray-900">产线A - SMT贴片</div>
+                                        <div class="text-xs text-gray-500">LINE-A-001</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    SMT贴片工艺
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    运行中
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">温度: 245°C</div>
+                                <div class="text-xs text-gray-500">速度: 85%</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-green-600 h-2 rounded-full" style="width: 95%"></div>
+                                    </div>
+                                    <span class="text-sm text-green-600 font-medium">95%</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-2">配置</button>
+                                <button class="text-green-600 hover:text-green-900 mr-2">监控</button>
+                                <button class="text-gray-600 hover:text-gray-900">停止</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-industry text-green-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="text-sm font-medium text-gray-900">产线B - 波峰焊</div>
+                                        <div class="text-xs text-gray-500">LINE-B-002</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    波峰焊工艺
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    运行中
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">温度: 260°C</div>
+                                <div class="text-xs text-gray-500">速度: 78%</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 88%"></div>
+                                    </div>
+                                    <span class="text-sm text-blue-600 font-medium">88%</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-2">配置</button>
+                                <button class="text-green-600 hover:text-green-900 mr-2">监控</button>
+                                <button class="text-gray-600 hover:text-gray-900">停止</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-industry text-orange-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="text-sm font-medium text-gray-900">产线C - 组装</div>
+                                        <div class="text-xs text-gray-500">LINE-C-003</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
+                                    组装工艺
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
+                                    维护中
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">扭矩: 2.5Nm</div>
+                                <div class="text-xs text-gray-500">节拍: 45s</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-orange-600 h-2 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                    <span class="text-sm text-orange-600 font-medium">维护中</span>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-2">配置</button>
+                                <button class="text-green-600 hover:text-green-900 mr-2">启动</button>
+                                <button class="text-gray-600 hover:text-gray-900">维护</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 工艺参数监控 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 实时参数 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">实时工艺参数</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">SMT贴片温度</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 82%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-green-600">245°C</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">波峰焊温度</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 87%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-blue-600">260°C</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">组装扭矩</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-purple-600 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-purple-600">2.5Nm</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">整体效率</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-teal-600 h-2 rounded-full" style="width: 89%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-teal-600">89%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工艺优化建议 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">工艺优化建议</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                            <div class="flex items-center">
+                                <i class="fas fa-lightbulb text-blue-600 mr-2"></i>
+                                <div class="text-sm font-medium text-blue-800">温度优化建议</div>
+                            </div>
+                            <div class="text-xs text-gray-600 mt-1">
+                                建议将SMT贴片温度调整至250°C，可提升焊接质量5%
+                            </div>
+                        </div>
+                        
+                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                            <div class="flex items-center">
+                                <i class="fas fa-chart-line text-green-600 mr-2"></i>
+                                <div class="text-sm font-medium text-green-800">效率提升建议</div>
+                            </div>
+                            <div class="text-xs text-gray-600 mt-1">
+                                优化产线C组装节拍，预计可提升整体效率12%
+                            </div>
+                        </div>
+                        
+                        <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                            <div class="flex items-center">
+                                <i class="fas fa-tools text-orange-600 mr-2"></i>
+                                <div class="text-sm font-medium text-orange-800">维护提醒</div>
+                            </div>
+                            <div class="text-xs text-gray-600 mt-1">
+                                产线C预计需要在2小时后完成维护，请提前准备
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 操作函数
+        function addProcessConfig() {
+            alert('新增工艺配置功能');
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('产线工艺管理页面已加载');
+        });
+    </script>
+</body>
+</html>

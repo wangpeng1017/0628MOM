@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>库存管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">仓储管理</h1>
+            <p class="text-gray-600">基于Process.md 2.2仓储模块流程，实现"从收货到发货"的完整WMS仓储管理系统</p>
+        </div>
+
+        <!-- 库存概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">1,256</div>
+                        <div class="text-sm text-gray-600">库存物料</div>
+                        <div class="text-xs text-gray-500">SKU数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-boxes text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">89.5%</div>
+                        <div class="text-sm text-gray-600">库存周转率</div>
+                        <div class="text-xs text-gray-500">本月数据</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-sync-alt text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">156</div>
+                        <div class="text-sm text-gray-600">待处理任务</div>
+                        <div class="text-xs text-gray-500">入出库作业</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tasks text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">12</div>
+                        <div class="text-sm text-gray-600">库存预警</div>
+                        <div class="text-xs text-gray-500">低库存物料</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 仓储管理功能模块 -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6">仓储管理功能模块 (基于Process.md 2.2节)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 收货入库管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('receiving-inbound')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-truck-loading text-blue-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">2.2.1-2.2.2</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">收货入库管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">采购收货管理流程、退料入库流程</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">今日收货: 45单</span>
+                            <span class="text-green-600 font-medium">及时率: 96%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 拣货出库管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('picking-outbound')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-hand-paper text-green-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">2.2.3-2.2.8</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">拣货出库管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">工单发料、成本中心领用、销售调拨、委外调拨等出库流程</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">今日出库: 38单</span>
+                            <span class="text-green-600 font-medium">准确率: 99%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 成品入库管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('product-inbound')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-box text-purple-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">2.2.9-2.2.11</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">成品入库管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">生产入库、销售退货入库、成品仓调拨入库流程</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">成品入库: 156台</span>
+                            <span class="text-green-600 font-medium">合格率: 98%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 成品出库管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('product-outbound')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-shipping-fast text-orange-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">2.2.12-2.2.16</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">成品出库管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">销售出库、返工成品出库、OEM直发出库等流程</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">成品出库: 142台</span>
+                            <span class="text-green-600 font-medium">及时率: 95%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 仓内管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('warehouse-internal')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-warehouse text-teal-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-teal-100 text-teal-800 px-2 py-1 rounded-full">2.2.17-2.2.19</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">仓内管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">盘点管理、报损管理、库龄监控流程</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">本月盘点: 3次</span>
+                            <span class="text-green-600 font-medium">准确率: 99.8%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 库存实时状态 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 作业状态 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">作业实时状态</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                        <div>
+                            <div class="text-sm font-medium text-blue-800">入库作业</div>
+                            <div class="text-xs text-gray-600">电容器批次: CAP-2025-001</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-blue-600">进行中</div>
+                            <div class="text-xs text-gray-500">作业员: 张工</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                        <div>
+                            <div class="text-sm font-medium text-green-800">出库作业</div>
+                            <div class="text-xs text-gray-600">生产领料: WO-2025-001</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-green-600">拣货中</div>
+                            <div class="text-xs text-gray-500">作业员: 李工</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                        <div>
+                            <div class="text-sm font-medium text-purple-800">库内调拨</div>
+                            <div class="text-xs text-gray-600">A区→B区物料调拨</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-purple-600">执行中</div>
+                            <div class="text-xs text-gray-500">作业员: 王工</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 库存分析 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">库存分析</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">A类物料</span>
+                        <div class="flex items-center">
+                            <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-green-600">85%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">B类物料</span>
+                        <div class="flex items-center">
+                            <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: 92%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-blue-600">92%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">C类物料</span>
+                        <div class="flex items-center">
+                            <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                <div class="bg-purple-600 h-2 rounded-full" style="width: 78%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-purple-600">78%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">库存周转</span>
+                        <div class="flex items-center">
+                            <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                <div class="bg-teal-600 h-2 rounded-full" style="width: 89%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-teal-600">89%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 导航到具体模块
+        function navigateToModule(module) {
+            const moduleUrls = {
+                'receiving-inbound': './receiving-inbound.html',
+                'picking-outbound': './picking-outbound.html',
+                'product-inbound': './product-inbound.html',
+                'product-outbound': './product-outbound.html',
+                'warehouse-internal': './warehouse-internal.html'
+            };
+
+            if (moduleUrls[module]) {
+                window.location.href = moduleUrls[module];
+            }
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('库存管理模块已加载');
+        });
+    </script>
+</body>
+</html>

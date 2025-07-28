@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>追溯与监控系统 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">追溯与监控系统</h1>
+            <p class="text-gray-600">基于Process.md 2.3.9+2.3.17流程：全流程追溯→实时监控→BI报表→数据分析，实现生产全链路可视化管控</p>
+        </div>
+
+        <!-- 追溯监控流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">追溯监控执行流程</h3>
+                    <span class="text-sm text-gray-600">全链路数据追溯系统</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">数据采集</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">实时监控</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">追溯查询</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">BI分析</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="traceabilityQueryBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-search mr-2"></i>
+                追溯查询
+            </button>
+            <button id="realTimeMonitorBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-tv mr-2"></i>
+                实时监控
+            </button>
+            <button id="biReportBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-chart-bar mr-2"></i>
+                BI报表
+            </button>
+            <button id="dataAnalysisBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-analytics mr-2"></i>
+                数据分析
+            </button>
+            <button id="qualityTraceBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-microscope mr-2"></i>
+                质量追溯
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 监控统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">2,456</div>
+                        <div class="text-sm text-gray-600">追溯记录</div>
+                        <div class="text-xs text-gray-500">今日新增</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-search text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">156</div>
+                        <div class="text-sm text-gray-600">监控点位</div>
+                        <div class="text-xs text-gray-500">实时在线</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tv text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">89</div>
+                        <div class="text-sm text-gray-600">BI报表</div>
+                        <div class="text-xs text-gray-500">自动生成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-bar text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">99.2%</div>
+                        <div class="text-sm text-gray-600">数据完整性</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-analytics text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">45</div>
+                        <div class="text-sm text-gray-600">质量追溯</div>
+                        <div class="text-xs text-gray-500">今日查询</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-microscope text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">8</div>
+                        <div class="text-sm text-gray-600">异常告警</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 追溯查询和实时监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 追溯查询面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">产品追溯查询</h3>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">产品SN</label>
+                            <input type="text" id="traceSN" placeholder="输入产品序列号" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">追溯类型</label>
+                            <select id="traceType" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="full">完整追溯</option>
+                                <option value="material">物料追溯</option>
+                                <option value="process">工艺追溯</option>
+                                <option value="quality">质量追溯</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button onclick="performTrace()" class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-search mr-2"></i>开始追溯
+                    </button>
+                    <div id="traceResult" class="hidden">
+                        <div class="border-t pt-4">
+                            <h4 class="text-sm font-medium text-gray-900 mb-2">追溯结果</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">产品型号:</span>
+                                    <span class="text-gray-900">INV-5KW-001</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">生产日期:</span>
+                                    <span class="text-gray-900">2025-01-16</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">生产线:</span>
+                                    <span class="text-gray-900">逆变器产线1</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">质量状态:</span>
+                                    <span class="text-green-600">合格</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 实时监控面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">实时监控大屏</h3>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">产线1状态</div>
+                            <div class="text-lg font-semibold text-green-600">运行中</div>
+                            <div class="text-xs text-gray-500">效率: 95%</div>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">产线2状态</div>
+                            <div class="text-lg font-semibold text-blue-600">运行中</div>
+                            <div class="text-xs text-gray-500">效率: 88%</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-yellow-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">产线3状态</div>
+                            <div class="text-lg font-semibold text-yellow-600">维护中</div>
+                            <div class="text-xs text-gray-500">预计: 30分钟</div>
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">控制器产线</div>
+                            <div class="text-lg font-semibold text-purple-600">运行中</div>
+                            <div class="text-xs text-gray-500">效率: 92%</div>
+                        </div>
+                    </div>
+                    <button onclick="openMonitorDashboard()" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors">
+                        <i class="fas fa-tv mr-2"></i>打开监控大屏
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 追溯记录管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">追溯记录管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部类型</option>
+                        <option>完整追溯</option>
+                        <option>物料追溯</option>
+                        <option>工艺追溯</option>
+                        <option>质量追溯</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>追溯成功</option>
+                        <option>部分追溯</option>
+                        <option>追溯失败</option>
+                    </select>
+                    <input type="text" placeholder="搜索产品SN、批次号..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">追溯编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">追溯类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">追溯范围</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数据完整性</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">查询人员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="traceTableBody">
+                        <!-- 追溯数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.3.9+2.3.17的追溯监控数据模型
+        const traceabilityData = [
+            {
+                id: 'TRACE202501001',
+                productSN: '2025011601001',
+                productCode: 'INV-5KW-001',
+                productName: '5KW逆变器',
+                traceType: 'full',
+                traceTypeName: '完整追溯',
+                traceScope: '物料+工艺+质量',
+                dataCompleteness: 98.5,
+                status: 'success',
+                queryUser: '张质检员',
+                queryTime: '2025-01-16 14:25:30',
+                productionDate: '2025-01-16',
+                productionLine: '逆变器产线1',
+                batchNumber: 'BATCH202501001',
+                qualityStatus: 'qualified',
+                materialTrace: {
+                    mainMaterials: ['硅钢片-MT001', '铜线-MT002', 'M6螺栓-ST001'],
+                    suppliers: ['华东金属材料', '电子元器件', '精密标准件'],
+                    batchNumbers: ['B20250115001', 'B20250115002', 'B20250115003']
+                },
+                processTrace: {
+                    workstations: ['工位1-接线', '工位3-拧紧', '工位5-测试'],
+                    operators: ['张师傅', '李师傅', '王师傅'],
+                    processTime: ['14:20-14:25', '14:25-14:30', '14:30-14:35']
+                },
+                qualityTrace: {
+                    inspections: ['接线检测', '扭矩检测', '功能测试'],
+                    results: ['通过', '通过', '通过'],
+                    inspectors: ['张质检', '李质检', '王质检']
+                }
+            },
+            {
+                id: 'TRACE202501002',
+                productSN: '2025011601002',
+                productCode: 'ESS-10KW-002',
+                productName: '储能逆变器',
+                traceType: 'material',
+                traceTypeName: '物料追溯',
+                traceScope: '原材料+半成品',
+                dataCompleteness: 95.2,
+                status: 'success',
+                queryUser: '李工程师',
+                queryTime: '2025-01-16 14:30:15',
+                productionDate: '2025-01-16',
+                productionLine: '逆变器产线2',
+                batchNumber: 'BATCH202501002',
+                qualityStatus: 'qualified',
+                materialTrace: {
+                    mainMaterials: ['PCBA主板-SM001', '包装箱-PK001'],
+                    suppliers: ['电子元器件', '包装材料'],
+                    batchNumbers: ['B20250115004', 'B20250115005']
+                }
+            },
+            {
+                id: 'TRACE202501003',
+                productSN: '2025011601003',
+                productCode: 'CTRL-ADV-003',
+                productName: '高级控制器',
+                traceType: 'quality',
+                traceTypeName: '质量追溯',
+                traceScope: '检测+测试记录',
+                dataCompleteness: 92.8,
+                status: 'partial',
+                queryUser: '王主管',
+                queryTime: '2025-01-16 14:35:45',
+                productionDate: '2025-01-16',
+                productionLine: '控制器产线',
+                batchNumber: 'BATCH202501003',
+                qualityStatus: 'rework',
+                qualityTrace: {
+                    inspections: ['外观检测', '功能测试', '性能测试'],
+                    results: ['通过', '失败', '待测'],
+                    inspectors: ['赵质检', '孙质检', '钱质检'],
+                    reworkReason: '功能测试发现通信异常'
+                }
+            },
+            {
+                id: 'TRACE202501004',
+                productSN: '2025011601004',
+                productCode: 'INV-3KW-004',
+                productName: '3KW逆变器',
+                traceType: 'process',
+                traceTypeName: '工艺追溯',
+                traceScope: '工艺参数+操作记录',
+                dataCompleteness: 99.1,
+                status: 'success',
+                queryUser: '刘技术员',
+                queryTime: '2025-01-16 14:40:20',
+                productionDate: '2025-01-15',
+                productionLine: '逆变器产线1',
+                batchNumber: 'BATCH202501004',
+                qualityStatus: 'qualified',
+                processTrace: {
+                    workstations: ['工位1-装配', '工位2-焊接', '工位3-测试'],
+                    operators: ['周师傅', '吴师傅', '郑师傅'],
+                    processTime: ['13:20-13:25', '13:25-13:35', '13:35-13:40'],
+                    processParameters: ['扭矩8.5N·m', '温度350°C', '电压220V']
+                }
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            success: { text: '追溯成功', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            partial: { text: '部分追溯', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-exclamation-triangle' },
+            failed: { text: '追溯失败', class: 'bg-red-100 text-red-800', icon: 'fas fa-times-circle' },
+            processing: { text: '追溯中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-spinner' }
+        };
+
+        // 追溯类型映射
+        const traceTypeMap = {
+            full: { text: '完整追溯', icon: 'fas fa-search', color: 'text-blue-600' },
+            material: { text: '物料追溯', icon: 'fas fa-boxes', color: 'text-green-600' },
+            process: { text: '工艺追溯', icon: 'fas fa-cogs', color: 'text-purple-600' },
+            quality: { text: '质量追溯', icon: 'fas fa-microscope', color: 'text-orange-600' }
+        };
+
+        let filteredData = [...traceabilityData];
+
+        // 渲染追溯记录表格
+        function renderTraceabilityTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('traceTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(trace => {
+                const status = statusMap[trace.status];
+                const traceType = traceTypeMap[trace.traceType];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewTraceDetail('${trace.id}')">
+                            ${trace.id}
+                        </div>
+                        <div class="text-xs text-gray-500">${trace.queryTime}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewProductDetail('${trace.productSN}')">
+                            ${trace.productSN}
+                        </div>
+                        <div class="text-sm text-gray-900">${trace.productName}</div>
+                        <div class="text-xs text-gray-500">${trace.productCode}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${traceType.icon} ${traceType.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${traceType.text}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${trace.traceScope}</div>
+                        <div class="text-xs text-gray-500">批次: ${trace.batchNumber}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${trace.dataCompleteness}%"></div>
+                            </div>
+                            <span class="text-xs text-gray-600">${trace.dataCompleteness}%</span>
+                        </div>
+                        ${trace.dataCompleteness < 95 ? '<div class="text-xs text-yellow-600 mt-1">数据不完整</div>' : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        <div class="text-xs text-gray-500 mt-1">
+                            质量: ${trace.qualityStatus === 'qualified' ? '合格' : trace.qualityStatus === 'rework' ? '返工' : '不合格'}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${trace.queryUser}</div>
+                        <div class="text-xs text-gray-500">${trace.productionLine}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${trace.queryTime.split(' ')[1]}</div>
+                        <div class="text-xs text-gray-500">生产: ${trace.productionDate}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewTraceDetail('${trace.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="viewTraceTree('${trace.id}')" class="text-green-600 hover:text-green-900 p-1" title="追溯树">
+                                <i class="fas fa-sitemap"></i>
+                            </button>
+                            <button onclick="exportTraceReport('${trace.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="导出报告">
+                                <i class="fas fa-file-export"></i>
+                            </button>
+                            ${trace.status === 'partial' || trace.status === 'failed' ? `
+                                <button onclick="retrace('${trace.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="重新追溯">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${traceabilityData.length} 条记录`;
+        }
+
+        // 追溯操作函数
+        function performTrace() {
+            const sn = document.getElementById('traceSN').value;
+            const type = document.getElementById('traceType').value;
+
+            if (!sn) {
+                alert('请输入产品序列号！');
+                return;
+            }
+
+            // 模拟追溯过程
+            const resultDiv = document.getElementById('traceResult');
+            resultDiv.classList.remove('hidden');
+
+            // 模拟追溯结果
+            setTimeout(() => {
+                alert(`追溯完成！\n产品SN: ${sn}\n追溯类型: ${traceTypeMap[type].text}\n数据完整性: 96.8%\n追溯状态: 成功`);
+            }, 1000);
+        }
+
+        function viewTraceDetail(traceId) {
+            const trace = traceabilityData.find(t => t.id === traceId);
+            if (trace) {
+                let detailText = `追溯详情：\n编号: ${trace.id}\n产品SN: ${trace.productSN}\n产品名称: ${trace.productName}\n追溯类型: ${traceTypeMap[trace.traceType].text}\n追溯范围: ${trace.traceScope}\n数据完整性: ${trace.dataCompleteness}%\n状态: ${statusMap[trace.status].text}\n查询人员: ${trace.queryUser}\n生产日期: ${trace.productionDate}\n生产线: ${trace.productionLine}\n批次号: ${trace.batchNumber}\n质量状态: ${trace.qualityStatus === 'qualified' ? '合格' : trace.qualityStatus === 'rework' ? '返工' : '不合格'}`;
+
+                if (trace.materialTrace) {
+                    detailText += `\n\n物料追溯：\n主要物料: ${trace.materialTrace.mainMaterials.join(', ')}\n供应商: ${trace.materialTrace.suppliers.join(', ')}\n批次号: ${trace.materialTrace.batchNumbers.join(', ')}`;
+                }
+
+                if (trace.processTrace) {
+                    detailText += `\n\n工艺追溯：\n工位: ${trace.processTrace.workstations.join(', ')}\n操作员: ${trace.processTrace.operators.join(', ')}\n时间: ${trace.processTrace.processTime.join(', ')}`;
+                    if (trace.processTrace.processParameters) {
+                        detailText += `\n工艺参数: ${trace.processTrace.processParameters.join(', ')}`;
+                    }
+                }
+
+                if (trace.qualityTrace) {
+                    detailText += `\n\n质量追溯：\n检验项目: ${trace.qualityTrace.inspections.join(', ')}\n检验结果: ${trace.qualityTrace.results.join(', ')}\n检验员: ${trace.qualityTrace.inspectors.join(', ')}`;
+                    if (trace.qualityTrace.reworkReason) {
+                        detailText += `\n返工原因: ${trace.qualityTrace.reworkReason}`;
+                    }
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function viewTraceTree(traceId) {
+            alert('追溯树功能：\n- 可视化追溯路径\n- 层级关系展示\n- 关键节点标注\n- 异常点高亮\n- 交互式浏览');
+        }
+
+        function exportTraceReport(traceId) {
+            const trace = traceabilityData.find(t => t.id === traceId);
+            if (trace) {
+                alert(`导出追溯报告：\n报告类型: ${traceTypeMap[trace.traceType].text}报告\n产品SN: ${trace.productSN}\n文件格式: PDF\n包含内容: 完整追溯链路、关键数据、质量记录\n导出状态: 准备中...`);
+            }
+        }
+
+        function retrace(traceId) {
+            if (confirm('确认重新追溯？将重新收集和分析追溯数据。')) {
+                const trace = traceabilityData.find(t => t.id === traceId);
+                if (trace) {
+                    trace.status = 'processing';
+                    trace.queryTime = new Date().toLocaleString('zh-CN');
+                    renderTraceabilityTable();
+
+                    // 模拟重新追溯过程
+                    setTimeout(() => {
+                        trace.status = 'success';
+                        trace.dataCompleteness = Math.min(99.9, trace.dataCompleteness + Math.random() * 5);
+                        renderTraceabilityTable();
+                        alert('重新追溯完成！数据完整性已提升。');
+                    }, 3000);
+                }
+            }
+        }
+
+        function openMonitorDashboard() {
+            alert('监控大屏功能：\n- 实时生产状态\n- 设备运行监控\n- 质量指标展示\n- 异常告警显示\n- 数据可视化图表\n\n将在新窗口打开监控大屏...');
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTraceabilityTable();
+
+            // 追溯查询
+            document.getElementById('traceabilityQueryBtn').addEventListener('click', function() {
+                alert('追溯查询功能：\n- 产品序列号查询\n- 批次号查询\n- 物料批次查询\n- 时间范围查询\n- 多维度组合查询');
+            });
+
+            // 实时监控
+            document.getElementById('realTimeMonitorBtn').addEventListener('click', function() {
+                openMonitorDashboard();
+            });
+
+            // BI报表
+            document.getElementById('biReportBtn').addEventListener('click', function() {
+                alert('BI报表功能：\n- 生产效率分析\n- 质量趋势报告\n- 设备利用率统计\n- 异常分析报告\n- 自定义报表生成');
+            });
+
+            // 数据分析
+            document.getElementById('dataAnalysisBtn').addEventListener('click', function() {
+                alert('数据分析功能：\n- 生产数据挖掘\n- 质量相关性分析\n- 预测性维护\n- 工艺优化建议\n- 智能决策支持');
+            });
+
+            // 质量追溯
+            document.getElementById('qualityTraceBtn').addEventListener('click', function() {
+                alert('质量追溯功能：\n- 不合格品追溯\n- 质量问题根因分析\n- 影响范围评估\n- 纠正措施跟踪\n- 预防措施验证');
+            });
+        });
+    </script>
+</body>
+</html>

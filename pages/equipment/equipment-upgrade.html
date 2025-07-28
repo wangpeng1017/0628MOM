@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技改管理 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">技改管理</h1>
+            <p class="text-gray-600">基于Process.md 2.4.11流程：需求分析→方案设计→实施改造→效果评估，实现设备技术改造的全过程管理</p>
+        </div>
+
+        <!-- 技改管理流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">技改管理流程</h3>
+                    <span class="text-sm text-gray-600">设备技术升级改造管理</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">需求分析</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">方案设计</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">实施改造</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">效果评估</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="requirementAnalysisBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-search mr-2"></i>
+                需求分析
+            </button>
+            <button id="solutionDesignBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-drafting-compass mr-2"></i>
+                方案设计
+            </button>
+            <button id="implementationBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-tools mr-2"></i>
+                实施改造
+            </button>
+            <button id="effectEvaluationBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-chart-line mr-2"></i>
+                效果评估
+            </button>
+            <button id="projectManagementBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-project-diagram mr-2"></i>
+                项目管理
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 技改统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">18</div>
+                        <div class="text-sm text-gray-600">技改项目</div>
+                        <div class="text-xs text-gray-500">本年度</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cogs text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">12</div>
+                        <div class="text-sm text-gray-600">已完成</div>
+                        <div class="text-xs text-gray-500">项目数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">6</div>
+                        <div class="text-sm text-gray-600">进行中</div>
+                        <div class="text-xs text-gray-500">项目数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-spinner text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">¥2.8M</div>
+                        <div class="text-sm text-gray-600">投资总额</div>
+                        <div class="text-xs text-gray-500">本年度</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-dollar-sign text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">15.6%</div>
+                        <div class="text-sm text-gray-600">效率提升</div>
+                        <div class="text-xs text-gray-500">平均值</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-arrow-up text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">8.2月</div>
+                        <div class="text-sm text-gray-600">投资回收期</div>
+                        <div class="text-xs text-gray-500">平均值</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技改类型和项目进度面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 技改类型分析 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">技改类型分析</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-microchip text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">自动化升级</div>
+                                <div class="text-xs text-gray-500">设备自动化程度提升</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-blue-600">8个</div>
+                            <div class="text-xs text-gray-500">44.4%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-tachometer-alt text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">性能优化</div>
+                                <div class="text-xs text-gray-500">设备性能参数优化</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-green-600">6个</div>
+                            <div class="text-xs text-gray-500">33.3%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt text-purple-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">安全改造</div>
+                                <div class="text-xs text-gray-500">安全防护系统升级</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-purple-600">3个</div>
+                            <div class="text-xs text-gray-500">16.7%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-leaf text-orange-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">节能改造</div>
+                                <div class="text-xs text-gray-500">能耗降低技术改造</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-orange-600">1个</div>
+                            <div class="text-xs text-gray-500">5.6%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 重点项目进度 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">重点项目进度</h3>
+                <div class="space-y-4">
+                    <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <div>
+                                <div class="text-sm font-medium text-blue-800">PACK产线自动化升级</div>
+                                <div class="text-xs text-gray-600">投资额: ¥850,000</div>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">实施中</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">进度: 75% | 预计完成: 2025-02-15</div>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <div>
+                                <div class="text-sm font-medium text-green-800">机器人精度提升改造</div>
+                                <div class="text-xs text-gray-600">投资额: ¥320,000</div>
+                            </div>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">已完成</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">效果: 精度提升50% | 完成时间: 2025-01-10</div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">测试设备智能化改造</div>
+                                <div class="text-xs text-gray-600">投资额: ¥450,000</div>
+                            </div>
+                            <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">方案设计</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-orange-600 h-2 rounded-full" style="width: 35%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">进度: 35% | 预计开始: 2025-03-01</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技改项目管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">技改项目管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部技改类型</option>
+                        <option>自动化升级</option>
+                        <option>性能优化</option>
+                        <option>安全改造</option>
+                        <option>节能改造</option>
+                        <option>智能化改造</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>需求分析</option>
+                        <option>方案设计</option>
+                        <option>实施改造</option>
+                        <option>效果评估</option>
+                        <option>已完成</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部优先级</option>
+                        <option>高</option>
+                        <option>中</option>
+                        <option>低</option>
+                    </select>
+                    <input type="text" placeholder="搜索项目名称、设备..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">项目信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">技改类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">投资预算</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">项目团队</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">项目状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">改造效果</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="upgradeTableBody">
+                        <!-- 技改数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.11的技改管理数据模型
+        const upgradeProjects = [
+            {
+                id: 'UPG202501001',
+                projectCode: 'UPG-PACK-AUTO-001',
+                projectName: 'PACK产线自动化升级',
+                upgradeType: 'automation',
+                upgradeTypeName: '自动化升级',
+                equipmentId: 'EQP001',
+                equipmentCode: 'PACK-ASM-001',
+                equipmentName: 'PACK产线装配线1',
+                priority: 'high',
+                priorityName: '高',
+                status: 'implementation',
+                statusName: '实施改造',
+                budget: {
+                    total: 850000,
+                    approved: 850000,
+                    spent: 637500,
+                    remaining: 212500
+                },
+                timeline: {
+                    plannedStart: '2024-12-01',
+                    plannedEnd: '2025-02-15',
+                    actualStart: '2024-12-01',
+                    actualEnd: null,
+                    currentPhase: 'implementation'
+                },
+                progress: 75,
+                projectTeam: {
+                    manager: '张工程师',
+                    managerId: 'ENG001',
+                    members: ['李技师', '王电工', '赵机械工'],
+                    supplier: '德国西门子',
+                    consultant: '自动化咨询公司'
+                },
+                upgradeContent: {
+                    description: '将手动装配线升级为半自动化装配线',
+                    objectives: ['提高生产效率30%', '降低人工成本', '提升产品质量'],
+                    scope: ['增加自动化设备', '升级控制系统', '优化工艺流程'],
+                    technologies: ['PLC控制系统', '机器视觉', '自动化传送带']
+                },
+                expectedBenefits: {
+                    efficiencyImprovement: 30,
+                    costReduction: 25,
+                    qualityImprovement: 15,
+                    paybackPeriod: 8.5,
+                    roi: 35.2
+                },
+                actualBenefits: null,
+                risks: [
+                    { risk: '技术风险', level: 'medium', mitigation: '技术验证和测试' },
+                    { risk: '进度风险', level: 'low', mitigation: '详细项目计划' }
+                ],
+                milestones: [
+                    { milestone: '需求分析完成', date: '2024-12-15', status: 'completed' },
+                    { milestone: '方案设计完成', date: '2025-01-05', status: 'completed' },
+                    { milestone: '设备采购完成', date: '2025-01-20', status: 'completed' },
+                    { milestone: '安装调试完成', date: '2025-02-10', status: 'in_progress' },
+                    { milestone: '验收测试完成', date: '2025-02-15', status: 'pending' }
+                ],
+                documents: ['需求分析报告', '技术方案', '采购合同', '实施计划'],
+                notes: '项目进展顺利，预计按期完成'
+            },
+            {
+                id: 'UPG202501002',
+                projectCode: 'UPG-ROBOT-PREC-002',
+                projectName: '机器人精度提升改造',
+                upgradeType: 'performance',
+                upgradeTypeName: '性能优化',
+                equipmentId: 'EQP003',
+                equipmentCode: 'ROBOT-6AXIS-001',
+                equipmentName: '6轴机器人',
+                priority: 'medium',
+                priorityName: '中',
+                status: 'completed',
+                statusName: '已完成',
+                budget: {
+                    total: 320000,
+                    approved: 320000,
+                    spent: 315000,
+                    remaining: 5000
+                },
+                timeline: {
+                    plannedStart: '2024-11-15',
+                    plannedEnd: '2025-01-10',
+                    actualStart: '2024-11-15',
+                    actualEnd: '2025-01-10',
+                    currentPhase: 'completed'
+                },
+                progress: 100,
+                projectTeam: {
+                    manager: '孙技师',
+                    managerId: 'TECH002',
+                    members: ['钱工程师', '周电工'],
+                    supplier: '日本发那科',
+                    consultant: '精密加工技术公司'
+                },
+                upgradeContent: {
+                    description: '提升机器人重复定位精度和运动精度',
+                    objectives: ['精度提升50%', '稳定性提升', '减少废品率'],
+                    scope: ['更换高精度减速器', '升级控制算法', '重新校准'],
+                    technologies: ['高精度谐波减速器', '先进控制算法', '激光校准系统']
+                },
+                expectedBenefits: {
+                    efficiencyImprovement: 20,
+                    costReduction: 15,
+                    qualityImprovement: 50,
+                    paybackPeriod: 6.8,
+                    roi: 42.5
+                },
+                actualBenefits: {
+                    efficiencyImprovement: 22,
+                    costReduction: 18,
+                    qualityImprovement: 55,
+                    paybackPeriod: 6.2,
+                    roi: 48.3
+                },
+                risks: [
+                    { risk: '技术风险', level: 'low', mitigation: '供应商技术支持' },
+                    { risk: '质量风险', level: 'low', mitigation: '严格测试验证' }
+                ],
+                milestones: [
+                    { milestone: '需求分析完成', date: '2024-11-25', status: 'completed' },
+                    { milestone: '方案设计完成', date: '2024-12-05', status: 'completed' },
+                    { milestone: '设备采购完成', date: '2024-12-20', status: 'completed' },
+                    { milestone: '安装调试完成', date: '2025-01-05', status: 'completed' },
+                    { milestone: '验收测试完成', date: '2025-01-10', status: 'completed' }
+                ],
+                documents: ['需求分析报告', '技术方案', '验收报告', '效果评估报告'],
+                notes: '改造效果超出预期，精度提升55%'
+            },
+            {
+                id: 'UPG202501003',
+                projectCode: 'UPG-TEST-SMART-003',
+                projectName: '测试设备智能化改造',
+                upgradeType: 'intelligence',
+                upgradeTypeName: '智能化改造',
+                equipmentId: 'EQP002',
+                equipmentCode: 'PCBA-TEST-001',
+                equipmentName: 'PCBA测试设备',
+                priority: 'medium',
+                priorityName: '中',
+                status: 'design',
+                statusName: '方案设计',
+                budget: {
+                    total: 450000,
+                    approved: 450000,
+                    spent: 45000,
+                    remaining: 405000
+                },
+                timeline: {
+                    plannedStart: '2025-03-01',
+                    plannedEnd: '2025-05-15',
+                    actualStart: null,
+                    actualEnd: null,
+                    currentPhase: 'design'
+                },
+                progress: 35,
+                projectTeam: {
+                    manager: '王技术员',
+                    managerId: 'TECH001',
+                    members: ['赵工程师', '吴电工'],
+                    supplier: '日本安立',
+                    consultant: '智能制造咨询公司'
+                },
+                upgradeContent: {
+                    description: '增加AI智能诊断和自动化测试功能',
+                    objectives: ['提高测试效率40%', '增加智能诊断', '减少人工干预'],
+                    scope: ['增加AI诊断模块', '升级测试软件', '集成数据分析'],
+                    technologies: ['人工智能算法', '机器学习', '大数据分析']
+                },
+                expectedBenefits: {
+                    efficiencyImprovement: 40,
+                    costReduction: 30,
+                    qualityImprovement: 25,
+                    paybackPeriod: 9.2,
+                    roi: 38.7
+                },
+                actualBenefits: null,
+                risks: [
+                    { risk: '技术风险', level: 'high', mitigation: 'AI技术验证' },
+                    { risk: '集成风险', level: 'medium', mitigation: '分阶段实施' }
+                ],
+                milestones: [
+                    { milestone: '需求分析完成', date: '2025-01-20', status: 'completed' },
+                    { milestone: '方案设计完成', date: '2025-02-15', status: 'in_progress' },
+                    { milestone: '设备采购完成', date: '2025-02-28', status: 'pending' },
+                    { milestone: '安装调试完成', date: '2025-04-30', status: 'pending' },
+                    { milestone: '验收测试完成', date: '2025-05-15', status: 'pending' }
+                ],
+                documents: ['需求分析报告', '技术方案草案'],
+                notes: '方案设计中，重点关注AI算法的可行性'
+            },
+            {
+                id: 'UPG202501004',
+                projectCode: 'UPG-AGING-SAFE-004',
+                projectName: '老化房安全系统升级',
+                upgradeType: 'safety',
+                upgradeTypeName: '安全改造',
+                equipmentId: 'EQP004',
+                equipmentCode: 'AGING-ROOM-001',
+                equipmentName: '自动老化房',
+                priority: 'high',
+                priorityName: '高',
+                status: 'analysis',
+                statusName: '需求分析',
+                budget: {
+                    total: 180000,
+                    approved: 180000,
+                    spent: 18000,
+                    remaining: 162000
+                },
+                timeline: {
+                    plannedStart: '2025-02-01',
+                    plannedEnd: '2025-03-30',
+                    actualStart: null,
+                    actualEnd: null,
+                    currentPhase: 'analysis'
+                },
+                progress: 15,
+                projectTeam: {
+                    manager: '周操作员',
+                    managerId: 'OP002',
+                    members: ['吴班长', '安全工程师'],
+                    supplier: '上海一恒',
+                    consultant: '安全技术咨询公司'
+                },
+                upgradeContent: {
+                    description: '升级安全监控和应急处理系统',
+                    objectives: ['提升安全等级', '增加应急功能', '符合新安全标准'],
+                    scope: ['增加安全传感器', '升级报警系统', '完善应急预案'],
+                    technologies: ['多重安全传感器', '智能报警系统', '自动应急处理']
+                },
+                expectedBenefits: {
+                    efficiencyImprovement: 5,
+                    costReduction: 10,
+                    qualityImprovement: 20,
+                    paybackPeriod: 12.0,
+                    roi: 15.8
+                },
+                actualBenefits: null,
+                risks: [
+                    { risk: '安全风险', level: 'high', mitigation: '严格安全标准' },
+                    { risk: '合规风险', level: 'medium', mitigation: '法规符合性检查' }
+                ],
+                milestones: [
+                    { milestone: '需求分析完成', date: '2025-02-10', status: 'in_progress' },
+                    { milestone: '方案设计完成', date: '2025-02-25', status: 'pending' },
+                    { milestone: '设备采购完成', date: '2025-03-10', status: 'pending' },
+                    { milestone: '安装调试完成', date: '2025-03-25', status: 'pending' },
+                    { milestone: '验收测试完成', date: '2025-03-30', status: 'pending' }
+                ],
+                documents: ['安全需求分析'],
+                notes: '安全改造项目，优先级高，需严格按安全标准执行'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            analysis: { text: '需求分析', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-search' },
+            design: { text: '方案设计', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-drafting-compass' },
+            implementation: { text: '实施改造', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-tools' },
+            evaluation: { text: '效果评估', class: 'bg-purple-100 text-purple-800', icon: 'fas fa-chart-line' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' }
+        };
+
+        // 技改类型映射
+        const upgradeTypeMap = {
+            automation: { text: '自动化升级', icon: 'fas fa-robot', color: 'text-blue-600' },
+            performance: { text: '性能优化', icon: 'fas fa-tachometer-alt', color: 'text-green-600' },
+            intelligence: { text: '智能化改造', icon: 'fas fa-brain', color: 'text-purple-600' },
+            safety: { text: '安全改造', icon: 'fas fa-shield-alt', color: 'text-red-600' },
+            energy: { text: '节能改造', icon: 'fas fa-leaf', color: 'text-orange-600' }
+        };
+
+        // 优先级映射
+        const priorityMap = {
+            high: { text: '高', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            medium: { text: '中', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-minus' },
+            low: { text: '低', class: 'bg-green-100 text-green-800', icon: 'fas fa-arrow-down' }
+        };
+
+        // 里程碑状态映射
+        const milestoneStatusMap = {
+            completed: { text: '已完成', class: 'text-green-600', icon: 'fas fa-check-circle' },
+            in_progress: { text: '进行中', class: 'text-blue-600', icon: 'fas fa-spinner' },
+            pending: { text: '待开始', class: 'text-gray-600', icon: 'fas fa-clock' }
+        };
+
+        let filteredData = [...upgradeProjects];
+
+        // 渲染技改项目表格
+        function renderUpgradeTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('upgradeTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(project => {
+                const status = statusMap[project.status];
+                const upgradeType = upgradeTypeMap[project.upgradeType];
+                const priority = priorityMap[project.priority];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewUpgradeDetail('${project.id}')">
+                            ${project.projectCode}
+                        </div>
+                        <div class="text-sm text-gray-900">${project.projectName}</div>
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${priority.class} mt-1">
+                            <i class="${priority.icon} mr-1"></i>
+                            ${priority.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${upgradeType.icon} ${upgradeType.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${upgradeType.text}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewEquipmentDetail('${project.equipmentId}')">
+                            ${project.equipmentCode}
+                        </div>
+                        <div class="text-sm text-gray-900">${project.equipmentName}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">¥${project.budget.total.toLocaleString()}</div>
+                        <div class="text-xs text-gray-500">已用: ¥${project.budget.spent.toLocaleString()}</div>
+                        <div class="text-xs text-gray-500">余额: ¥${project.budget.remaining.toLocaleString()}</div>
+                        <div class="mt-1 w-full bg-gray-200 rounded-full h-1">
+                            <div class="bg-blue-600 h-1 rounded-full" style="width: ${(project.budget.spent / project.budget.total * 100)}%"></div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${project.projectTeam.manager}</div>
+                        <div class="text-xs text-gray-500">${project.projectTeam.managerId}</div>
+                        <div class="text-xs text-blue-600">团队: ${project.projectTeam.members.length}人</div>
+                        <div class="text-xs text-green-600">供应商: ${project.projectTeam.supplier}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">计划: ${project.timeline.plannedStart} - ${project.timeline.plannedEnd}</div>
+                        ${project.timeline.actualStart ? `
+                            <div class="text-xs text-gray-500">实际: ${project.timeline.actualStart}${project.timeline.actualEnd ? ' - ' + project.timeline.actualEnd : ' - 进行中'}</div>
+                        ` : `
+                            <div class="text-xs text-gray-500">未开始</div>
+                        `}
+                        <div class="mt-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${project.progress}%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">进度: ${project.progress}%</div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${project.actualBenefits ? `
+                            <div class="text-sm font-medium text-green-600">效率: +${project.actualBenefits.efficiencyImprovement}%</div>
+                            <div class="text-xs text-green-600">成本: -${project.actualBenefits.costReduction}%</div>
+                            <div class="text-xs text-green-600">质量: +${project.actualBenefits.qualityImprovement}%</div>
+                            <div class="text-xs text-blue-600">ROI: ${project.actualBenefits.roi}%</div>
+                        ` : `
+                            <div class="text-sm text-gray-600">预期效率: +${project.expectedBenefits.efficiencyImprovement}%</div>
+                            <div class="text-xs text-gray-500">预期成本: -${project.expectedBenefits.costReduction}%</div>
+                            <div class="text-xs text-gray-500">预期质量: +${project.expectedBenefits.qualityImprovement}%</div>
+                            <div class="text-xs text-gray-500">预期ROI: ${project.expectedBenefits.roi}%</div>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewUpgradeDetail('${project.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${project.status === 'analysis' ? `
+                                <button onclick="continueAnalysis('${project.id}')" class="text-green-600 hover:text-green-900 p-1" title="继续分析">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            ` : ''}
+                            ${project.status === 'design' ? `
+                                <button onclick="continueDesign('${project.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="继续设计">
+                                    <i class="fas fa-drafting-compass"></i>
+                                </button>
+                            ` : ''}
+                            ${project.status === 'implementation' ? `
+                                <button onclick="continueImplementation('${project.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="继续实施">
+                                    <i class="fas fa-tools"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewMilestones('${project.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="里程碑">
+                                <i class="fas fa-flag"></i>
+                            </button>
+                            <button onclick="viewRisks('${project.id}')" class="text-yellow-600 hover:text-yellow-900 p-1" title="风险管理">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${upgradeProjects.length} 条记录`;
+        }
+
+        // 技改项目操作函数
+        function viewUpgradeDetail(projectId) {
+            const project = upgradeProjects.find(p => p.id === projectId);
+            if (project) {
+                let detailText = `技改项目详情：\n项目编号: ${project.projectCode}\n项目名称: ${project.projectName}\n技改类型: ${upgradeTypeMap[project.upgradeType].text}\n设备: ${project.equipmentName}\n优先级: ${priorityMap[project.priority].text}\n状态: ${statusMap[project.status].text}`;
+
+                detailText += `\n\n项目团队:\n项目经理: ${project.projectTeam.manager} (${project.projectTeam.managerId})\n团队成员: ${project.projectTeam.members.join(', ')}\n供应商: ${project.projectTeam.supplier}\n咨询方: ${project.projectTeam.consultant}`;
+
+                detailText += `\n\n改造内容:\n描述: ${project.upgradeContent.description}\n目标: ${project.upgradeContent.objectives.join(', ')}\n范围: ${project.upgradeContent.scope.join(', ')}\n技术: ${project.upgradeContent.technologies.join(', ')}`;
+
+                detailText += `\n\n预算信息:\n总预算: ¥${project.budget.total.toLocaleString()}\n已批准: ¥${project.budget.approved.toLocaleString()}\n已花费: ¥${project.budget.spent.toLocaleString()}\n剩余: ¥${project.budget.remaining.toLocaleString()}`;
+
+                detailText += `\n\n时间计划:\n计划开始: ${project.timeline.plannedStart}\n计划结束: ${project.timeline.plannedEnd}`;
+                if (project.timeline.actualStart) {
+                    detailText += `\n实际开始: ${project.timeline.actualStart}`;
+                    if (project.timeline.actualEnd) {
+                        detailText += `\n实际结束: ${project.timeline.actualEnd}`;
+                    }
+                }
+                detailText += `\n当前阶段: ${project.timeline.currentPhase}\n进度: ${project.progress}%`;
+
+                if (project.actualBenefits) {
+                    detailText += `\n\n实际效果:\n效率提升: ${project.actualBenefits.efficiencyImprovement}%\n成本降低: ${project.actualBenefits.costReduction}%\n质量提升: ${project.actualBenefits.qualityImprovement}%\n投资回收期: ${project.actualBenefits.paybackPeriod}月\nROI: ${project.actualBenefits.roi}%`;
+                } else {
+                    detailText += `\n\n预期效果:\n效率提升: ${project.expectedBenefits.efficiencyImprovement}%\n成本降低: ${project.expectedBenefits.costReduction}%\n质量提升: ${project.expectedBenefits.qualityImprovement}%\n投资回收期: ${project.expectedBenefits.paybackPeriod}月\nROI: ${project.expectedBenefits.roi}%`;
+                }
+
+                if (project.notes) {
+                    detailText += `\n\n备注: ${project.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function continueAnalysis(projectId) {
+            const project = upgradeProjects.find(p => p.id === projectId);
+            if (project) {
+                if (confirm(`继续需求分析？\n项目: ${project.projectName}\n\n分析内容：\n- 技术需求分析\n- 成本效益分析\n- 风险评估\n- 可行性研究`)) {
+                    project.status = 'design';
+                    project.progress = 25;
+                    project.milestones[0].status = 'completed';
+                    project.milestones[1].status = 'in_progress';
+                    renderUpgradeTable();
+                    alert('需求分析完成！\n- 技术需求已明确\n- 成本效益已评估\n- 进入方案设计阶段');
+                }
+            }
+        }
+
+        function continueDesign(projectId) {
+            const project = upgradeProjects.find(p => p.id === projectId);
+            if (project) {
+                if (confirm(`继续方案设计？\n项目: ${project.projectName}\n\n设计内容：\n- 技术方案设计\n- 实施计划制定\n- 资源配置规划\n- 风险控制措施`)) {
+                    project.progress = Math.min(50, project.progress + 15);
+                    if (project.progress >= 50) {
+                        project.status = 'implementation';
+                        project.milestones[1].status = 'completed';
+                        project.milestones[2].status = 'in_progress';
+                    }
+                    renderUpgradeTable();
+                    alert('方案设计进展！\n- 技术方案已完善\n- 实施计划已制定\n' + (project.progress >= 50 ? '- 进入实施改造阶段' : '- 继续方案设计'));
+                }
+            }
+        }
+
+        function continueImplementation(projectId) {
+            const project = upgradeProjects.find(p => p.id === projectId);
+            if (project) {
+                if (confirm(`继续实施改造？\n项目: ${project.projectName}\n\n实施内容：\n- 设备安装调试\n- 系统集成测试\n- 人员培训\n- 试运行验证`)) {
+                    project.progress = Math.min(95, project.progress + 10);
+                    project.budget.spent = Math.min(project.budget.total * 0.9, project.budget.spent + project.budget.total * 0.1);
+                    project.budget.remaining = project.budget.total - project.budget.spent;
+
+                    if (project.progress >= 95) {
+                        project.status = 'evaluation';
+                        project.milestones[3].status = 'completed';
+                        project.milestones[4].status = 'in_progress';
+                    }
+                    renderUpgradeTable();
+                    alert('实施进展！\n- 改造工作继续推进\n- 预算执行正常\n' + (project.progress >= 95 ? '- 进入效果评估阶段' : '- 继续实施改造'));
+                }
+            }
+        }
+
+        function viewMilestones(projectId) {
+            const project = upgradeProjects.find(p => p.id === projectId);
+            if (project) {
+                let milestonesText = `${project.projectName} - 项目里程碑：\n\n`;
+                project.milestones.forEach((milestone, index) => {
+                    const statusText = milestoneStatusMap[milestone.status].text;
+                    milestonesText += `${index + 1}. ${milestone.milestone}\n   计划日期: ${milestone.date}\n   状态: ${statusText}\n\n`;
+                });
+                alert(milestonesText);
+            }
+        }
+
+        function viewRisks(projectId) {
+            const project = upgradeProjects.find(p => p.id === projectId);
+            if (project) {
+                let risksText = `${project.projectName} - 风险管理：\n\n`;
+                project.risks.forEach((risk, index) => {
+                    risksText += `${index + 1}. ${risk.risk}\n   风险等级: ${risk.level}\n   缓解措施: ${risk.mitigation}\n\n`;
+                });
+                alert(risksText);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderUpgradeTable();
+
+            // 需求分析
+            document.getElementById('requirementAnalysisBtn').addEventListener('click', function() {
+                alert('需求分析功能：\n- 技术需求调研\n- 业务需求分析\n- 成本效益评估\n- 可行性研究\n- 风险识别评估');
+            });
+
+            // 方案设计
+            document.getElementById('solutionDesignBtn').addEventListener('click', function() {
+                alert('方案设计功能：\n- 技术方案设计\n- 实施计划制定\n- 资源配置规划\n- 时间进度安排\n- 质量控制措施');
+            });
+
+            // 实施改造
+            document.getElementById('implementationBtn').addEventListener('click', function() {
+                alert('实施改造功能：\n- 项目执行管理\n- 进度跟踪监控\n- 质量检查验收\n- 风险控制处理\n- 变更管理控制');
+            });
+
+            // 效果评估
+            document.getElementById('effectEvaluationBtn').addEventListener('click', function() {
+                alert('效果评估功能：\n- 改造效果测量\n- 投资回报分析\n- 目标达成评估\n- 经验总结提炼\n- 持续改进建议');
+            });
+
+            // 项目管理
+            document.getElementById('projectManagementBtn').addEventListener('click', function() {
+                alert('项目管理功能：\n- 项目计划管理\n- 资源配置管理\n- 进度监控管理\n- 成本控制管理\n- 质量保证管理');
+            });
+        });
+    </script>
+</body>
+</html>

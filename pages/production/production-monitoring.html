@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生产监控管理 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">生产监控管理</h1>
+            <p class="text-gray-600">基于Process.md 2.3.17-2.3.19节，实现生产过程监控、返工返修和下线报工流程</p>
+        </div>
+
+        <!-- 生产监控概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-pink-600">8</div>
+                        <div class="text-sm text-gray-600">生产线</div>
+                        <div class="text-xs text-gray-500">实时监控</div>
+                    </div>
+                    <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-pink-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">92%</div>
+                        <div class="text-sm text-gray-600">设备稼动率</div>
+                        <div class="text-xs text-gray-500">当前状态</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cogs text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">1,256</div>
+                        <div class="text-sm text-gray-600">今日产量</div>
+                        <div class="text-xs text-gray-500">已完成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-boxes text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">12</div>
+                        <div class="text-sm text-gray-600">返工返修</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tools text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时生产监控 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-800">实时生产监控</h3>
+                    <div class="flex space-x-2">
+                        <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="refreshMonitoring()">
+                            <i class="fas fa-sync-alt mr-2"></i>刷新数据
+                        </button>
+                        <button class="bg-secondary text-white px-4 py-2 rounded-md text-sm hover:bg-gray-700" onclick="exportReport()">
+                            <i class="fas fa-download mr-2"></i>导出报告
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产线信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">当前产品</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">生产进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">效率</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">质量状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-industry text-pink-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="text-sm font-medium text-gray-900">产线A - SMT贴片</div>
+                                        <div class="text-xs text-gray-500">LINE-A-001</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">INV-5KW-001</div>
+                                <div class="text-xs text-gray-500">工单: WO-20250117-001</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-green-600 h-2 rounded-full" style="width: 75%"></div>
+                                    </div>
+                                    <span class="text-sm text-green-600 font-medium">75%</span>
+                                </div>
+                                <div class="text-xs text-gray-500">156/208</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    运行中
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">95%</div>
+                                <div class="text-xs text-gray-500">OEE</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    正常
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-2">详情</button>
+                                <button class="text-green-600 hover:text-green-900 mr-2">监控</button>
+                                <button class="text-gray-600 hover:text-gray-900">暂停</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-industry text-blue-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="text-sm font-medium text-gray-900">产线B - 波峰焊</div>
+                                        <div class="text-xs text-gray-500">LINE-B-002</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">INV-10KW-002</div>
+                                <div class="text-xs text-gray-500">工单: WO-20250117-002</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                    <span class="text-sm text-blue-600 font-medium">45%</span>
+                                </div>
+                                <div class="text-xs text-gray-500">90/200</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    运行中
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">88%</div>
+                                <div class="text-xs text-gray-500">OEE</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    正常
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-2">详情</button>
+                                <button class="text-green-600 hover:text-green-900 mr-2">监控</button>
+                                <button class="text-gray-600 hover:text-gray-900">暂停</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-industry text-orange-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="text-sm font-medium text-gray-900">产线C - 组装</div>
+                                        <div class="text-xs text-gray-500">LINE-C-003</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">INV-15KW-003</div>
+                                <div class="text-xs text-gray-500">工单: WO-20250117-003</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-orange-600 h-2 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                    <span class="text-sm text-orange-600 font-medium">暂停</span>
+                                </div>
+                                <div class="text-xs text-gray-500">0/150</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
+                                    维护中
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">0%</div>
+                                <div class="text-xs text-gray-500">OEE</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
+                                    维护中
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-2">详情</button>
+                                <button class="text-green-600 hover:text-green-900 mr-2">启动</button>
+                                <button class="text-orange-600 hover:text-orange-900">维护</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 返工返修管理 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-800">返工返修管理</h3>
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="createReworkTask()">
+                        <i class="fas fa-plus mr-2"></i>新建返工任务
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">返工信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">问题描述</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">处理方案</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">负责人</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-tools text-red-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="text-sm font-medium text-gray-900">RW-2025-001</div>
+                                        <div class="text-xs text-gray-500">返工任务</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">INV-5KW-001</div>
+                                <div class="text-xs text-gray-500">SN: INV5KW20250117001</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">焊接不良</div>
+                                <div class="text-xs text-gray-500">SMT贴片虚焊</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    重新焊接
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">张工</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
+                                    处理中
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-2">查看</button>
+                                <button class="text-green-600 hover:text-green-900 mr-2">完成</button>
+                                <button class="text-gray-600 hover:text-gray-900">暂停</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-wrench text-orange-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="text-sm font-medium text-gray-900">RP-2025-002</div>
+                                        <div class="text-xs text-gray-500">返修任务</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">INV-10KW-002</div>
+                                <div class="text-xs text-gray-500">SN: INV10KW20250117002</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">功能测试失败</div>
+                                <div class="text-xs text-gray-500">输出电压异常</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
+                                    元件更换
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">李工</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    待开始
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-2">开始</button>
+                                <button class="text-green-600 hover:text-green-900 mr-2">分配</button>
+                                <button class="text-red-600 hover:text-red-900">取消</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 下线报工管理 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 下线报工统计 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">下线报工统计</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-green-800">今日完工数量</div>
+                                    <div class="text-xs text-gray-600">已下线产品</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-green-600">1,256</div>
+                                    <div class="text-xs text-gray-500">台</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-blue-800">合格率</div>
+                                    <div class="text-xs text-gray-600">一次通过率</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-blue-600">98.5%</div>
+                                    <div class="text-xs text-gray-500">通过率</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-orange-800">返工数量</div>
+                                    <div class="text-xs text-gray-600">需要返工</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-orange-600">19</div>
+                                    <div class="text-xs text-gray-500">台</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 生产效率分析 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">生产效率分析</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">产线A效率</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 95%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-green-600">95%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">产线B效率</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 88%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-blue-600">88%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">产线C效率</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-orange-600 h-2 rounded-full" style="width: 0%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-orange-600">维护中</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">整体OEE</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-pink-600 h-2 rounded-full" style="width: 92%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-pink-600">92%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 操作函数
+        function refreshMonitoring() {
+            alert('刷新监控数据功能');
+        }
+
+        function exportReport() {
+            alert('导出报告功能');
+        }
+
+        function createReworkTask() {
+            alert('新建返工任务功能');
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('生产监控管理页面已加载');
+        });
+    </script>
+</body>
+</html>

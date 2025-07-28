@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能设备集成系统 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">智能设备集成系统</h1>
+            <p class="text-gray-600">基于Process.md 2.3.13-2.3.16流程：智能工装柜→耗材柜→工具柜→发料柜，实现智能化设备管理</p>
+        </div>
+
+        <!-- 智能设备管理流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">智能设备管理流程</h3>
+                    <span class="text-sm text-gray-600">IoT智能柜体系统</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">智能工装柜</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">耗材柜</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">工具柜</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">发料柜</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="fixtureManageBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-toolbox mr-2"></i>
+                智能工装柜
+            </button>
+            <button id="consumableManageBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-boxes mr-2"></i>
+                耗材柜
+            </button>
+            <button id="toolManageBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-wrench mr-2"></i>
+                工具柜
+            </button>
+            <button id="materialDispenseBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-hand-holding-box mr-2"></i>
+                发料柜
+            </button>
+            <button id="deviceMonitorBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-tv mr-2"></i>
+                设备监控
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 智能设备统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">24</div>
+                        <div class="text-sm text-gray-600">智能工装柜</div>
+                        <div class="text-xs text-gray-500">在线运行</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-toolbox text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">18</div>
+                        <div class="text-sm text-gray-600">耗材柜</div>
+                        <div class="text-xs text-gray-500">智能补料</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-boxes text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">36</div>
+                        <div class="text-sm text-gray-600">工具柜</div>
+                        <div class="text-xs text-gray-500">工具管理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wrench text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">12</div>
+                        <div class="text-sm text-gray-600">发料柜</div>
+                        <div class="text-xs text-gray-500">自动发料</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-hand-holding-box text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">1,256</div>
+                        <div class="text-sm text-gray-600">今日操作</div>
+                        <div class="text-xs text-gray-500">取用记录</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-hand-paper text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">5</div>
+                        <div class="text-sm text-gray-600">设备异常</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 智能设备状态监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 设备实时状态 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备实时状态</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-toolbox text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">工装柜-A01</div>
+                                <div class="text-xs text-gray-500">产线1 | 库存: 85% | 在线</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">正常</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-boxes text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">耗材柜-B02</div>
+                                <div class="text-xs text-gray-500">产线2 | 库存: 45% | 补料中</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">补料中</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-wrench text-red-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">工具柜-C03</div>
+                                <div class="text-xs text-gray-500">产线3 | 通信异常 | 离线</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">异常</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 库存预警面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">库存预警管理</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">M6螺栓</div>
+                                <div class="text-xs text-gray-500">工装柜-A01 | 库存: 15%</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">低库存</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-times-circle text-red-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">焊锡丝</div>
+                                <div class="text-xs text-gray-500">耗材柜-B02 | 库存: 5%</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">缺料</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-clock text-orange-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">扭力扳手</div>
+                                <div class="text-xs text-gray-500">工具柜-C03 | 校准到期</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">需校准</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 智能设备操作记录表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备操作记录</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部设备类型</option>
+                        <option>智能工装柜</option>
+                        <option>耗材柜</option>
+                        <option>工具柜</option>
+                        <option>发料柜</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部操作</option>
+                        <option>取用</option>
+                        <option>归还</option>
+                        <option>补料</option>
+                        <option>维护</option>
+                    </select>
+                    <input type="text" placeholder="搜索设备编号、操作员..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料/工具</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数量</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="equipmentTableBody">
+                        <!-- 设备数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.3.13-2.3.16的智能设备数据模型
+        const smartEquipmentData = [
+            {
+                id: 'EQUIP202501001',
+                equipmentId: 'FIXTURE-A01',
+                equipmentType: 'fixture',
+                equipmentTypeName: '智能工装柜',
+                location: '产线1-工位1',
+                operationType: 'take',
+                operationTypeName: '取用',
+                itemCode: 'FIX001',
+                itemName: 'M6螺栓拧紧工装',
+                quantity: 1,
+                unit: '套',
+                operator: '张师傅',
+                operatorId: 'OP001',
+                cardId: 'CARD001',
+                status: 'completed',
+                timestamp: '2025-01-16 14:25:30',
+                returnTime: null,
+                stockLevel: 85,
+                minStock: 20,
+                maxStock: 100,
+                deviceStatus: 'online',
+                batteryLevel: 92,
+                lastMaintenance: '2025-01-10',
+                nextMaintenance: '2025-02-10'
+            },
+            {
+                id: 'EQUIP202501002',
+                equipmentId: 'CONSUMABLE-B02',
+                equipmentType: 'consumable',
+                equipmentTypeName: '耗材柜',
+                location: '产线2-工位3',
+                operationType: 'dispense',
+                operationTypeName: '发料',
+                itemCode: 'CONS001',
+                itemName: '焊锡丝',
+                quantity: 500,
+                unit: 'g',
+                operator: '李师傅',
+                operatorId: 'OP002',
+                cardId: 'CARD002',
+                status: 'processing',
+                timestamp: '2025-01-16 14:30:15',
+                returnTime: null,
+                stockLevel: 45,
+                minStock: 30,
+                maxStock: 100,
+                deviceStatus: 'online',
+                batteryLevel: 78,
+                lastMaintenance: '2025-01-08',
+                nextMaintenance: '2025-02-08',
+                autoReplenish: true,
+                replenishThreshold: 30
+            },
+            {
+                id: 'EQUIP202501003',
+                equipmentId: 'TOOL-C03',
+                equipmentType: 'tool',
+                equipmentTypeName: '工具柜',
+                location: '产线3-工位2',
+                operationType: 'take',
+                operationTypeName: '取用',
+                itemCode: 'TOOL001',
+                itemName: '扭力扳手',
+                quantity: 1,
+                unit: '把',
+                operator: '王师傅',
+                operatorId: 'OP003',
+                cardId: 'CARD003',
+                status: 'exception',
+                timestamp: '2025-01-16 14:32:45',
+                returnTime: null,
+                stockLevel: 0,
+                minStock: 2,
+                maxStock: 10,
+                deviceStatus: 'offline',
+                batteryLevel: 15,
+                lastMaintenance: '2025-01-05',
+                nextMaintenance: '2025-02-05',
+                exceptionReason: '设备通信异常，无法开启柜门',
+                calibrationDue: '2025-01-20'
+            },
+            {
+                id: 'EQUIP202501004',
+                equipmentId: 'DISPENSER-D04',
+                equipmentType: 'dispenser',
+                equipmentTypeName: '发料柜',
+                location: '中央仓库-A区',
+                operationType: 'return',
+                operationTypeName: '归还',
+                itemCode: 'MAT001',
+                itemName: '硅钢片',
+                quantity: 10,
+                unit: 'kg',
+                operator: '赵师傅',
+                operatorId: 'OP004',
+                cardId: 'CARD004',
+                status: 'completed',
+                timestamp: '2025-01-16 14:35:20',
+                returnTime: '2025-01-16 14:35:20',
+                stockLevel: 92,
+                minStock: 50,
+                maxStock: 200,
+                deviceStatus: 'online',
+                batteryLevel: 88,
+                lastMaintenance: '2025-01-12',
+                nextMaintenance: '2025-02-12',
+                autoDispense: true,
+                weightSensor: true
+            },
+            {
+                id: 'EQUIP202501005',
+                equipmentId: 'FIXTURE-A02',
+                equipmentType: 'fixture',
+                equipmentTypeName: '智能工装柜',
+                location: '产线1-工位5',
+                operationType: 'maintenance',
+                operationTypeName: '维护',
+                itemCode: null,
+                itemName: '设备维护',
+                quantity: null,
+                unit: null,
+                operator: '维修工小孙',
+                operatorId: 'MAINT001',
+                cardId: 'MAINT_CARD',
+                status: 'processing',
+                timestamp: '2025-01-16 14:40:00',
+                returnTime: null,
+                stockLevel: 100,
+                minStock: 20,
+                maxStock: 100,
+                deviceStatus: 'maintenance',
+                batteryLevel: 95,
+                lastMaintenance: '2025-01-16',
+                nextMaintenance: '2025-02-16',
+                maintenanceType: '定期保养',
+                estimatedDuration: 30
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            processing: { text: '进行中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-spinner' },
+            exception: { text: '异常', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            pending: { text: '待处理', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-clock' },
+            cancelled: { text: '已取消', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-times-circle' }
+        };
+
+        // 设备类型映射
+        const equipmentTypeMap = {
+            fixture: { text: '智能工装柜', icon: 'fas fa-toolbox', color: 'text-blue-600' },
+            consumable: { text: '耗材柜', icon: 'fas fa-boxes', color: 'text-indigo-600' },
+            tool: { text: '工具柜', icon: 'fas fa-wrench', color: 'text-purple-600' },
+            dispenser: { text: '发料柜', icon: 'fas fa-hand-holding-box', color: 'text-green-600' }
+        };
+
+        // 操作类型映射
+        const operationTypeMap = {
+            take: { text: '取用', icon: 'fas fa-hand-paper', color: 'text-blue-600' },
+            return: { text: '归还', icon: 'fas fa-undo', color: 'text-green-600' },
+            dispense: { text: '发料', icon: 'fas fa-hand-holding-box', color: 'text-purple-600' },
+            maintenance: { text: '维护', icon: 'fas fa-tools', color: 'text-orange-600' },
+            replenish: { text: '补料', icon: 'fas fa-plus-circle', color: 'text-indigo-600' }
+        };
+
+        let filteredData = [...smartEquipmentData];
+
+        // 渲染设备操作记录表格
+        function renderEquipmentTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('equipmentTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(equipment => {
+                const status = statusMap[equipment.status];
+                const equipmentType = equipmentTypeMap[equipment.equipmentType];
+                const operationType = operationTypeMap[equipment.operationType];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewEquipmentDetail('${equipment.id}')">
+                            ${equipment.id}
+                        </div>
+                        <div class="text-xs text-gray-500">${equipment.timestamp}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${equipmentType.icon} ${equipmentType.color} mr-2"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">${equipment.equipmentId}</div>
+                                <div class="text-xs text-gray-500">${equipment.location}</div>
+                            </div>
+                        </div>
+                        <div class="text-xs ${equipment.deviceStatus === 'online' ? 'text-green-600' : equipment.deviceStatus === 'offline' ? 'text-red-600' : 'text-yellow-600'} mt-1">
+                            ${equipment.deviceStatus === 'online' ? '在线' : equipment.deviceStatus === 'offline' ? '离线' : '维护中'}
+                            ${equipment.batteryLevel ? ` | 电量: ${equipment.batteryLevel}%` : ''}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${operationType.icon} ${operationType.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${operationType.text}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${equipment.itemName ? `
+                            <div class="text-sm text-gray-900">${equipment.itemName}</div>
+                            <div class="text-xs text-gray-500">${equipment.itemCode}</div>
+                        ` : `
+                            <span class="text-xs text-gray-500">系统操作</span>
+                        `}
+                        ${equipment.calibrationDue ? `
+                            <div class="text-xs text-orange-600 mt-1">
+                                <i class="fas fa-calendar-alt mr-1"></i>校准到期: ${equipment.calibrationDue}
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-center">
+                        ${equipment.quantity ? `
+                            <span class="text-sm font-medium text-gray-900">${equipment.quantity} ${equipment.unit}</span>
+                        ` : `
+                            <span class="text-xs text-gray-500">-</span>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${equipment.operator}</div>
+                        <div class="text-xs text-gray-500">${equipment.operatorId}</div>
+                        ${equipment.cardId ? `<div class="text-xs text-blue-600">卡号: ${equipment.cardId}</div>` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        <div class="mt-1">
+                            <div class="flex items-center">
+                                <div class="w-12 bg-gray-200 rounded-full h-1 mr-1">
+                                    <div class="bg-${equipment.stockLevel > equipment.minStock ? 'green' : equipment.stockLevel > equipment.minStock * 0.5 ? 'yellow' : 'red'}-600 h-1 rounded-full" style="width: ${Math.min(100, (equipment.stockLevel / equipment.maxStock) * 100)}%"></div>
+                                </div>
+                                <span class="text-xs text-gray-600">${equipment.stockLevel}%</span>
+                            </div>
+                        </div>
+                        ${equipment.exceptionReason ? `
+                            <div class="text-xs text-red-600 mt-1">${equipment.exceptionReason}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${equipment.timestamp.split(' ')[1]}</div>
+                        ${equipment.returnTime ? `
+                            <div class="text-xs text-gray-500">归还: ${equipment.returnTime.split(' ')[1]}</div>
+                        ` : equipment.estimatedDuration ? `
+                            <div class="text-xs text-gray-500">预计: ${equipment.estimatedDuration}分钟</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewEquipmentDetail('${equipment.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${equipment.deviceStatus === 'offline' || equipment.status === 'exception' ? `
+                                <button onclick="repairEquipment('${equipment.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="设备维修">
+                                    <i class="fas fa-tools"></i>
+                                </button>
+                            ` : ''}
+                            ${equipment.stockLevel < equipment.minStock ? `
+                                <button onclick="replenishStock('${equipment.id}')" class="text-green-600 hover:text-green-900 p-1" title="补充库存">
+                                    <i class="fas fa-plus-circle"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewStockHistory('${equipment.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="库存历史">
+                                <i class="fas fa-chart-line"></i>
+                            </button>
+                            ${equipment.operationType === 'take' && !equipment.returnTime ? `
+                                <button onclick="forceReturn('${equipment.id}')" class="text-red-600 hover:text-red-900 p-1" title="强制归还">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${smartEquipmentData.length} 条记录`;
+        }
+
+        // 设备操作函数
+        function viewEquipmentDetail(equipmentId) {
+            const equipment = smartEquipmentData.find(e => e.id === equipmentId);
+            if (equipment) {
+                let detailText = `设备详情：\n编号: ${equipment.id}\n设备ID: ${equipment.equipmentId}\n设备类型: ${equipmentTypeMap[equipment.equipmentType].text}\n位置: ${equipment.location}\n操作类型: ${operationTypeMap[equipment.operationType].text}\n操作员: ${equipment.operator}\n状态: ${statusMap[equipment.status].text}\n时间: ${equipment.timestamp}`;
+
+                if (equipment.itemName) {
+                    detailText += `\n物料/工具: ${equipment.itemName} (${equipment.itemCode})\n数量: ${equipment.quantity} ${equipment.unit}`;
+                }
+
+                detailText += `\n库存水位: ${equipment.stockLevel}%\n设备状态: ${equipment.deviceStatus === 'online' ? '在线' : equipment.deviceStatus === 'offline' ? '离线' : '维护中'}`;
+
+                if (equipment.batteryLevel) {
+                    detailText += `\n电池电量: ${equipment.batteryLevel}%`;
+                }
+
+                detailText += `\n上次维护: ${equipment.lastMaintenance}\n下次维护: ${equipment.nextMaintenance}`;
+
+                if (equipment.autoReplenish) {
+                    detailText += `\n自动补料: 开启 (阈值: ${equipment.replenishThreshold}%)`;
+                }
+
+                if (equipment.exceptionReason) {
+                    detailText += `\n异常原因: ${equipment.exceptionReason}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function repairEquipment(equipmentId) {
+            const equipment = smartEquipmentData.find(e => e.id === equipmentId);
+            if (equipment) {
+                if (confirm(`确认维修设备？\n设备: ${equipment.equipmentId}\n异常: ${equipment.exceptionReason || '设备离线'}`)) {
+                    equipment.deviceStatus = 'maintenance';
+                    equipment.status = 'processing';
+                    equipment.exceptionReason = null;
+                    renderEquipmentTable();
+                    alert('维修工单已创建！技术人员将尽快处理。');
+                }
+            }
+        }
+
+        function replenishStock(equipmentId) {
+            const equipment = smartEquipmentData.find(e => e.id === equipmentId);
+            if (equipment) {
+                const quantity = prompt(`补充库存：\n设备: ${equipment.equipmentId}\n当前库存: ${equipment.stockLevel}%\n\n请输入补充数量：`);
+                if (quantity && !isNaN(quantity)) {
+                    const newStock = Math.min(equipment.maxStock, equipment.stockLevel + parseInt(quantity));
+                    equipment.stockLevel = Math.round((newStock / equipment.maxStock) * 100);
+                    renderEquipmentTable();
+                    alert(`库存补充完成！\n新库存水位: ${equipment.stockLevel}%`);
+                }
+            }
+        }
+
+        function viewStockHistory(equipmentId) {
+            const equipment = smartEquipmentData.find(e => e.id === equipmentId);
+            if (equipment) {
+                alert(`库存历史：\n设备: ${equipment.equipmentId}\n当前库存: ${equipment.stockLevel}%\n最小库存: ${equipment.minStock}%\n最大库存: ${equipment.maxStock}%\n\n近期变化：\n- 昨日平均: ${equipment.stockLevel + 5}%\n- 本周平均: ${equipment.stockLevel + 8}%\n- 补料频次: 每3天\n- 使用趋势: 稳定`);
+            }
+        }
+
+        function forceReturn(equipmentId) {
+            const equipment = smartEquipmentData.find(e => e.id === equipmentId);
+            if (equipment) {
+                if (confirm(`确认强制归还？\n设备: ${equipment.equipmentId}\n物料/工具: ${equipment.itemName}\n操作员: ${equipment.operator}`)) {
+                    equipment.returnTime = new Date().toLocaleString('zh-CN');
+                    equipment.status = 'completed';
+                    renderEquipmentTable();
+                    alert('强制归还完成！物料/工具已标记为归还状态。');
+                }
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderEquipmentTable();
+
+            // 智能工装柜
+            document.getElementById('fixtureManageBtn').addEventListener('click', function() {
+                alert('智能工装柜功能：\n- RFID自动识别\n- 权限控制开启\n- 库存实时监控\n- 自动补料提醒\n- 使用记录追溯');
+            });
+
+            // 耗材柜
+            document.getElementById('consumableManageBtn').addEventListener('click', function() {
+                alert('耗材柜功能：\n- 重量传感器监控\n- 自动补料机制\n- 先进先出管理\n- 有效期监控\n- 用量统计分析');
+            });
+
+            // 工具柜
+            document.getElementById('toolManageBtn').addEventListener('click', function() {
+                alert('工具柜功能：\n- 工具状态监控\n- 校准到期提醒\n- 借还记录管理\n- 工具寿命跟踪\n- 维护计划管理');
+            });
+
+            // 发料柜
+            document.getElementById('materialDispenseBtn').addEventListener('click', function() {
+                alert('发料柜功能：\n- 自动称重发料\n- 批次管理追溯\n- 工单关联发料\n- 余料自动回收\n- 发料效率统计');
+            });
+
+            // 设备监控
+            document.getElementById('deviceMonitorBtn').addEventListener('click', function() {
+                alert('设备监控功能：\n- 实时状态监控\n- 故障预警机制\n- 远程诊断维护\n- 使用效率分析\n- 设备生命周期管理');
+            });
+        });
+    </script>
+</body>
+</html>

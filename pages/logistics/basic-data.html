@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基础数据管理 - 厂内物流执行系统(LES) - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">基础数据管理</h1>
+            <p class="text-gray-600">物料工单信息、配送权限、料车料箱、配送规则、条码管理等基础数据维护</p>
+        </div>
+
+        <!-- 功能导航卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="showMaterialData()">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cube text-blue-600 text-xl"></i>
+                    </div>
+                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">物料</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">物料工单信息</h3>
+                <p class="text-sm text-gray-600 mb-3">物料基础信息、工单数据管理</p>
+                <div class="text-xs text-gray-500">物料种类: 1,256</div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="showPermissionData()">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-key text-green-600 text-xl"></i>
+                    </div>
+                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">权限</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">配送权限</h3>
+                <p class="text-sm text-gray-600 mb-3">人员权限、区域权限管理</p>
+                <div class="text-xs text-gray-500">权限组: 8个</div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="showContainerData()">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-box text-purple-600 text-xl"></i>
+                    </div>
+                    <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">容器</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">料车料箱</h3>
+                <p class="text-sm text-gray-600 mb-3">料车料箱信息、容量管理</p>
+                <div class="text-xs text-gray-500">容器数量: 178个</div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="showRuleData()">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cogs text-orange-600 text-xl"></i>
+                    </div>
+                    <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">规则</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">配送规则</h3>
+                <p class="text-sm text-gray-600 mb-3">配送策略、优先级规则</p>
+                <div class="text-xs text-gray-500">规则数: 25条</div>
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="showBarcodeData()">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-barcode text-red-600 text-xl"></i>
+                    </div>
+                    <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">条码</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">条码管理</h3>
+                <p class="text-sm text-gray-600 mb-3">条码规则、标签管理</p>
+                <div class="text-xs text-gray-500">条码类型: 12种</div>
+            </div>
+        </div>
+
+        <!-- 数据管理主界面 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-800" id="dataTitle">物料工单信息管理</h3>
+                    <div class="flex space-x-2">
+                        <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="addNewData()">
+                            <i class="fas fa-plus mr-2"></i>新增
+                        </button>
+                        <button class="bg-success text-white px-4 py-2 rounded-md text-sm hover:bg-green-700" onclick="importData()">
+                            <i class="fas fa-upload mr-2"></i>导入
+                        </button>
+                        <button class="bg-secondary text-white px-4 py-2 rounded-md text-sm hover:bg-gray-700" onclick="exportData()">
+                            <i class="fas fa-download mr-2"></i>导出
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 搜索和筛选 -->
+                <div class="flex flex-wrap gap-4 mt-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm" id="categoryFilter">
+                        <option>全部类别</option>
+                        <option>电子元器件</option>
+                        <option>PCB板</option>
+                        <option>包装材料</option>
+                        <option>辅助材料</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm" id="statusFilter">
+                        <option>全部状态</option>
+                        <option>启用</option>
+                        <option>禁用</option>
+                        <option>待审核</option>
+                    </select>
+                    <input type="text" placeholder="搜索物料编号、名称..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64" id="searchInput">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="searchData()">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <!-- 数据表格 -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr id="tableHeader">
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料名称</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料类别</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">规格型号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">单位</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">存储位置</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="dataTableBody">
+                        <!-- 数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基础数据模型
+        const materialData = [
+            {
+                id: 'MAT001',
+                code: 'CAP-100uF-25V',
+                name: '电解电容器',
+                category: '电子元器件',
+                specification: '100μF/25V',
+                unit: 'PCS',
+                location: 'A区-01-01',
+                status: 'active',
+                statusName: '启用',
+                supplier: '华星电子',
+                minStock: 1000,
+                maxStock: 5000,
+                currentStock: 3200
+            },
+            {
+                id: 'MAT002',
+                code: 'PCB-MAIN-V2.1',
+                name: '主控PCB板',
+                category: 'PCB板',
+                specification: '100×80mm',
+                unit: 'PCS',
+                location: 'B区-02-03',
+                status: 'active',
+                statusName: '启用',
+                supplier: '精密电路',
+                minStock: 100,
+                maxStock: 500,
+                currentStock: 280
+            },
+            {
+                id: 'MAT003',
+                code: 'BOX-PACK-L',
+                name: '包装纸箱',
+                category: '包装材料',
+                specification: '500×300×200mm',
+                unit: 'PCS',
+                location: 'C区-01-05',
+                status: 'active',
+                statusName: '启用',
+                supplier: '包装制品',
+                minStock: 500,
+                maxStock: 2000,
+                currentStock: 1200
+            },
+            {
+                id: 'MAT004',
+                code: 'RES-1K-1%',
+                name: '精密电阻',
+                category: '电子元器件',
+                specification: '1KΩ±1%',
+                unit: 'PCS',
+                location: 'A区-01-02',
+                status: 'disabled',
+                statusName: '禁用',
+                supplier: '华星电子',
+                minStock: 2000,
+                maxStock: 10000,
+                currentStock: 0
+            }
+        ];
+
+        const permissionData = [
+            {
+                id: 'PERM001',
+                groupName: '物流主管',
+                description: '物流管理全权限',
+                permissions: ['查看', '新增', '修改', '删除', '审核'],
+                userCount: 3,
+                status: 'active'
+            },
+            {
+                id: 'PERM002',
+                groupName: '配送员',
+                description: '配送执行权限',
+                permissions: ['查看', '配送确认'],
+                userCount: 15,
+                status: 'active'
+            }
+        ];
+
+        const containerData = [
+            {
+                id: 'CONT001',
+                code: 'CART-001',
+                name: '标准料车',
+                type: '料车',
+                capacity: '500kg',
+                dimensions: '1200×800×1000mm',
+                location: 'A区待运位',
+                status: 'available',
+                statusName: '可用'
+            },
+            {
+                id: 'CONT002',
+                code: 'BOX-001',
+                name: '标准料箱',
+                type: '料箱',
+                capacity: '50kg',
+                dimensions: '600×400×300mm',
+                location: 'B区存放位',
+                status: 'in_use',
+                statusName: '使用中'
+            }
+        ];
+
+        let currentDataType = 'material';
+        let currentData = materialData;
+
+        // 显示不同类型的数据
+        function showMaterialData() {
+            currentDataType = 'material';
+            currentData = materialData;
+            document.getElementById('dataTitle').textContent = '物料工单信息管理';
+            updateTableHeader('material');
+            renderDataTable();
+        }
+
+        function showPermissionData() {
+            currentDataType = 'permission';
+            currentData = permissionData;
+            document.getElementById('dataTitle').textContent = '配送权限管理';
+            updateTableHeader('permission');
+            renderDataTable();
+        }
+
+        function showContainerData() {
+            currentDataType = 'container';
+            currentData = containerData;
+            document.getElementById('dataTitle').textContent = '料车料箱管理';
+            updateTableHeader('container');
+            renderDataTable();
+        }
+
+        function showRuleData() {
+            alert('配送规则管理功能：\n- 配送优先级设置\n- 路径优化规则\n- 异常处理规则\n- 时间窗口配置');
+        }
+
+        function showBarcodeData() {
+            alert('条码管理功能：\n- 条码规则配置\n- 标签模板设计\n- 条码打印管理\n- 条码追溯查询');
+        }
+
+        // 更新表格头部
+        function updateTableHeader(type) {
+            const header = document.getElementById('tableHeader');
+            let headerHTML = '';
+            
+            switch(type) {
+                case 'material':
+                    headerHTML = `
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料编号</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料名称</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料类别</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">规格型号</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">单位</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">存储位置</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                    `;
+                    break;
+                case 'permission':
+                    headerHTML = `
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">权限组名称</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">描述</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">权限范围</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">用户数量</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                    `;
+                    break;
+                case 'container':
+                    headerHTML = `
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">容器编号</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">容器名称</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">类型</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">容量</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">尺寸</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">位置</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                    `;
+                    break;
+            }
+            header.innerHTML = headerHTML;
+        }
+
+        // 渲染数据表格
+        function renderDataTable() {
+            const tbody = document.getElementById('dataTableBody');
+            tbody.innerHTML = '';
+
+            currentData.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+                
+                let rowHTML = '';
+                switch(currentDataType) {
+                    case 'material':
+                        rowHTML = `
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-blue-600">${item.code}</div>
+                                <div class="text-xs text-gray-500">ID: ${item.id}</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">${item.name}</div>
+                                <div class="text-xs text-gray-500">供应商: ${item.supplier}</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">${item.category}</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">${item.specification}</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">${item.unit}</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">${item.location}</div>
+                                <div class="text-xs text-gray-500">库存: ${item.currentStock}</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${item.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                                    ${item.statusName}
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <button onclick="editData('${item.id}')" class="text-blue-600 hover:text-blue-900">编辑</button>
+                                    <button onclick="deleteData('${item.id}')" class="text-red-600 hover:text-red-900">删除</button>
+                                </div>
+                            </td>
+                        `;
+                        break;
+                    case 'permission':
+                        rowHTML = `
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">${item.groupName}</div>
+                                <div class="text-xs text-gray-500">ID: ${item.id}</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">${item.description}</span>
+                            </td>
+                            <td class="px-4 py-4">
+                                <div class="flex flex-wrap gap-1">
+                                    ${item.permissions.map(perm => `<span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">${perm}</span>`).join('')}
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">${item.userCount}人</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    启用
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <button onclick="editData('${item.id}')" class="text-blue-600 hover:text-blue-900">编辑</button>
+                                    <button onclick="deleteData('${item.id}')" class="text-red-600 hover:text-red-900">删除</button>
+                                </div>
+                            </td>
+                        `;
+                        break;
+                    case 'container':
+                        rowHTML = `
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-blue-600">${item.code}</div>
+                                <div class="text-xs text-gray-500">ID: ${item.id}</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">${item.name}</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">${item.type}</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">${item.capacity}</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">${item.dimensions}</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">${item.location}</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${item.status === 'available' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}">
+                                    ${item.statusName}
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <button onclick="editData('${item.id}')" class="text-blue-600 hover:text-blue-900">编辑</button>
+                                    <button onclick="deleteData('${item.id}')" class="text-red-600 hover:text-red-900">删除</button>
+                                </div>
+                            </td>
+                        `;
+                        break;
+                }
+                
+                row.innerHTML = rowHTML;
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${currentData.length} 条，共 ${currentData.length} 条记录`;
+        }
+
+        // 操作函数
+        function addNewData() {
+            alert(`新增${currentDataType === 'material' ? '物料' : currentDataType === 'permission' ? '权限组' : '容器'}功能`);
+        }
+
+        function importData() {
+            alert('数据导入功能');
+        }
+
+        function exportData() {
+            alert('数据导出功能');
+        }
+
+        function searchData() {
+            alert('搜索功能');
+        }
+
+        function editData(id) {
+            alert(`编辑数据: ${id}`);
+        }
+
+        function deleteData(id) {
+            if (confirm(`确认删除数据: ${id}？`)) {
+                alert(`已删除数据: ${id}`);
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            showMaterialData();
+        });
+    </script>
+</body>
+</html>

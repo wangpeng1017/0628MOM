@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>门禁系统管理 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-door-open text-primary mr-3"></i>
+                门禁系统管理
+            </h1>
+            <p class="text-gray-600 mt-2">智能门禁控制，安全通行管理</p>
+        </div>
+
+        <!-- 门禁系统概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">门禁设备</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">45</p>
+                        <p class="text-sm text-gray-500">台</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-door-closed text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>在线:</span>
+                        <span class="text-green-600 font-medium">45台</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>在线率:</span>
+                        <span class="text-green-600 font-medium">100%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">今日通行</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">2,856</p>
+                        <p class="text-sm text-gray-500">人次</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-users text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>成功:</span>
+                        <span class="text-green-600 font-medium">2,850次</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>失败:</span>
+                        <span class="text-red-600 font-medium">6次</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">授权用户</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">1,245</p>
+                        <p class="text-sm text-gray-500">人</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-id-card text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>员工:</span>
+                        <span class="text-purple-600 font-medium">1,180人</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>访客:</span>
+                        <span class="text-blue-600 font-medium">65人</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">异常事件</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">6</p>
+                        <p class="text-sm text-gray-500">今日</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>已处理:</span>
+                        <span class="text-green-600 font-medium">6件</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>处理率:</span>
+                        <span class="text-green-600 font-medium">100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 门禁设备分布 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-map-marker-alt text-blue-600 mr-2"></i>
+                门禁设备分布
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">主要出入口</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">8台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 东门主入口: 2台</div>
+                        <div>• 西门次入口: 2台</div>
+                        <div>• 南门货运口: 2台</div>
+                        <div>• 北门应急口: 2台</div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <div class="flex justify-between">
+                            <span>今日通行: 1,856次</span>
+                            <span class="text-green-600">状态: 正常</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">办公区域</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">15台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 办公楼入口: 4台</div>
+                        <div>• 会议室区域: 6台</div>
+                        <div>• 财务部门: 3台</div>
+                        <div>• 人事部门: 2台</div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <div class="flex justify-between">
+                            <span>今日通行: 658次</span>
+                            <span class="text-green-600">状态: 正常</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">生产区域</h4>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">12台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 生产车间1: 3台</div>
+                        <div>• 生产车间2: 3台</div>
+                        <div>• 生产车间3: 3台</div>
+                        <div>• 质检区域: 3台</div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <div class="flex justify-between">
+                            <span>今日通行: 234次</span>
+                            <span class="text-green-600">状态: 正常</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">仓储区域</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">6台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 原料仓库: 2台</div>
+                        <div>• 成品仓库: 2台</div>
+                        <div>• 危化品库: 2台</div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <div class="flex justify-between">
+                            <span>今日通行: 89次</span>
+                            <span class="text-green-600">状态: 正常</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4 border border-red-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">特殊区域</h4>
+                        <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">4台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 机房区域: 2台</div>
+                        <div>• 配电房: 1台</div>
+                        <div>• 消防控制室: 1台</div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <div class="flex justify-between">
+                            <span>今日通行: 19次</span>
+                            <span class="text-green-600">状态: 正常</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时通行记录 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-history text-green-600 mr-2"></i>
+                    实时通行记录
+                </h3>
+                <div class="space-y-4">
+                    <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-3">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">成功</span>
+                                <h4 class="font-semibold text-gray-800">张三 - 员工</h4>
+                            </div>
+                            <span class="text-sm text-gray-500">14:28:35</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 门禁点: 东门主入口</div>
+                            <div>• 卡号: 001234567</div>
+                            <div>• 部门: 生产部</div>
+                            <div>• 通行方向: 进入</div>
+                        </div>
+                    </div>
+                    <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-3">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">成功</span>
+                                <h4 class="font-semibold text-gray-800">李四 - 访客</h4>
+                            </div>
+                            <span class="text-sm text-gray-500">14:25:12</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 门禁点: 办公楼入口</div>
+                            <div>• 临时卡号: V001234</div>
+                            <div>• 访问部门: 销售部</div>
+                            <div>• 通行方向: 进入</div>
+                        </div>
+                    </div>
+                    <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-3">
+                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">失败</span>
+                                <h4 class="font-semibold text-gray-800">未知用户</h4>
+                            </div>
+                            <span class="text-sm text-gray-500">14:20:45</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 门禁点: 生产车间1</div>
+                            <div>• 卡号: 未识别</div>
+                            <div>• 失败原因: 无效卡片</div>
+                            <div>• 处理状态: 已通知安保</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-user-cog text-purple-600 mr-2"></i>
+                    权限管理
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">员工权限</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 总人数: 1,180人</div>
+                            <div>• 全区域权限: 156人</div>
+                            <div>• 办公区权限: 680人</div>
+                            <div>• 生产区权限: 344人</div>
+                        </div>
+                        <button class="w-full mt-3 px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                            管理员工权限
+                        </button>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">访客权限</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 当前访客: 65人</div>
+                            <div>• 今日新增: 12人</div>
+                            <div>• 临时权限: 45人</div>
+                            <div>• 长期权限: 20人</div>
+                        </div>
+                        <button class="w-full mt-3 px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                            管理访客权限
+                        </button>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">特殊权限</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 管理员权限: 8人</div>
+                            <div>• 安保权限: 24人</div>
+                            <div>• 维护权限: 16人</div>
+                            <div>• 应急权限: 32人</div>
+                        </div>
+                        <button class="w-full mt-3 px-3 py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700">
+                            管理特殊权限
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 门禁设备管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-cogs text-blue-600 mr-2"></i>
+                门禁设备管理
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">位置</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">今日通行</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最后在线</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AC001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">东门主入口-进</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">在线</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">456次</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 14:30</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">设备配置</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AC002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">东门主入口-出</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">在线</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">423次</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 14:30</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">设备配置</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AC015</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">办公楼入口</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">在线</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">234次</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 14:29</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">设备配置</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AC025</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">生产车间1</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">在线</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">89次</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 14:28</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">设备配置</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AC035</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">危化品库</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">在线</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">12次</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 14:25</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">设备配置</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">添加设备</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-user-plus text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">用户授权</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-key text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">权限管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">通行报告</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 门禁系统管理功能
+        function initAccessControl() {
+            console.log('初始化门禁系统管理功能');
+            
+            // 权限管理按钮事件
+            const permissionButtons = document.querySelectorAll('button');
+            permissionButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('管理员工权限')) {
+                    button.addEventListener('click', function() {
+                        console.log('管理员工权限');
+                        alert('正在打开员工权限管理界面...');
+                    });
+                } else if (text.includes('管理访客权限')) {
+                    button.addEventListener('click', function() {
+                        console.log('管理访客权限');
+                        alert('正在打开访客权限管理界面...');
+                    });
+                } else if (text.includes('管理特殊权限')) {
+                    button.addEventListener('click', function() {
+                        console.log('管理特殊权限');
+                        alert('正在打开特殊权限管理界面...');
+                    });
+                } else if (text.includes('用户授权')) {
+                    button.addEventListener('click', function() {
+                        console.log('用户授权');
+                        alert('正在打开用户授权界面...');
+                    });
+                }
+            });
+            
+            // 设备管理表格操作
+            const tableLinks = document.querySelectorAll('.cursor-pointer');
+            tableLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const deviceId = this.closest('tr').querySelector('td').textContent;
+                    console.log('设备配置:', deviceId);
+                    alert(`正在配置门禁设备 ${deviceId}...`);
+                });
+            });
+            
+            // 实时数据更新
+            function updateAccessData() {
+                console.log('更新门禁数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateAccessData, 30000); // 每30秒更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initAccessControl();
+            console.log('门禁系统管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

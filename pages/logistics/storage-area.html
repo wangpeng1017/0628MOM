@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>存放区管理 - 厂内物流执行系统(LES) - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">存放区管理</h1>
+            <p class="text-gray-600">发料区管理、存放区管理、待运位置管理等存储区域配置和监控</p>
+        </div>
+
+        <!-- 存放区统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">15</div>
+                        <div class="text-sm text-gray-600">存储区域</div>
+                        <div class="text-xs text-gray-500">总数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-warehouse text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">85%</div>
+                        <div class="text-sm text-gray-600">平均利用率</div>
+                        <div class="text-xs text-gray-500">存储效率</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-pie text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">156</div>
+                        <div class="text-sm text-gray-600">料车料箱</div>
+                        <div class="text-xs text-gray-500">可用数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-box text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">3</div>
+                        <div class="text-sm text-gray-600">待运位置</div>
+                        <div class="text-xs text-gray-500">空闲中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-map-marker-alt text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 存放区域列表 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-800">存放区域管理</h3>
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-plus mr-2"></i>新增区域
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- A区原料仓 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">A区原料仓</h4>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">发料区</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">容量:</span>
+                                <span class="text-gray-900">1000㎡</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">利用率:</span>
+                                <span class="text-blue-600 font-medium">85%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">物料种类:</span>
+                                <span class="text-gray-900">156种</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">查看详情</button>
+                            <button class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200">配置</button>
+                        </div>
+                    </div>
+
+                    <!-- B区半成品 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">B区半成品</h4>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">存放区</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">容量:</span>
+                                <span class="text-gray-900">800㎡</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">利用率:</span>
+                                <span class="text-green-600 font-medium">72%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">物料种类:</span>
+                                <span class="text-gray-900">89种</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: 72%"></div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">查看详情</button>
+                            <button class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">配置</button>
+                        </div>
+                    </div>
+
+                    <!-- C区成品仓 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">C区成品仓</h4>
+                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">待运区</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">容量:</span>
+                                <span class="text-gray-900">600㎡</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">利用率:</span>
+                                <span class="text-purple-600 font-medium">68%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">物料种类:</span>
+                                <span class="text-gray-900">45种</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-600 h-2 rounded-full" style="width: 68%"></div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">查看详情</button>
+                            <button class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">配置</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('存放区管理页面已加载');
+        });
+    </script>
+</body>
+</html>

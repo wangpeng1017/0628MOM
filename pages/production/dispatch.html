@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>派工管理 - MOM系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面操作栏 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">派工管理</h1>
+                <p class="text-gray-600">管理工单的人员分配和任务派发</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>新建派工
+                </button>
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-magic mr-2"></i>智能派工
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-calendar mr-2"></i>排班计划
+                </button>
+            </div>
+        </div>
+        
+        <!-- 派工概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-blue-600 mb-2">18</div>
+                <div class="text-gray-600">今日派工任务</div>
+                <div class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+3 较昨日
+                </div>
+            </div>
+            
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-green-600 mb-2">15</div>
+                <div class="text-gray-600">已完成任务</div>
+                <div class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-check mr-1"></i>83% 完成率
+                </div>
+            </div>
+            
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-yellow-600 mb-2">3</div>
+                <div class="text-gray-600">进行中任务</div>
+                <div class="text-sm text-yellow-600 mt-1">
+                    <i class="fas fa-clock mr-1"></i>预计2小时完成
+                </div>
+            </div>
+            
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-red-600 mb-2">0</div>
+                <div class="text-gray-600">延期任务</div>
+                <div class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-check mr-1"></i>无延期
+                </div>
+            </div>
+        </div>
+        
+        <!-- 人员状态和派工列表 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 人员状态 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">人员状态</h3>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium">李师傅</div>
+                                <div class="text-sm text-gray-600">生产线A - 注塑工</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="status-indicator status-success">工作中</div>
+                            <div class="text-xs text-gray-500 mt-1">效率: 95%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium">王师傅</div>
+                                <div class="text-sm text-gray-600">生产线B - 装配工</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="status-indicator status-success">工作中</div>
+                            <div class="text-xs text-gray-500 mt-1">效率: 88%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-yellow-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium">张师傅</div>
+                                <div class="text-sm text-gray-600">生产线C - 检验员</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="status-indicator status-warning">休息中</div>
+                            <div class="text-xs text-gray-500 mt-1">15分钟后返岗</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-gray-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-white"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium">刘师傅</div>
+                                <div class="text-sm text-gray-600">生产线A - 质检员</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="status-indicator status-info">空闲</div>
+                            <div class="text-xs text-gray-500 mt-1">可分配任务</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 待派工任务 -->
+            <div class="lg:col-span-2">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="flex justify-between items-center">
+                            <h3 class="card-title">待派工任务</h3>
+                            <div class="flex space-x-2">
+                                <select class="border border-gray-300 rounded px-2 py-1 text-sm">
+                                    <option>按优先级排序</option>
+                                    <option>按时间排序</option>
+                                    <option>按工单号排序</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3">
+                                    <div class="status-indicator status-danger">高优先级</div>
+                                    <div class="font-medium">WO-2024-003 - 笔记本键盘</div>
+                                </div>
+                                <div class="text-sm text-gray-600 mt-1">
+                                    工序：精密加工 | 预计工时：4小时 | 技能要求：CNC操作
+                                </div>
+                                <div class="text-xs text-red-600 mt-1">
+                                    <i class="fas fa-clock mr-1"></i>已延期1天，需要立即处理
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
+                                    立即派工
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50">
+                                    查看详情
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3">
+                                    <div class="status-indicator status-warning">中优先级</div>
+                                    <div class="font-medium">WO-2024-004 - 智能手表表带</div>
+                                </div>
+                                <div class="text-sm text-gray-600 mt-1">
+                                    工序：表面处理 | 预计工时：2小时 | 技能要求：表面处理
+                                </div>
+                                <div class="text-xs text-gray-600 mt-1">
+                                    <i class="fas fa-calendar mr-1"></i>计划开始时间：今天 14:00
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
+                                    派工
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50">
+                                    查看详情
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-3">
+                                    <div class="status-indicator status-info">低优先级</div>
+                                    <div class="font-medium">WO-2024-005 - 耳机外壳</div>
+                                </div>
+                                <div class="text-sm text-gray-600 mt-1">
+                                    工序：注塑成型 | 预计工时：6小时 | 技能要求：注塑操作
+                                </div>
+                                <div class="text-xs text-gray-600 mt-1">
+                                    <i class="fas fa-calendar mr-1"></i>计划开始时间：明天 08:00
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
+                                    派工
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50">
+                                    查看详情
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 派工记录 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h3 class="card-title">今日派工记录</h3>
+                    <div class="flex space-x-3">
+                        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                            <option>全部状态</option>
+                            <option>进行中</option>
+                            <option>已完成</option>
+                            <option>已暂停</option>
+                        </select>
+                        <input type="text" placeholder="搜索工单或人员..." 
+                               class="border border-gray-300 rounded-lg px-3 py-2 text-sm w-48">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>派工单号</th>
+                            <th>工单号</th>
+                            <th>工序名称</th>
+                            <th>分配人员</th>
+                            <th>设备/工位</th>
+                            <th>开始时间</th>
+                            <th>预计完成</th>
+                            <th>实际进度</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium">DW-2024-001</td>
+                            <td>WO-2024-001</td>
+                            <td>注塑成型</td>
+                            <td>李师傅</td>
+                            <td>注塑机A1</td>
+                            <td>08:00</td>
+                            <td>16:00</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill" style="width: 85%"></div>
+                                    </div>
+                                    <span class="text-sm">85%</span>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-warning">进行中</span></td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-yellow-600 hover:text-yellow-800" title="暂停">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="font-medium">DW-2024-002</td>
+                            <td>WO-2024-002</td>
+                            <td>质量检验</td>
+                            <td>王师傅</td>
+                            <td>检测台B1</td>
+                            <td>09:00</td>
+                            <td>11:00</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill" style="width: 100%"></div>
+                                    </div>
+                                    <span class="text-sm">100%</span>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-success">已完成</span></td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="质检报告">
+                                        <i class="fas fa-clipboard-check"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="font-medium">DW-2024-003</td>
+                            <td>WO-2024-004</td>
+                            <td>装配组装</td>
+                            <td>张师傅</td>
+                            <td>装配线C1</td>
+                            <td>13:00</td>
+                            <td>17:00</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill" style="width: 60%"></div>
+                                    </div>
+                                    <span class="text-sm">60%</span>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-warning">进行中</span></td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-yellow-600 hover:text-yellow-800" title="暂停">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

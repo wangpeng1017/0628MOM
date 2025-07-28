@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备性能基准管理 - 数字工厂平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面操作栏 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">设备性能基准管理</h1>
+                <p class="text-gray-600">管理逆变器生产设备的性能基准和对标分析</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>新建基准
+                </button>
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-chart-line mr-2"></i>对标分析
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-cog mr-2"></i>基准设置
+                </button>
+            </div>
+        </div>
+        
+        <!-- 性能基准概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-blue-600 mb-1">85.2%</div>
+                <div class="text-sm text-gray-600">平均达标率</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+3.5% 较上月
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-green-600 mb-1">28</div>
+                <div class="text-sm text-gray-600">超标设备</div>
+                <div class="text-xs text-green-600 mt-1">性能优秀</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-yellow-600 mb-1">15</div>
+                <div class="text-sm text-gray-600">接近基准</div>
+                <div class="text-xs text-yellow-600 mt-1">需要关注</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">8</div>
+                <div class="text-sm text-gray-600">低于基准</div>
+                <div class="text-xs text-red-600 mt-1">需要改善</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-purple-600 mb-1">156</div>
+                <div class="text-sm text-gray-600">基准指标</div>
+                <div class="text-xs text-purple-600 mt-1">已建立</div>
+            </div>
+        </div>
+        
+        <!-- 筛选条件区域 -->
+        <div class="card">
+            <div class="p-4">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                    <div class="flex-1">
+                        <input type="text" placeholder="搜索设备名称、指标..." 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部性能等级</option>
+                        <option>优秀</option>
+                        <option>良好</option>
+                        <option>达标</option>
+                        <option>接近基准</option>
+                        <option>低于基准</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部设备类型</option>
+                        <option>SMT贴片机</option>
+                        <option>波峰焊设备</option>
+                        <option>AOI检测设备</option>
+                        <option>功率测试台</option>
+                        <option>老化测试设备</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部指标类型</option>
+                        <option>生产效率</option>
+                        <option>质量指标</option>
+                        <option>能耗指标</option>
+                        <option>可靠性指标</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部时间</option>
+                        <option>本周</option>
+                        <option>本月</option>
+                        <option>本季度</option>
+                        <option>本年度</option>
+                    </select>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 设备性能基准管理列表 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h3 class="card-title">设备性能基准管理</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            <i class="fas fa-chart-bar"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>设备名称</th>
+                            <th>设备类型</th>
+                            <th>关键指标</th>
+                            <th>基准值</th>
+                            <th>当前值</th>
+                            <th>达标率</th>
+                            <th>性能等级</th>
+                            <th>趋势</th>
+                            <th>改善潜力</th>
+                            <th>最后更新</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-green-50">
+                            <td class="font-medium">SMT-Line1-01</td>
+                            <td>SMT贴片机</td>
+                            <td>贴装速度</td>
+                            <td>45,000 CPH</td>
+                            <td class="text-green-600 font-semibold">48,500 CPH</td>
+                            <td class="text-green-600 font-semibold">107.8%</td>
+                            <td><span class="status-indicator status-success">优秀</span></td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-arrow-up text-green-600"></i>
+                                    <span class="text-green-600 text-sm">上升</span>
+                                </div>
+                            </td>
+                            <td class="text-green-600">5%</td>
+                            <td>2024-06-28</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="详细分析">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="最佳实践">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="基准调整">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-blue-50">
+                            <td class="font-medium">WVS-Line2-01</td>
+                            <td>波峰焊设备</td>
+                            <td>焊接质量率</td>
+                            <td>99.5%</td>
+                            <td class="text-blue-600 font-semibold">99.2%</td>
+                            <td class="text-blue-600 font-semibold">99.7%</td>
+                            <td><span class="status-indicator status-info">良好</span></td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-minus text-gray-600"></i>
+                                    <span class="text-gray-600 text-sm">稳定</span>
+                                </div>
+                            </td>
+                            <td class="text-blue-600">2%</td>
+                            <td>2024-06-28</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="详细分析">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="优化建议">
+                                        <i class="fas fa-lightbulb"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="基准调整">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-yellow-50">
+                            <td class="font-medium">AOI-Line1-02</td>
+                            <td>AOI检测设备</td>
+                            <td>检测精度</td>
+                            <td>99.8%</td>
+                            <td class="text-yellow-600 font-semibold">98.5%</td>
+                            <td class="text-yellow-600 font-semibold">98.7%</td>
+                            <td><span class="status-indicator status-warning">接近基准</span></td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-arrow-down text-yellow-600"></i>
+                                    <span class="text-yellow-600 text-sm">下降</span>
+                                </div>
+                            </td>
+                            <td class="text-yellow-600">8%</td>
+                            <td>2024-06-28</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="详细分析">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                    <button class="text-yellow-600 hover:text-yellow-800" title="改善计划">
+                                        <i class="fas fa-tools"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-800" title="预警设置">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-purple-50">
+                            <td class="font-medium">PWR-Test-01</td>
+                            <td>功率测试台</td>
+                            <td>测试效率</td>
+                            <td>85%</td>
+                            <td class="text-purple-600 font-semibold">88.5%</td>
+                            <td class="text-purple-600 font-semibold">104.1%</td>
+                            <td><span class="status-indicator status-success">优秀</span></td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-arrow-up text-green-600"></i>
+                                    <span class="text-green-600 text-sm">上升</span>
+                                </div>
+                            </td>
+                            <td class="text-purple-600">3%</td>
+                            <td>2024-06-28</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="详细分析">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="最佳实践">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="推广应用">
+                                        <i class="fas fa-share-alt"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-red-50">
+                            <td class="font-medium">AGE-Test-02</td>
+                            <td>老化测试设备</td>
+                            <td>温度稳定性</td>
+                            <td>±0.5°C</td>
+                            <td class="text-red-600 font-semibold">±1.2°C</td>
+                            <td class="text-red-600 font-semibold">75.8%</td>
+                            <td><span class="status-indicator status-danger">低于基准</span></td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <i class="fas fa-arrow-down text-red-600"></i>
+                                    <span class="text-red-600 text-sm">下降</span>
+                                </div>
+                            </td>
+                            <td class="text-red-600">25%</td>
+                            <td>2024-06-28</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="详细分析">
+                                        <i class="fas fa-chart-line"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-800" title="紧急改善">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                    <button class="text-yellow-600 hover:text-yellow-800" title="维护计划">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+                <div class="text-sm text-gray-600">
+                    显示 1-5 条，共 156 个基准指标
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

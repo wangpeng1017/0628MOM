@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备生命周期 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-cogs text-primary mr-3"></i>
+                设备生命周期管理
+            </h1>
+            <p class="text-gray-600 mt-2">全生命周期设备管理，从采购到报废的全流程跟踪</p>
+        </div>
+
+        <!-- 设备统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">设备总数</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">1,248</p>
+                        <p class="text-sm text-gray-500">台设备</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-microchip text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>运行中:</span>
+                        <span class="text-green-600 font-medium">1,156台</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>维护中:</span>
+                        <span class="text-yellow-600 font-medium">92台</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">维护计划</h3>
+                        <p class="text-3xl font-bold text-orange-600 mt-2">45</p>
+                        <p class="text-sm text-gray-500">本月计划</p>
+                    </div>
+                    <div class="bg-orange-100 p-3 rounded-full">
+                        <i class="fas fa-calendar-alt text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>已完成:</span>
+                        <span class="text-green-600 font-medium">28个</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>进行中:</span>
+                        <span class="text-blue-600 font-medium">17个</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">预警设备</h3>
+                        <p class="text-3xl font-bold text-red-600 mt-2">8</p>
+                        <p class="text-sm text-gray-500">需关注</p>
+                    </div>
+                    <div class="bg-red-100 p-3 rounded-full">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>高风险:</span>
+                        <span class="text-red-600 font-medium">3台</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>中风险:</span>
+                        <span class="text-yellow-600 font-medium">5台</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">资产价值</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">¥2.8亿</p>
+                        <p class="text-sm text-gray-500">总价值</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-coins text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>年折旧:</span>
+                        <span class="text-purple-600 font-medium">¥2,800万</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>净值率:</span>
+                        <span class="text-green-600 font-medium">75%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 生命周期管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-recycle text-green-600 mr-2"></i>
+                设备生命周期管理
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">采购入库</h4>
+                        <i class="fas fa-shopping-cart text-blue-600"></i>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>本月新增:</span>
+                            <span class="font-medium text-blue-600">12台</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>采购金额:</span>
+                            <span class="font-medium">¥580万</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>验收通过:</span>
+                            <span class="font-medium text-green-600">100%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>入库完成:</span>
+                            <span class="font-medium text-blue-600">12台</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                        采购管理
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">运维保养</h4>
+                        <i class="fas fa-tools text-green-600"></i>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>保养计划:</span>
+                            <span class="font-medium text-green-600">45个</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>完成率:</span>
+                            <span class="font-medium">62%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>故障率:</span>
+                            <span class="font-medium text-yellow-600">2.3%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>维护成本:</span>
+                            <span class="font-medium text-orange-600">¥125万</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-3 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                        维护管理
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4 border border-red-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">报废处置</h4>
+                        <i class="fas fa-trash-alt text-red-600"></i>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>待报废:</span>
+                            <span class="font-medium text-red-600">6台</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>本月处置:</span>
+                            <span class="font-medium">3台</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>回收价值:</span>
+                            <span class="font-medium text-green-600">¥15万</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>处置成本:</span>
+                            <span class="font-medium text-red-600">¥2万</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-3 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors">
+                        报废管理
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备健康度监控 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-heartbeat text-red-600 mr-2"></i>
+                    设备健康度监控
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">健康设备</span>
+                            <span class="text-lg font-bold text-green-600">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 85%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">1,061台设备运行良好</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">亚健康设备</span>
+                            <span class="text-lg font-bold text-yellow-600">12%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-yellow-500 h-3 rounded-full" style="width: 12%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">150台设备需要关注</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">故障设备</span>
+                            <span class="text-lg font-bold text-red-600">3%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-red-500 h-3 rounded-full" style="width: 3%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">37台设备需要维修</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                    维护计划管理
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">本周计划</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 预防性维护: 12台</div>
+                            <div>• 定期保养: 8台</div>
+                            <div>• 故障维修: 5台</div>
+                            <div class="text-blue-600">• 计划完成率: 78%</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">维护效果</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 平均故障间隔: 180天</div>
+                            <div>• 维修及时率: 95%</div>
+                            <div>• 设备可用率: 97.2%</div>
+                            <div class="text-green-600">• 维护成本: -8.5%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备预警列表 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                设备预警列表
+            </h3>
+            <div class="space-y-4">
+                <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">高风险</span>
+                            <h4 class="font-semibold text-gray-800">生产线A - 主轴电机</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">设备编号: EQ-001</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">运行时间:</span>
+                            <p class="font-medium text-red-600">8,760小时</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">健康度:</span>
+                            <p class="font-medium">45%</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">上次维护:</span>
+                            <p class="font-medium">2024-12-15</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">预计寿命:</span>
+                            <p class="font-medium text-orange-600">3个月</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>建议: 立即安排预防性维护，更换关键部件</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors">
+                                <i class="fas fa-tools mr-1"></i>安排维护
+                            </button>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-eye mr-1"></i>查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">中风险</span>
+                            <h4 class="font-semibold text-gray-800">空调系统 - 冷却塔</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">设备编号: EQ-045</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">运行时间:</span>
+                            <p class="font-medium text-yellow-600">6,240小时</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">健康度:</span>
+                            <p class="font-medium">68%</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">上次维护:</span>
+                            <p class="font-medium">2025-01-05</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">预计寿命:</span>
+                            <p class="font-medium text-green-600">8个月</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>建议: 增加监控频率，准备备件</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors">
+                                <i class="fas fa-calendar mr-1"></i>计划维护
+                            </button>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-eye mr-1"></i>查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-plus text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">新增设备</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-calendar-alt text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">维护计划</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-chart-bar text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">健康分析</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">生命周期报表</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 设备生命周期管理功能
+        function initEquipmentLifecycle() {
+            console.log('初始化设备生命周期管理功能');
+            
+            // 维护按钮事件
+            const maintenanceButtons = document.querySelectorAll('button');
+            maintenanceButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('安排维护')) {
+                    button.addEventListener('click', function() {
+                        const equipmentName = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('安排维护:', equipmentName);
+                        alert(`正在为 ${equipmentName} 安排紧急维护...`);
+                    });
+                } else if (text.includes('计划维护')) {
+                    button.addEventListener('click', function() {
+                        const equipmentName = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('计划维护:', equipmentName);
+                        alert(`正在为 ${equipmentName} 制定维护计划...`);
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initEquipmentLifecycle();
+            console.log('设备生命周期管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

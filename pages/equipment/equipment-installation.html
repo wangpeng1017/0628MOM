@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备安装验收 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">设备安装验收</h1>
+            <p class="text-gray-600">基于Process.md 2.4.3流程：安装准备→安装实施→调试测试→验收确认，确保设备安装质量和运行稳定性</p>
+        </div>
+
+        <!-- 设备安装验收流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">设备安装验收流程</h3>
+                    <span class="text-sm text-gray-600">专业安装验收管理</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">安装准备</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">安装实施</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">调试测试</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">验收确认</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="installPrepBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-clipboard-list mr-2"></i>
+                安装准备
+            </button>
+            <button id="installImplBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-tools mr-2"></i>
+                安装实施
+            </button>
+            <button id="debugTestBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-cogs mr-2"></i>
+                调试测试
+            </button>
+            <button id="acceptanceConfirmBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                验收确认
+            </button>
+            <button id="safetyCheckBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-shield-alt mr-2"></i>
+                安全检查
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 设备安装统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">12</div>
+                        <div class="text-sm text-gray-600">安装项目</div>
+                        <div class="text-xs text-gray-500">本月计划</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-hammer text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">8</div>
+                        <div class="text-sm text-gray-600">安装完成</div>
+                        <div class="text-xs text-gray-500">验收通过</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">4</div>
+                        <div class="text-sm text-gray-600">安装中</div>
+                        <div class="text-xs text-gray-500">进行中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tools text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">96.8%</div>
+                        <div class="text-sm text-gray-600">验收通过率</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">5.2天</div>
+                        <div class="text-sm text-gray-600">平均周期</div>
+                        <div class="text-xs text-gray-500">安装时间</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">1</div>
+                        <div class="text-sm text-gray-600">安装异常</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 安装进度和任务面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 安装进度管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">安装进度管理</h3>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-clipboard-list text-blue-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">安装准备阶段</div>
+                                    <div class="text-xs text-gray-500">场地准备、工具配备、人员安排</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-blue-600">2个</div>
+                                <div class="text-xs text-gray-500">准备中</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-green-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-tools text-green-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">安装实施阶段</div>
+                                    <div class="text-xs text-gray-500">设备安装、管线连接、电气接线</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-green-600">3个</div>
+                                <div class="text-xs text-gray-500">安装中</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-purple-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-cogs text-purple-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">调试测试阶段</div>
+                                    <div class="text-xs text-gray-500">功能调试、性能测试、安全检查</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-purple-600">1个</div>
+                                <div class="text-xs text-gray-500">调试中</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 安装任务提醒 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">安装任务提醒</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">紧急安装</div>
+                                <div class="text-xs text-gray-600">PACK产线装配设备 - 电气接线异常</div>
+                                <div class="text-xs text-gray-500">计划时间: 今天 16:00</div>
+                            </div>
+                            <button onclick="handleUrgentInstallation('INST001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                立即处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">调试测试</div>
+                                <div class="text-xs text-gray-600">PCBA测试设备 - 功能调试</div>
+                                <div class="text-xs text-gray-500">计划时间: 明天 09:00</div>
+                            </div>
+                            <button onclick="scheduleDebugTest('INST002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                                安排调试
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">验收确认</div>
+                                <div class="text-xs text-gray-600">6轴机器人 - 最终验收</div>
+                                <div class="text-xs text-gray-500">计划时间: 后天 14:00</div>
+                            </div>
+                            <button onclick="scheduleAcceptance('INST003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                安排验收
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备安装记录表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备安装记录</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部安装类型</option>
+                        <option>新设备安装</option>
+                        <option>设备搬迁</option>
+                        <option>设备改造</option>
+                        <option>配件安装</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>准备中</option>
+                        <option>安装中</option>
+                        <option>调试中</option>
+                        <option>验收中</option>
+                        <option>已完成</option>
+                    </select>
+                    <input type="date" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                    <input type="text" placeholder="搜索设备名称、安装人员..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">安装编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">安装类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">安装项目</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">安装团队</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">安装状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">验收结果</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="installationTableBody">
+                        <!-- 安装数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.3的设备安装验收数据模型
+        const installationData = [
+            {
+                id: 'INST202501001',
+                installationCode: 'INST-PACK-001',
+                equipmentName: 'PACK产线装配设备',
+                equipmentType: '生产设备',
+                model: 'SIMATIC S7-1500',
+                installationType: 'new_installation',
+                installationTypeName: '新设备安装',
+                location: 'PACK产线A区-01工位',
+                plannedStartDate: '2025-01-15',
+                plannedEndDate: '2025-01-20',
+                actualStartDate: '2025-01-15',
+                actualEndDate: null,
+                status: 'implementation',
+                statusName: '安装实施',
+                installationTeam: {
+                    leader: '张工程师',
+                    leaderId: 'ENG001',
+                    members: ['李技师', '王电工', '赵机械工'],
+                    supplier: '德国西门子',
+                    supplierEngineer: 'Hans Mueller'
+                },
+                installationItems: [
+                    { item: '场地准备', category: 'preparation', status: 'completed', progress: 100, notes: '场地清理完成' },
+                    { item: '基础施工', category: 'preparation', status: 'completed', progress: 100, notes: '地基浇筑完成' },
+                    { item: '设备吊装', category: 'implementation', status: 'completed', progress: 100, notes: '设备就位' },
+                    { item: '电气接线', category: 'implementation', status: 'in_progress', progress: 85, notes: '主电源已接通' },
+                    { item: '管路连接', category: 'implementation', status: 'in_progress', progress: 70, notes: '气路连接中' },
+                    { item: '功能调试', category: 'debug', status: 'pending', progress: 0, notes: '' },
+                    { item: '精度校准', category: 'debug', status: 'pending', progress: 0, notes: '' },
+                    { item: '安全检查', category: 'acceptance', status: 'pending', progress: 0, notes: '' }
+                ],
+                safetyChecks: [
+                    { item: '电气安全', standard: '绝缘电阻>1MΩ', result: 'pending', notes: '' },
+                    { item: '机械安全', standard: '防护装置完整', result: 'pending', notes: '' },
+                    { item: '急停功能', standard: '急停有效', result: 'pending', notes: '' }
+                ],
+                acceptanceTests: [
+                    { item: '功能测试', standard: '所有功能正常', result: 'pending', notes: '' },
+                    { item: '性能测试', standard: '达到设计指标', result: 'pending', notes: '' },
+                    { item: '精度测试', standard: '±0.1mm', result: 'pending', notes: '' }
+                ],
+                overallProgress: 75,
+                qualityScore: null,
+                issues: ['电气接线进度略有延迟'],
+                photos: ['安装现场1.jpg', '设备吊装.jpg'],
+                documents: ['安装方案', '安全作业票', '质量检查表'],
+                notes: '安装进展顺利，预计按期完成'
+            },
+            {
+                id: 'INST202501002',
+                installationCode: 'INST-ROBOT-002',
+                equipmentName: '6轴机器人',
+                equipmentType: '生产设备',
+                model: 'FANUC M-20iD/25',
+                installationType: 'new_installation',
+                installationTypeName: '新设备安装',
+                location: '逆变器车间C区-05工位',
+                plannedStartDate: '2025-01-17',
+                plannedEndDate: '2025-01-22',
+                actualStartDate: '2025-01-17',
+                actualEndDate: null,
+                status: 'debug',
+                statusName: '调试测试',
+                installationTeam: {
+                    leader: '孙技师',
+                    leaderId: 'TECH002',
+                    members: ['钱工程师', '周电工'],
+                    supplier: '日本发那科',
+                    supplierEngineer: 'Tanaka San'
+                },
+                installationItems: [
+                    { item: '场地准备', category: 'preparation', status: 'completed', progress: 100, notes: '场地准备完成' },
+                    { item: '设备安装', category: 'implementation', status: 'completed', progress: 100, notes: '机器人安装完成' },
+                    { item: '电气连接', category: 'implementation', status: 'completed', progress: 100, notes: '电气连接完成' },
+                    { item: '程序调试', category: 'debug', status: 'in_progress', progress: 60, notes: '基本程序已调通' },
+                    { item: '精度校准', category: 'debug', status: 'in_progress', progress: 40, notes: '正在校准中' },
+                    { item: '安全测试', category: 'acceptance', status: 'pending', progress: 0, notes: '' }
+                ],
+                safetyChecks: [
+                    { item: '电气安全', standard: '绝缘电阻>1MΩ', result: 'pass', notes: '测试通过' },
+                    { item: '机械安全', standard: '防护装置完整', result: 'pass', notes: '防护完整' },
+                    { item: '急停功能', standard: '急停有效', result: 'pending', notes: '' }
+                ],
+                acceptanceTests: [
+                    { item: '重复定位精度', standard: '±0.02mm', result: 'pending', notes: '' },
+                    { item: '负载测试', standard: '25kg负载', result: 'pending', notes: '' },
+                    { item: '速度测试', standard: '设计速度', result: 'pending', notes: '' }
+                ],
+                overallProgress: 85,
+                qualityScore: null,
+                issues: [],
+                photos: ['机器人安装.jpg', '调试现场.jpg'],
+                documents: ['安装方案', '调试记录', '安全检查表'],
+                notes: '调试进展顺利，精度校准中'
+            },
+            {
+                id: 'INST202501003',
+                installationCode: 'INST-TEST-003',
+                equipmentName: 'PCBA测试设备',
+                equipmentType: '检测设备',
+                model: 'MT8870A',
+                installationType: 'relocation',
+                installationTypeName: '设备搬迁',
+                location: 'PCBA车间B区-03工位',
+                plannedStartDate: '2025-01-12',
+                plannedEndDate: '2025-01-15',
+                actualStartDate: '2025-01-12',
+                actualEndDate: '2025-01-15',
+                status: 'completed',
+                statusName: '验收完成',
+                installationTeam: {
+                    leader: '王技术员',
+                    leaderId: 'TECH001',
+                    members: ['赵工程师', '吴电工'],
+                    supplier: '日本安立',
+                    supplierEngineer: 'Yamada San'
+                },
+                installationItems: [
+                    { item: '设备拆卸', category: 'preparation', status: 'completed', progress: 100, notes: '原位置拆卸完成' },
+                    { item: '设备搬运', category: 'implementation', status: 'completed', progress: 100, notes: '安全搬运到位' },
+                    { item: '重新安装', category: 'implementation', status: 'completed', progress: 100, notes: '安装完成' },
+                    { item: '校准调试', category: 'debug', status: 'completed', progress: 100, notes: '校准完成' },
+                    { item: '功能验证', category: 'debug', status: 'completed', progress: 100, notes: '功能正常' },
+                    { item: '最终验收', category: 'acceptance', status: 'completed', progress: 100, notes: '验收通过' }
+                ],
+                safetyChecks: [
+                    { item: '电气安全', standard: '绝缘电阻>1MΩ', result: 'pass', notes: '1.5MΩ' },
+                    { item: '接地检查', standard: '接地良好', result: 'pass', notes: '接地正常' },
+                    { item: '防护检查', standard: '防护完整', result: 'pass', notes: '防护良好' }
+                ],
+                acceptanceTests: [
+                    { item: '测试精度', standard: '±0.01%', result: 'pass', notes: '精度符合要求' },
+                    { item: '功能测试', standard: '所有功能正常', result: 'pass', notes: '功能完整' },
+                    { item: '稳定性测试', standard: '连续运行8小时', result: 'pass', notes: '运行稳定' }
+                ],
+                overallProgress: 100,
+                qualityScore: 96,
+                issues: [],
+                photos: ['搬迁前.jpg', '搬迁后.jpg', '验收现场.jpg'],
+                documents: ['搬迁方案', '验收报告', '质量证书'],
+                completionDate: '2025-01-15',
+                notes: '搬迁安装完成，设备运行正常'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            preparation: { text: '准备中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-clipboard-list' },
+            implementation: { text: '安装实施', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-tools' },
+            debug: { text: '调试测试', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-cogs' },
+            acceptance: { text: '验收中', class: 'bg-purple-100 text-purple-800', icon: 'fas fa-search' },
+            completed: { text: '验收完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' }
+        };
+
+        // 安装类型映射
+        const installationTypeMap = {
+            new_installation: { text: '新设备安装', icon: 'fas fa-plus-circle', color: 'text-blue-600' },
+            relocation: { text: '设备搬迁', icon: 'fas fa-truck', color: 'text-green-600' },
+            modification: { text: '设备改造', icon: 'fas fa-wrench', color: 'text-purple-600' },
+            upgrade: { text: '设备升级', icon: 'fas fa-arrow-up', color: 'text-orange-600' }
+        };
+
+        // 项目状态映射
+        const itemStatusMap = {
+            pending: { text: '待开始', class: 'text-gray-600', icon: 'fas fa-clock' },
+            in_progress: { text: '进行中', class: 'text-blue-600', icon: 'fas fa-spinner' },
+            completed: { text: '已完成', class: 'text-green-600', icon: 'fas fa-check-circle' }
+        };
+
+        // 测试结果映射
+        const testResultMap = {
+            pass: { text: '通过', class: 'text-green-600', icon: 'fas fa-check-circle' },
+            fail: { text: '不通过', class: 'text-red-600', icon: 'fas fa-times-circle' },
+            pending: { text: '待测试', class: 'text-gray-600', icon: 'fas fa-clock' }
+        };
+
+        let filteredData = [...installationData];
+
+        // 渲染设备安装表格
+        function renderInstallationTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('installationTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(installation => {
+                const status = statusMap[installation.status];
+                const installationType = installationTypeMap[installation.installationType];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewInstallationDetail('${installation.id}')">
+                            ${installation.installationCode}
+                        </div>
+                        <div class="text-xs text-gray-500">${installation.plannedStartDate}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${installation.equipmentName}</div>
+                        <div class="text-xs text-gray-500">${installation.equipmentType}</div>
+                        <div class="text-xs text-gray-500">${installation.model}</div>
+                        <div class="text-xs text-blue-600">${installation.location}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${installationType.icon} ${installationType.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${installationType.text}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="space-y-1">
+                            ${installation.installationItems.slice(0, 3).map(item => `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-600">${item.item}</span>
+                                    <div class="flex items-center">
+                                        <span class="text-xs ${itemStatusMap[item.status].class} mr-1">
+                                            <i class="${itemStatusMap[item.status].icon}"></i>
+                                        </span>
+                                        <span class="text-xs text-gray-500">${item.progress}%</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${installation.installationItems.length > 3 ? `
+                            <button onclick="viewAllInstallationItems('${installation.id}')" class="text-xs text-blue-600 hover:underline mt-1">
+                                查看全部 (${installation.installationItems.length})
+                            </button>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${installation.installationTeam.leader}</div>
+                        <div class="text-xs text-gray-500">${installation.installationTeam.leaderId}</div>
+                        <div class="text-xs text-blue-600">团队: ${installation.installationTeam.members.length}人</div>
+                        <div class="text-xs text-green-600">供应商: ${installation.installationTeam.supplier}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">计划: ${installation.plannedStartDate} - ${installation.plannedEndDate}</div>
+                        <div class="text-xs text-gray-500">实际: ${installation.actualStartDate}${installation.actualEndDate ? ' - ' + installation.actualEndDate : ' - 进行中'}</div>
+                        <div class="mt-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${installation.overallProgress}%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">进度: ${installation.overallProgress}%</div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${installation.issues.length > 0 ? `
+                            <div class="text-xs text-red-600 mt-1">
+                                问题: ${installation.issues.length}项
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${installation.qualityScore ? `
+                            <div class="text-sm font-medium text-green-600">评分: ${installation.qualityScore}</div>
+                            <div class="text-xs text-green-600">验收通过</div>
+                        ` : `
+                            <div class="text-sm text-gray-600">待验收</div>
+                        `}
+                        ${installation.photos.length > 0 ? `
+                            <div class="text-xs text-blue-600 mt-1">
+                                照片: ${installation.photos.length}张
+                            </div>
+                        ` : ''}
+                        ${installation.documents.length > 0 ? `
+                            <div class="text-xs text-green-600 mt-1">
+                                文档: ${installation.documents.length}份
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewInstallationDetail('${installation.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${installation.status === 'implementation' ? `
+                                <button onclick="continueInstallation('${installation.id}')" class="text-green-600 hover:text-green-900 p-1" title="继续安装">
+                                    <i class="fas fa-tools"></i>
+                                </button>
+                            ` : ''}
+                            ${installation.status === 'debug' ? `
+                                <button onclick="continueDebug('${installation.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="继续调试">
+                                    <i class="fas fa-cogs"></i>
+                                </button>
+                            ` : ''}
+                            ${installation.status === 'acceptance' ? `
+                                <button onclick="performAcceptance('${installation.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="执行验收">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewSafetyChecks('${installation.id}')" class="text-yellow-600 hover:text-yellow-900 p-1" title="安全检查">
+                                <i class="fas fa-shield-alt"></i>
+                            </button>
+                            ${installation.photos.length > 0 ? `
+                                <button onclick="viewPhotos('${installation.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="查看照片">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${installationData.length} 条记录`;
+        }
+
+        // 设备安装操作函数
+        function viewInstallationDetail(installationId) {
+            const installation = installationData.find(i => i.id === installationId);
+            if (installation) {
+                let detailText = `安装详情：\n编号: ${installation.installationCode}\n设备: ${installation.equipmentName}\n型号: ${installation.model}\n类型: ${installationTypeMap[installation.installationType].text}\n位置: ${installation.location}\n状态: ${statusMap[installation.status].text}`;
+
+                detailText += `\n\n安装团队:\n负责人: ${installation.installationTeam.leader} (${installation.installationTeam.leaderId})\n团队成员: ${installation.installationTeam.members.join(', ')}\n供应商: ${installation.installationTeam.supplier}\n供应商工程师: ${installation.installationTeam.supplierEngineer}`;
+
+                detailText += `\n\n时间安排:\n计划开始: ${installation.plannedStartDate}\n计划结束: ${installation.plannedEndDate}\n实际开始: ${installation.actualStartDate}`;
+                if (installation.actualEndDate) {
+                    detailText += `\n实际结束: ${installation.actualEndDate}`;
+                }
+
+                detailText += `\n\n安装项目:`;
+                installation.installationItems.forEach((item, index) => {
+                    const statusText = itemStatusMap[item.status].text;
+                    detailText += `\n${index + 1}. ${item.item} (${item.category})\n   状态: ${statusText} - ${item.progress}%`;
+                    if (item.notes) {
+                        detailText += `\n   备注: ${item.notes}`;
+                    }
+                });
+
+                detailText += `\n\n总体进度: ${installation.overallProgress}%`;
+
+                if (installation.qualityScore) {
+                    detailText += `\n质量评分: ${installation.qualityScore}分`;
+                }
+
+                if (installation.issues.length > 0) {
+                    detailText += `\n\n发现问题:`;
+                    installation.issues.forEach((issue, index) => {
+                        detailText += `\n${index + 1}. ${issue}`;
+                    });
+                }
+
+                if (installation.notes) {
+                    detailText += `\n\n备注: ${installation.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function viewSafetyProcedure(safetyId) {
+            alert(`安全作业规程：\n安全ID: ${safetyId}\n\n安全要求：\n- 佩戴安全防护用品\n- 遵守操作规程\n- 设置安全警戒区域\n- 配备应急设备\n- 专人安全监护`);
+        }
+
+        function continueInstallation(installationId) {
+            const installation = installationData.find(i => i.id === installationId);
+            if (installation) {
+                if (confirm(`继续安装实施？\n设备: ${installation.equipmentName}\n\n当前进度: ${installation.overallProgress}%\n\n继续安装项目：\n- 电气接线\n- 管路连接`)) {
+                    // 模拟安装进度
+                    installation.installationItems.forEach(item => {
+                        if (item.status === 'in_progress' && item.progress < 100) {
+                            item.progress = Math.min(100, item.progress + 15);
+                            if (item.progress === 100) {
+                                item.status = 'completed';
+                                item.notes = '安装完成';
+                            }
+                        }
+                    });
+
+                    // 检查是否可以进入调试阶段
+                    const implementationItems = installation.installationItems.filter(item => item.category === 'implementation');
+                    const allImplementationCompleted = implementationItems.every(item => item.status === 'completed');
+
+                    if (allImplementationCompleted) {
+                        installation.status = 'debug';
+                        installation.overallProgress = 85;
+                        // 开始调试项目
+                        installation.installationItems.filter(item => item.category === 'debug')[0].status = 'in_progress';
+                        installation.installationItems.filter(item => item.category === 'debug')[0].progress = 10;
+                    } else {
+                        installation.overallProgress = Math.min(85, installation.overallProgress + 10);
+                    }
+
+                    renderInstallationTable();
+                    alert('安装进度已更新！\n- 安装项目继续推进\n- 进度信息已记录\n' + (allImplementationCompleted ? '- 进入调试测试阶段' : '- 继续安装实施'));
+                }
+            }
+        }
+
+        function continueDebug(installationId) {
+            const installation = installationData.find(i => i.id === installationId);
+            if (installation) {
+                if (confirm(`继续调试测试？\n设备: ${installation.equipmentName}\n\n调试项目：\n- 功能调试\n- 精度校准\n- 性能测试`)) {
+                    // 模拟调试进度
+                    installation.installationItems.forEach(item => {
+                        if (item.category === 'debug' && item.status === 'in_progress') {
+                            item.progress = Math.min(100, item.progress + 20);
+                            if (item.progress === 100) {
+                                item.status = 'completed';
+                                item.notes = '调试完成';
+                            }
+                        } else if (item.category === 'debug' && item.status === 'pending') {
+                            item.status = 'in_progress';
+                            item.progress = 30;
+                        }
+                    });
+
+                    // 检查是否可以进入验收阶段
+                    const debugItems = installation.installationItems.filter(item => item.category === 'debug');
+                    const allDebugCompleted = debugItems.every(item => item.status === 'completed');
+
+                    if (allDebugCompleted) {
+                        installation.status = 'acceptance';
+                        installation.overallProgress = 95;
+                        // 开始验收项目
+                        installation.installationItems.filter(item => item.category === 'acceptance')[0].status = 'in_progress';
+                        installation.installationItems.filter(item => item.category === 'acceptance')[0].progress = 10;
+                    } else {
+                        installation.overallProgress = Math.min(95, installation.overallProgress + 10);
+                    }
+
+                    renderInstallationTable();
+                    alert('调试进度已更新！\n- 调试测试继续进行\n- 功能性能逐步验证\n' + (allDebugCompleted ? '- 进入验收确认阶段' : '- 继续调试测试'));
+                }
+            }
+        }
+
+        function performAcceptance(installationId) {
+            const installation = installationData.find(i => i.id === installationId);
+            if (installation) {
+                if (confirm(`执行验收确认？\n设备: ${installation.equipmentName}\n\n验收项目：\n- 安全检查\n- 功能验收\n- 性能验收\n- 文档确认`)) {
+                    // 模拟验收过程
+                    installation.installationItems.forEach(item => {
+                        if (item.category === 'acceptance') {
+                            item.status = 'completed';
+                            item.progress = 100;
+                            item.notes = '验收通过';
+                        }
+                    });
+
+                    // 更新安全检查和验收测试结果
+                    installation.safetyChecks.forEach(check => {
+                        if (check.result === 'pending') {
+                            check.result = 'pass';
+                            check.notes = '检查通过';
+                        }
+                    });
+
+                    installation.acceptanceTests.forEach(test => {
+                        if (test.result === 'pending') {
+                            test.result = 'pass';
+                            test.notes = '测试通过';
+                        }
+                    });
+
+                    installation.status = 'completed';
+                    installation.overallProgress = 100;
+                    installation.qualityScore = 95;
+                    installation.actualEndDate = new Date().toISOString().split('T')[0];
+                    installation.completionDate = new Date().toISOString().split('T')[0];
+
+                    renderInstallationTable();
+                    alert('验收完成！\n- 所有项目验收通过\n- 质量评分: 95分\n- 设备可以投入使用\n- 验收报告已生成');
+                }
+            }
+        }
+
+        function viewAllInstallationItems(installationId) {
+            const installation = installationData.find(i => i.id === installationId);
+            if (installation) {
+                let itemsText = `${installation.equipmentName} - 安装项目：\n\n`;
+                installation.installationItems.forEach((item, index) => {
+                    const statusText = itemStatusMap[item.status].text;
+                    itemsText += `${index + 1}. ${item.item} (${item.category})\n   状态: ${statusText} - ${item.progress}%`;
+                    if (item.notes) {
+                        itemsText += `\n   备注: ${item.notes}`;
+                    }
+                    itemsText += '\n\n';
+                });
+                alert(itemsText);
+            }
+        }
+
+        function viewSafetyChecks(installationId) {
+            const installation = installationData.find(i => i.id === installationId);
+            if (installation) {
+                let safetyText = `${installation.equipmentName} - 安全检查：\n\n`;
+                installation.safetyChecks.forEach((check, index) => {
+                    const resultText = testResultMap[check.result].text;
+                    safetyText += `${index + 1}. ${check.item}\n   标准: ${check.standard}\n   结果: ${resultText}`;
+                    if (check.notes) {
+                        safetyText += `\n   备注: ${check.notes}`;
+                    }
+                    safetyText += '\n\n';
+                });
+                alert(safetyText);
+            }
+        }
+
+        function viewPhotos(installationId) {
+            const installation = installationData.find(i => i.id === installationId);
+            if (installation) {
+                let photosText = `${installation.equipmentName} - 安装照片：\n\n`;
+                if (installation.photos.length > 0) {
+                    installation.photos.forEach((photo, index) => {
+                        photosText += `${index + 1}. ${photo}\n`;
+                    });
+                    photosText += `\n总计: ${installation.photos.length}张照片\n拍摄时间: ${installation.actualStartDate}`;
+                } else {
+                    photosText += '暂无安装照片';
+                }
+                alert(photosText);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderInstallationTable();
+
+            // 安装准备
+            document.getElementById('installPrepBtn').addEventListener('click', function() {
+                alert('安装准备功能：\n- 场地准备确认\n- 工具设备配备\n- 人员技能确认\n- 安全措施落实\n- 安装方案审核');
+            });
+
+            // 安装实施
+            document.getElementById('installImplBtn').addEventListener('click', function() {
+                alert('安装实施功能：\n- 设备吊装就位\n- 电气管路连接\n- 基础固定安装\n- 进度跟踪记录\n- 质量检查确认');
+            });
+
+            // 调试测试
+            document.getElementById('debugTestBtn').addEventListener('click', function() {
+                alert('调试测试功能：\n- 功能调试验证\n- 性能参数测试\n- 精度校准确认\n- 稳定性测试\n- 问题记录处理');
+            });
+
+            // 验收确认
+            document.getElementById('acceptanceConfirmBtn').addEventListener('click', function() {
+                alert('验收确认功能：\n- 安全检查确认\n- 功能验收测试\n- 性能指标验收\n- 文档资料确认\n- 验收报告生成');
+            });
+
+            // 安全检查
+            document.getElementById('safetyCheckBtn').addEventListener('click', function() {
+                alert('安全检查功能：\n- 电气安全检查\n- 机械安全检查\n- 防护装置检查\n- 急停功能测试\n- 安全标识确认');
+            });
+        });
+    </script>
+</body>
+</html>

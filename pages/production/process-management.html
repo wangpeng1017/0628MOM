@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产线工艺管理 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">产线工艺管理系统</h1>
+            <p class="text-gray-600">基于Process.md 2.3.1流程：自动产品识别→拧紧防错→设备报警处理→工艺参数监控，实现智能化产线工艺管控</p>
+        </div>
+
+        <!-- 工艺流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">产线工艺执行流程</h3>
+                    <span class="text-sm text-gray-600">逆变器智能制造产线</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-6">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">产品识别</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">工艺执行</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">质量检测</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">数据记录</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="productIdentifyBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-qrcode mr-2"></i>
+                产品识别
+            </button>
+            <button id="processControlBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-cogs mr-2"></i>
+                工艺控制
+            </button>
+            <button id="torqueControlBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-wrench mr-2"></i>
+                拧紧防错
+            </button>
+            <button id="alarmHandleBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                报警处理
+            </button>
+            <button id="parameterMonitorBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-chart-line mr-2"></i>
+                参数监控
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 工艺统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-600">产品识别</div>
+                        <div class="text-xs text-gray-500">今日完成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-qrcode text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">1,248</div>
+                        <div class="text-sm text-gray-600">拧紧操作</div>
+                        <div class="text-xs text-gray-500">防错检查</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wrench text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">98.5%</div>
+                        <div class="text-sm text-gray-600">工艺合格率</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">12</div>
+                        <div class="text-sm text-gray-600">设备报警</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">5</div>
+                        <div class="text-sm text-gray-600">工艺异常</div>
+                        <div class="text-xs text-gray-500">需要关注</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-circle text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">2</div>
+                        <div class="text-sm text-gray-600">防错拦截</div>
+                        <div class="text-xs text-gray-500">避免缺陷</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 产线工艺监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 产品识别状态 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">产品自动识别</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">工位1 - 主板装配</div>
+                                <div class="text-xs text-gray-500">产品: INV-5KW-001 | SN: 2025011601001</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">识别成功</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">工位2 - 功率模块</div>
+                                <div class="text-xs text-gray-500">产品: INV-5KW-001 | SN: 2025011601002</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">识别中</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-gray-400 rounded-full mr-3"></div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">工位3 - 外壳装配</div>
+                                <div class="text-xs text-gray-500">等待产品...</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full">待机</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 拧紧防错监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">拧紧防错监控</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-wrench text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">螺钉位置 M6-01</div>
+                                <div class="text-xs text-gray-500">扭矩: 8.5 N·m | 角度: 45°</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">合格</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-red-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">螺钉位置 M6-02</div>
+                                <div class="text-xs text-gray-500">扭矩: 12.1 N·m | 角度: 52°</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">超限</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-clock text-yellow-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">螺钉位置 M6-03</div>
+                                <div class="text-xs text-gray-500">等待拧紧...</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">待执行</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 工艺参数实时监控表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">工艺参数实时监控</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部工位</option>
+                        <option>主板装配</option>
+                        <option>功率模块</option>
+                        <option>外壳装配</option>
+                        <option>最终测试</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>正常</option>
+                        <option>报警</option>
+                        <option>异常</option>
+                        <option>停机</option>
+                    </select>
+                    <input type="text" placeholder="搜索产品SN、工艺参数..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品SN</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工位</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工艺步骤</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">参数值</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标准范围</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="processTableBody">
+                        <!-- 工艺数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.3.1的产线工艺数据模型
+        const processData = [
+            {
+                id: 'PROC202501001',
+                productSN: '2025011601001',
+                productCode: 'INV-5KW-001',
+                workstation: '主板装配',
+                processStep: '螺钉拧紧',
+                parameterName: '扭矩',
+                parameterValue: 8.5,
+                parameterUnit: 'N·m',
+                standardMin: 8.0,
+                standardMax: 10.0,
+                status: 'normal',
+                timestamp: '2025-01-16 14:25:30',
+                operator: '张师傅',
+                equipmentId: 'TQ001',
+                alarmLevel: null
+            },
+            {
+                id: 'PROC202501002',
+                productSN: '2025011601001',
+                productCode: 'INV-5KW-001',
+                workstation: '主板装配',
+                processStep: '螺钉拧紧',
+                parameterName: '角度',
+                parameterValue: 45,
+                parameterUnit: '°',
+                standardMin: 40,
+                standardMax: 50,
+                status: 'normal',
+                timestamp: '2025-01-16 14:25:32',
+                operator: '张师傅',
+                equipmentId: 'TQ001',
+                alarmLevel: null
+            },
+            {
+                id: 'PROC202501003',
+                productSN: '2025011601002',
+                productCode: 'INV-5KW-001',
+                workstation: '功率模块',
+                processStep: '螺钉拧紧',
+                parameterName: '扭矩',
+                parameterValue: 12.1,
+                parameterUnit: 'N·m',
+                standardMin: 8.0,
+                standardMax: 10.0,
+                status: 'alarm',
+                timestamp: '2025-01-16 14:26:15',
+                operator: '李师傅',
+                equipmentId: 'TQ002',
+                alarmLevel: 'high'
+            },
+            {
+                id: 'PROC202501004',
+                productSN: '2025011601003',
+                productCode: 'INV-5KW-001',
+                workstation: '外壳装配',
+                processStep: '产品识别',
+                parameterName: 'QR码识别',
+                parameterValue: 1,
+                parameterUnit: '成功',
+                standardMin: 1,
+                standardMax: 1,
+                status: 'normal',
+                timestamp: '2025-01-16 14:27:08',
+                operator: '王师傅',
+                equipmentId: 'QR003',
+                alarmLevel: null
+            },
+            {
+                id: 'PROC202501005',
+                productSN: '2025011601004',
+                productCode: 'ESS-10KW-002',
+                workstation: '最终测试',
+                processStep: '电气测试',
+                parameterName: '绝缘电阻',
+                parameterValue: 15.2,
+                parameterUnit: 'MΩ',
+                standardMin: 10.0,
+                standardMax: 50.0,
+                status: 'normal',
+                timestamp: '2025-01-16 14:28:45',
+                operator: '赵师傅',
+                equipmentId: 'TEST001',
+                alarmLevel: null
+            },
+            {
+                id: 'PROC202501006',
+                productSN: '2025011601005',
+                productCode: 'INV-5KW-001',
+                workstation: '主板装配',
+                processStep: '防错检查',
+                parameterName: '物料匹配',
+                parameterValue: 0,
+                parameterUnit: '失败',
+                standardMin: 1,
+                standardMax: 1,
+                status: 'error',
+                timestamp: '2025-01-16 14:29:12',
+                operator: '张师傅',
+                equipmentId: 'CHK001',
+                alarmLevel: 'critical'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            normal: { text: '正常', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            alarm: { text: '报警', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-exclamation-triangle' },
+            error: { text: '异常', class: 'bg-red-100 text-red-800', icon: 'fas fa-times-circle' },
+            warning: { text: '警告', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-exclamation' },
+            offline: { text: '离线', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-power-off' }
+        };
+
+        // 报警级别映射
+        const alarmLevelMap = {
+            low: { text: '低', class: 'bg-blue-100 text-blue-800' },
+            medium: { text: '中', class: 'bg-yellow-100 text-yellow-800' },
+            high: { text: '高', class: 'bg-orange-100 text-orange-800' },
+            critical: { text: '严重', class: 'bg-red-100 text-red-800' }
+        };
+
+        let filteredData = [...processData];
+
+        // 渲染工艺参数表格
+        function renderProcessTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('processTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(process => {
+                const status = statusMap[process.status];
+                const alarmLevel = process.alarmLevel ? alarmLevelMap[process.alarmLevel] : null;
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                // 判断参数是否在标准范围内
+                const isInRange = process.parameterValue >= process.standardMin && process.parameterValue <= process.standardMax;
+                const parameterClass = isInRange ? 'text-green-600' : 'text-red-600 font-medium';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewProductDetail('${process.productSN}')">
+                            ${process.productSN}
+                        </div>
+                        <div class="text-xs text-gray-500">${process.productCode}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${process.workstation}</div>
+                        <div class="text-xs text-gray-500">${process.equipmentId}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${process.processStep}</div>
+                        <div class="text-xs text-gray-500">${process.parameterName}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm ${parameterClass}">${process.parameterValue} ${process.parameterUnit}</span>
+                        ${!isInRange ? '<div class="text-xs text-red-600"><i class="fas fa-exclamation-triangle mr-1"></i>超限</div>' : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${process.standardMin} - ${process.standardMax} ${process.parameterUnit}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${alarmLevel ? `
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-1 py-0.5 text-xs rounded-full ${alarmLevel.class}">
+                                    ${alarmLevel.text}级报警
+                                </span>
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${process.timestamp}</div>
+                        <div class="text-xs text-gray-500">${process.operator}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewProcessDetail('${process.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${process.status === 'alarm' || process.status === 'error' ? `
+                                <button onclick="handleAlarm('${process.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="处理报警">
+                                    <i class="fas fa-tools"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewTrend('${process.id}')" class="text-green-600 hover:text-green-900 p-1" title="参数趋势">
+                                <i class="fas fa-chart-line"></i>
+                            </button>
+                            ${process.processStep === '螺钉拧紧' ? `
+                                <button onclick="retorque('${process.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="重新拧紧">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${processData.length} 条记录`;
+        }
+
+        // 工艺操作函数
+        function viewProductDetail(productSN) {
+            const productProcesses = processData.filter(p => p.productSN === productSN);
+            if (productProcesses.length > 0) {
+                const product = productProcesses[0];
+                alert(`产品详情：\nSN: ${product.productSN}\n产品编码: ${product.productCode}\n工艺步骤数: ${productProcesses.length}\n当前工位: ${product.workstation}\n操作员: ${product.operator}`);
+            }
+        }
+
+        function viewProcessDetail(processId) {
+            const process = processData.find(p => p.id === processId);
+            if (process) {
+                alert(`工艺详情：\n工艺ID: ${process.id}\n产品SN: ${process.productSN}\n工位: ${process.workstation}\n工艺步骤: ${process.processStep}\n参数: ${process.parameterName}\n数值: ${process.parameterValue} ${process.parameterUnit}\n标准范围: ${process.standardMin}-${process.standardMax} ${process.parameterUnit}\n设备: ${process.equipmentId}\n操作员: ${process.operator}\n时间: ${process.timestamp}`);
+            }
+        }
+
+        function handleAlarm(processId) {
+            if (confirm('确认处理此报警？将记录处理过程和结果。')) {
+                const process = processData.find(p => p.id === processId);
+                if (process) {
+                    process.status = 'normal';
+                    process.alarmLevel = null;
+                    renderProcessTable();
+                    alert('报警已处理！系统已记录处理时间和操作员信息。');
+                }
+            }
+        }
+
+        function viewTrend(processId) {
+            const process = processData.find(p => p.id === processId);
+            if (process) {
+                alert(`参数趋势分析：\n参数: ${process.parameterName}\n当前值: ${process.parameterValue} ${process.parameterUnit}\n标准范围: ${process.standardMin}-${process.standardMax} ${process.parameterUnit}\n\n趋势分析：\n- 近1小时平均值: ${(process.parameterValue * 0.95).toFixed(1)} ${process.parameterUnit}\n- 变化趋势: 稳定\n- 建议: 参数在正常范围内`);
+            }
+        }
+
+        function retorque(processId) {
+            if (confirm('确认重新拧紧？将重新执行拧紧工艺。')) {
+                const process = processData.find(p => p.id === processId);
+                if (process) {
+                    // 模拟重新拧紧
+                    const newValue = (Math.random() * (process.standardMax - process.standardMin) + process.standardMin).toFixed(1);
+                    process.parameterValue = parseFloat(newValue);
+                    process.status = 'normal';
+                    process.alarmLevel = null;
+                    process.timestamp = new Date().toLocaleString('zh-CN');
+                    renderProcessTable();
+                    alert(`重新拧紧完成！\n新扭矩值: ${newValue} ${process.parameterUnit}`);
+                }
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProcessTable();
+
+            // 产品识别
+            document.getElementById('productIdentifyBtn').addEventListener('click', function() {
+                alert('产品自动识别功能：\n- QR码/条码扫描\n- RFID标签读取\n- 视觉识别系统\n- 产品信息验证\n- 工艺路径匹配');
+            });
+
+            // 工艺控制
+            document.getElementById('processControlBtn').addEventListener('click', function() {
+                alert('工艺控制功能：\n- 工艺参数设定\n- 自动化设备控制\n- 工艺流程监控\n- 参数实时调整\n- 工艺数据记录');
+            });
+
+            // 拧紧防错
+            document.getElementById('torqueControlBtn').addEventListener('click', function() {
+                alert('拧紧防错功能：\n- 扭矩实时监控\n- 角度精确控制\n- 防错逻辑检查\n- 异常自动停止\n- 重拧提醒功能');
+            });
+
+            // 报警处理
+            document.getElementById('alarmHandleBtn').addEventListener('click', function() {
+                const alarmCount = processData.filter(p => p.status === 'alarm' || p.status === 'error').length;
+                if (alarmCount > 0) {
+                    alert(`当前有 ${alarmCount} 个报警需要处理：\n- 设备异常报警\n- 工艺参数超限\n- 防错系统拦截\n- 质量检测异常\n\n请及时处理以确保生产质量！`);
+                } else {
+                    alert('当前无报警信息，系统运行正常！');
+                }
+            });
+
+            // 参数监控
+            document.getElementById('parameterMonitorBtn').addEventListener('click', function() {
+                alert('参数监控功能：\n- 实时数据采集\n- 趋势分析图表\n- 统计过程控制\n- 预警阈值设置\n- 历史数据查询');
+            });
+        });
+    </script>
+</body>
+</html>

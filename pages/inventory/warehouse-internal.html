@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仓内管理 - 仓储管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">仓内管理</h1>
+            <p class="text-gray-600">基于Process.md 2.2.17-2.2.19节，实现盘点管理、报损管理、库龄监控流程</p>
+        </div>
+
+        <!-- 仓内管理概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-teal-600">1,256</div>
+                        <div class="text-sm text-gray-600">库存SKU</div>
+                        <div class="text-xs text-gray-500">总数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-warehouse text-teal-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">99.2%</div>
+                        <div class="text-sm text-gray-600">盘点准确率</div>
+                        <div class="text-xs text-gray-500">本月平均</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-check text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">156</div>
+                        <div class="text-sm text-gray-600">超龄库存</div>
+                        <div class="text-xs text-gray-500">需处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">8</div>
+                        <div class="text-sm text-gray-600">报损申请</div>
+                        <div class="text-xs text-gray-500">待审批</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 盘点管理 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-800">盘点管理</h3>
+                    <div class="flex space-x-2">
+                        <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="createInventoryCheck()">
+                            <i class="fas fa-plus mr-2"></i>新建盘点任务
+                        </button>
+                        <button class="bg-secondary text-white px-4 py-2 rounded-md text-sm hover:bg-gray-700" onclick="generateReport()">
+                            <i class="fas fa-file-alt mr-2"></i>生成报告
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">盘点任务</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">盘点类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">盘点范围</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">执行人员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-clipboard-check text-teal-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="text-sm font-medium text-gray-900">INV-CHECK-2025-001</div>
+                                        <div class="text-xs text-gray-500">月度盘点</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-teal-100 text-teal-800">
+                                    全盘
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">A区-原材料仓</div>
+                                <div class="text-xs text-gray-500">货位: A001-A100</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">2025-01-20</div>
+                                <div class="text-xs text-gray-500">09:00-17:00</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">张工、李工、王工</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    计划中
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-2">开始</button>
+                                <button class="text-green-600 hover:text-green-900 mr-2">编辑</button>
+                                <button class="text-red-600 hover:text-red-900">取消</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-search text-green-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="text-sm font-medium text-gray-900">INV-CHECK-2025-002</div>
+                                        <div class="text-xs text-gray-500">抽盘</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    抽盘
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">B区-成品仓</div>
+                                <div class="text-xs text-gray-500">随机抽取20%</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">2025-01-17</div>
+                                <div class="text-xs text-gray-500">14:00-16:00</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">陈工、刘工</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    进行中
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-2">查看</button>
+                                <button class="text-green-600 hover:text-green-900 mr-2">完成</button>
+                                <button class="text-gray-600 hover:text-gray-900">暂停</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-check-circle text-blue-600"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <div class="text-sm font-medium text-gray-900">INV-CHECK-2025-003</div>
+                                        <div class="text-xs text-gray-500">循环盘点</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    循环盘点
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">C区-半成品仓</div>
+                                <div class="text-xs text-gray-500">高价值物料</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">2025-01-15</div>
+                                <div class="text-xs text-gray-500">已完成</div>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">赵工、孙工</span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap">
+                                <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    已完成
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                <button class="text-blue-600 hover:text-blue-900 mr-2">查看</button>
+                                <button class="text-green-600 hover:text-green-900 mr-2">报告</button>
+                                <button class="text-gray-600 hover:text-gray-900">归档</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 报损管理和库龄监控 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- 报损管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-800">报损管理</h3>
+                        <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="createDamageReport()">
+                            <i class="fas fa-plus mr-2"></i>新建报损
+                        </button>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-red-800">电容器报损</div>
+                                    <div class="text-xs text-gray-600">DMG-2025-001</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-red-600">待审批</div>
+                                    <div class="text-xs text-gray-500">50个</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-orange-800">IC芯片报损</div>
+                                    <div class="text-xs text-gray-600">DMG-2025-002</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-orange-600">审批中</div>
+                                    <div class="text-xs text-gray-500">20个</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-green-800">PCB板报损</div>
+                                    <div class="text-xs text-gray-600">DMG-2025-003</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-green-600">已批准</div>
+                                    <div class="text-xs text-gray-500">10片</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-blue-800">本月报损统计</div>
+                                    <div class="text-xs text-gray-600">总计金额</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-blue-600">¥15,680</div>
+                                    <div class="text-xs text-gray-500">占库存0.2%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 库龄监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">库龄监控</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">30天内</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 65%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-green-600">65%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">31-60天</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 20%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-blue-600">20%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">61-90天</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-orange-600 h-2 rounded-full" style="width: 10%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-orange-600">10%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">90天以上</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-red-600 h-2 rounded-full" style="width: 5%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-red-600">5%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t border-gray-200">
+                        <div class="bg-orange-50 p-3 rounded-lg">
+                            <div class="text-sm font-medium text-orange-800 mb-1">超龄库存预警</div>
+                            <div class="text-xs text-gray-600">
+                                • 电容器-100μF: 库龄85天，建议优先使用<br>
+                                • IC芯片-STM32: 库龄92天，建议促销处理<br>
+                                • PCB板-主控: 库龄105天，建议报损处理
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 仓内作业统计 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">仓内作业统计</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-teal-600 mb-2">1,256</div>
+                        <div class="text-sm text-gray-600">总库存SKU</div>
+                        <div class="text-xs text-gray-500">当前在库</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-green-600 mb-2">99.2%</div>
+                        <div class="text-sm text-gray-600">盘点准确率</div>
+                        <div class="text-xs text-gray-500">本月平均</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-orange-600 mb-2">156</div>
+                        <div class="text-sm text-gray-600">超龄库存</div>
+                        <div class="text-xs text-gray-500">需处理</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-red-600 mb-2">¥15,680</div>
+                        <div class="text-sm text-gray-600">本月报损</div>
+                        <div class="text-xs text-gray-500">总金额</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 操作函数
+        function createInventoryCheck() {
+            alert('新建盘点任务功能');
+        }
+
+        function generateReport() {
+            alert('生成盘点报告功能');
+        }
+
+        function createDamageReport() {
+            alert('新建报损申请功能');
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('仓内管理页面已加载');
+        });
+    </script>
+</body>
+</html>

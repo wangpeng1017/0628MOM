@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术改造管理 - MOM系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面操作栏 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">技术改造管理</h1>
+                <p class="text-gray-600">管理技术改造项目的立项、实施和验收</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>新建项目
+                </button>
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-clipboard-check mr-2"></i>项目评审
+                </button>
+                <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-chart-line mr-2"></i>效益分析
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-download mr-2"></i>项目报告
+                </button>
+            </div>
+        </div>
+        
+        <!-- 项目概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-blue-600 mb-1">12</div>
+                <div class="text-sm text-gray-600">进行中项目</div>
+                <div class="text-xs text-blue-600 mt-1">总投资¥2.8M</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-green-600 mb-1">8</div>
+                <div class="text-sm text-gray-600">本年完成</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-check mr-1"></i>按期完成率100%
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-yellow-600 mb-1">5</div>
+                <div class="text-sm text-gray-600">待审批</div>
+                <div class="text-xs text-yellow-600 mt-1">预算¥1.2M</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-purple-600 mb-1">¥4.5M</div>
+                <div class="text-sm text-gray-600">年度预算</div>
+                <div class="text-xs text-purple-600 mt-1">已使用62%</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">185%</div>
+                <div class="text-sm text-gray-600">平均ROI</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+25% 较去年
+                </div>
+            </div>
+        </div>
+        
+        <!-- 项目管理 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 项目进度跟踪 -->
+            <div class="lg:col-span-2">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="flex justify-between items-center">
+                            <h3 class="card-title">项目进度跟踪</h3>
+                            <div class="flex space-x-3">
+                                <select class="border border-gray-300 rounded px-3 py-1 text-sm">
+                                    <option>全部项目</option>
+                                    <option>进行中</option>
+                                    <option>已完成</option>
+                                    <option>已暂停</option>
+                                </select>
+                                <input type="text" placeholder="搜索项目..." 
+                                       class="border border-gray-300 rounded px-3 py-1 text-sm w-32">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 space-y-4">
+                        <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <div class="font-medium text-blue-800">TR-2024-001 - 注塑机自动化改造</div>
+                                    <div class="text-sm text-gray-600">项目经理：张工程师 | 预算：¥850,000</div>
+                                </div>
+                                <div class="status-indicator status-warning">进行中</div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm mb-3">
+                                <div>
+                                    <span class="text-gray-600">开始时间：</span>
+                                    <span class="font-medium">2024-04-01</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">预计完成：</span>
+                                    <span class="font-medium">2024-08-31</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">已用预算：</span>
+                                    <span class="font-medium">¥520,000</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">项目进度：</span>
+                                    <span class="font-medium">65%</span>
+                                </div>
+                            </div>
+                            <div class="progress-bar mb-3">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                改造内容：增加机械手、视觉检测系统、自动上下料装置
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
+                                    查看详情
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50">
+                                    更新进度
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50">
+                                    项目文档
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <div class="font-medium text-green-800">TR-2024-002 - 装配线智能化升级</div>
+                                    <div class="text-sm text-gray-600">项目经理：李工程师 | 预算：¥650,000</div>
+                                </div>
+                                <div class="status-indicator status-success">已完成</div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm mb-3">
+                                <div>
+                                    <span class="text-gray-600">开始时间：</span>
+                                    <span class="font-medium">2024-01-15</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">完成时间：</span>
+                                    <span class="font-medium">2024-05-20</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">实际成本：</span>
+                                    <span class="font-medium">¥620,000</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">项目进度：</span>
+                                    <span class="font-medium">100%</span>
+                                </div>
+                            </div>
+                            <div class="progress-bar mb-3">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                改造内容：MES系统集成、RFID追溯、质量在线检测
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">
+                                    验收报告
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50">
+                                    效益评估
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50">
+                                    项目总结
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <div class="font-medium text-yellow-800">TR-2024-003 - 包装线节能改造</div>
+                                    <div class="text-sm text-gray-600">项目经理：王工程师 | 预算：¥420,000</div>
+                                </div>
+                                <div class="status-indicator status-info">待审批</div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm mb-3">
+                                <div>
+                                    <span class="text-gray-600">申请时间：</span>
+                                    <span class="font-medium">2024-06-15</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">计划开始：</span>
+                                    <span class="font-medium">2024-07-01</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">预期ROI：</span>
+                                    <span class="font-medium">220%</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">回收期：</span>
+                                    <span class="font-medium">18个月</span>
+                                </div>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                改造内容：变频调速系统、LED照明、余热回收装置
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-yellow-600 text-white px-3 py-1 rounded text-sm hover:bg-yellow-700">
+                                    审批流程
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50">
+                                    方案评审
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50">
+                                    预算分析
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <div class="font-medium text-purple-800">TR-2024-004 - 质检设备数字化改造</div>
+                                    <div class="text-sm text-gray-600">项目经理：陈工程师 | 预算：¥380,000</div>
+                                </div>
+                                <div class="status-indicator status-warning">进行中</div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm mb-3">
+                                <div>
+                                    <span class="text-gray-600">开始时间：</span>
+                                    <span class="font-medium">2024-05-01</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">预计完成：</span>
+                                    <span class="font-medium">2024-07-31</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">已用预算：</span>
+                                    <span class="font-medium">¥180,000</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">项目进度：</span>
+                                    <span class="font-medium">45%</span>
+                                </div>
+                            </div>
+                            <div class="progress-bar mb-3">
+                                <div class="progress-fill bg-purple-500" style="width: 45%"></div>
+                            </div>
+                            <div class="text-xs text-gray-600 mb-3">
+                                改造内容：数字化测量系统、数据自动采集、SPC统计分析
+                            </div>
+                            <div class="flex space-x-2">
+                                <button class="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
+                                    查看详情
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50">
+                                    里程碑
+                                </button>
+                                <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-sm hover:bg-gray-50">
+                                    风险管理
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 项目审批流程 -->
+            <div class="lg:col-span-1">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">项目审批流程</h3>
+                    </div>
+                    <div class="p-4 space-y-4">
+                        <div class="p-3 bg-blue-50 border-l-4 border-blue-400">
+                            <div class="font-medium text-blue-700">1. 项目立项</div>
+                            <div class="text-sm text-gray-600 mt-1">
+                                提交项目申请书、可行性分析、预算方案
+                            </div>
+                            <div class="text-xs text-blue-600 mt-2">
+                                <i class="fas fa-clock mr-1"></i>审批时间：3-5个工作日
+                            </div>
+                        </div>
+                        
+                        <div class="p-3 bg-green-50 border-l-4 border-green-400">
+                            <div class="font-medium text-green-700">2. 技术评审</div>
+                            <div class="text-sm text-gray-600 mt-1">
+                                技术方案评审、风险评估、专家论证
+                            </div>
+                            <div class="text-xs text-green-600 mt-2">
+                                <i class="fas fa-users mr-1"></i>评审委员会：5-7人
+                            </div>
+                        </div>
+                        
+                        <div class="p-3 bg-yellow-50 border-l-4 border-yellow-400">
+                            <div class="font-medium text-yellow-700">3. 预算审批</div>
+                            <div class="text-sm text-gray-600 mt-1">
+                                财务部门预算审核、资金来源确认
+                            </div>
+                            <div class="text-xs text-yellow-600 mt-2">
+                                <i class="fas fa-dollar-sign mr-1"></i>审批权限：分级审批
+                            </div>
+                        </div>
+                        
+                        <div class="p-3 bg-purple-50 border-l-4 border-purple-400">
+                            <div class="font-medium text-purple-700">4. 项目启动</div>
+                            <div class="text-sm text-gray-600 mt-1">
+                                项目团队组建、资源分配、计划制定
+                            </div>
+                            <div class="text-xs text-purple-600 mt-2">
+                                <i class="fas fa-play mr-1"></i>正式启动项目
+                            </div>
+                        </div>
+                        
+                        <div class="p-3 bg-gray-50 border-l-4 border-gray-400">
+                            <div class="font-medium text-gray-700">5. 验收结算</div>
+                            <div class="text-sm text-gray-600 mt-1">
+                                项目验收、效果评估、成本结算
+                            </div>
+                            <div class="text-xs text-gray-600 mt-2">
+                                <i class="fas fa-check mr-1"></i>项目闭环管理
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 验收管理和效益分析 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 项目验收管理 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">项目验收管理</h3>
+                </div>
+                <div class="p-4 space-y-4">
+                    <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="font-medium text-green-800">装配线智能化升级</div>
+                                <div class="text-sm text-gray-600">项目编号：TR-2024-002</div>
+                            </div>
+                            <div class="status-indicator status-success">验收通过</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-sm mb-3">
+                            <div>
+                                <span class="text-gray-600">验收时间：</span>
+                                <span class="font-medium">2024-05-25</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">验收组长：</span>
+                                <span class="font-medium">刘总工</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">验收评分：</span>
+                                <span class="font-medium text-green-600">95分</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">试运行：</span>
+                                <span class="font-medium">30天</span>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-600 mb-3">
+                            验收结果：功能完整，性能达标，质量优良，建议正式投产
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between">
+                                <span>功能验收：</span>
+                                <span class="text-green-600 font-semibold">100%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>性能验收：</span>
+                                <span class="text-green-600 font-semibold">98%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>质量验收：</span>
+                                <span class="text-green-600 font-semibold">96%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>文档验收：</span>
+                                <span class="text-green-600 font-semibold">92%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="font-medium text-blue-800">注塑机自动化改造</div>
+                                <div class="text-sm text-gray-600">项目编号：TR-2024-001</div>
+                            </div>
+                            <div class="status-indicator status-warning">试运行中</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-sm mb-3">
+                            <div>
+                                <span class="text-gray-600">预计验收：</span>
+                                <span class="font-medium">2024-09-15</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">试运行进度：</span>
+                                <span class="font-medium">15/30天</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">当前状态：</span>
+                                <span class="font-medium text-blue-600">功能测试</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">问题数量：</span>
+                                <span class="font-medium">3个</span>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-600 mb-3">
+                            试运行情况：基本功能正常，发现3个小问题，正在整改中
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between">
+                                <span>机械手精度：</span>
+                                <span class="text-green-600 font-semibold">达标</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>视觉检测：</span>
+                                <span class="text-yellow-600 font-semibold">调试中</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>自动上料：</span>
+                                <span class="text-green-600 font-semibold">正常</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>系统集成：</span>
+                                <span class="text-yellow-600 font-semibold">优化中</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="font-medium text-yellow-800">质检设备数字化改造</div>
+                                <div class="text-sm text-gray-600">项目编号：TR-2024-004</div>
+                            </div>
+                            <div class="status-indicator status-info">准备验收</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-sm mb-3">
+                            <div>
+                                <span class="text-gray-600">计划验收：</span>
+                                <span class="font-medium">2024-08-05</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">验收准备：</span>
+                                <span class="font-medium">80%</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">文档完成：</span>
+                                <span class="font-medium">90%</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">培训完成：</span>
+                                <span class="font-medium">100%</span>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-600 mb-3">
+                            验收准备：技术文档整理中，用户培训已完成，设备调试基本完成
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="bg-yellow-600 text-white px-3 py-1 rounded text-xs hover:bg-yellow-700">
+                                安排验收
+                            </button>
+                            <button class="border border-gray-300 text-gray-700 px-3 py-1 rounded text-xs hover:bg-gray-50">
+                                验收清单
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 效益分析 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">项目效益分析</h3>
+                </div>
+                <div class="p-4 space-y-4">
+                    <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="font-medium text-green-800 mb-3">装配线智能化升级 - 效益评估</div>
+                        <div class="grid grid-cols-2 gap-4 text-sm mb-3">
+                            <div>
+                                <span class="text-gray-600">投资金额：</span>
+                                <span class="font-medium">¥620,000</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">年节约成本：</span>
+                                <span class="font-medium text-green-600">¥380,000</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">投资回收期：</span>
+                                <span class="font-medium">19.6个月</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">5年NPV：</span>
+                                <span class="font-medium text-green-600">¥1,280,000</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-xs">
+                            <div class="font-medium text-gray-700">具体效益：</div>
+                            <div class="flex justify-between">
+                                <span>人工成本节约：</span>
+                                <span class="text-green-600">¥240,000/年</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>质量损失减少：</span>
+                                <span class="text-green-600">¥85,000/年</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>效率提升收益：</span>
+                                <span class="text-green-600">¥55,000/年</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>生产能力提升：</span>
+                                <span class="text-green-600">+25%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>产品质量提升：</span>
+                                <span class="text-green-600">+15%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="font-medium text-blue-800 mb-3">注塑机自动化改造 - 预期效益</div>
+                        <div class="grid grid-cols-2 gap-4 text-sm mb-3">
+                            <div>
+                                <span class="text-gray-600">预算投资：</span>
+                                <span class="font-medium">¥850,000</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">预期年收益：</span>
+                                <span class="font-medium text-blue-600">¥450,000</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">预计回收期：</span>
+                                <span class="font-medium">22.7个月</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">预期ROI：</span>
+                                <span class="font-medium text-blue-600">165%</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-xs">
+                            <div class="font-medium text-gray-700">预期效益：</div>
+                            <div class="flex justify-between">
+                                <span>人工成本节约：</span>
+                                <span class="text-blue-600">¥280,000/年</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>材料损耗减少：</span>
+                                <span class="text-blue-600">¥95,000/年</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>设备效率提升：</span>
+                                <span class="text-blue-600">¥75,000/年</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>生产能力提升：</span>
+                                <span class="text-blue-600">+35%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>产品一致性：</span>
+                                <span class="text-blue-600">+20%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                        <div class="font-medium text-purple-800 mb-3">年度效益汇总</div>
+                        <div class="grid grid-cols-2 gap-4 text-sm mb-3">
+                            <div>
+                                <span class="text-gray-600">总投资额：</span>
+                                <span class="font-medium">¥2,800,000</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">年度收益：</span>
+                                <span class="font-medium text-purple-600">¥1,450,000</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">平均ROI：</span>
+                                <span class="font-medium text-purple-600">185%</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">平均回收期：</span>
+                                <span class="font-medium">20.5个月</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-xs">
+                            <div class="font-medium text-gray-700">综合效益：</div>
+                            <div class="flex justify-between">
+                                <span>直接经济效益：</span>
+                                <span class="text-purple-600">¥1,450,000/年</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>间接效益估算：</span>
+                                <span class="text-purple-600">¥580,000/年</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>社会效益：</span>
+                                <span class="text-purple-600">显著</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 项目统计和建议 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 项目统计 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">项目统计分析</h3>
+                </div>
+                <div class="p-4 space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>项目类型分布</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">自动化改造</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-16 h-2 bg-gray-200 rounded">
+                                        <div class="h-2 bg-blue-500 rounded" style="width: 45%"></div>
+                                    </div>
+                                    <span class="text-xs">45%</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">智能化升级</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-16 h-2 bg-gray-200 rounded">
+                                        <div class="h-2 bg-green-500 rounded" style="width: 30%"></div>
+                                    </div>
+                                    <span class="text-xs">30%</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">节能改造</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-16 h-2 bg-gray-200 rounded">
+                                        <div class="h-2 bg-yellow-500 rounded" style="width: 15%"></div>
+                                    </div>
+                                    <span class="text-xs">15%</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">其他改造</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-16 h-2 bg-gray-200 rounded">
+                                        <div class="h-2 bg-purple-500 rounded" style="width: 10%"></div>
+                                    </div>
+                                    <span class="text-xs">10%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-200">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <div class="text-gray-600">项目成功率</div>
+                                <div class="text-xl font-bold text-green-600">95%</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-600">按期完成率</div>
+                                <div class="text-xl font-bold text-blue-600">88%</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-600">预算控制率</div>
+                                <div class="text-xl font-bold text-purple-600">92%</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-600">平均工期</div>
+                                <div class="text-xl font-bold text-yellow-600">4.5月</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 风险管理 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">风险管理</h3>
+                </div>
+                <div class="p-4 space-y-3">
+                    <div class="p-3 bg-red-50 border-l-4 border-red-400">
+                        <div class="font-medium text-red-700">技术风险</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            新技术应用可能存在不确定性，建议充分论证和试验
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-yellow-50 border-l-4 border-yellow-400">
+                        <div class="font-medium text-yellow-700">进度风险</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            供应商交付延期，建议制定备选方案和应急计划
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-blue-50 border-l-4 border-blue-400">
+                        <div class="font-medium text-blue-700">成本风险</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            原材料价格波动，建议设置成本控制预警机制
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-purple-50 border-l-4 border-purple-400">
+                        <div class="font-medium text-purple-700">质量风险</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            改造后设备稳定性，建议延长试运行和验收期
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 改进建议 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">改进建议</h3>
+                </div>
+                <div class="p-4 space-y-3">
+                    <div class="p-3 bg-green-50 border-l-4 border-green-400">
+                        <div class="font-medium text-green-700">项目管理</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            建立标准化项目管理流程，提高项目执行效率
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-blue-50 border-l-4 border-blue-400">
+                        <div class="font-medium text-blue-700">技术储备</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            加强技术调研和人才培养，提升技术改造能力
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-yellow-50 border-l-4 border-yellow-400">
+                        <div class="font-medium text-yellow-700">供应商管理</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            建立合格供应商库，加强供应商评估和管理
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-purple-50 border-l-4 border-purple-400">
+                        <div class="font-medium text-purple-700">效益跟踪</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            建立项目效益跟踪机制，持续评估改造效果
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

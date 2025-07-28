@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>检测与防错系统 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">检测与防错系统</h1>
+            <p class="text-gray-600">基于Process.md 2.3.5-2.3.8流程：接线检测→螺钉检测→清换线管理→物料防错，实现全方位质量防护</p>
+        </div>
+
+        <!-- 检测防错流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">检测防错执行流程</h3>
+                    <span class="text-sm text-gray-600">Poka-Yoke智能防错系统</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">接线检测</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">螺钉检测</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">清换线管理</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">物料防错</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="wireDetectionBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-plug mr-2"></i>
+                接线检测
+            </button>
+            <button id="screwDetectionBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-wrench mr-2"></i>
+                螺钉检测
+            </button>
+            <button id="lineChangeBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-exchange-alt mr-2"></i>
+                清换线管理
+            </button>
+            <button id="materialPokayokeBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-shield-alt mr-2"></i>
+                物料防错
+            </button>
+            <button id="qualityInspectionBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-search mr-2"></i>
+                质量检验
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 检测防错统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">1,248</div>
+                        <div class="text-sm text-gray-600">接线检测</div>
+                        <div class="text-xs text-gray-500">今日完成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-plug text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">856</div>
+                        <div class="text-sm text-gray-600">螺钉检测</div>
+                        <div class="text-xs text-gray-500">扭矩角度</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wrench text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">12</div>
+                        <div class="text-sm text-gray-600">清换线次数</div>
+                        <div class="text-xs text-gray-500">今日统计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exchange-alt text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">98.9%</div>
+                        <div class="text-sm text-gray-600">防错成功率</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">15</div>
+                        <div class="text-sm text-gray-600">防错拦截</div>
+                        <div class="text-xs text-gray-500">避免缺陷</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-ban text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">3</div>
+                        <div class="text-sm text-gray-600">检测异常</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 检测状态监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 实时检测状态 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">实时检测状态</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-plug text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">工位1 - 接线检测</div>
+                                <div class="text-xs text-gray-500">产品: INV-5KW-001 | 检测通过</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">正常</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-wrench text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">工位3 - 螺钉检测</div>
+                                <div class="text-xs text-gray-500">扭矩: 8.5N·m | 角度: 45°</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">检测中</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-red-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">工位5 - 物料防错</div>
+                                <div class="text-xs text-gray-500">物料不匹配 | 已拦截</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">异常</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 防错规则配置 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">防错规则配置</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-cog text-gray-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">接线顺序检查</div>
+                                <div class="text-xs text-gray-500">强制按工艺顺序接线</div>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-shield-alt text-gray-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">物料匹配验证</div>
+                                <div class="text-xs text-gray-500">扫码验证物料正确性</div>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-tools text-gray-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">扭矩范围检查</div>
+                                <div class="text-xs text-gray-500">8.0-10.0 N·m范围检查</div>
+                            </div>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" checked>
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 检测记录管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">检测记录管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部检测类型</option>
+                        <option>接线检测</option>
+                        <option>螺钉检测</option>
+                        <option>物料防错</option>
+                        <option>清换线</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部结果</option>
+                        <option>通过</option>
+                        <option>失败</option>
+                        <option>异常</option>
+                    </select>
+                    <input type="text" placeholder="搜索产品SN、工位..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检测编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检测类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工位</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检测项目</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检测值</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标准范围</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">结果</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="detectionTableBody">
+                        <!-- 检测数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.3.5-2.3.8的检测防错数据模型
+        const detectionData = [
+            {
+                id: 'DET202501001',
+                productSN: '2025011601001',
+                productCode: 'INV-5KW-001',
+                detectionType: 'wire',
+                detectionTypeName: '接线检测',
+                workstation: '工位1',
+                detectionItem: '主电源线接线',
+                detectionValue: '正确',
+                standardValue: '按工艺图接线',
+                result: 'pass',
+                timestamp: '2025-01-16 14:25:30',
+                operator: '张师傅',
+                equipmentId: 'WIRE001',
+                duration: 15,
+                pokayokeTriggered: false,
+                defectPrevented: false
+            },
+            {
+                id: 'DET202501002',
+                productSN: '2025011601001',
+                productCode: 'INV-5KW-001',
+                detectionType: 'screw',
+                detectionTypeName: '螺钉检测',
+                workstation: '工位3',
+                detectionItem: 'M6螺钉扭矩',
+                detectionValue: 8.5,
+                standardValue: '8.0-10.0',
+                unit: 'N·m',
+                result: 'pass',
+                timestamp: '2025-01-16 14:26:45',
+                operator: '李师傅',
+                equipmentId: 'TQ001',
+                duration: 8,
+                pokayokeTriggered: false,
+                defectPrevented: false
+            },
+            {
+                id: 'DET202501003',
+                productSN: '2025011601002',
+                productCode: 'INV-5KW-001',
+                detectionType: 'material',
+                detectionTypeName: '物料防错',
+                workstation: '工位5',
+                detectionItem: '物料匹配检查',
+                detectionValue: '不匹配',
+                standardValue: 'MT001硅钢片',
+                result: 'fail',
+                timestamp: '2025-01-16 14:28:12',
+                operator: '王师傅',
+                equipmentId: 'MAT001',
+                duration: 5,
+                pokayokeTriggered: true,
+                defectPrevented: true,
+                errorReason: '扫描到MT002铜线，应为MT001硅钢片'
+            },
+            {
+                id: 'DET202501004',
+                productSN: '2025011601003',
+                productCode: 'ESS-10KW-002',
+                detectionType: 'linechange',
+                detectionTypeName: '清换线管理',
+                workstation: '产线1',
+                detectionItem: '产线切换验证',
+                detectionValue: '完成',
+                standardValue: '清理+换料+验证',
+                result: 'pass',
+                timestamp: '2025-01-16 14:30:00',
+                operator: '赵主管',
+                equipmentId: 'LINE001',
+                duration: 45,
+                pokayokeTriggered: false,
+                defectPrevented: false
+            },
+            {
+                id: 'DET202501005',
+                productSN: '2025011601004',
+                productCode: 'INV-5KW-001',
+                detectionType: 'screw',
+                detectionTypeName: '螺钉检测',
+                workstation: '工位3',
+                detectionItem: 'M6螺钉角度',
+                detectionValue: 55,
+                standardValue: '40-50',
+                unit: '°',
+                result: 'fail',
+                timestamp: '2025-01-16 14:32:18',
+                operator: '李师傅',
+                equipmentId: 'TQ001',
+                duration: 12,
+                pokayokeTriggered: true,
+                defectPrevented: true,
+                errorReason: '拧紧角度超出标准范围'
+            },
+            {
+                id: 'DET202501006',
+                productSN: '2025011601005',
+                productCode: 'CTRL-ADV-003',
+                detectionType: 'wire',
+                detectionTypeName: '接线检测',
+                workstation: '工位2',
+                detectionItem: '控制信号线',
+                detectionValue: '缺失',
+                standardValue: '完整接线',
+                result: 'fail',
+                timestamp: '2025-01-16 14:33:45',
+                operator: '孙师傅',
+                equipmentId: 'WIRE002',
+                duration: 20,
+                pokayokeTriggered: true,
+                defectPrevented: true,
+                errorReason: '检测到信号线未连接'
+            }
+        ];
+
+        // 结果映射
+        const resultMap = {
+            pass: { text: '通过', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            fail: { text: '失败', class: 'bg-red-100 text-red-800', icon: 'fas fa-times-circle' },
+            warning: { text: '警告', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-exclamation-triangle' },
+            exception: { text: '异常', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-exclamation' }
+        };
+
+        // 检测类型映射
+        const detectionTypeMap = {
+            wire: { text: '接线检测', icon: 'fas fa-plug', color: 'text-blue-600' },
+            screw: { text: '螺钉检测', icon: 'fas fa-wrench', color: 'text-indigo-600' },
+            material: { text: '物料防错', icon: 'fas fa-shield-alt', color: 'text-green-600' },
+            linechange: { text: '清换线管理', icon: 'fas fa-exchange-alt', color: 'text-purple-600' },
+            quality: { text: '质量检验', icon: 'fas fa-search', color: 'text-orange-600' }
+        };
+
+        let filteredData = [...detectionData];
+
+        // 渲染检测记录表格
+        function renderDetectionTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('detectionTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(detection => {
+                const result = resultMap[detection.result];
+                const detectionType = detectionTypeMap[detection.detectionType];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                // 判断检测值是否在标准范围内
+                let valueDisplay = detection.detectionValue;
+                let valueClass = 'text-gray-900';
+
+                if (detection.result === 'pass') {
+                    valueClass = 'text-green-600';
+                } else if (detection.result === 'fail') {
+                    valueClass = 'text-red-600 font-medium';
+                }
+
+                if (detection.unit) {
+                    valueDisplay += ` ${detection.unit}`;
+                }
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewDetectionDetail('${detection.id}')">
+                            ${detection.id}
+                        </div>
+                        <div class="text-xs text-gray-500">${detection.timestamp}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewProductDetail('${detection.productSN}')">
+                            ${detection.productSN}
+                        </div>
+                        <div class="text-xs text-gray-500">${detection.productCode}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${detectionType.icon} ${detectionType.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${detectionType.text}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${detection.workstation}</div>
+                        <div class="text-xs text-gray-500">${detection.equipmentId}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${detection.detectionItem}</div>
+                        <div class="text-xs text-gray-500">用时: ${detection.duration}秒</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm ${valueClass}">${valueDisplay}</span>
+                        ${detection.errorReason ? `<div class="text-xs text-red-600 mt-1">${detection.errorReason}</div>` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${detection.standardValue}</span>
+                        ${detection.unit ? `<div class="text-xs text-gray-500">${detection.unit}</div>` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${result.class}">
+                            <i class="${result.icon} mr-1"></i>
+                            ${result.text}
+                        </span>
+                        ${detection.pokayokeTriggered ? `
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-1 py-0.5 text-xs rounded-full bg-orange-100 text-orange-800">
+                                    <i class="fas fa-shield-alt mr-1"></i>防错
+                                </span>
+                            </div>
+                        ` : ''}
+                        ${detection.defectPrevented ? `
+                            <div class="mt-1">
+                                <span class="inline-flex items-center px-1 py-0.5 text-xs rounded-full bg-blue-100 text-blue-800">
+                                    <i class="fas fa-ban mr-1"></i>拦截
+                                </span>
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${detection.timestamp.split(' ')[1]}</div>
+                        <div class="text-xs text-gray-500">${detection.operator}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewDetectionDetail('${detection.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${detection.result === 'fail' ? `
+                                <button onclick="retest('${detection.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="重新检测">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewTrend('${detection.id}')" class="text-green-600 hover:text-green-900 p-1" title="趋势分析">
+                                <i class="fas fa-chart-line"></i>
+                            </button>
+                            ${detection.pokayokeTriggered ? `
+                                <button onclick="viewPokayokeLog('${detection.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="防错日志">
+                                    <i class="fas fa-shield-alt"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${detectionData.length} 条记录`;
+        }
+
+        // 检测操作函数
+        function viewDetectionDetail(detectionId) {
+            const detection = detectionData.find(d => d.id === detectionId);
+            if (detection) {
+                alert(`检测详情：\n编号: ${detection.id}\n产品SN: ${detection.productSN}\n检测类型: ${detectionTypeMap[detection.detectionType].text}\n工位: ${detection.workstation}\n检测项目: ${detection.detectionItem}\n检测值: ${detection.detectionValue}${detection.unit || ''}\n标准值: ${detection.standardValue}\n结果: ${resultMap[detection.result].text}\n操作员: ${detection.operator}\n设备: ${detection.equipmentId}\n用时: ${detection.duration}秒\n时间: ${detection.timestamp}\n${detection.errorReason ? `异常原因: ${detection.errorReason}` : ''}\n${detection.pokayokeTriggered ? '防错系统已触发' : ''}`);
+            }
+        }
+
+        function retest(detectionId) {
+            if (confirm('确认重新检测？将重新执行检测流程。')) {
+                const detection = detectionData.find(d => d.id === detectionId);
+                if (detection) {
+                    // 模拟重新检测
+                    const success = Math.random() > 0.3; // 70%概率通过
+                    detection.result = success ? 'pass' : 'fail';
+                    detection.timestamp = new Date().toLocaleString('zh-CN');
+                    if (success) {
+                        detection.errorReason = null;
+                        detection.pokayokeTriggered = false;
+                        detection.defectPrevented = false;
+                        if (detection.detectionType === 'screw') {
+                            detection.detectionValue = (Math.random() * 2 + 8).toFixed(1); // 8.0-10.0范围
+                        } else if (detection.detectionType === 'wire') {
+                            detection.detectionValue = '正确';
+                        }
+                    }
+                    renderDetectionTable();
+                    alert(`重新检测完成！结果: ${resultMap[detection.result].text}`);
+                }
+            }
+        }
+
+        function viewTrend(detectionId) {
+            const detection = detectionData.find(d => d.id === detectionId);
+            if (detection) {
+                alert(`趋势分析：\n检测项目: ${detection.detectionItem}\n当前值: ${detection.detectionValue}${detection.unit || ''}\n标准范围: ${detection.standardValue}\n\n近期趋势：\n- 1小时内检测次数: 15次\n- 通过率: 93.3%\n- 平均检测时间: ${detection.duration}秒\n- 趋势: 稳定`);
+            }
+        }
+
+        function viewPokayokeLog(detectionId) {
+            const detection = detectionData.find(d => d.id === detectionId);
+            if (detection) {
+                alert(`防错日志：\n检测编号: ${detection.id}\n触发时间: ${detection.timestamp}\n防错类型: ${detectionTypeMap[detection.detectionType].text}\n拦截原因: ${detection.errorReason}\n处理结果: ${detection.defectPrevented ? '成功拦截缺陷' : '未拦截'}\n操作员: ${detection.operator}\n设备: ${detection.equipmentId}`);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderDetectionTable();
+
+            // 接线检测
+            document.getElementById('wireDetectionBtn').addEventListener('click', function() {
+                alert('接线检测功能：\n- 自动识别接线位置\n- 检查接线顺序\n- 验证接线正确性\n- 防止错接漏接\n- 实时反馈结果');
+            });
+
+            // 螺钉检测
+            document.getElementById('screwDetectionBtn').addEventListener('click', function() {
+                alert('螺钉检测功能：\n- 扭矩实时监控\n- 角度精确测量\n- 拧紧曲线分析\n- 防止过拧欠拧\n- 自动记录数据');
+            });
+
+            // 清换线管理
+            document.getElementById('lineChangeBtn').addEventListener('click', function() {
+                alert('清换线管理功能：\n- 产线清理验证\n- 物料更换确认\n- 首件检验\n- 参数重新设定\n- 切换记录追溯');
+            });
+
+            // 物料防错
+            document.getElementById('materialPokayokeBtn').addEventListener('click', function() {
+                alert('物料防错功能：\n- 条码扫描验证\n- 物料匹配检查\n- 批次追溯管理\n- 错料自动拦截\n- 防错规则配置');
+            });
+
+            // 质量检验
+            document.getElementById('qualityInspectionBtn').addEventListener('click', function() {
+                alert('质量检验功能：\n- 外观检测\n- 尺寸测量\n- 功能测试\n- 性能验证\n- 检验报告生成');
+            });
+        });
+    </script>
+</body>
+</html>

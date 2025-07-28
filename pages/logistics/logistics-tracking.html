@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物流追溯 - 厂内物流执行系统(LES) - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">物流追溯</h1>
+            <p class="text-gray-600">AGV运行追溯、物料配送追溯、物料呼叫追溯、料箱料车追溯等全流程追溯查询</p>
+        </div>
+
+        <!-- 追溯查询 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">追溯查询</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">追溯类型</label>
+                    <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>AGV运行追溯</option>
+                        <option>物料配送追溯</option>
+                        <option>物料呼叫追溯</option>
+                        <option>料箱料车追溯</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">查询条件</label>
+                    <input type="text" placeholder="设备编号/物料编号/任务编号" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">时间范围</label>
+                    <input type="date" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                </div>
+                <div class="flex items-end">
+                    <button class="w-full bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-2"></i>查询追溯
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 追溯结果 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">追溯结果</h3>
+            </div>
+            
+            <div class="p-6">
+                <!-- 追溯时间线 -->
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-play text-white text-sm"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="text-sm font-medium text-blue-800">任务创建</div>
+                                        <div class="text-xs text-gray-600">AGV-001接收配送任务</div>
+                                        <div class="text-xs text-gray-500">2025-01-17 08:30:15</div>
+                                    </div>
+                                    <div class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">开始</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-route text-white text-sm"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="text-sm font-medium text-green-800">路径规划</div>
+                                        <div class="text-xs text-gray-600">从A区-01到工位W-01，距离120米</div>
+                                        <div class="text-xs text-gray-500">2025-01-17 08:30:45</div>
+                                    </div>
+                                    <div class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">完成</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-box text-white text-sm"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="text-sm font-medium text-orange-800">物料装载</div>
+                                        <div class="text-xs text-gray-600">装载电容器CAP-100uF-25V，数量：500PCS</div>
+                                        <div class="text-xs text-gray-500">2025-01-17 08:32:10</div>
+                                    </div>
+                                    <div class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">完成</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-shipping-fast text-white text-sm"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="text-sm font-medium text-purple-800">运输过程</div>
+                                        <div class="text-xs text-gray-600">AGV运行中，当前位置：通道A-1</div>
+                                        <div class="text-xs text-gray-500">2025-01-17 08:35:20</div>
+                                    </div>
+                                    <div class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">进行中</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check text-gray-600 text-sm"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-800">送达确认</div>
+                                        <div class="text-xs text-gray-600">等待到达工位W-01并确认送达</div>
+                                        <div class="text-xs text-gray-500">预计 2025-01-17 08:38:00</div>
+                                    </div>
+                                    <div class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">待完成</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('物流追溯页面已加载');
+        });
+    </script>
+</body>
+</html>

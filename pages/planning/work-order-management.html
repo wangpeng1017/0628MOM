@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工单管理 - 计划管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">工单管理系统</h1>
+            <p class="text-gray-600">基于Process.md 2.1.15-2.1.17流程：工单生成(5个控制点)→工单变更(4个控制点)→工单关闭(3个控制点)，实现"一单到底"管控</p>
+        </div>
+
+        <!-- 工单流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">工单生命周期管理</h3>
+                    <span class="text-sm text-gray-600">基于MPS 1对1生成工单</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">MPS关联</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">齐套检查</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 80%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">工单下达</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 60%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">生产执行</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-gray-300" style="width: 40%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">5</div>
+                            <span class="ml-2 text-sm text-gray-600">工单关闭</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="generateWorkOrderBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                生成工单
+            </button>
+            <button id="kitCheckBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                齐套检查
+            </button>
+            <button id="releaseWorkOrderBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-paper-plane mr-2"></i>
+                工单下达
+            </button>
+            <button id="changeWorkOrderBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-edit mr-2"></i>
+                工单变更
+            </button>
+            <button id="closeWorkOrderBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-times-circle mr-2"></i>
+                工单关闭
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出工单
+            </button>
+        </div>
+
+        <!-- 工单统计卡片 - 基于Process.md定义的工单状态 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">168</div>
+                        <div class="text-sm text-gray-600">总工单数</div>
+                        <div class="text-xs text-gray-500">1对1关联MPS</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-list text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">32</div>
+                        <div class="text-sm text-gray-600">待齐套检查</div>
+                        <div class="text-xs text-gray-500">物料准备中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-search text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">18</div>
+                        <div class="text-sm text-gray-600">齐套完成</div>
+                        <div class="text-xs text-gray-500">可下达生产</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-double text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">94</div>
+                        <div class="text-sm text-gray-600">已下达</div>
+                        <div class="text-xs text-gray-500">生产执行中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-paper-plane text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">15</div>
+                        <div class="text-sm text-gray-600">变更中</div>
+                        <div class="text-xs text-gray-500">ECN/需求变更</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-edit text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-gray-600">9</div>
+                        <div class="text-sm text-gray-600">已关闭</div>
+                        <div class="text-xs text-gray-500">完工入库</div>
+                    </div>
+                    <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-gray-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 工单列表 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">工单列表</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>已创建</option>
+                        <option>已齐套</option>
+                        <option>生产中</option>
+                        <option>已完成</option>
+                        <option>已关闭</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部产品</option>
+                        <option>5KW逆变器</option>
+                        <option>10KW逆变器</option>
+                        <option>20KW逆变器</option>
+                        <option>基础控制器</option>
+                        <option>高级控制器</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部产线</option>
+                        <option>逆变器产线1</option>
+                        <option>逆变器产线2</option>
+                        <option>控制器产线</option>
+                    </select>
+                    <input type="text" placeholder="搜索工单号、MPS编号..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <input type="checkbox" class="rounded">
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工单号</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">关联MPS</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品名称</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划数量</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">已完成</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">齐套状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工单状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划开始</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划完成</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">负责人</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="rounded">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline">WO202501001</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-blue-600 cursor-pointer hover:underline">MPS202501001</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">5KW逆变器</div>
+                                <div class="text-xs text-gray-500">型号: INV-5K-V2</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">100台</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">65台</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    已齐套
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    生产中
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">2025-01-20</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">2025-02-15</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">李生产</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-900" title="齐套检查">
+                                        <i class="fas fa-check-circle"></i>
+                                    </button>
+                                    <button class="text-orange-600 hover:text-orange-900" title="工单变更">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="rounded">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline">WO202501002</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-blue-600 cursor-pointer hover:underline">MPS202501002</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">10KW逆变器</div>
+                                <div class="text-xs text-gray-500">型号: INV-10K-V2</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">50台</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">0台</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
+                                    缺料
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    已创建
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">2025-01-25</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">2025-02-20</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">王生产</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-900" title="缺料详情">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                    <button class="text-orange-600 hover:text-orange-900" title="工单变更">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <input type="checkbox" class="rounded">
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline">WO202501003</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-blue-600 cursor-pointer hover:underline">MPS202501003</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">高级控制器</div>
+                                <div class="text-xs text-gray-500">型号: CTRL-ADV-V1</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">20台</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">20台</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    已齐套
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                    已完成
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">2025-01-10</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">2025-01-30</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-gray-900">赵生产</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-900" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-900" title="关闭工单">
+                                        <i class="fas fa-lock"></i>
+                                    </button>
+                                    <button class="text-gray-400" title="已完成" disabled>
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700">
+                    显示 1-10 条，共 67 条记录
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.1.15-2.1.17的工单管理数据模型
+        const workOrderData = [
+            {
+                id: 'WO202501001',
+                mpsId: 'MPS202501001',
+                productName: '5KW逆变器',
+                productCode: 'INV-5KW-001',
+                quantity: 100,
+                planStartDate: '2025-01-20',
+                planEndDate: '2025-02-15',
+                status: 'released',
+                kitStatus: 'complete',
+                progress: 65,
+                priority: 'high',
+                responsible: '张主管',
+                productionLine: '逆变器产线1',
+                bomVersion: 'V1.2',
+                createTime: '2025-01-15 10:00',
+                releaseTime: '2025-01-18 09:00',
+                changeHistory: []
+            },
+            {
+                id: 'WO202501002',
+                mpsId: 'MPS202501002',
+                productName: '储能逆变器',
+                productCode: 'ESS-10KW-002',
+                quantity: 50,
+                planStartDate: '2025-01-25',
+                planEndDate: '2025-02-20',
+                status: 'kit_check',
+                kitStatus: 'pending',
+                progress: 20,
+                priority: 'urgent',
+                responsible: '李主管',
+                productionLine: '逆变器产线2',
+                bomVersion: 'V2.1',
+                createTime: '2025-01-14 14:30',
+                releaseTime: null,
+                changeHistory: []
+            },
+            {
+                id: 'WO202501003',
+                mpsId: 'MPS202501003',
+                productName: '高级控制器',
+                productCode: 'CTRL-ADV-003',
+                quantity: 20,
+                planStartDate: '2025-02-10',
+                planEndDate: '2025-03-01',
+                status: 'changing',
+                kitStatus: 'shortage',
+                progress: 30,
+                priority: 'normal',
+                responsible: '王主管',
+                productionLine: '控制器产线',
+                bomVersion: 'V1.0',
+                createTime: '2025-01-13 09:15',
+                releaseTime: '2025-01-16 10:30',
+                changeHistory: [
+                    { date: '2025-01-16', action: '数量调整', from: '15', to: '20', reason: 'ECN变更', operator: '王主管' }
+                ]
+            },
+            {
+                id: 'WO202501004',
+                mpsId: 'MPS202501004',
+                productName: '3KW逆变器',
+                productCode: 'INV-3KW-004',
+                quantity: 5,
+                planStartDate: '2025-01-18',
+                planEndDate: '2025-01-25',
+                status: 'closed',
+                kitStatus: 'complete',
+                progress: 100,
+                priority: 'urgent',
+                responsible: '赵主管',
+                productionLine: '逆变器产线1',
+                bomVersion: 'V1.1',
+                createTime: '2025-01-12 16:45',
+                releaseTime: '2025-01-15 08:00',
+                changeHistory: []
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            draft: { text: '草稿', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-file' },
+            kit_check: { text: '待齐套检查', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-search' },
+            kit_complete: { text: '齐套完成', class: 'bg-indigo-100 text-indigo-800', icon: 'fas fa-check-double' },
+            released: { text: '已下达', class: 'bg-green-100 text-green-800', icon: 'fas fa-paper-plane' },
+            changing: { text: '变更中', class: 'bg-purple-100 text-purple-800', icon: 'fas fa-edit' },
+            closed: { text: '已关闭', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-check-circle' }
+        };
+
+        // 齐套状态映射
+        const kitStatusMap = {
+            pending: { text: '待检查', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-clock' },
+            complete: { text: '齐套', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            shortage: { text: '缺料', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            partial: { text: '部分齐套', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-minus-circle' }
+        };
+
+        // 优先级映射
+        const priorityMap = {
+            urgent: { text: '紧急', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            high: { text: '高', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-arrow-up' },
+            normal: { text: '正常', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-minus' },
+            low: { text: '低', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-arrow-down' }
+        };
+
+        let filteredData = [...workOrderData];
+
+        // 渲染工单表格
+        function renderWorkOrderTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('workOrderTableBody');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(wo => {
+                const status = statusMap[wo.status];
+                const kitStatus = kitStatusMap[wo.kitStatus];
+                const priority = priorityMap[wo.priority];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <input type="checkbox" class="rounded wo-checkbox" data-id="${wo.id}">
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewWorkOrderDetail('${wo.id}')">
+                            ${wo.id}
+                        </div>
+                        <div class="text-xs text-gray-500">${wo.createTime}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-blue-600 cursor-pointer hover:underline" onclick="viewMPSDetail('${wo.mpsId}')">
+                            ${wo.mpsId}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${wo.productName}</div>
+                        <div class="text-xs text-gray-500">${wo.productCode}</div>
+                        <div class="text-xs text-gray-500">BOM: ${wo.bomVersion}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-center">
+                        <span class="text-sm font-medium text-gray-900">${wo.quantity}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${wo.planStartDate}</div>
+                        <div class="text-xs text-gray-500">至 ${wo.planEndDate}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${wo.productionLine}</div>
+                        <div class="text-xs text-gray-500">${wo.responsible}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${priority.class}">
+                            <i class="${priority.icon} mr-1"></i>
+                            ${priority.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${kitStatus.class}">
+                            <i class="${kitStatus.icon} mr-1"></i>
+                            ${kitStatus.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${wo.progress}%"></div>
+                            </div>
+                            <span class="text-xs text-gray-600">${wo.progress}%</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewWorkOrderDetail('${wo.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${wo.status === 'kit_check' ? `
+                                <button onclick="performKitCheck('${wo.id}')" class="text-green-600 hover:text-green-900 p-1" title="齐套检查">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            ` : ''}
+                            ${wo.status === 'kit_complete' ? `
+                                <button onclick="releaseWorkOrder('${wo.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="下达工单">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            ` : ''}
+                            ${wo.status === 'released' ? `
+                                <button onclick="changeWorkOrder('${wo.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="工单变更">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            ` : ''}
+                            ${wo.progress === 100 && wo.status !== 'closed' ? `
+                                <button onclick="closeWorkOrder('${wo.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="关闭工单">
+                                    <i class="fas fa-times-circle"></i>
+                                </button>
+                            ` : ''}
+                            ${wo.changeHistory.length > 0 ? `
+                                <button onclick="viewChangeHistory('${wo.id}')" class="text-gray-600 hover:text-gray-900 p-1" title="变更历史">
+                                    <i class="fas fa-history"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // 工单操作函数 - 基于Process.md的关键控制点
+        function viewWorkOrderDetail(woId) {
+            const wo = workOrderData.find(w => w.id === woId);
+            if (wo) {
+                alert(`工单详情：\n编号：${wo.id}\n关联MPS：${wo.mpsId}\n产品：${wo.productName}\n数量：${wo.quantity}\n计划开始：${wo.planStartDate}\n计划结束：${wo.planEndDate}\n产线：${wo.productionLine}\n负责人：${wo.responsible}\nBOM版本：${wo.bomVersion}`);
+            }
+        }
+
+        function performKitCheck(woId) {
+            if (confirm('确认进行齐套检查？将检查所有物料的可用性。')) {
+                const wo = workOrderData.find(w => w.id === woId);
+                if (wo) {
+                    // 模拟齐套检查结果
+                    const isComplete = Math.random() > 0.3; // 70%概率齐套
+                    wo.kitStatus = isComplete ? 'complete' : 'shortage';
+                    wo.status = isComplete ? 'kit_complete' : 'kit_check';
+                    wo.progress = isComplete ? 40 : 20;
+                    renderWorkOrderTable();
+                    alert(isComplete ? '齐套检查完成！所有物料已齐套，可下达生产。' : '齐套检查发现缺料！请等待物料到位。');
+                }
+            }
+        }
+
+        function releaseWorkOrder(woId) {
+            if (confirm('确认下达工单？下达后将进入生产执行阶段。')) {
+                const wo = workOrderData.find(w => w.id === woId);
+                if (wo) {
+                    wo.status = 'released';
+                    wo.progress = 50;
+                    wo.releaseTime = new Date().toLocaleString('zh-CN');
+                    renderWorkOrderTable();
+                    alert('工单已下达！生产部门将开始执行生产任务。');
+                }
+            }
+        }
+
+        function changeWorkOrder(woId) {
+            if (confirm('确认发起工单变更？变更可能影响生产计划和交期。')) {
+                const wo = workOrderData.find(w => w.id === woId);
+                if (wo) {
+                    wo.status = 'changing';
+                    wo.progress = 30;
+                    renderWorkOrderTable();
+                    alert('工单变更已发起！将进入变更审批流程。');
+                }
+            }
+        }
+
+        function closeWorkOrder(woId) {
+            if (confirm('确认关闭工单？关闭后工单将完成整个生命周期。')) {
+                const wo = workOrderData.find(w => w.id === woId);
+                if (wo) {
+                    wo.status = 'closed';
+                    wo.progress = 100;
+                    renderWorkOrderTable();
+                    alert('工单已关闭！产品已完工入库。');
+                }
+            }
+        }
+
+        function viewChangeHistory(woId) {
+            const wo = workOrderData.find(w => w.id === woId);
+            if (wo && wo.changeHistory.length > 0) {
+                let historyText = '工单变更历史：\n';
+                wo.changeHistory.forEach(change => {
+                    historyText += `${change.date} - ${change.action}: ${change.from} → ${change.to}\n原因: ${change.reason} (操作人: ${change.operator})\n`;
+                });
+                alert(historyText);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderWorkOrderTable();
+
+            // 生成工单
+            document.getElementById('generateWorkOrderBtn').addEventListener('click', function() {
+                alert('工单生成功能：\n- 基于已发布MPS 1对1生成\n- 自动关联产品BOM\n- 设置计划开始和结束时间\n- 分配生产线和负责人');
+            });
+
+            // 齐套检查
+            document.getElementById('kitCheckBtn').addEventListener('click', function() {
+                const checkedBoxes = document.querySelectorAll('.wo-checkbox:checked');
+                if (checkedBoxes.length === 0) {
+                    alert('请选择要进行齐套检查的工单！');
+                    return;
+                }
+
+                if (confirm(`确认对选中的 ${checkedBoxes.length} 个工单进行齐套检查？`)) {
+                    checkedBoxes.forEach(checkbox => {
+                        const woId = checkbox.dataset.id;
+                        const wo = workOrderData.find(w => w.id === woId);
+                        if (wo && wo.status === 'kit_check') {
+                            const isComplete = Math.random() > 0.3;
+                            wo.kitStatus = isComplete ? 'complete' : 'shortage';
+                            wo.status = isComplete ? 'kit_complete' : 'kit_check';
+                            wo.progress = isComplete ? 40 : 20;
+                        }
+                    });
+                    renderWorkOrderTable();
+                    alert('批量齐套检查完成！');
+                }
+            });
+
+            // 工单下达
+            document.getElementById('releaseWorkOrderBtn').addEventListener('click', function() {
+                const checkedBoxes = document.querySelectorAll('.wo-checkbox:checked');
+                if (checkedBoxes.length === 0) {
+                    alert('请选择要下达的工单！');
+                    return;
+                }
+
+                if (confirm(`确认下达选中的 ${checkedBoxes.length} 个工单？`)) {
+                    checkedBoxes.forEach(checkbox => {
+                        const woId = checkbox.dataset.id;
+                        const wo = workOrderData.find(w => w.id === woId);
+                        if (wo && wo.status === 'kit_complete') {
+                            wo.status = 'released';
+                            wo.progress = 50;
+                            wo.releaseTime = new Date().toLocaleString('zh-CN');
+                        }
+                    });
+                    renderWorkOrderTable();
+                    alert('批量工单下达完成！');
+                }
+            });
+
+            // 工单变更
+            document.getElementById('changeWorkOrderBtn').addEventListener('click', function() {
+                alert('工单变更功能：\n- ECN变更触发工单变更\n- MPS变更触发工单变更\n- 紧急插单触发工单变更\n- 变更审批流程管理');
+            });
+
+            // 工单关闭
+            document.getElementById('closeWorkOrderBtn').addEventListener('click', function() {
+                alert('工单关闭功能：\n- 生产完工确认\n- 质量检验通过\n- 产品入库完成\n- 自动关闭工单');
+            });
+
+            // 全选功能
+            const selectAllCheckbox = document.getElementById('selectAll');
+            if (selectAllCheckbox) {
+                selectAllCheckbox.addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.wo-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

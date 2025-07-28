@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>下线报工系统 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">下线报工系统</h1>
+            <p class="text-gray-600">基于Process.md 2.3.19流程：自动报工→SAP集成→入库流程，实现生产完工自动化管理</p>
+        </div>
+
+        <!-- 下线报工流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">下线报工执行流程</h3>
+                    <span class="text-sm text-gray-600">自动化报工集成系统</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">产品下线</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">自动报工</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">SAP集成</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">入库流程</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="autoReportBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-robot mr-2"></i>
+                自动报工
+            </button>
+            <button id="sapIntegrationBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-exchange-alt mr-2"></i>
+                SAP集成
+            </button>
+            <button id="warehouseInBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-warehouse mr-2"></i>
+                入库流程
+            </button>
+            <button id="qualityConfirmBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                质量确认
+            </button>
+            <button id="productionStatsBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-chart-bar mr-2"></i>
+                生产统计
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 下线报工统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">1,248</div>
+                        <div class="text-sm text-gray-600">今日下线</div>
+                        <div class="text-xs text-gray-500">产品数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-robot text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">1,235</div>
+                        <div class="text-sm text-gray-600">自动报工</div>
+                        <div class="text-xs text-gray-500">成功数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exchange-alt text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">1,198</div>
+                        <div class="text-sm text-gray-600">SAP同步</div>
+                        <div class="text-xs text-gray-500">已完成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-warehouse text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">99.2%</div>
+                        <div class="text-sm text-gray-600">报工成功率</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">1,156</div>
+                        <div class="text-sm text-gray-600">已入库</div>
+                        <div class="text-xs text-gray-500">成品数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-bar text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">13</div>
+                        <div class="text-sm text-gray-600">报工异常</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时监控和SAP集成面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 实时下线监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">实时下线监控</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">产线1 - 5KW逆变器</div>
+                                <div class="text-xs text-gray-500">SN: 2025011601001 | 14:35:20</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">已报工</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-sync text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">产线2 - 储能逆变器</div>
+                                <div class="text-xs text-gray-500">SN: 2025011601002 | 14:36:15</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">SAP同步中</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-red-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">产线3 - 控制器</div>
+                                <div class="text-xs text-gray-500">SN: 2025011601003 | 14:37:00</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">报工失败</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SAP集成状态 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">SAP集成状态</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-server text-gray-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">SAP连接状态</div>
+                                <div class="text-xs text-gray-500">最后同步: 14:37:30</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">在线</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-database text-gray-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">数据同步队列</div>
+                                <div class="text-xs text-gray-500">待处理: 5条记录</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">处理中</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-chart-line text-gray-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">同步成功率</div>
+                                <div class="text-xs text-gray-500">今日: 99.2% (1,198/1,208)</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">正常</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 下线报工记录管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">下线报工记录管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>已下线</option>
+                        <option>已报工</option>
+                        <option>SAP同步中</option>
+                        <option>已入库</option>
+                        <option>异常</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部产线</option>
+                        <option>产线1</option>
+                        <option>产线2</option>
+                        <option>产线3</option>
+                        <option>控制器产线</option>
+                    </select>
+                    <input type="text" placeholder="搜索产品SN、工单号..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">报工编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工单信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产线工位</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">质量状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SAP状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">入库状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="reportingTableBody">
+                        <!-- 报工数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.3.19的下线报工数据模型
+        const offlineReportingData = [
+            {
+                id: 'REPORT202501001',
+                productSN: '2025011601001',
+                productCode: 'INV-5KW-001',
+                productName: '5KW逆变器',
+                workOrderId: 'WO202501001',
+                workOrderQty: 100,
+                completedQty: 1,
+                productionLine: '产线1',
+                workstation: '下线工位',
+                operator: '张师傅',
+                operatorId: 'OP001',
+                qualityStatus: 'qualified',
+                qualityInspector: '李质检',
+                offlineTime: '2025-01-16 14:35:20',
+                reportTime: '2025-01-16 14:35:25',
+                sapSyncTime: '2025-01-16 14:35:30',
+                warehouseInTime: '2025-01-16 14:40:15',
+                status: 'warehoused',
+                sapStatus: 'synced',
+                warehouseStatus: 'in',
+                sapDocumentNo: 'SAP202501001',
+                warehouseLocation: 'A01-01-01',
+                batchNumber: 'BATCH202501001',
+                productionCost: 1250.50,
+                laborCost: 85.20,
+                materialCost: 1165.30,
+                notes: '正常下线，质量合格'
+            },
+            {
+                id: 'REPORT202501002',
+                productSN: '2025011601002',
+                productCode: 'ESS-10KW-002',
+                productName: '储能逆变器',
+                workOrderId: 'WO202501002',
+                workOrderQty: 50,
+                completedQty: 1,
+                productionLine: '产线2',
+                workstation: '下线工位',
+                operator: '王师傅',
+                operatorId: 'OP002',
+                qualityStatus: 'qualified',
+                qualityInspector: '赵质检',
+                offlineTime: '2025-01-16 14:36:15',
+                reportTime: '2025-01-16 14:36:20',
+                sapSyncTime: null,
+                warehouseInTime: null,
+                status: 'sap_syncing',
+                sapStatus: 'syncing',
+                warehouseStatus: 'pending',
+                sapDocumentNo: null,
+                warehouseLocation: null,
+                batchNumber: 'BATCH202501002',
+                productionCost: 2150.80,
+                laborCost: 125.60,
+                materialCost: 2025.20,
+                notes: 'SAP同步中'
+            },
+            {
+                id: 'REPORT202501003',
+                productSN: '2025011601003',
+                productCode: 'CTRL-ADV-003',
+                productName: '高级控制器',
+                workOrderId: 'WO202501003',
+                workOrderQty: 200,
+                completedQty: 1,
+                productionLine: '产线3',
+                workstation: '下线工位',
+                operator: '孙师傅',
+                operatorId: 'OP003',
+                qualityStatus: 'qualified',
+                qualityInspector: '钱质检',
+                offlineTime: '2025-01-16 14:37:00',
+                reportTime: null,
+                sapSyncTime: null,
+                warehouseInTime: null,
+                status: 'report_failed',
+                sapStatus: 'pending',
+                warehouseStatus: 'pending',
+                sapDocumentNo: null,
+                warehouseLocation: null,
+                batchNumber: 'BATCH202501003',
+                productionCost: 850.30,
+                laborCost: 65.40,
+                materialCost: 784.90,
+                errorReason: 'SAP连接超时',
+                notes: '报工失败，需要重试'
+            },
+            {
+                id: 'REPORT202501004',
+                productSN: '2025011601004',
+                productCode: 'INV-3KW-004',
+                productName: '3KW逆变器',
+                workOrderId: 'WO202501004',
+                workOrderQty: 150,
+                completedQty: 1,
+                productionLine: '产线1',
+                workstation: '下线工位',
+                operator: '周师傅',
+                operatorId: 'OP004',
+                qualityStatus: 'rework',
+                qualityInspector: '吴质检',
+                offlineTime: '2025-01-16 14:38:30',
+                reportTime: null,
+                sapSyncTime: null,
+                warehouseInTime: null,
+                status: 'quality_hold',
+                sapStatus: 'pending',
+                warehouseStatus: 'pending',
+                sapDocumentNo: null,
+                warehouseLocation: null,
+                batchNumber: 'BATCH202501004',
+                productionCost: 950.75,
+                laborCost: 75.80,
+                materialCost: 874.95,
+                qualityIssue: '外观检查发现轻微划痕',
+                notes: '质量问题，暂停报工'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            offline: { text: '已下线', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-arrow-down' },
+            reported: { text: '已报工', class: 'bg-green-100 text-green-800', icon: 'fas fa-check' },
+            sap_syncing: { text: 'SAP同步中', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-sync' },
+            warehoused: { text: '已入库', class: 'bg-purple-100 text-purple-800', icon: 'fas fa-warehouse' },
+            report_failed: { text: '报工失败', class: 'bg-red-100 text-red-800', icon: 'fas fa-times' },
+            quality_hold: { text: '质量暂停', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-pause' }
+        };
+
+        // SAP状态映射
+        const sapStatusMap = {
+            pending: { text: '待同步', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-clock' },
+            syncing: { text: '同步中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-sync' },
+            synced: { text: '已同步', class: 'bg-green-100 text-green-800', icon: 'fas fa-check' },
+            failed: { text: '同步失败', class: 'bg-red-100 text-red-800', icon: 'fas fa-times' }
+        };
+
+        // 入库状态映射
+        const warehouseStatusMap = {
+            pending: { text: '待入库', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-clock' },
+            processing: { text: '入库中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-truck' },
+            in: { text: '已入库', class: 'bg-green-100 text-green-800', icon: 'fas fa-warehouse' },
+            failed: { text: '入库失败', class: 'bg-red-100 text-red-800', icon: 'fas fa-times' }
+        };
+
+        // 质量状态映射
+        const qualityStatusMap = {
+            qualified: { text: '合格', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            rework: { text: '返工', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-redo' },
+            rejected: { text: '不合格', class: 'bg-red-100 text-red-800', icon: 'fas fa-times-circle' },
+            pending: { text: '待检', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-clock' }
+        };
+
+        let filteredData = [...offlineReportingData];
+
+        // 渲染下线报工记录表格
+        function renderReportingTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('reportingTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(report => {
+                const status = statusMap[report.status];
+                const sapStatus = sapStatusMap[report.sapStatus];
+                const warehouseStatus = warehouseStatusMap[report.warehouseStatus];
+                const qualityStatus = qualityStatusMap[report.qualityStatus];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewReportDetail('${report.id}')">
+                            ${report.id}
+                        </div>
+                        <div class="text-xs text-gray-500">${report.offlineTime}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewProductDetail('${report.productSN}')">
+                            ${report.productSN}
+                        </div>
+                        <div class="text-sm text-gray-900">${report.productName}</div>
+                        <div class="text-xs text-gray-500">${report.productCode}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewWorkOrder('${report.workOrderId}')">
+                            ${report.workOrderId}
+                        </div>
+                        <div class="text-xs text-gray-500">完成: ${report.completedQty}/${report.workOrderQty}</div>
+                        <div class="text-xs text-gray-500">批次: ${report.batchNumber}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${report.productionLine}</div>
+                        <div class="text-xs text-gray-500">${report.workstation}</div>
+                        <div class="text-xs text-blue-600">操作员: ${report.operator}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${qualityStatus.class}">
+                            <i class="${qualityStatus.icon} mr-1"></i>
+                            ${qualityStatus.text}
+                        </span>
+                        <div class="text-xs text-gray-500 mt-1">质检: ${report.qualityInspector}</div>
+                        ${report.qualityIssue ? `
+                            <div class="text-xs text-orange-600 mt-1">${report.qualityIssue}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${sapStatus.class}">
+                            <i class="${sapStatus.icon} mr-1"></i>
+                            ${sapStatus.text}
+                        </span>
+                        ${report.sapDocumentNo ? `
+                            <div class="text-xs text-gray-500 mt-1">单号: ${report.sapDocumentNo}</div>
+                        ` : ''}
+                        ${report.sapSyncTime ? `
+                            <div class="text-xs text-gray-500 mt-1">${report.sapSyncTime.split(' ')[1]}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${warehouseStatus.class}">
+                            <i class="${warehouseStatus.icon} mr-1"></i>
+                            ${warehouseStatus.text}
+                        </span>
+                        ${report.warehouseLocation ? `
+                            <div class="text-xs text-gray-500 mt-1">库位: ${report.warehouseLocation}</div>
+                        ` : ''}
+                        ${report.warehouseInTime ? `
+                            <div class="text-xs text-gray-500 mt-1">${report.warehouseInTime.split(' ')[1]}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">下线: ${report.offlineTime.split(' ')[1]}</div>
+                        ${report.reportTime ? `
+                            <div class="text-xs text-gray-500">报工: ${report.reportTime.split(' ')[1]}</div>
+                        ` : ''}
+                        <div class="text-xs text-orange-600">成本: ¥${report.productionCost}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewReportDetail('${report.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${report.status === 'report_failed' ? `
+                                <button onclick="retryReport('${report.id}')" class="text-green-600 hover:text-green-900 p-1" title="重试报工">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            ` : ''}
+                            ${report.sapStatus === 'failed' ? `
+                                <button onclick="retrySapSync('${report.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="重试SAP同步">
+                                    <i class="fas fa-sync"></i>
+                                </button>
+                            ` : ''}
+                            ${report.status === 'quality_hold' ? `
+                                <button onclick="releaseQualityHold('${report.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="解除质量暂停">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewCostBreakdown('${report.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="成本明细">
+                                <i class="fas fa-calculator"></i>
+                            </button>
+                            ${report.warehouseStatus === 'in' ? `
+                                <button onclick="printLabel('${report.id}')" class="text-gray-600 hover:text-gray-900 p-1" title="打印标签">
+                                    <i class="fas fa-print"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${offlineReportingData.length} 条记录`;
+        }
+
+        // 报工操作函数
+        function viewReportDetail(reportId) {
+            const report = offlineReportingData.find(r => r.id === reportId);
+            if (report) {
+                let detailText = `下线报工详情：\n编号: ${report.id}\n产品SN: ${report.productSN}\n产品名称: ${report.productName}\n工单号: ${report.workOrderId}\n生产数量: ${report.completedQty}/${report.workOrderQty}\n产线: ${report.productionLine}\n工位: ${report.workstation}\n操作员: ${report.operator}\n质检员: ${report.qualityInspector}\n质量状态: ${qualityStatusMap[report.qualityStatus].text}\n下线时间: ${report.offlineTime}`;
+
+                if (report.reportTime) {
+                    detailText += `\n报工时间: ${report.reportTime}`;
+                }
+                if (report.sapSyncTime) {
+                    detailText += `\nSAP同步时间: ${report.sapSyncTime}`;
+                }
+                if (report.warehouseInTime) {
+                    detailText += `\n入库时间: ${report.warehouseInTime}`;
+                }
+
+                detailText += `\n\n成本信息:\n总成本: ¥${report.productionCost}\n人工成本: ¥${report.laborCost}\n物料成本: ¥${report.materialCost}`;
+
+                if (report.sapDocumentNo) {
+                    detailText += `\n\nSAP单据号: ${report.sapDocumentNo}`;
+                }
+                if (report.warehouseLocation) {
+                    detailText += `\n库位: ${report.warehouseLocation}`;
+                }
+
+                if (report.errorReason) {
+                    detailText += `\n\n异常原因: ${report.errorReason}`;
+                }
+                if (report.qualityIssue) {
+                    detailText += `\n质量问题: ${report.qualityIssue}`;
+                }
+                if (report.notes) {
+                    detailText += `\n备注: ${report.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function retryReport(reportId) {
+            const report = offlineReportingData.find(r => r.id === reportId);
+            if (report) {
+                if (confirm(`确认重试报工？\n编号: ${report.id}\n产品SN: ${report.productSN}`)) {
+                    report.status = 'reported';
+                    report.reportTime = new Date().toLocaleString('zh-CN');
+                    report.sapStatus = 'syncing';
+                    report.errorReason = null;
+                    report.notes = '重试报工成功';
+                    renderReportingTable();
+                    alert('报工重试成功！正在进行SAP同步...');
+                }
+            }
+        }
+
+        function retrySapSync(reportId) {
+            const report = offlineReportingData.find(r => r.id === reportId);
+            if (report) {
+                if (confirm(`确认重试SAP同步？\n编号: ${report.id}\n产品SN: ${report.productSN}`)) {
+                    report.sapStatus = 'syncing';
+                    setTimeout(() => {
+                        report.sapStatus = 'synced';
+                        report.sapSyncTime = new Date().toLocaleString('zh-CN');
+                        report.sapDocumentNo = `SAP${Date.now()}`;
+                        report.status = 'sap_syncing';
+                        renderReportingTable();
+                        alert('SAP同步成功！');
+                    }, 2000);
+                    renderReportingTable();
+                    alert('正在重试SAP同步...');
+                }
+            }
+        }
+
+        function releaseQualityHold(reportId) {
+            const report = offlineReportingData.find(r => r.id === reportId);
+            if (report) {
+                const decision = confirm('质量问题处理决策：\n点击"确定"表示问题已解决，继续报工\n点击"取消"表示需要返工处理');
+                if (decision) {
+                    report.status = 'reported';
+                    report.qualityStatus = 'qualified';
+                    report.reportTime = new Date().toLocaleString('zh-CN');
+                    report.sapStatus = 'syncing';
+                    report.qualityIssue = null;
+                    report.notes = '质量问题已解决，继续报工';
+                    renderReportingTable();
+                    alert('质量暂停已解除！产品继续报工流程。');
+                } else {
+                    alert('产品将转入返工流程处理。');
+                }
+            }
+        }
+
+        function viewCostBreakdown(reportId) {
+            const report = offlineReportingData.find(r => r.id === reportId);
+            if (report) {
+                const materialPercent = ((report.materialCost / report.productionCost) * 100).toFixed(1);
+                const laborPercent = ((report.laborCost / report.productionCost) * 100).toFixed(1);
+                alert(`成本明细分析：\n产品SN: ${report.productSN}\n\n总成本: ¥${report.productionCost}\n\n成本构成:\n• 物料成本: ¥${report.materialCost} (${materialPercent}%)\n• 人工成本: ¥${report.laborCost} (${laborPercent}%)\n\n成本分析:\n• 单位人工成本: ¥${(report.laborCost / report.completedQty).toFixed(2)}\n• 单位物料成本: ¥${(report.materialCost / report.completedQty).toFixed(2)}\n• 成本效率: ${materialPercent > 85 ? '良好' : '需优化'}`);
+            }
+        }
+
+        function printLabel(reportId) {
+            const report = offlineReportingData.find(r => r.id === reportId);
+            if (report) {
+                alert(`打印成品标签：\n产品SN: ${report.productSN}\n产品名称: ${report.productName}\n批次号: ${report.batchNumber}\n库位: ${report.warehouseLocation}\n入库时间: ${report.warehouseInTime}\n质量状态: ${qualityStatusMap[report.qualityStatus].text}\n\n标签正在打印...`);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderReportingTable();
+
+            // 自动报工
+            document.getElementById('autoReportBtn').addEventListener('click', function() {
+                alert('自动报工功能：\n- 产品下线自动触发\n- 质量状态自动检查\n- 工单数量自动更新\n- 成本信息自动计算\n- 异常情况自动处理');
+            });
+
+            // SAP集成
+            document.getElementById('sapIntegrationBtn').addEventListener('click', function() {
+                alert('SAP集成功能：\n- 实时数据同步\n- 工单状态更新\n- 成本信息传递\n- 库存数量更新\n- 财务数据集成');
+            });
+
+            // 入库流程
+            document.getElementById('warehouseInBtn').addEventListener('click', function() {
+                alert('入库流程功能：\n- 自动库位分配\n- 入库单据生成\n- 库存数量更新\n- 批次信息管理\n- 质量状态跟踪');
+            });
+
+            // 质量确认
+            document.getElementById('qualityConfirmBtn').addEventListener('click', function() {
+                alert('质量确认功能：\n- 质检结果确认\n- 不合格品处理\n- 质量数据统计\n- 质量问题跟踪\n- 改进措施记录');
+            });
+
+            // 生产统计
+            document.getElementById('productionStatsBtn').addEventListener('click', function() {
+                alert('生产统计功能：\n- 产量统计分析\n- 效率指标计算\n- 成本趋势分析\n- 质量指标统计\n- 报表自动生成');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安防设备维护 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-tools text-primary mr-3"></i>
+                安防设备维护管理
+            </h1>
+            <p class="text-gray-600 mt-2">预防性维护，保障设备稳定运行</p>
+        </div>
+
+        <!-- 设备维护概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">设备总数</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">433</p>
+                        <p class="text-sm text-gray-500">台</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-server text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>正常:</span>
+                        <span class="text-green-600 font-medium">425台</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>故障:</span>
+                        <span class="text-red-600 font-medium">8台</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">设备完好率</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">98.2%</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>目标:</span>
+                        <span class="text-blue-600 font-medium">≥95%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>达标:</span>
+                        <span class="text-green-600 font-medium">是</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">维护任务</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">15</p>
+                        <p class="text-sm text-gray-500">本周</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-tasks text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>已完成:</span>
+                        <span class="text-green-600 font-medium">12项</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>进行中:</span>
+                        <span class="text-yellow-600 font-medium">3项</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">故障率</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">1.8%</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">-0.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>趋势:</span>
+                        <span class="text-green-600 font-medium">下降</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备分类统计 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-pie text-blue-600 mr-2"></i>
+                设备分类统计
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">视频监控</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">260台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 正常运行: 256台</div>
+                        <div>• 故障设备: 4台</div>
+                        <div>• 完好率: 98.5%</div>
+                        <div>• 本月维护: 8台</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 98.5%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">设备健康度: 98.5%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">门禁系统</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">45台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 正常运行: 45台</div>
+                        <div>• 故障设备: 0台</div>
+                        <div>• 完好率: 100%</div>
+                        <div>• 本月维护: 3台</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">设备健康度: 100%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4 border border-red-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">报警系统</h4>
+                        <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">128台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 正常运行: 124台</div>
+                        <div>• 故障设备: 4台</div>
+                        <div>• 完好率: 96.9%</div>
+                        <div>• 本月维护: 4台</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-red-500 h-2 rounded-full" style="width: 96.9%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">设备健康度: 96.9%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 维护任务管理 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-clipboard-list text-green-600 mr-2"></i>
+                    维护任务管理
+                </h3>
+                <div class="space-y-4">
+                    <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">紧急维修</h4>
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">紧急</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 设备: CAM156 - 东门摄像头</div>
+                            <div>• 故障: 网络连接中断</div>
+                            <div>• 负责人: 王技术员</div>
+                            <div>• 计划时间: 今日 15:00</div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                                立即处理
+                            </button>
+                            <button class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                    <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">预防性维护</h4>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">计划中</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 设备: 生产区域摄像头组</div>
+                            <div>• 维护: 定期清洁和检查</div>
+                            <div>• 负责人: 李维护员</div>
+                            <div>• 计划时间: 明日 09:00</div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700">
+                                确认计划
+                            </button>
+                            <button class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                    <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">维护完成</h4>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 设备: AC001 - 东门门禁</div>
+                            <div>• 维护: 系统升级和测试</div>
+                            <div>• 负责人: 张工程师</div>
+                            <div>• 完成时间: 昨日 16:30</div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                                查看报告
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-purple-600 mr-2"></i>
+                    设备健康分析
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">运行时长分析</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 平均运行时长: 8,760小时</div>
+                            <div>• 最长运行设备: CAM001 (12,000小时)</div>
+                            <div>• 新安装设备: 8台 (本月)</div>
+                            <div>• 预计更换: 3台 (下月)</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">故障趋势分析</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 本月故障: 8起</div>
+                            <div>• 较上月: -25%</div>
+                            <div>• 主要原因: 网络连接(50%)</div>
+                            <div>• 修复时间: 平均2.5小时</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">维护效果评估</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 预防性维护: 12次</div>
+                            <div>• 故障预防率: 85%</div>
+                            <div>• 维护成本: ¥15,600</div>
+                            <div>• 成本节约: ¥8,900</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备维护记录 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-history text-blue-600 mr-2"></i>
+                设备维护记录
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备类型</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">维护类型</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">维护人员</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">维护时间</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAM156</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">网络摄像头</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">故障维修</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">王技术员</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 15:00</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">进行中</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AC001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">门禁控制器</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">系统升级</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">张工程师</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-16 16:30</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看报告</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">FD-008</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">烟雾检测器</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">定期检查</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">李维护员</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-15 10:00</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看报告</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">IR-025</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">红外感应器</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">清洁保养</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">赵维护员</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-14 14:00</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看报告</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 维护计划和备件管理 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-calendar-alt text-green-600 mr-2"></i>
+                    维护计划
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">本周计划</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 周一: 办公区摄像头清洁 (8台)</div>
+                            <div>• 周三: 门禁系统检查 (15台)</div>
+                            <div>• 周五: 报警器测试 (20台)</div>
+                            <div>• 周日: 系统备份和更新</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">下周计划</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 周二: 生产区设备巡检</div>
+                            <div>• 周四: 网络设备维护</div>
+                            <div>• 周六: 应急设备测试</div>
+                            <div>• 预计工时: 32小时</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-boxes text-purple-600 mr-2"></i>
+                    备件库存管理
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">摄像头配件</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div class="flex justify-between">
+                                <span>镜头模组:</span>
+                                <span class="font-medium text-blue-600">15个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>电源适配器:</span>
+                                <span class="font-medium text-blue-600">25个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>网络模块:</span>
+                                <span class="font-medium text-red-600">3个(低库存)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">门禁配件</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div class="flex justify-between">
+                                <span>读卡器:</span>
+                                <span class="font-medium text-green-600">8个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>电磁锁:</span>
+                                <span class="font-medium text-green-600">12个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>控制板:</span>
+                                <span class="font-medium text-green-600">6个</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">报警配件</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div class="flex justify-between">
+                                <span>传感器:</span>
+                                <span class="font-medium text-red-600">18个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>报警器:</span>
+                                <span class="font-medium text-red-600">10个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>控制模块:</span>
+                                <span class="font-medium text-yellow-600">5个(需补充)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">新建任务</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-calendar text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">维护计划</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-boxes text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">备件管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-chart-bar text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">维护报告</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 安防设备维护功能
+        function initEquipmentMaintenance() {
+            console.log('初始化安防设备维护功能');
+            
+            // 维护任务按钮事件
+            const taskButtons = document.querySelectorAll('button');
+            taskButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('立即处理')) {
+                    button.addEventListener('click', function() {
+                        console.log('立即处理紧急维修');
+                        if (confirm('确认立即处理CAM156设备故障？')) {
+                            alert('维修任务已分配给王技术员，预计30分钟完成');
+                        }
+                    });
+                } else if (text.includes('确认计划')) {
+                    button.addEventListener('click', function() {
+                        console.log('确认维护计划');
+                        alert('预防性维护计划已确认，将按时执行');
+                    });
+                } else if (text.includes('查看报告')) {
+                    button.addEventListener('click', function() {
+                        console.log('查看维护报告');
+                        alert('正在查看设备维护详细报告...');
+                    });
+                } else if (text.includes('新建任务')) {
+                    button.addEventListener('click', function() {
+                        console.log('新建维护任务');
+                        alert('正在打开新建维护任务界面...');
+                    });
+                }
+            });
+            
+            // 维护记录表格操作
+            const tableLinks = document.querySelectorAll('.cursor-pointer');
+            tableLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const action = this.textContent.trim();
+                    const deviceId = this.closest('tr').querySelector('td').textContent;
+                    console.log('维护记录操作:', action, deviceId);
+                    if (action === '查看详情') {
+                        alert(`正在查看设备 ${deviceId} 的维护详情...`);
+                    } else if (action === '查看报告') {
+                        alert(`正在查看设备 ${deviceId} 的维护报告...`);
+                    }
+                });
+            });
+            
+            // 实时数据更新
+            function updateMaintenanceData() {
+                console.log('更新维护数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateMaintenanceData, 60000); // 每分钟更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initEquipmentMaintenance();
+            console.log('安防设备维护页面加载完成');
+        });
+    </script>
+</body>
+</html>

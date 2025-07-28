@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">生产管理</h1>
+            <p class="text-gray-600">基于Process.md 2.3生产模块流程，实现"从原料到成品"的完整MES制造执行系统</p>
+        </div>
+
+        <!-- 生产概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-600">活跃工单</div>
+                        <div class="text-xs text-gray-500">正在执行</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-list text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">89.5%</div>
+                        <div class="text-sm text-gray-600">设备利用率</div>
+                        <div class="text-xs text-gray-500">当前状态</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-bar text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">95.2%</div>
+                        <div class="text-sm text-gray-600">生产达成率</div>
+                        <div class="text-xs text-gray-500">本月累计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">8</div>
+                        <div class="text-sm text-gray-600">生产异常</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 生产管理功能模块 -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6">生产管理功能模块 (基于Process.md 2.3节)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 产线工艺管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('process-planning')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-cogs text-blue-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">2.3.1</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">产线工艺管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">产线工艺规划，设备集成和控制系统管理</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">产线数量: 8条</span>
+                            <span class="text-green-600 font-medium">运行率: 95%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 物料配送管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('material-delivery')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-truck text-green-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">2.3.2-2.3.3</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">物料配送管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">车间物料配送流程、线边库管理流程</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">配送任务: 23个</span>
+                            <span class="text-green-600 font-medium">及时率: 96%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 生产异常管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('exception-management')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">2.3.4</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">生产异常管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">生产异常处理流程，ANDON系统管理</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">待处理: 8个</span>
+                            <span class="text-orange-600 font-medium">响应时间: 5min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 质量检测管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('quality-detection')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-search text-purple-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">2.3.5-2.3.6</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">质量检测管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">接线线序检测、功率板螺钉漏装检测流程</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">检测点: 156个</span>
+                            <span class="text-green-600 font-medium">通过率: 99%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 清换线管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('changeover-management')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-exchange-alt text-orange-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">2.3.7</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">清换线管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">正常清换线、异常清换线、物料异常处理流程</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">换线次数: 12次</span>
+                            <span class="text-green-600 font-medium">效率: 92%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 防错追溯管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('error-traceability')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-shield-alt text-indigo-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">2.3.8-2.3.9</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">防错追溯管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">物料装配防错流程、产品追溯管理流程</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">防错点: 156个</span>
+                            <span class="text-green-600 font-medium">有效率: 99%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 作业指导管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('work-instruction')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-book text-teal-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-teal-100 text-teal-800 px-2 py-1 rounded-full">2.3.10-2.3.12</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">作业指导管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">作业指导书、表单标签打印、测试程序管理</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">指导书: 89个</span>
+                            <span class="text-green-600 font-medium">覆盖率: 100%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 智能设备管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('smart-equipment')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-robot text-yellow-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">2.3.13-2.3.16</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">智能设备管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">智能工装、耗材柜、工具柜、自动发料柜管理</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">智能设备: 45台</span>
+                            <span class="text-green-600 font-medium">在线率: 98%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 生产监控管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('production-monitoring')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-chart-line text-pink-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded-full">2.3.17-2.3.19</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">生产监控管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">生产过程监控、返工返修、下线报工作业流程</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">监控点: 2,456个</span>
+                            <span class="text-green-600 font-medium">实时率: 100%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 人员管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToModule('personnel-management')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-users text-cyan-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-cyan-100 text-cyan-800 px-2 py-1 rounded-full">2.3.20-2.3.21</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">人员管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">人员资质管理流程、考勤管理流程</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">在岗人员: 85人</span>
+                            <span class="text-green-600 font-medium">出勤率: 96%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 导航到具体模块
+        function navigateToModule(module) {
+            const moduleUrls = {
+                'process-planning': './process-planning.html',
+                'material-delivery': './material-delivery.html',
+                'exception-management': './exception-management.html',
+                'quality-detection': './quality-detection.html',
+                'changeover-management': './changeover-management.html',
+                'error-traceability': './error-traceability.html',
+                'work-instruction': './work-instruction.html',
+                'smart-equipment': './smart-equipment.html',
+                'production-monitoring': './production-monitoring.html',
+                'personnel-management': './personnel-management.html'
+            };
+            
+            if (moduleUrls[module]) {
+                window.location.href = moduleUrls[module];
+            }
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('生产管理模块已加载');
+        });
+    </script>
+</body>
+</html>

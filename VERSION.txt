@@ -1,0 +1,35 @@
+慧新全智厂园一体平台
+版本: v1.2.0
+发布日期: 2025-01-17
+状态: 正式发布版本
+
+主要特性:
+- 智慧园区功能模块群 (8个模块)
+- 精准版本控制系统
+- 导航栏水平滚动优化
+- IOC中心深度功能开发
+- 企业级UI设计系统
+
+技术栈:
+- HTML5 + Tailwind CSS + FontAwesome
+- Vanilla JavaScript
+- 响应式设计
+- 模块化架构
+
+支持的行业版本:
+- 通用行业 (智能制造 + 智慧园区)
+- 汽车零部件行业 (智能制造)
+- 光电行业 (智能制造)
+- 逆变器行业 (智能制造)
+
+部署要求:
+- 现代Web浏览器 (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
+- HTTP服务器 (Apache/Nginx/IIS/Python HTTP Server)
+- CDN支持 (Tailwind CSS, FontAwesome)
+
+测试凭据:
+- 用户名: admin
+- 密码: admin
+
+开发团队: 慧新全智厂园一体平台开发团队
+版权所有: © 2025 慧新全智厂园一体平台

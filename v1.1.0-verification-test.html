@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v1.1.0版本验证测试 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen p-6">
+        <!-- 页面标题 -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">数字工厂一体化平台 v1.1.0 版本验证测试</h1>
+            <p class="text-gray-600">验证导航顺序优化、系统集成改进和运营中心模块重构功能</p>
+        </div>
+
+        <!-- 版本信息 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">📋 版本信息</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">基本信息</h4>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li><strong>版本号</strong>: v1.1.0</li>
+                            <li><strong>发布日期</strong>: 2025年1月17日</li>
+                            <li><strong>版本状态</strong>: 架构优化版本</li>
+                            <li><strong>基于版本</strong>: v1.0.1</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">主要优化</h4>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li>🔄 导航顺序优化</li>
+                            <li>🏢 系统集成优化</li>
+                            <li>🎛️ 运营中心模块重构</li>
+                            <li>🎯 用户体验提升</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试任务1：导航顺序优化 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">🔄 任务1：导航顺序优化验证</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">顶部导航栏顺序验证</h4>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <p class="text-sm text-blue-800 mb-2"><strong>预期顺序</strong>：</p>
+                            <ol class="text-sm text-blue-700 space-y-1">
+                                <li>1. 首页</li>
+                                <li>2. 计划管理</li>
+                                <li>3. 生产管理</li>
+                                <li>4. 仓储管理</li>
+                                <li>5. 厂内物流</li>
+                                <li>6. 质量管理</li>
+                                <li>7. 设备管理</li>
+                            </ol>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">顶部导航栏顺序正确</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">首页快速访问顺序验证</h4>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <p class="text-sm text-green-800 mb-2"><strong>业务平台模块顺序</strong>：</p>
+                            <ol class="text-sm text-green-700 space-y-1">
+                                <li>1. 计划管理</li>
+                                <li>2. 生产管理</li>
+                                <li>3. 仓储管理</li>
+                                <li>4. 厂内物流</li>
+                                <li>5. 质量管理</li>
+                                <li>6. 设备管理</li>
+                                <li>7. 能源管理</li>
+                            </ol>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">首页快速访问顺序正确</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试任务2：系统集成优化 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">🏢 任务2：系统集成优化验证</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">SAP系统标题验证</h4>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <p class="text-sm text-blue-800 mb-2"><strong>修改前</strong>：</p>
+                            <p class="text-sm text-blue-700">"单点登录至正泰SAP系统"</p>
+                            <p class="text-sm text-blue-800 mb-2 mt-3"><strong>修改后</strong>：</p>
+                            <p class="text-sm text-blue-700">"单点登录至SAP系统"</p>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">SAP标题已移除"正泰"字样</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">OA系统标题验证</h4>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <p class="text-sm text-green-800 mb-2"><strong>修改前</strong>：</p>
+                            <p class="text-sm text-green-700">"单点登录至正泰OA系统"</p>
+                            <p class="text-sm text-green-800 mb-2 mt-3"><strong>修改后</strong>：</p>
+                            <p class="text-sm text-green-700">"单点登录至OA系统"</p>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">OA标题已移除"正泰"字样</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试任务3：运营中心模块重构 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">🎛️ 任务3：运营中心模块重构验证</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">模块区域验证</h4>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <p class="text-sm text-purple-800 mb-2"><strong>新架构</strong>：</p>
+                            <ol class="text-sm text-purple-700 space-y-1">
+                                <li>1. 业务平台</li>
+                                <li>2. 运营中心 (新增)</li>
+                                <li>3. 基础平台</li>
+                            </ol>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">运营中心为独立模块区域</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">数据看板验证</h4>
+                        <div class="bg-red-50 p-4 rounded-lg">
+                            <p class="text-sm text-red-800 mb-2"><strong>功能重命名</strong>：</p>
+                            <p class="text-sm text-red-700">原"运营中心" → "数据看板"</p>
+                            <p class="text-sm text-red-800 mb-2 mt-3"><strong>功能描述</strong>：</p>
+                            <p class="text-sm text-red-700">"数据大屏、运营分析、决策支持"</p>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">数据看板功能正确显示</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">数字孪生验证</h4>
+                        <div class="bg-violet-50 p-4 rounded-lg">
+                            <p class="text-sm text-violet-800 mb-2"><strong>新增功能</strong>：</p>
+                            <p class="text-sm text-violet-700">数字孪生</p>
+                            <p class="text-sm text-violet-800 mb-2 mt-3"><strong>功能描述</strong>：</p>
+                            <p class="text-sm text-violet-700">"3D建模、虚拟仿真、智能预测"</p>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">数字孪生功能正确显示</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试步骤 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">📋 测试步骤</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">打开平台主页</h4>
+                            <p class="text-sm text-gray-600">访问 <a href="http://localhost:8081/" target="_blank" class="text-blue-600 hover:underline">http://localhost:8081/</a></p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">验证顶部导航栏顺序</h4>
+                            <p class="text-sm text-gray-600">检查导航按钮顺序是否为：计划管理→生产管理→仓储管理→厂内物流→质量管理→设备管理</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">验证首页快速访问顺序</h4>
+                            <p class="text-sm text-gray-600">检查业务平台模块卡片顺序是否按照新的排列显示</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">4</div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">验证SAP/OA标题修改</h4>
+                            <p class="text-sm text-gray-600">检查SAP和OA卡片的副标题是否已移除"正泰"字样</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold">5</div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">验证运营中心模块重构</h4>
+                            <p class="text-sm text-gray-600">检查是否有独立的运营中心模块区域，包含数据看板和数字孪生两个功能</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速测试按钮 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">🚀 快速测试</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button onclick="window.open('http://localhost:8081/', '_blank')" 
+                            class="p-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        <i class="fas fa-home mb-2"></i>
+                        <div class="font-medium">打开平台主页</div>
+                        <div class="text-xs opacity-80">验证导航和模块布局</div>
+                    </button>
+                    <button onclick="testNavigationOrder()" 
+                            class="p-4 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                        <i class="fas fa-list mb-2"></i>
+                        <div class="font-medium">检查导航顺序</div>
+                        <div class="text-xs opacity-80">自动验证导航排列</div>
+                    </button>
+                    <button onclick="testOperationsCenter()" 
+                            class="p-4 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors">
+                        <i class="fas fa-chart-line mb-2"></i>
+                        <div class="font-medium">验证运营中心</div>
+                        <div class="text-xs opacity-80">检查模块重构效果</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 验证结果总结 -->
+        <div class="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6">
+            <div class="flex items-start">
+                <i class="fas fa-clipboard-check text-green-600 text-2xl mr-4 mt-1"></i>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">v1.1.0版本验证清单</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-medium text-gray-800 mb-2">导航优化验证</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>□ 顶部导航栏顺序正确</li>
+                                <li>□ 首页快速访问顺序正确</li>
+                                <li>□ 导航功能正常工作</li>
+                                <li>□ 视觉效果保持一致</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-800 mb-2">架构重构验证</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>□ SAP/OA标题修改正确</li>
+                                <li>□ 运营中心独立模块区域</li>
+                                <li>□ 数据看板功能正确</li>
+                                <li>□ 数字孪生功能新增</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-white rounded-lg border border-green-200">
+                        <p class="text-sm text-green-800">
+                            <i class="fas fa-lightbulb mr-2"></i>
+                            <strong>测试提示</strong>：请按照测试步骤逐项验证，确保所有功能都按照v1.1.0版本要求正确实现。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 测试导航顺序
+        function testNavigationOrder() {
+            alert('请手动检查：\n1. 顶部导航栏顺序\n2. 首页快速访问模块顺序\n\n如果顺序正确，请在验证清单中勾选对应项目。');
+        }
+
+        // 测试运营中心
+        function testOperationsCenter() {
+            alert('请手动检查：\n1. 运营中心是否为独立模块区域\n2. 数据看板功能是否正确显示\n3. 数字孪生功能是否新增\n\n如果功能正确，请在验证清单中勾选对应项目。');
+        }
+
+        // 页面加载完成后的提示
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('v1.1.0版本验证测试页面已加载');
+            console.log('请按照测试步骤验证所有功能');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v1.2.0修复验证测试 - 慧新全智厂园一体平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen p-6">
+        <!-- 页面标题 -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">慧新全智厂园一体平台 v1.2.0 修复验证测试</h1>
+            <p class="text-gray-600">验证登录后显示问题修复和登录页面布局优化效果</p>
+        </div>
+
+        <!-- 修复概述 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">🔧 修复概述</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">问题1：登录后内容显示异常</h4>
+                        <div class="bg-red-50 p-4 rounded-lg mb-3">
+                            <p class="text-sm text-red-800 mb-2"><strong>修复前问题</strong>：</p>
+                            <ul class="text-sm text-red-700 space-y-1">
+                                <li>• 主页面内容出现嵌套显示问题</li>
+                                <li>• 页面布局异常</li>
+                                <li>• 重复的用户界面元素</li>
+                                <li>• iframe嵌套问题</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <p class="text-sm text-green-800 mb-2"><strong>修复后效果</strong>：</p>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li>• 移除重复的用户界面代码</li>
+                                <li>• 修复iframe嵌套显示问题</li>
+                                <li>• 确保所有模块页面正常显示</li>
+                                <li>• 保持AI助手功能正常</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">问题2：登录页面布局优化</h4>
+                        <div class="bg-orange-50 p-4 rounded-lg mb-3">
+                            <p class="text-sm text-orange-800 mb-2"><strong>优化前问题</strong>：</p>
+                            <ul class="text-sm text-orange-700 space-y-1">
+                                <li>• 登录卡片高度过大</li>
+                                <li>• 占据屏幕空间过多</li>
+                                <li>• 间距不够紧凑</li>
+                                <li>• 移动端体验不佳</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <p class="text-sm text-blue-800 mb-2"><strong>优化后效果</strong>：</p>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• 登录卡片高度缩减为80%</li>
+                                <li>• 优化间距和元素尺寸</li>
+                                <li>• 保持企业级设计风格</li>
+                                <li>• 改善响应式体验</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试任务1：登录后内容显示修复验证 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">🔍 任务1：登录后内容显示修复验证</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">主页面布局验证</h4>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <p class="text-sm text-purple-800 mb-2"><strong>验证要点</strong>：</p>
+                            <ul class="text-sm text-purple-700 space-y-1">
+                                <li>• 登录后主页面正常显示</li>
+                                <li>• 无重复的用户界面元素</li>
+                                <li>• iframe内容正确加载</li>
+                                <li>• 页面布局整齐有序</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">主页面布局正常</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">模块页面验证</h4>
+                        <div class="bg-cyan-50 p-4 rounded-lg">
+                            <p class="text-sm text-cyan-800 mb-2"><strong>测试模块</strong>：</p>
+                            <ul class="text-sm text-cyan-700 space-y-1">
+                                <li>• 业务中心（7个模块）</li>
+                                <li>• 运营中心（2个模块）</li>
+                                <li>• 基础平台（5个模块）</li>
+                                <li>• 所有35个功能模块</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">所有模块页面正常加载</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试任务2：登录页面布局优化验证 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">🎨 任务2：登录页面布局优化验证</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">卡片尺寸优化</h4>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <p class="text-sm text-green-800 mb-2"><strong>优化内容</strong>：</p>
+                            <ul class="text-sm text-green-700 space-y-1">
+                                <li>• 卡片内边距：8 → 6</li>
+                                <li>• Logo尺寸：20×20 → 16×16</li>
+                                <li>• 标题间距：mb-8 → mb-6</li>
+                                <li>• 表单间距：space-y-6 → space-y-4</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">卡片尺寸优化正确</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">输入框优化</h4>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <p class="text-sm text-blue-800 mb-2"><strong>优化内容</strong>：</p>
+                            <ul class="text-sm text-blue-700 space-y-1">
+                                <li>• 标签间距：mb-2 → mb-1</li>
+                                <li>• 输入框高度：py-3 → py-2.5</li>
+                                <li>• 按钮高度：py-3 → py-2.5</li>
+                                <li>• 版本信息间距：mt-8 → mt-6</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">输入框优化正确</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">响应式效果</h4>
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <p class="text-sm text-yellow-800 mb-2"><strong>测试设备</strong>：</p>
+                            <ul class="text-sm text-yellow-700 space-y-1">
+                                <li>• 桌面端（>1024px）</li>
+                                <li>• 平板端（768px-1024px）</li>
+                                <li>• 移动端（<768px）</li>
+                                <li>• 各种分辨率适配</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">响应式效果良好</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试任务3：功能完整性验证 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">⚙️ 任务3：功能完整性验证</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">登录功能验证</h4>
+                        <div class="bg-indigo-50 p-4 rounded-lg">
+                            <p class="text-sm text-indigo-800 mb-2"><strong>测试项目</strong>：</p>
+                            <ul class="text-sm text-indigo-700 space-y-1">
+                                <li>• 用户名密码认证（admin/admin）</li>
+                                <li>• 行业版本选择功能</li>
+                                <li>• 记住登录状态功能</li>
+                                <li>• 密码显示切换功能</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">登录功能完全正常</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">用户界面验证</h4>
+                        <div class="bg-pink-50 p-4 rounded-lg">
+                            <p class="text-sm text-pink-800 mb-2"><strong>测试项目</strong>：</p>
+                            <ul class="text-sm text-pink-700 space-y-1">
+                                <li>• 用户头像菜单功能</li>
+                                <li>• 版本标识显示</li>
+                                <li>• 系统状态和时间显示</li>
+                                <li>• 退出登录功能</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4">
+                            <label class="flex items-center space-x-2">
+                                <input type="checkbox" class="form-checkbox text-primary">
+                                <span class="text-sm text-gray-700">用户界面功能正常</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 详细测试步骤 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">📋 详细测试步骤</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">访问登录页面</h4>
+                            <p class="text-sm text-gray-600">打开 <a href="http://localhost:8081/login.html" target="_blank" class="text-blue-600 hover:underline">http://localhost:8081/login.html</a>，检查页面布局优化效果</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">2</div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">验证登录卡片优化</h4>
+                            <p class="text-sm text-gray-600">检查登录卡片高度、间距、输入框尺寸等优化效果</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">3</div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">测试登录功能</h4>
+                            <p class="text-sm text-gray-600">使用 admin/admin 登录，选择不同行业版本进行测试</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">4</div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">验证主页面显示</h4>
+                            <p class="text-sm text-gray-600">检查登录后主页面是否正常显示，无重复元素和布局异常</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">5</div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">测试模块页面加载</h4>
+                            <p class="text-sm text-gray-600">逐一测试业务中心、运营中心、基础平台的所有模块页面</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-sm font-bold">6</div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">验证用户界面功能</h4>
+                            <p class="text-sm text-gray-600">测试用户头像菜单、版本标识、退出登录等功能</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速测试按钮 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">🚀 快速测试</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <button onclick="window.open('http://localhost:8081/login.html', '_blank')" 
+                            class="p-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                        <i class="fas fa-sign-in-alt mb-2"></i>
+                        <div class="font-medium">登录页面</div>
+                        <div class="text-xs opacity-80">验证布局优化</div>
+                    </button>
+                    <button onclick="testLoginLayout()" 
+                            class="p-4 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                        <i class="fas fa-layout mb-2"></i>
+                        <div class="font-medium">布局检查</div>
+                        <div class="text-xs opacity-80">检查卡片优化</div>
+                    </button>
+                    <button onclick="testMainPage()" 
+                            class="p-4 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors">
+                        <i class="fas fa-home mb-2"></i>
+                        <div class="font-medium">主页面</div>
+                        <div class="text-xs opacity-80">验证显示修复</div>
+                    </button>
+                    <button onclick="testResponsive()" 
+                            class="p-4 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
+                        <i class="fas fa-mobile-alt mb-2"></i>
+                        <div class="font-medium">响应式</div>
+                        <div class="text-xs opacity-80">测试设备适配</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 修复前后对比 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">📊 修复前后对比</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">登录页面优化对比</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left py-2">项目</th>
+                                        <th class="text-left py-2">修复前</th>
+                                        <th class="text-left py-2">修复后</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-600">
+                                    <tr class="border-b">
+                                        <td class="py-2">卡片内边距</td>
+                                        <td class="py-2">p-8</td>
+                                        <td class="py-2 text-green-600">p-6</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="py-2">Logo尺寸</td>
+                                        <td class="py-2">20×20</td>
+                                        <td class="py-2 text-green-600">16×16</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="py-2">表单间距</td>
+                                        <td class="py-2">space-y-6</td>
+                                        <td class="py-2 text-green-600">space-y-4</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2">输入框高度</td>
+                                        <td class="py-2">py-3</td>
+                                        <td class="py-2 text-green-600">py-2.5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 mb-3">主页面显示修复对比</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="border-b">
+                                        <th class="text-left py-2">问题</th>
+                                        <th class="text-left py-2">修复前</th>
+                                        <th class="text-left py-2">修复后</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-600">
+                                    <tr class="border-b">
+                                        <td class="py-2">重复界面</td>
+                                        <td class="py-2 text-red-600">存在</td>
+                                        <td class="py-2 text-green-600">已移除</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="py-2">布局异常</td>
+                                        <td class="py-2 text-red-600">异常</td>
+                                        <td class="py-2 text-green-600">正常</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="py-2">iframe显示</td>
+                                        <td class="py-2 text-red-600">嵌套问题</td>
+                                        <td class="py-2 text-green-600">正常显示</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2">模块加载</td>
+                                        <td class="py-2 text-red-600">部分异常</td>
+                                        <td class="py-2 text-green-600">全部正常</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 验证结果总结 -->
+        <div class="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6">
+            <div class="flex items-start">
+                <i class="fas fa-clipboard-check text-green-600 text-2xl mr-4 mt-1"></i>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">v1.2.0修复验证清单</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-medium text-gray-800 mb-2">登录后显示修复</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>□ 主页面布局正常显示</li>
+                                <li>□ 无重复用户界面元素</li>
+                                <li>□ iframe内容正确加载</li>
+                                <li>□ 所有模块页面正常工作</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-800 mb-2">登录页面优化</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>□ 登录卡片高度优化</li>
+                                <li>□ 间距和尺寸调整正确</li>
+                                <li>□ 响应式效果良好</li>
+                                <li>□ 所有登录功能正常</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-white rounded-lg border border-green-200">
+                        <p class="text-sm text-green-800">
+                            <i class="fas fa-lightbulb mr-2"></i>
+                            <strong>测试提示</strong>：请按照测试步骤逐项验证，确保所有修复都按照要求正确实现，功能完整性得到保持。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 测试登录页面布局
+        function testLoginLayout() {
+            alert('登录页面布局测试：\n1. 检查登录卡片高度是否缩减\n2. 验证Logo和标题尺寸优化\n3. 确认输入框和按钮间距调整\n4. 测试在不同设备上的显示效果\n\n请仔细对比优化前后的视觉效果。');
+        }
+
+        // 测试主页面
+        function testMainPage() {
+            alert('主页面显示测试：\n1. 登录后检查页面布局是否正常\n2. 确认无重复的用户界面元素\n3. 验证iframe内容正确加载\n4. 测试所有模块页面切换功能\n\n确保登录后的显示问题已完全修复。');
+        }
+
+        // 测试响应式
+        function testResponsive() {
+            alert('响应式测试：\n1. 调整浏览器窗口大小\n2. 测试登录页面在不同尺寸下的显示\n3. 验证主页面的响应式适配\n4. 检查移动端的用户体验\n\n确保在所有设备上都有良好的显示效果。');
+        }
+
+        // 页面加载完成后的提示
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('v1.2.0修复验证测试页面已加载');
+            console.log('请按照测试步骤验证所有修复效果');
+        });
+    </script>
+</body>
+</html>

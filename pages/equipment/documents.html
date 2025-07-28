@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术资料管理 - MOM系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面操作栏 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">技术资料管理</h1>
+                <p class="text-gray-600">管理设备技术文档、操作手册和维护资料</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-upload mr-2"></i>上传文档
+                </button>
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-folder-plus mr-2"></i>新建文件夹
+                </button>
+                <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-tags mr-2"></i>标签管理
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-search mr-2"></i>高级搜索
+                </button>
+            </div>
+        </div>
+        
+        <!-- 文档概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-blue-600 mb-1">1,856</div>
+                <div class="text-sm text-gray-600">技术文档总数</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+45 本月新增
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-green-600 mb-1">98.5%</div>
+                <div class="text-sm text-gray-600">文档完整率</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-check mr-1"></i>质量优良
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-yellow-600 mb-1">12</div>
+                <div class="text-sm text-gray-600">待审核文档</div>
+                <div class="text-xs text-yellow-600 mt-1">需要处理</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-purple-600 mb-1">156</div>
+                <div class="text-sm text-gray-600">设备覆盖率</div>
+                <div class="text-xs text-purple-600 mt-1">100%覆盖</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">8</div>
+                <div class="text-sm text-gray-600">过期文档</div>
+                <div class="text-xs text-red-600 mt-1">需要更新</div>
+            </div>
+        </div>
+        
+        <!-- 主要内容区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- 文档分类树 -->
+            <div class="lg:col-span-1">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">文档分类</h3>
+                    </div>
+                    <div class="p-4">
+                        <div class="space-y-2 text-sm">
+                            <!-- 设备手册 -->
+                            <div class="flex items-center space-x-2 font-medium text-gray-800 cursor-pointer hover:text-blue-600" onclick="selectCategory('manuals')">
+                                <i class="fas fa-book text-blue-600"></i>
+                                <span>设备手册</span>
+                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded ml-auto">(456)</span>
+                            </div>
+                            
+                            <div class="ml-4 space-y-1">
+                                <div class="flex items-center space-x-2 text-gray-600 cursor-pointer hover:text-blue-600">
+                                    <i class="fas fa-arrow-right text-gray-400"></i>
+                                    <span>操作手册</span>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-1 rounded">(156)</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-600 cursor-pointer hover:text-blue-600">
+                                    <i class="fas fa-arrow-right text-gray-400"></i>
+                                    <span>维护手册</span>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-1 rounded">(145)</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-600 cursor-pointer hover:text-blue-600">
+                                    <i class="fas fa-arrow-right text-gray-400"></i>
+                                    <span>安装手册</span>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-1 rounded">(155)</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 技术图纸 -->
+                            <div class="flex items-center space-x-2 font-medium text-gray-800 cursor-pointer hover:text-blue-600" onclick="selectCategory('drawings')">
+                                <i class="fas fa-drafting-compass text-green-600"></i>
+                                <span>技术图纸</span>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded ml-auto">(389)</span>
+                            </div>
+                            
+                            <div class="ml-4 space-y-1">
+                                <div class="flex items-center space-x-2 text-gray-600 cursor-pointer hover:text-blue-600">
+                                    <i class="fas fa-arrow-right text-gray-400"></i>
+                                    <span>装配图</span>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-1 rounded">(156)</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-600 cursor-pointer hover:text-blue-600">
+                                    <i class="fas fa-arrow-right text-gray-400"></i>
+                                    <span>零件图</span>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-1 rounded">(145)</span>
+                                </div>
+                                <div class="flex items-center space-x-2 text-gray-600 cursor-pointer hover:text-blue-600">
+                                    <i class="fas fa-arrow-right text-gray-400"></i>
+                                    <span>电气图</span>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-1 rounded">(88)</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 标准规范 -->
+                            <div class="flex items-center space-x-2 font-medium text-gray-800 cursor-pointer hover:text-blue-600" onclick="selectCategory('standards')">
+                                <i class="fas fa-clipboard-list text-yellow-600"></i>
+                                <span>标准规范</span>
+                                <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded ml-auto">(234)</span>
+                            </div>
+                            
+                            <!-- 维修记录 -->
+                            <div class="flex items-center space-x-2 font-medium text-gray-800 cursor-pointer hover:text-blue-600" onclick="selectCategory('records')">
+                                <i class="fas fa-history text-purple-600"></i>
+                                <span>维修记录</span>
+                                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded ml-auto">(567)</span>
+                            </div>
+                            
+                            <!-- 培训资料 -->
+                            <div class="flex items-center space-x-2 font-medium text-gray-800 cursor-pointer hover:text-blue-600" onclick="selectCategory('training')">
+                                <i class="fas fa-graduation-cap text-red-600"></i>
+                                <span>培训资料</span>
+                                <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded ml-auto">(210)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 文档列表和详情 -->
+            <div class="lg:col-span-3 space-y-6">
+                <!-- 搜索和筛选 -->
+                <div class="card">
+                    <div class="p-4">
+                        <div class="flex space-x-4">
+                            <div class="flex-1">
+                                <input type="text" placeholder="搜索文档名称、关键词..." 
+                                       class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                            </div>
+                            <select class="border border-gray-300 rounded-lg px-3 py-2">
+                                <option>全部类型</option>
+                                <option>PDF文档</option>
+                                <option>Word文档</option>
+                                <option>CAD图纸</option>
+                                <option>视频文件</option>
+                            </select>
+                            <select class="border border-gray-300 rounded-lg px-3 py-2">
+                                <option>全部设备</option>
+                                <option>注塑设备</option>
+                                <option>装配设备</option>
+                                <option>包装设备</option>
+                                <option>检测设备</option>
+                            </select>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 最近访问文档 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">最近访问</h3>
+                    </div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex items-center space-x-3 p-3 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 cursor-pointer">
+                                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-file-pdf text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium">注塑机A1操作手册</div>
+                                    <div class="text-sm text-gray-600">2小时前访问</div>
+                                </div>
+                                <div class="text-xs text-blue-600">PDF</div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3 p-3 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 cursor-pointer">
+                                <div class="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-file-alt text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium">装配机B1维护规程</div>
+                                    <div class="text-sm text-gray-600">5小时前访问</div>
+                                </div>
+                                <div class="text-xs text-green-600">DOC</div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg hover:bg-yellow-100 cursor-pointer">
+                                <div class="w-10 h-10 bg-yellow-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-file-image text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium">包装机C1电气图纸</div>
+                                    <div class="text-sm text-gray-600">1天前访问</div>
+                                </div>
+                                <div class="text-xs text-yellow-600">DWG</div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-3 p-3 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 cursor-pointer">
+                                <div class="w-10 h-10 bg-purple-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-file-video text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium">设备操作培训视频</div>
+                                    <div class="text-sm text-gray-600">2天前访问</div>
+                                </div>
+                                <div class="text-xs text-purple-600">MP4</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 文档列表 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="flex justify-between items-center">
+                            <h3 class="card-title">文档列表</h3>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                                    <i class="fas fa-list"></i>
+                                </button>
+                                <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+                                    <i class="fas fa-th"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>文档名称</th>
+                                    <th>类型</th>
+                                    <th>所属设备</th>
+                                    <th>版本</th>
+                                    <th>更新时间</th>
+                                    <th>更新人</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-file-pdf text-red-600"></i>
+                                            <span class="font-medium">注塑机A1操作手册_v2.1</span>
+                                        </div>
+                                    </td>
+                                    <td>操作手册</td>
+                                    <td>注塑机A1</td>
+                                    <td>v2.1</td>
+                                    <td>2024-06-25</td>
+                                    <td>张工程师</td>
+                                    <td><span class="status-indicator status-success">已审核</span></td>
+                                    <td>
+                                        <div class="flex space-x-1">
+                                            <button class="text-blue-600 hover:text-blue-800" title="查看">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-green-600 hover:text-green-800" title="下载">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                            <button class="text-purple-600 hover:text-purple-800" title="编辑">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-800" title="分享">
+                                                <i class="fas fa-share"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-file-alt text-blue-600"></i>
+                                            <span class="font-medium">装配机B1维护规程_v1.5</span>
+                                        </div>
+                                    </td>
+                                    <td>维护手册</td>
+                                    <td>装配机B1</td>
+                                    <td>v1.5</td>
+                                    <td>2024-06-20</td>
+                                    <td>李工程师</td>
+                                    <td><span class="status-indicator status-success">已审核</span></td>
+                                    <td>
+                                        <div class="flex space-x-1">
+                                            <button class="text-blue-600 hover:text-blue-800" title="查看">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-green-600 hover:text-green-800" title="下载">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                            <button class="text-purple-600 hover:text-purple-800" title="编辑">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-800" title="分享">
+                                                <i class="fas fa-share"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="bg-yellow-50">
+                                    <td>
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-file-image text-yellow-600"></i>
+                                            <span class="font-medium">包装机C1电气原理图_v3.0</span>
+                                        </div>
+                                    </td>
+                                    <td>技术图纸</td>
+                                    <td>包装机C1</td>
+                                    <td>v3.0</td>
+                                    <td>2024-06-28</td>
+                                    <td>王工程师</td>
+                                    <td><span class="status-indicator status-warning">待审核</span></td>
+                                    <td>
+                                        <div class="flex space-x-1">
+                                            <button class="text-blue-600 hover:text-blue-800" title="查看">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-yellow-600 hover:text-yellow-800" title="审核">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button class="text-purple-600 hover:text-purple-800" title="编辑">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-800" title="分享">
+                                                <i class="fas fa-share"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr>
+                                    <td>
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-file-video text-purple-600"></i>
+                                            <span class="font-medium">设备安全操作培训视频</span>
+                                        </div>
+                                    </td>
+                                    <td>培训资料</td>
+                                    <td>通用</td>
+                                    <td>v1.0</td>
+                                    <td>2024-06-15</td>
+                                    <td>陈工程师</td>
+                                    <td><span class="status-indicator status-success">已审核</span></td>
+                                    <td>
+                                        <div class="flex space-x-1">
+                                            <button class="text-blue-600 hover:text-blue-800" title="播放">
+                                                <i class="fas fa-play"></i>
+                                            </button>
+                                            <button class="text-green-600 hover:text-green-800" title="下载">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                            <button class="text-purple-600 hover:text-purple-800" title="编辑">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-800" title="分享">
+                                                <i class="fas fa-share"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr class="bg-red-50">
+                                    <td>
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-file-pdf text-red-600"></i>
+                                            <span class="font-medium">检测设备D1校准证书</span>
+                                        </div>
+                                    </td>
+                                    <td>标准规范</td>
+                                    <td>检测设备D1</td>
+                                    <td>v1.0</td>
+                                    <td>2023-12-15</td>
+                                    <td>质量部</td>
+                                    <td><span class="status-indicator status-danger">已过期</span></td>
+                                    <td>
+                                        <div class="flex space-x-1">
+                                            <button class="text-blue-600 hover:text-blue-800" title="查看">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-800" title="更新">
+                                                <i class="fas fa-sync"></i>
+                                            </button>
+                                            <button class="text-purple-600 hover:text-purple-800" title="编辑">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-gray-600 hover:text-gray-800" title="分享">
+                                                <i class="fas fa-share"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- 分页 -->
+                    <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+                        <div class="text-sm text-gray-600">
+                            显示 1-5 条，共 1,856 条记录
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                            <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 版本控制和权限管理 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 版本控制 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">版本控制</h3>
+                </div>
+                <div class="p-4 space-y-4">
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="font-medium text-blue-800">注塑机A1操作手册</div>
+                                <div class="text-sm text-gray-600">当前版本：v2.1</div>
+                            </div>
+                            <div class="status-indicator status-success">最新版本</div>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between items-center p-2 bg-white rounded border">
+                                <div>
+                                    <span class="font-medium">v2.1</span>
+                                    <span class="text-gray-600 ml-2">2024-06-25</span>
+                                    <span class="text-gray-600 ml-2">张工程师</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">当前</span>
+                                    <button class="text-blue-600 hover:text-blue-800 text-xs">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-50 rounded border">
+                                <div>
+                                    <span class="font-medium">v2.0</span>
+                                    <span class="text-gray-600 ml-2">2024-05-15</span>
+                                    <span class="text-gray-600 ml-2">张工程师</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-800 text-xs">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800 text-xs">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-gray-50 rounded border">
+                                <div>
+                                    <span class="font-medium">v1.8</span>
+                                    <span class="text-gray-600 ml-2">2024-03-20</span>
+                                    <span class="text-gray-600 ml-2">李工程师</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button class="text-blue-600 hover:text-blue-800 text-xs">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800 text-xs">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-200">
+                            <div class="text-xs text-gray-600">
+                                版本说明：v2.1 更新了安全操作规程，增加了故障排除指南
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="font-medium text-yellow-800">包装机C1电气原理图</div>
+                                <div class="text-sm text-gray-600">当前版本：v3.0（待审核）</div>
+                            </div>
+                            <div class="status-indicator status-warning">待审核</div>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between items-center p-2 bg-yellow-100 rounded border">
+                                <div>
+                                    <span class="font-medium">v3.0</span>
+                                    <span class="text-gray-600 ml-2">2024-06-28</span>
+                                    <span class="text-gray-600 ml-2">王工程师</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">待审核</span>
+                                    <button class="text-blue-600 hover:text-blue-800 text-xs">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-white rounded border">
+                                <div>
+                                    <span class="font-medium">v2.5</span>
+                                    <span class="text-gray-600 ml-2">2024-04-10</span>
+                                    <span class="text-gray-600 ml-2">王工程师</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">已发布</span>
+                                    <button class="text-blue-600 hover:text-blue-800 text-xs">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800 text-xs">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-gray-200">
+                            <div class="text-xs text-gray-600">
+                                版本说明：v3.0 更新了控制回路设计，优化了电气安全保护
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 权限管理 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">权限管理</h3>
+                </div>
+                <div class="p-4 space-y-4">
+                    <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="font-medium text-green-800 mb-3">文档访问权限</div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-users text-blue-600"></i>
+                                    <span class="text-sm">设备管理员</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">读写</span>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">审核</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-user text-green-600"></i>
+                                    <span class="text-sm">维修工程师</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">读写</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-user text-yellow-600"></i>
+                                    <span class="text-sm">操作员</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">只读</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-user text-purple-600"></i>
+                                    <span class="text-sm">质量工程师</span>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">只读</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="font-medium text-blue-800 mb-3">文档分享记录</div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between items-center p-2 bg-white rounded">
+                                <div>
+                                    <div class="font-medium">注塑机A1操作手册</div>
+                                    <div class="text-xs text-gray-600">分享给：维修班组</div>
+                                </div>
+                                <div class="text-xs text-gray-600">2小时前</div>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-white rounded">
+                                <div>
+                                    <div class="font-medium">设备安全操作培训视频</div>
+                                    <div class="text-xs text-gray-600">分享给：全体员工</div>
+                                </div>
+                                <div class="text-xs text-gray-600">1天前</div>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-white rounded">
+                                <div>
+                                    <div class="font-medium">装配机B1维护规程</div>
+                                    <div class="text-xs text-gray-600">分享给：技术部</div>
+                                </div>
+                                <div class="text-xs text-gray-600">3天前</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                        <div class="font-medium text-purple-800 mb-3">审核流程</div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs">1</div>
+                                <span>技术工程师提交</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-yellow-600 rounded-full flex items-center justify-center text-white text-xs">2</div>
+                                <span>部门主管审核</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center text-white text-xs">3</div>
+                                <span>技术总监批准</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs">4</div>
+                                <span>正式发布</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文档统计和建议 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 使用统计 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">使用统计</h3>
+                </div>
+                <div class="p-4 space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>热门文档类型</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">操作手册</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-16 h-2 bg-gray-200 rounded">
+                                        <div class="h-2 bg-blue-500 rounded" style="width: 85%;"></div>
+                                    </div>
+                                    <span class="text-xs">1,245次</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">维护手册</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-16 h-2 bg-gray-200 rounded">
+                                        <div class="h-2 bg-green-500 rounded" style="width: 70%;"></div>
+                                    </div>
+                                    <span class="text-xs">986次</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">技术图纸</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-16 h-2 bg-gray-200 rounded">
+                                        <div class="h-2 bg-yellow-500 rounded" style="width: 55%;"></div>
+                                    </div>
+                                    <span class="text-xs">756次</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">培训资料</span>
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-16 h-2 bg-gray-200 rounded">
+                                        <div class="h-2 bg-purple-500 rounded" style="width: 40%;"></div>
+                                    </div>
+                                    <span class="text-xs">542次</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-200">
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <div class="text-gray-600">月访问量</div>
+                                <div class="text-xl font-bold text-blue-600">3,529次</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-600">月下载量</div>
+                                <div class="text-xl font-bold text-green-600">1,245次</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-600">活跃用户</div>
+                                <div class="text-xl font-bold text-purple-600">156人</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-600">平均评分</div>
+                                <div class="text-xl font-bold text-yellow-600">4.8分</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 质量评估 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">文档质量评估</h3>
+                </div>
+                <div class="p-4 space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>完整性评估</span>
+                            <span class="font-semibold">98.5%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 98.5%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>时效性评估</span>
+                            <span class="font-semibold">95.2%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 95.2%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>准确性评估</span>
+                            <span class="font-semibold">97.8%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 97.8%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>可用性评估</span>
+                            <span class="font-semibold">96.5%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 96.5%"></div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-200">
+                        <div class="text-sm font-medium mb-2">综合质量评分</div>
+                        <div class="text-2xl font-bold text-green-600 mb-1">97.0分</div>
+                        <div class="text-xs text-green-600">
+                            <i class="fas fa-arrow-up mr-1"></i>较上月提升1.2分
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 改进建议 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">改进建议</h3>
+                </div>
+                <div class="p-4 space-y-3">
+                    <div class="p-3 bg-red-50 border-l-4 border-red-400">
+                        <div class="font-medium text-red-700">紧急处理</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            8个文档已过期，需要立即更新或重新认证
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-yellow-50 border-l-4 border-yellow-400">
+                        <div class="font-medium text-yellow-700">版本管理</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            建议建立自动版本控制机制，提高文档管理效率
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-blue-50 border-l-4 border-blue-400">
+                        <div class="font-medium text-blue-700">数字化升级</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            推广电子化文档，减少纸质文档使用
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-green-50 border-l-4 border-green-400">
+                        <div class="font-medium text-green-700">知识共享</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            建立知识库平台，促进技术经验分享
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-purple-50 border-l-4 border-purple-400">
+                        <div class="font-medium text-purple-700">培训强化</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            加强文档管理培训，提高员工文档意识
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 选择分类
+        function selectCategory(categoryId) {
+            console.log('选择分类:', categoryId);
+            // 这里可以添加分类选择的逻辑
+        }
+    </script>
+</body>
+</html>

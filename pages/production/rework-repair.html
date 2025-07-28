@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>返工返修系统 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">返工返修系统</h1>
+            <p class="text-gray-600">基于Process.md 2.3.18流程：在线返修→离线返工→追溯更新，实现质量问题闭环管理</p>
+        </div>
+
+        <!-- 返工返修流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">返工返修执行流程</h3>
+                    <span class="text-sm text-gray-600">质量问题闭环管理系统</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">问题识别</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">返修决策</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">执行返修</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">追溯更新</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="onlineRepairBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-tools mr-2"></i>
+                在线返修
+            </button>
+            <button id="offlineReworkBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-redo mr-2"></i>
+                离线返工
+            </button>
+            <button id="qualityAnalysisBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-chart-pie mr-2"></i>
+                质量分析
+            </button>
+            <button id="traceUpdateBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-sync mr-2"></i>
+                追溯更新
+            </button>
+            <button id="defectTrackBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-bug mr-2"></i>
+                缺陷跟踪
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 返工返修统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">45</div>
+                        <div class="text-sm text-gray-600">在线返修</div>
+                        <div class="text-xs text-gray-500">今日处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tools text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">23</div>
+                        <div class="text-sm text-gray-600">离线返工</div>
+                        <div class="text-xs text-gray-500">进行中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-redo text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">156</div>
+                        <div class="text-sm text-gray-600">质量问题</div>
+                        <div class="text-xs text-gray-500">本月统计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-pie text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">92.5%</div>
+                        <div class="text-sm text-gray-600">返修成功率</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-sync text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">8</div>
+                        <div class="text-sm text-gray-600">待处理</div>
+                        <div class="text-xs text-gray-500">缺陷跟踪</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bug text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">3</div>
+                        <div class="text-sm text-gray-600">返修失败</div>
+                        <div class="text-xs text-gray-500">需报废</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-times-circle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 返修决策和质量分析面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 返修决策面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">返修决策支持</h3>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:bg-gray-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-exclamation-triangle text-red-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">产品SN: 2025011601001</div>
+                                    <div class="text-xs text-gray-500">缺陷: 接线错误 | 检测工位: 工位5</div>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button onclick="decideRepair('2025011601001', 'online')" class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200">在线返修</button>
+                                <button onclick="decideRepair('2025011601001', 'offline')" class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded hover:bg-indigo-200">离线返工</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-gray-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-wrench text-orange-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">产品SN: 2025011601002</div>
+                                    <div class="text-xs text-gray-500">缺陷: 扭矩不足 | 检测工位: 工位3</div>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button onclick="decideRepair('2025011601002', 'online')" class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200">在线返修</button>
+                                <button onclick="decideRepair('2025011601002', 'offline')" class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded hover:bg-indigo-200">离线返工</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-gray-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-bug text-purple-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">产品SN: 2025011601003</div>
+                                    <div class="text-xs text-gray-500">缺陷: 功能测试失败 | 检测工位: 测试工位</div>
+                                </div>
+                            </div>
+                            <div class="flex space-x-2">
+                                <button onclick="decideRepair('2025011601003', 'online')" class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200">在线返修</button>
+                                <button onclick="decideRepair('2025011601003', 'offline')" class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded hover:bg-indigo-200">离线返工</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 质量分析面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">质量问题分析</h3>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-red-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">接线问题</div>
+                            <div class="text-lg font-semibold text-red-600">35%</div>
+                            <div class="text-xs text-gray-500">主要缺陷类型</div>
+                        </div>
+                        <div class="bg-orange-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">扭矩问题</div>
+                            <div class="text-lg font-semibold text-orange-600">28%</div>
+                            <div class="text-xs text-gray-500">次要缺陷类型</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-purple-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">功能测试</div>
+                            <div class="text-lg font-semibold text-purple-600">22%</div>
+                            <div class="text-xs text-gray-500">测试相关</div>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">其他问题</div>
+                            <div class="text-lg font-semibold text-blue-600">15%</div>
+                            <div class="text-xs text-gray-500">综合问题</div>
+                        </div>
+                    </div>
+                    <div class="border-t pt-4">
+                        <h4 class="text-sm font-medium text-gray-900 mb-2">改进建议</h4>
+                        <ul class="text-xs text-gray-600 space-y-1">
+                            <li>• 加强接线工艺培训，降低人为错误</li>
+                            <li>• 优化扭矩设备校准频次</li>
+                            <li>• 完善测试程序，提高检测精度</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 返工返修记录管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">返工返修记录管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部类型</option>
+                        <option>在线返修</option>
+                        <option>离线返工</option>
+                        <option>报废处理</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>待处理</option>
+                        <option>处理中</option>
+                        <option>已完成</option>
+                        <option>失败</option>
+                    </select>
+                    <input type="text" placeholder="搜索产品SN、缺陷类型..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">返修编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">缺陷类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">返修类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">处理工位</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="reworkTableBody">
+                        <!-- 返工数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.3.18的返工返修数据模型
+        const reworkRepairData = [
+            {
+                id: 'REWORK202501001',
+                productSN: '2025011601001',
+                productCode: 'INV-5KW-001',
+                productName: '5KW逆变器',
+                defectType: 'wiring',
+                defectTypeName: '接线错误',
+                defectDescription: '主电源线接线位置错误',
+                reworkType: 'online',
+                reworkTypeName: '在线返修',
+                detectionWorkstation: '工位5-质检',
+                repairWorkstation: '工位1-接线',
+                operator: '张师傅',
+                operatorId: 'OP001',
+                qualityInspector: '李质检',
+                status: 'completed',
+                startTime: '2025-01-16 14:25:30',
+                endTime: '2025-01-16 14:35:45',
+                duration: 10.25,
+                repairCost: 15.50,
+                rootCause: '操作员培训不足',
+                correctiveAction: '重新接线并加强培训',
+                preventiveAction: '增加接线检查点',
+                traceUpdated: true,
+                qualityResult: 'pass',
+                notes: '返修完成，质量合格'
+            },
+            {
+                id: 'REWORK202501002',
+                productSN: '2025011601002',
+                productCode: 'ESS-10KW-002',
+                productName: '储能逆变器',
+                defectType: 'torque',
+                defectTypeName: '扭矩不足',
+                defectDescription: 'M6螺栓扭矩值低于标准',
+                reworkType: 'online',
+                reworkTypeName: '在线返修',
+                detectionWorkstation: '工位3-拧紧',
+                repairWorkstation: '工位3-拧紧',
+                operator: '王师傅',
+                operatorId: 'OP003',
+                qualityInspector: '赵质检',
+                status: 'processing',
+                startTime: '2025-01-16 14:30:15',
+                endTime: null,
+                duration: null,
+                repairCost: null,
+                rootCause: '设备校准偏差',
+                correctiveAction: '重新拧紧至标准扭矩',
+                preventiveAction: '增加设备校准频次',
+                traceUpdated: false,
+                qualityResult: null,
+                notes: '正在进行返修操作'
+            },
+            {
+                id: 'REWORK202501003',
+                productSN: '2025011601003',
+                productCode: 'CTRL-ADV-003',
+                productName: '高级控制器',
+                defectType: 'function',
+                defectTypeName: '功能测试失败',
+                defectDescription: '通信模块无法正常工作',
+                reworkType: 'offline',
+                reworkTypeName: '离线返工',
+                detectionWorkstation: '测试工位',
+                repairWorkstation: '返工车间',
+                operator: '孙技术员',
+                operatorId: 'OP005',
+                qualityInspector: '钱质检',
+                status: 'pending',
+                startTime: null,
+                endTime: null,
+                duration: null,
+                repairCost: null,
+                rootCause: '元器件质量问题',
+                correctiveAction: '更换通信模块',
+                preventiveAction: '加强来料检验',
+                traceUpdated: false,
+                qualityResult: null,
+                estimatedDuration: 120,
+                notes: '等待返工车间安排'
+            },
+            {
+                id: 'REWORK202501004',
+                productSN: '2025011601004',
+                productCode: 'INV-3KW-004',
+                productName: '3KW逆变器',
+                defectType: 'appearance',
+                defectTypeName: '外观缺陷',
+                defectDescription: '外壳表面划痕',
+                reworkType: 'offline',
+                reworkTypeName: '离线返工',
+                detectionWorkstation: '外观检查',
+                repairWorkstation: '返工车间',
+                operator: '周师傅',
+                operatorId: 'OP006',
+                qualityInspector: '吴质检',
+                status: 'failed',
+                startTime: '2025-01-16 13:20:00',
+                endTime: '2025-01-16 14:45:00',
+                duration: 85,
+                repairCost: 45.80,
+                rootCause: '搬运过程损坏',
+                correctiveAction: '更换外壳',
+                preventiveAction: '改进包装保护',
+                traceUpdated: true,
+                qualityResult: 'fail',
+                failureReason: '外壳更换后仍有质量问题',
+                disposalMethod: 'scrap',
+                notes: '返修失败，建议报废处理'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            pending: { text: '待处理', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-clock' },
+            processing: { text: '处理中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-spinner' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            failed: { text: '失败', class: 'bg-red-100 text-red-800', icon: 'fas fa-times-circle' },
+            cancelled: { text: '已取消', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-ban' }
+        };
+
+        // 缺陷类型映射
+        const defectTypeMap = {
+            wiring: { text: '接线错误', icon: 'fas fa-plug', color: 'text-red-600' },
+            torque: { text: '扭矩不足', icon: 'fas fa-wrench', color: 'text-orange-600' },
+            function: { text: '功能测试失败', icon: 'fas fa-bug', color: 'text-purple-600' },
+            appearance: { text: '外观缺陷', icon: 'fas fa-eye', color: 'text-blue-600' },
+            dimension: { text: '尺寸偏差', icon: 'fas fa-ruler', color: 'text-green-600' },
+            material: { text: '物料问题', icon: 'fas fa-boxes', color: 'text-indigo-600' }
+        };
+
+        // 返修类型映射
+        const reworkTypeMap = {
+            online: { text: '在线返修', icon: 'fas fa-tools', color: 'text-blue-600' },
+            offline: { text: '离线返工', icon: 'fas fa-redo', color: 'text-indigo-600' },
+            scrap: { text: '报废处理', icon: 'fas fa-trash', color: 'text-red-600' }
+        };
+
+        let filteredData = [...reworkRepairData];
+
+        // 渲染返工返修记录表格
+        function renderReworkTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('reworkTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(rework => {
+                const status = statusMap[rework.status];
+                const defectType = defectTypeMap[rework.defectType];
+                const reworkType = reworkTypeMap[rework.reworkType];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewReworkDetail('${rework.id}')">
+                            ${rework.id}
+                        </div>
+                        <div class="text-xs text-gray-500">${rework.startTime || '待安排'}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewProductDetail('${rework.productSN}')">
+                            ${rework.productSN}
+                        </div>
+                        <div class="text-sm text-gray-900">${rework.productName}</div>
+                        <div class="text-xs text-gray-500">${rework.productCode}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${defectType.icon} ${defectType.color} mr-2"></i>
+                            <div>
+                                <div class="text-sm text-gray-900">${defectType.text}</div>
+                                <div class="text-xs text-gray-500">${rework.defectDescription}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${reworkType.icon} ${reworkType.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${reworkType.text}</span>
+                        </div>
+                        ${rework.estimatedDuration ? `
+                            <div class="text-xs text-gray-500">预计: ${rework.estimatedDuration}分钟</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${rework.repairWorkstation}</div>
+                        <div class="text-xs text-gray-500">检测: ${rework.detectionWorkstation}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${rework.operator}</div>
+                        <div class="text-xs text-gray-500">${rework.operatorId}</div>
+                        <div class="text-xs text-blue-600">质检: ${rework.qualityInspector}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${rework.qualityResult ? `
+                            <div class="text-xs ${rework.qualityResult === 'pass' ? 'text-green-600' : 'text-red-600'} mt-1">
+                                质检: ${rework.qualityResult === 'pass' ? '合格' : '不合格'}
+                            </div>
+                        ` : ''}
+                        ${rework.traceUpdated ? `
+                            <div class="text-xs text-blue-600 mt-1">
+                                <i class="fas fa-sync mr-1"></i>追溯已更新
+                            </div>
+                        ` : ''}
+                        ${rework.failureReason ? `
+                            <div class="text-xs text-red-600 mt-1">${rework.failureReason}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${rework.endTime ? `
+                            <div class="text-sm text-gray-900">完成: ${rework.endTime.split(' ')[1]}</div>
+                            <div class="text-xs text-gray-500">用时: ${rework.duration}分钟</div>
+                        ` : rework.startTime ? `
+                            <div class="text-sm text-gray-900">开始: ${rework.startTime.split(' ')[1]}</div>
+                            <div class="text-xs text-gray-500">进行中...</div>
+                        ` : `
+                            <div class="text-sm text-gray-500">待安排</div>
+                        `}
+                        ${rework.repairCost ? `
+                            <div class="text-xs text-orange-600">成本: ¥${rework.repairCost}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewReworkDetail('${rework.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${rework.status === 'pending' ? `
+                                <button onclick="startRework('${rework.id}')" class="text-green-600 hover:text-green-900 p-1" title="开始返修">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            ` : ''}
+                            ${rework.status === 'processing' ? `
+                                <button onclick="completeRework('${rework.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="完成返修">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            ${rework.status === 'completed' && !rework.traceUpdated ? `
+                                <button onclick="updateTrace('${rework.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="更新追溯">
+                                    <i class="fas fa-sync"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewRootCause('${rework.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="根因分析">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            ${rework.status === 'failed' ? `
+                                <button onclick="handleScrap('${rework.id}')" class="text-red-600 hover:text-red-900 p-1" title="报废处理">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${reworkRepairData.length} 条记录`;
+        }
+
+        // 返修决策函数
+        function decideRepair(productSN, repairType) {
+            const typeText = repairType === 'online' ? '在线返修' : '离线返工';
+            if (confirm(`确认对产品 ${productSN} 执行${typeText}？`)) {
+                // 创建新的返修记录
+                const newRework = {
+                    id: `REWORK${Date.now()}`,
+                    productSN: productSN,
+                    reworkType: repairType,
+                    reworkTypeName: typeText,
+                    status: 'pending',
+                    operator: '待分配',
+                    timestamp: new Date().toLocaleString('zh-CN')
+                };
+
+                alert(`${typeText}决策已确认！\n产品SN: ${productSN}\n返修编号: ${newRework.id}\n状态: 待处理`);
+            }
+        }
+
+        // 返修操作函数
+        function viewReworkDetail(reworkId) {
+            const rework = reworkRepairData.find(r => r.id === reworkId);
+            if (rework) {
+                let detailText = `返修详情：\n编号: ${rework.id}\n产品SN: ${rework.productSN}\n产品名称: ${rework.productName}\n缺陷类型: ${defectTypeMap[rework.defectType].text}\n缺陷描述: ${rework.defectDescription}\n返修类型: ${reworkTypeMap[rework.reworkType].text}\n检测工位: ${rework.detectionWorkstation}\n返修工位: ${rework.repairWorkstation}\n操作员: ${rework.operator}\n质检员: ${rework.qualityInspector}\n状态: ${statusMap[rework.status].text}`;
+
+                if (rework.startTime) {
+                    detailText += `\n开始时间: ${rework.startTime}`;
+                }
+                if (rework.endTime) {
+                    detailText += `\n结束时间: ${rework.endTime}\n用时: ${rework.duration}分钟`;
+                }
+                if (rework.repairCost) {
+                    detailText += `\n返修成本: ¥${rework.repairCost}`;
+                }
+
+                detailText += `\n\n根因分析:\n${rework.rootCause}\n\n纠正措施:\n${rework.correctiveAction}\n\n预防措施:\n${rework.preventiveAction}`;
+
+                if (rework.qualityResult) {
+                    detailText += `\n\n质检结果: ${rework.qualityResult === 'pass' ? '合格' : '不合格'}`;
+                }
+
+                if (rework.failureReason) {
+                    detailText += `\n失败原因: ${rework.failureReason}`;
+                }
+
+                if (rework.notes) {
+                    detailText += `\n备注: ${rework.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function startRework(reworkId) {
+            const rework = reworkRepairData.find(r => r.id === reworkId);
+            if (rework) {
+                if (confirm(`确认开始返修？\n编号: ${rework.id}\n产品SN: ${rework.productSN}\n缺陷: ${rework.defectDescription}`)) {
+                    rework.status = 'processing';
+                    rework.startTime = new Date().toLocaleString('zh-CN');
+                    renderReworkTable();
+                    alert('返修已开始！请按照作业指导书进行操作。');
+                }
+            }
+        }
+
+        function completeRework(reworkId) {
+            const rework = reworkRepairData.find(r => r.id === reworkId);
+            if (rework) {
+                const result = confirm('返修是否成功？\n点击"确定"表示成功，"取消"表示失败。');
+                rework.status = result ? 'completed' : 'failed';
+                rework.endTime = new Date().toLocaleString('zh-CN');
+                rework.qualityResult = result ? 'pass' : 'fail';
+
+                if (rework.startTime) {
+                    const start = new Date(rework.startTime);
+                    const end = new Date(rework.endTime);
+                    rework.duration = Math.round((end - start) / (1000 * 60));
+                    rework.repairCost = (rework.duration * 2.5).toFixed(2); // 假设每分钟成本2.5元
+                }
+
+                if (!result) {
+                    const reason = prompt('请输入失败原因：');
+                    if (reason) {
+                        rework.failureReason = reason;
+                    }
+                }
+
+                renderReworkTable();
+                alert(`返修${result ? '成功' : '失败'}！${result ? '请进行质检确认。' : '请考虑报废处理。'}`);
+            }
+        }
+
+        function updateTrace(reworkId) {
+            const rework = reworkRepairData.find(r => r.id === reworkId);
+            if (rework) {
+                if (confirm(`确认更新追溯数据？\n编号: ${rework.id}\n产品SN: ${rework.productSN}`)) {
+                    rework.traceUpdated = true;
+                    renderReworkTable();
+                    alert('追溯数据更新完成！\n- 返修记录已关联到产品追溯链\n- 质量状态已更新\n- 工艺参数已记录');
+                }
+            }
+        }
+
+        function viewRootCause(reworkId) {
+            const rework = reworkRepairData.find(r => r.id === reworkId);
+            if (rework) {
+                alert(`根因分析报告：\n产品SN: ${rework.productSN}\n缺陷类型: ${defectTypeMap[rework.defectType].text}\n\n根本原因:\n${rework.rootCause}\n\n纠正措施:\n${rework.correctiveAction}\n\n预防措施:\n${rework.preventiveAction}\n\n影响评估:\n- 同批次产品: 需要检查\n- 工艺流程: 需要优化\n- 培训需求: 已识别`);
+            }
+        }
+
+        function handleScrap(reworkId) {
+            const rework = reworkRepairData.find(r => r.id === reworkId);
+            if (rework) {
+                if (confirm(`确认报废处理？\n编号: ${rework.id}\n产品SN: ${rework.productSN}\n\n此操作不可撤销！`)) {
+                    rework.disposalMethod = 'scrap';
+                    rework.notes = '返修失败，已报废处理';
+                    renderReworkTable();
+                    alert('报废处理完成！\n- 产品已标记为报废\n- 成本已计入损失\n- 追溯记录已更新');
+                }
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderReworkTable();
+
+            // 在线返修
+            document.getElementById('onlineRepairBtn').addEventListener('click', function() {
+                alert('在线返修功能：\n- 产线直接返修\n- 快速问题解决\n- 实时质量确认\n- 最小化停线时间\n- 自动追溯更新');
+            });
+
+            // 离线返工
+            document.getElementById('offlineReworkBtn').addEventListener('click', function() {
+                alert('离线返工功能：\n- 专业返工车间\n- 复杂问题处理\n- 深度质量分析\n- 根因调查分析\n- 预防措施制定');
+            });
+
+            // 质量分析
+            document.getElementById('qualityAnalysisBtn').addEventListener('click', function() {
+                alert('质量分析功能：\n- 缺陷统计分析\n- 趋势变化监控\n- 根因关联分析\n- 改进建议生成\n- 预防措施跟踪');
+            });
+
+            // 追溯更新
+            document.getElementById('traceUpdateBtn').addEventListener('click', function() {
+                alert('追溯更新功能：\n- 返修记录关联\n- 质量状态更新\n- 工艺参数记录\n- 成本信息统计\n- 历史数据维护');
+            });
+
+            // 缺陷跟踪
+            document.getElementById('defectTrackBtn').addEventListener('click', function() {
+                alert('缺陷跟踪功能：\n- 缺陷生命周期管理\n- 处理进度跟踪\n- 责任人分配\n- 关闭条件验证\n- 效果评估分析');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人员管理系统 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">人员管理系统</h1>
+            <p class="text-gray-600">基于Process.md 2.3.20-2.3.21流程：资质管理→考勤管理→培训考核，实现人力资源智能化管理</p>
+        </div>
+
+        <!-- 人员管理流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">人员管理执行流程</h3>
+                    <span class="text-sm text-gray-600">智能化人力资源管理系统</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">资质管理</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">考勤管理</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">培训考核</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">绩效评估</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="qualificationBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-certificate mr-2"></i>
+                资质管理
+            </button>
+            <button id="attendanceBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-clock mr-2"></i>
+                考勤管理
+            </button>
+            <button id="trainingBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-graduation-cap mr-2"></i>
+                培训考核
+            </button>
+            <button id="performanceBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-chart-line mr-2"></i>
+                绩效评估
+            </button>
+            <button id="skillMatrixBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-users-cog mr-2"></i>
+                技能矩阵
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 人员管理统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-600">在职员工</div>
+                        <div class="text-xs text-gray-500">生产人员</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">142</div>
+                        <div class="text-sm text-gray-600">资质有效</div>
+                        <div class="text-xs text-gray-500">持证上岗</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-certificate text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">98.5%</div>
+                        <div class="text-sm text-gray-600">出勤率</div>
+                        <div class="text-xs text-gray-500">本月统计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">89</div>
+                        <div class="text-sm text-gray-600">培训完成</div>
+                        <div class="text-xs text-gray-500">本月人次</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">4.2</div>
+                        <div class="text-sm text-gray-600">平均技能</div>
+                        <div class="text-xs text-gray-500">技能等级</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users-cog text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">14</div>
+                        <div class="text-sm text-gray-600">资质到期</div>
+                        <div class="text-xs text-gray-500">需要更新</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 资质管理和考勤监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 资质管理面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">资质管理监控</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-certificate text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">张师傅 - 焊接资质</div>
+                                <div class="text-xs text-gray-500">有效期至: 2025-12-15 | 等级: 高级</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">有效</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">李师傅 - 电工资质</div>
+                                <div class="text-xs text-gray-500">有效期至: 2025-02-20 | 等级: 中级</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">即将到期</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-times-circle text-red-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">王师傅 - 质检资质</div>
+                                <div class="text-xs text-gray-500">已过期: 2025-01-10 | 等级: 初级</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">已过期</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 实时考勤监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">实时考勤监控</h3>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">在岗人数</div>
+                            <div class="text-lg font-semibold text-green-600">142人</div>
+                            <div class="text-xs text-gray-500">正常出勤</div>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">请假人数</div>
+                            <div class="text-lg font-semibold text-blue-600">8人</div>
+                            <div class="text-xs text-gray-500">事假病假</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-yellow-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">迟到人数</div>
+                            <div class="text-lg font-semibold text-yellow-600">3人</div>
+                            <div class="text-xs text-gray-500">超过15分钟</div>
+                        </div>
+                        <div class="bg-red-50 p-3 rounded-lg">
+                            <div class="text-sm text-gray-600">缺勤人数</div>
+                            <div class="text-lg font-semibold text-red-600">3人</div>
+                            <div class="text-xs text-gray-500">未请假</div>
+                        </div>
+                    </div>
+                    <div class="border-t pt-4">
+                        <h4 class="text-sm font-medium text-gray-900 mb-2">班次分布</h4>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span>早班 (08:00-16:00)</span>
+                                <span class="font-medium">78人</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span>中班 (16:00-24:00)</span>
+                                <span class="font-medium">64人</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 人员管理记录表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">人员管理记录</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部部门</option>
+                        <option>生产部</option>
+                        <option>质量部</option>
+                        <option>设备部</option>
+                        <option>物流部</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>在职</option>
+                        <option>请假</option>
+                        <option>培训中</option>
+                        <option>离职</option>
+                    </select>
+                    <input type="text" placeholder="搜索员工姓名、工号..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">员工信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">部门岗位</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">资质状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">考勤情况</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">培训记录</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">技能等级</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">绩效评分</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="personnelTableBody">
+                        <!-- 人员数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.3.20-2.3.21的人员管理数据模型
+        const personnelData = [
+            {
+                id: 'EMP001',
+                employeeId: 'OP001',
+                name: '张师傅',
+                department: '生产部',
+                position: '高级操作员',
+                productionLine: '产线1',
+                hireDate: '2020-03-15',
+                status: 'active',
+                qualifications: [
+                    { type: '焊接资质', level: '高级', expiryDate: '2025-12-15', status: 'valid' },
+                    { type: '安全培训', level: '合格', expiryDate: '2025-06-30', status: 'valid' }
+                ],
+                attendance: {
+                    thisMonth: { present: 20, absent: 0, late: 1, leave: 1 },
+                    attendanceRate: 95.5,
+                    lastCheckIn: '2025-01-16 08:05:30',
+                    shift: '早班'
+                },
+                training: {
+                    completed: 15,
+                    inProgress: 2,
+                    lastTraining: '2025-01-10',
+                    nextTraining: '2025-02-15',
+                    trainingHours: 120
+                },
+                skills: {
+                    overall: 4.5,
+                    technical: 4.8,
+                    quality: 4.2,
+                    safety: 4.6,
+                    teamwork: 4.3
+                },
+                performance: {
+                    score: 92.5,
+                    rank: 'A',
+                    productivity: 105.2,
+                    qualityRate: 99.8,
+                    lastEvaluation: '2024-12-31'
+                },
+                notes: '技能全面，工作认真负责'
+            },
+            {
+                id: 'EMP002',
+                employeeId: 'OP002',
+                name: '李师傅',
+                department: '生产部',
+                position: '中级操作员',
+                productionLine: '产线2',
+                hireDate: '2021-08-20',
+                status: 'active',
+                qualifications: [
+                    { type: '电工资质', level: '中级', expiryDate: '2025-02-20', status: 'expiring' },
+                    { type: '安全培训', level: '合格', expiryDate: '2025-08-15', status: 'valid' }
+                ],
+                attendance: {
+                    thisMonth: { present: 19, absent: 1, late: 2, leave: 0 },
+                    attendanceRate: 90.9,
+                    lastCheckIn: '2025-01-16 08:15:45',
+                    shift: '早班'
+                },
+                training: {
+                    completed: 12,
+                    inProgress: 1,
+                    lastTraining: '2025-01-05',
+                    nextTraining: '2025-01-25',
+                    trainingHours: 96
+                },
+                skills: {
+                    overall: 3.8,
+                    technical: 4.0,
+                    quality: 3.6,
+                    safety: 4.1,
+                    teamwork: 3.7
+                },
+                performance: {
+                    score: 85.2,
+                    rank: 'B',
+                    productivity: 98.5,
+                    qualityRate: 98.2,
+                    lastEvaluation: '2024-12-31'
+                },
+                notes: '需要加强质量意识培训'
+            },
+            {
+                id: 'EMP003',
+                employeeId: 'QC001',
+                name: '王质检',
+                department: '质量部',
+                position: '质检员',
+                productionLine: '质检中心',
+                hireDate: '2019-05-10',
+                status: 'training',
+                qualifications: [
+                    { type: '质检资质', level: '初级', expiryDate: '2025-01-10', status: 'expired' },
+                    { type: '计量资质', level: '中级', expiryDate: '2025-09-30', status: 'valid' }
+                ],
+                attendance: {
+                    thisMonth: { present: 18, absent: 0, late: 0, leave: 4 },
+                    attendanceRate: 81.8,
+                    lastCheckIn: '2025-01-15 08:00:00',
+                    shift: '早班'
+                },
+                training: {
+                    completed: 18,
+                    inProgress: 3,
+                    lastTraining: '2025-01-12',
+                    nextTraining: '2025-01-20',
+                    trainingHours: 144
+                },
+                skills: {
+                    overall: 4.2,
+                    technical: 4.5,
+                    quality: 4.8,
+                    safety: 4.0,
+                    teamwork: 3.5
+                },
+                performance: {
+                    score: 88.7,
+                    rank: 'B+',
+                    productivity: 102.3,
+                    qualityRate: 99.5,
+                    lastEvaluation: '2024-12-31'
+                },
+                notes: '正在进行资质更新培训'
+            },
+            {
+                id: 'EMP004',
+                employeeId: 'MT001',
+                name: '赵维修',
+                department: '设备部',
+                position: '设备维修工',
+                productionLine: '设备维修',
+                hireDate: '2022-01-15',
+                status: 'leave',
+                qualifications: [
+                    { type: '机械维修', level: '高级', expiryDate: '2026-03-20', status: 'valid' },
+                    { type: '电气维修', level: '中级', expiryDate: '2025-11-15', status: 'valid' }
+                ],
+                attendance: {
+                    thisMonth: { present: 15, absent: 0, late: 0, leave: 7 },
+                    attendanceRate: 68.2,
+                    lastCheckIn: '2025-01-12 08:00:00',
+                    shift: '中班'
+                },
+                training: {
+                    completed: 20,
+                    inProgress: 1,
+                    lastTraining: '2024-12-20',
+                    nextTraining: '2025-02-10',
+                    trainingHours: 160
+                },
+                skills: {
+                    overall: 4.6,
+                    technical: 4.9,
+                    quality: 4.3,
+                    safety: 4.7,
+                    teamwork: 4.2
+                },
+                performance: {
+                    score: 91.8,
+                    rank: 'A-',
+                    productivity: 108.5,
+                    qualityRate: 99.2,
+                    lastEvaluation: '2024-12-31'
+                },
+                notes: '请病假中，预计下周返岗'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            active: { text: '在职', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            training: { text: '培训中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-graduation-cap' },
+            leave: { text: '请假', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-calendar-times' },
+            resigned: { text: '离职', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-user-times' }
+        };
+
+        // 资质状态映射
+        const qualificationStatusMap = {
+            valid: { text: '有效', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            expiring: { text: '即将到期', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-exclamation-triangle' },
+            expired: { text: '已过期', class: 'bg-red-100 text-red-800', icon: 'fas fa-times-circle' }
+        };
+
+        // 绩效等级映射
+        const performanceRankMap = {
+            'A+': { text: 'A+', class: 'bg-green-100 text-green-800' },
+            'A': { text: 'A', class: 'bg-green-100 text-green-800' },
+            'A-': { text: 'A-', class: 'bg-blue-100 text-blue-800' },
+            'B+': { text: 'B+', class: 'bg-blue-100 text-blue-800' },
+            'B': { text: 'B', class: 'bg-yellow-100 text-yellow-800' },
+            'B-': { text: 'B-', class: 'bg-yellow-100 text-yellow-800' },
+            'C': { text: 'C', class: 'bg-red-100 text-red-800' }
+        };
+
+        let filteredData = [...personnelData];
+
+        // 渲染人员管理记录表格
+        function renderPersonnelTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('personnelTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(person => {
+                const status = statusMap[person.status];
+                const performanceRank = performanceRankMap[person.performance.rank];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                // 计算资质状态
+                const expiredQualifications = person.qualifications.filter(q => q.status === 'expired').length;
+                const expiringQualifications = person.qualifications.filter(q => q.status === 'expiring').length;
+                const validQualifications = person.qualifications.filter(q => q.status === 'valid').length;
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-3">
+                                <i class="fas fa-user text-gray-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">${person.name}</div>
+                                <div class="text-xs text-gray-500">工号: ${person.employeeId}</div>
+                                <div class="text-xs text-gray-500">入职: ${person.hireDate}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${person.department}</div>
+                        <div class="text-sm text-gray-600">${person.position}</div>
+                        <div class="text-xs text-gray-500">${person.productionLine}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="space-y-1">
+                            ${validQualifications > 0 ? `
+                                <span class="inline-flex items-center px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
+                                    <i class="fas fa-check-circle mr-1"></i>有效: ${validQualifications}
+                                </span>
+                            ` : ''}
+                            ${expiringQualifications > 0 ? `
+                                <span class="inline-flex items-center px-2 py-1 text-xs rounded-full bg-yellow-100 text-yellow-800">
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>即将到期: ${expiringQualifications}
+                                </span>
+                            ` : ''}
+                            ${expiredQualifications > 0 ? `
+                                <span class="inline-flex items-center px-2 py-1 text-xs rounded-full bg-red-100 text-red-800">
+                                    <i class="fas fa-times-circle mr-1"></i>已过期: ${expiredQualifications}
+                                </span>
+                            ` : ''}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">出勤率: ${person.attendance.attendanceRate}%</div>
+                        <div class="text-xs text-gray-500">
+                            出勤: ${person.attendance.thisMonth.present} |
+                            迟到: ${person.attendance.thisMonth.late} |
+                            请假: ${person.attendance.thisMonth.leave}
+                        </div>
+                        <div class="text-xs text-blue-600">${person.attendance.shift}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">完成: ${person.training.completed}次</div>
+                        <div class="text-xs text-gray-500">进行中: ${person.training.inProgress}次</div>
+                        <div class="text-xs text-gray-500">总时长: ${person.training.trainingHours}小时</div>
+                        ${person.training.nextTraining ? `
+                            <div class="text-xs text-blue-600">下次: ${person.training.nextTraining}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="text-sm font-medium text-gray-900 mr-2">${person.skills.overall}</div>
+                            <div class="w-16 bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${(person.skills.overall / 5) * 100}%"></div>
+                            </div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">
+                            技术: ${person.skills.technical} | 质量: ${person.skills.quality}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${performanceRank.class}">
+                                ${performanceRank.text}
+                            </span>
+                            <span class="ml-2 text-sm text-gray-900">${person.performance.score}</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">
+                            产能: ${person.performance.productivity}% | 质量: ${person.performance.qualityRate}%
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${person.attendance.lastCheckIn ? `
+                            <div class="text-xs text-gray-500 mt-1">
+                                最后打卡: ${person.attendance.lastCheckIn.split(' ')[1]}
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewPersonnelDetail('${person.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="manageQualifications('${person.id}')" class="text-green-600 hover:text-green-900 p-1" title="资质管理">
+                                <i class="fas fa-certificate"></i>
+                            </button>
+                            <button onclick="viewAttendance('${person.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="考勤记录">
+                                <i class="fas fa-clock"></i>
+                            </button>
+                            <button onclick="manageTraining('${person.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="培训管理">
+                                <i class="fas fa-graduation-cap"></i>
+                            </button>
+                            <button onclick="viewPerformance('${person.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="绩效评估">
+                                <i class="fas fa-chart-line"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${personnelData.length} 条记录`;
+        }
+
+        // 人员管理操作函数
+        function viewPersonnelDetail(personId) {
+            const person = personnelData.find(p => p.id === personId);
+            if (person) {
+                let detailText = `员工详情：\n姓名: ${person.name}\n工号: ${person.employeeId}\n部门: ${person.department}\n岗位: ${person.position}\n产线: ${person.productionLine}\n入职日期: ${person.hireDate}\n状态: ${statusMap[person.status].text}`;
+
+                detailText += `\n\n资质信息:`;
+                person.qualifications.forEach(q => {
+                    detailText += `\n• ${q.type} (${q.level}) - 有效期至: ${q.expiryDate} - ${qualificationStatusMap[q.status].text}`;
+                });
+
+                detailText += `\n\n考勤情况:\n出勤率: ${person.attendance.attendanceRate}%\n本月出勤: ${person.attendance.thisMonth.present}天\n迟到: ${person.attendance.thisMonth.late}次\n请假: ${person.attendance.thisMonth.leave}天\n班次: ${person.attendance.shift}`;
+
+                detailText += `\n\n培训记录:\n已完成: ${person.training.completed}次\n进行中: ${person.training.inProgress}次\n总时长: ${person.training.trainingHours}小时\n最后培训: ${person.training.lastTraining}`;
+
+                detailText += `\n\n技能评估:\n综合技能: ${person.skills.overall}/5\n技术能力: ${person.skills.technical}/5\n质量意识: ${person.skills.quality}/5\n安全意识: ${person.skills.safety}/5\n团队协作: ${person.skills.teamwork}/5`;
+
+                detailText += `\n\n绩效评估:\n评分: ${person.performance.score}\n等级: ${person.performance.rank}\n生产效率: ${person.performance.productivity}%\n质量合格率: ${person.performance.qualityRate}%\n最后评估: ${person.performance.lastEvaluation}`;
+
+                if (person.notes) {
+                    detailText += `\n\n备注: ${person.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function manageQualifications(personId) {
+            const person = personnelData.find(p => p.id === personId);
+            if (person) {
+                let qualText = `${person.name} - 资质管理：\n\n当前资质:`;
+                person.qualifications.forEach((q, index) => {
+                    qualText += `\n${index + 1}. ${q.type} (${q.level})\n   有效期: ${q.expiryDate}\n   状态: ${qualificationStatusMap[q.status].text}`;
+                });
+
+                qualText += `\n\n操作选项:\n1. 更新资质\n2. 添加新资质\n3. 资质培训安排\n4. 到期提醒设置`;
+
+                alert(qualText);
+            }
+        }
+
+        function viewAttendance(personId) {
+            const person = personnelData.find(p => p.id === personId);
+            if (person) {
+                const attendance = person.attendance;
+                alert(`${person.name} - 考勤记录：\n\n本月统计:\n出勤: ${attendance.thisMonth.present}天\n缺勤: ${attendance.thisMonth.absent}天\n迟到: ${attendance.thisMonth.late}次\n请假: ${attendance.thisMonth.leave}天\n\n出勤率: ${attendance.attendanceRate}%\n班次: ${attendance.shift}\n最后打卡: ${attendance.lastCheckIn}\n\n考勤分析:\n• ${attendance.attendanceRate >= 95 ? '出勤表现优秀' : attendance.attendanceRate >= 90 ? '出勤表现良好' : '需要改善出勤情况'}\n• ${attendance.thisMonth.late === 0 ? '无迟到记录' : `本月迟到${attendance.thisMonth.late}次，需要注意`}`);
+            }
+        }
+
+        function manageTraining(personId) {
+            const person = personnelData.find(p => p.id === personId);
+            if (person) {
+                const training = person.training;
+                alert(`${person.name} - 培训管理：\n\n培训统计:\n已完成: ${training.completed}次\n进行中: ${training.inProgress}次\n总时长: ${training.trainingHours}小时\n\n最近培训: ${training.lastTraining}\n下次培训: ${training.nextTraining || '待安排'}\n\n培训建议:\n• 基础技能培训: ${training.completed < 10 ? '需要加强' : '已达标'}\n• 专业技能提升: ${training.trainingHours < 100 ? '建议增加' : '表现良好'}\n• 安全培训: 每季度必修\n\n可安排培训:\n1. 技能提升培训\n2. 安全操作培训\n3. 质量意识培训\n4. 新设备操作培训`);
+            }
+        }
+
+        function viewPerformance(personId) {
+            const person = personnelData.find(p => p.id === personId);
+            if (person) {
+                const perf = person.performance;
+                const skills = person.skills;
+                alert(`${person.name} - 绩效评估：\n\n综合评估:\n评分: ${perf.score}/100\n等级: ${perf.rank}\n排名: ${perf.rank === 'A+' || perf.rank === 'A' ? '优秀' : perf.rank.startsWith('B') ? '良好' : '需改进'}\n\n关键指标:\n生产效率: ${perf.productivity}%\n质量合格率: ${perf.qualityRate}%\n\n技能评估:\n技术能力: ${skills.technical}/5\n质量意识: ${skills.quality}/5\n安全意识: ${skills.safety}/5\n团队协作: ${skills.teamwork}/5\n综合技能: ${skills.overall}/5\n\n改进建议:\n${skills.quality < 4 ? '• 加强质量意识培训\n' : ''}${skills.safety < 4 ? '• 提高安全操作规范\n' : ''}${skills.teamwork < 4 ? '• 增强团队协作能力\n' : ''}${perf.productivity < 100 ? '• 提升工作效率\n' : ''}最后评估: ${perf.lastEvaluation}`);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPersonnelTable();
+
+            // 资质管理
+            document.getElementById('qualificationBtn').addEventListener('click', function() {
+                alert('资质管理功能：\n- 资质证书管理\n- 到期提醒机制\n- 资质培训安排\n- 持证上岗控制\n- 资质统计分析');
+            });
+
+            // 考勤管理
+            document.getElementById('attendanceBtn').addEventListener('click', function() {
+                alert('考勤管理功能：\n- 实时考勤监控\n- 班次排班管理\n- 请假审批流程\n- 加班时间统计\n- 考勤报表生成');
+            });
+
+            // 培训考核
+            document.getElementById('trainingBtn').addEventListener('click', function() {
+                alert('培训考核功能：\n- 培训计划制定\n- 在线培训课程\n- 考核测试管理\n- 培训效果评估\n- 证书颁发管理');
+            });
+
+            // 绩效评估
+            document.getElementById('performanceBtn').addEventListener('click', function() {
+                alert('绩效评估功能：\n- 多维度绩效考核\n- KPI指标管理\n- 360度评估\n- 绩效改进计划\n- 激励机制设计');
+            });
+
+            // 技能矩阵
+            document.getElementById('skillMatrixBtn').addEventListener('click', function() {
+                alert('技能矩阵功能：\n- 技能图谱管理\n- 能力评估模型\n- 技能差距分析\n- 培训需求识别\n- 人才发展规划');
+            });
+        });
+    </script>
+</body>
+</html>

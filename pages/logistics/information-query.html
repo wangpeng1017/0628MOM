@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信息查询 - 厂内物流执行系统(LES) - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">信息查询</h1>
+            <p class="text-gray-600">配送记录查询、计划物料查询、异常报警查询等信息查询功能</p>
+        </div>
+
+        <!-- 查询选项卡 -->
+        <div class="mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8">
+                    <button onclick="showQueryTab('delivery')" class="query-tab-button border-b-2 border-blue-500 text-blue-600 py-2 px-1 text-sm font-medium" id="delivery-tab">
+                        配送记录查询
+                    </button>
+                    <button onclick="showQueryTab('material')" class="query-tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium" id="material-tab">
+                        计划物料查询
+                    </button>
+                    <button onclick="showQueryTab('alert')" class="query-tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium" id="alert-tab">
+                        异常报警查询
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- 配送记录查询 -->
+        <div id="delivery-content" class="query-content">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">配送记录查询条件</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">任务编号</label>
+                        <input type="text" placeholder="输入任务编号" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">设备编号</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                            <option>全部设备</option>
+                            <option>AGV-001</option>
+                            <option>AGV-002</option>
+                            <option>FORK-001</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">配送状态</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                            <option>全部状态</option>
+                            <option>待执行</option>
+                            <option>执行中</option>
+                            <option>已完成</option>
+                            <option>异常</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button class="w-full bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                            <i class="fas fa-search mr-2"></i>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 配送记录结果 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">配送记录</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">任务编号</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料信息</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">配送路径</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间信息</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-blue-600">TASK-20250117-001</div>
+                                    <div class="text-xs text-gray-500">优先级: 高</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">AGV-001</div>
+                                    <div class="text-xs text-gray-500">自动导引车</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="text-sm text-gray-900">电容器CAP-100uF-25V</div>
+                                    <div class="text-xs text-gray-500">数量: 500PCS</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="text-sm text-gray-900">A区-01 → 工位W-01</div>
+                                    <div class="text-xs text-gray-500">距离: 120米</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">08:30:15 - 08:37:45</div>
+                                    <div class="text-xs text-gray-500">用时: 7分30秒</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                        已完成
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-blue-600">TASK-20250117-002</div>
+                                    <div class="text-xs text-gray-500">优先级: 中</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">AGV-003</div>
+                                    <div class="text-xs text-gray-500">自动导引车</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="text-sm text-gray-900">PCB板PCB-MAIN-V2.1</div>
+                                    <div class="text-xs text-gray-500">数量: 100PCS</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="text-sm text-gray-900">B区-02 → 工位W-05</div>
+                                    <div class="text-xs text-gray-500">距离: 85米</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">08:35:20 - 进行中</div>
+                                    <div class="text-xs text-gray-500">预计: 5分钟</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        执行中
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 计划物料查询 -->
+        <div id="material-content" class="query-content hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">计划物料查询条件</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">工单编号</label>
+                        <input type="text" placeholder="输入工单编号" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">物料编号</label>
+                        <input type="text" placeholder="输入物料编号" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">计划日期</label>
+                        <input type="date" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                    </div>
+                    <div class="flex items-end">
+                        <button class="w-full bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                            <i class="fas fa-search mr-2"></i>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 计划物料结果 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">计划物料信息</h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-semibold text-gray-800">工单WO202501001</h4>
+                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">进行中</span>
+                            </div>
+                            <div class="space-y-1 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">产品:</span>
+                                    <span class="text-gray-900">PACK主控模块</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">计划数量:</span>
+                                    <span class="text-gray-900">100PCS</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">需求物料:</span>
+                                    <span class="text-gray-900">15种</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">配送状态:</span>
+                                    <span class="text-green-600">已配送80%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-semibold text-gray-800">工单WO202501002</h4>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">已完成</span>
+                            </div>
+                            <div class="space-y-1 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">产品:</span>
+                                    <span class="text-gray-900">5KW逆变器</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">计划数量:</span>
+                                    <span class="text-gray-900">50PCS</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">需求物料:</span>
+                                    <span class="text-gray-900">23种</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">配送状态:</span>
+                                    <span class="text-green-600">已完成100%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 异常报警查询 -->
+        <div id="alert-content" class="query-content hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">异常报警查询条件</h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">报警类型</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                            <option>全部类型</option>
+                            <option>设备故障</option>
+                            <option>路径阻塞</option>
+                            <option>物料缺失</option>
+                            <option>网络异常</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">严重程度</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                            <option>全部级别</option>
+                            <option>紧急</option>
+                            <option>重要</option>
+                            <option>一般</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">处理状态</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                            <option>全部状态</option>
+                            <option>待处理</option>
+                            <option>处理中</option>
+                            <option>已处理</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button class="w-full bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                            <i class="fas fa-search mr-2"></i>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 异常报警结果 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">异常报警记录</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-red-800">AGV-003运行异常</div>
+                                    <div class="text-xs text-gray-600">导航系统故障，已停止运行</div>
+                                    <div class="text-xs text-gray-500">发生时间: 2025-01-17 08:45:30</div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">紧急</span>
+                                    <div class="text-xs text-gray-500 mt-1">待处理</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-orange-800">料箱库存不足</div>
+                                    <div class="text-xs text-gray-600">A区料箱数量低于安全库存</div>
+                                    <div class="text-xs text-gray-500">发生时间: 2025-01-17 08:40:15</div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">重要</span>
+                                    <div class="text-xs text-gray-500 mt-1">处理中</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-green-800">网络连接恢复</div>
+                                    <div class="text-xs text-gray-600">AGV-002网络连接已恢复正常</div>
+                                    <div class="text-xs text-gray-500">处理时间: 2025-01-17 08:35:45</div>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">一般</span>
+                                    <div class="text-xs text-gray-500 mt-1">已处理</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示查询选项卡
+        function showQueryTab(tabName) {
+            // 隐藏所有内容
+            document.querySelectorAll('.query-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // 重置所有选项卡样式
+            document.querySelectorAll('.query-tab-button').forEach(button => {
+                button.classList.remove('border-blue-500', 'text-blue-600');
+                button.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // 显示选中的内容
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+            
+            // 设置选中的选项卡样式
+            const activeTab = document.getElementById(tabName + '-tab');
+            activeTab.classList.remove('border-transparent', 'text-gray-500');
+            activeTab.classList.add('border-blue-500', 'text-blue-600');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('信息查询页面已加载');
+        });
+    </script>
+</body>
+</html>

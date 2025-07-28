@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备管理 - IOT平台 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">设备管理</h1>
+            <p class="text-gray-600">管理IOT设备的连接、配置和状态监控</p>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <!-- ○1 添加设备按钮 -->
+            <button id="addDeviceBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                添加设备
+            </button>
+            
+            <!-- ○2 导入设备按钮 -->
+            <button id="importDeviceBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-upload mr-2"></i>
+                导入设备
+            </button>
+            
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出设备
+            </button>
+            
+            <button class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-sync-alt mr-2"></i>
+                刷新状态
+            </button>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">28</div>
+                        <div class="text-sm text-gray-600">总设备数</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-microchip text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">22</div>
+                        <div class="text-sm text-gray-600">在线设备</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wifi text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">3</div>
+                        <div class="text-sm text-gray-600">离线设备</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-yellow-600">3</div>
+                        <div class="text-sm text-gray-600">故障设备</div>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tools text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ○3 设备列表展示区域 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备列表</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>在线</option>
+                        <option>离线</option>
+                        <option>故障</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部类型</option>
+                        <option>传感器</option>
+                        <option>控制器</option>
+                        <option>网关</option>
+                        <option>执行器</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部分配状态</option>
+                        <option>已分配</option>
+                        <option>未分配</option>
+                    </select>
+                    <input type="text" placeholder="搜索设备名称、标识符..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                </div>
+            </div>
+
+            <!-- 设备列表表格 -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <input type="checkbox" class="rounded">
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备名称</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备类型</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">分配状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">公开状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">创建时间</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最后活跃</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="deviceTableBody">
+                        <!-- 设备数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700">
+                    显示 1-10 条，共 28 条记录
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加设备弹窗 -->
+    <div id="addDeviceModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-800">添加新设备</h3>
+                        <button id="closeAddModal" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <!-- 步骤指示器 -->
+                    <div class="flex items-center mb-6">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">设备详细信息</span>
+                        </div>
+                        <div class="flex-1 mx-4 h-px bg-gray-300"></div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm text-gray-500">凭据</span>
+                        </div>
+                        <div class="flex-1 mx-4 h-px bg-gray-300"></div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-500">用户组</span>
+                        </div>
+                    </div>
+
+                    <form id="addDeviceForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    设备名称 <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" name="deviceName" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">设备标签</label>
+                                <input type="text" name="deviceLabel" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    设备类型 <span class="text-red-500">*</span>
+                                </label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center">
+                                        <input type="radio" name="deviceTypeOption" value="existing" checked class="mr-2">
+                                        <span>选择已有设备模型</span>
+                                    </label>
+                                    <select name="deviceType" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                        <option value="default">default</option>
+                                        <option value="sensor">传感器</option>
+                                        <option value="controller">控制器</option>
+                                        <option value="gateway">网关</option>
+                                        <option value="actuator">执行器</option>
+                                    </select>
+
+                                    <label class="flex items-center">
+                                        <input type="radio" name="deviceTypeOption" value="new" class="mr-2">
+                                        <span>新建设备模型</span>
+                                    </label>
+
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="isGateway" class="mr-2">
+                                        <span>网关</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">设备描述</label>
+                                <textarea name="deviceDescription" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+                    <button id="cancelAddDevice" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">取消</button>
+                    <button id="nextStep" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">下一步：凭据</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ○5 凭证管理弹窗 -->
+    <div id="credentialsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-800">设备凭据管理</h3>
+                        <button id="closeCredentialsModal" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-center">
+                            <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                            <span class="text-blue-800 font-medium">设备凭据信息</span>
+                        </div>
+                        <p class="text-blue-700 text-sm mt-2">以下凭据用于设备连接到IOT平台，请妥善保管。</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">设备ID</label>
+                            <div class="flex">
+                                <input type="text" value="device_001_sensor" readonly class="flex-1 border border-gray-300 rounded-l-md px-3 py-2 bg-gray-50">
+                                <button class="px-3 py-2 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-300">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">访问令牌</label>
+                            <div class="flex">
+                                <input type="text" value="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." readonly class="flex-1 border border-gray-300 rounded-l-md px-3 py-2 bg-gray-50">
+                                <button class="px-3 py-2 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-300">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">MQTT服务器</label>
+                            <div class="flex">
+                                <input type="text" value="mqtt://iot.factory.com:1883" readonly class="flex-1 border border-gray-300 rounded-l-md px-3 py-2 bg-gray-50">
+                                <button class="px-3 py-2 bg-gray-200 border border-l-0 border-gray-300 rounded-r-md hover:bg-gray-300">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">令牌有效期</label>
+                            <select class="w-full border border-gray-300 rounded-md px-3 py-2">
+                                <option>30天</option>
+                                <option>90天</option>
+                                <option>180天</option>
+                                <option>1年</option>
+                                <option>永不过期</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex space-x-3">
+                        <button class="px-4 py-2 bg-warning text-white rounded-md hover:bg-yellow-600">
+                            <i class="fas fa-sync-alt mr-2"></i>
+                            重新生成令牌
+                        </button>
+                        <button class="px-4 py-2 bg-success text-white rounded-md hover:bg-green-700">
+                            <i class="fas fa-download mr-2"></i>
+                            下载配置文件
+                        </button>
+                    </div>
+                </div>
+
+                <div class="px-6 py-4 border-t border-gray-200 flex justify-end">
+                    <button id="closeCredentials" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入设备弹窗 -->
+    <div id="importDeviceModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-lg w-full">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-800">批量导入设备</h3>
+                        <button id="closeImportModal" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">选择CSV文件</label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                            <p class="text-gray-600 mb-2">拖拽文件到此处或点击选择文件</p>
+                            <input type="file" accept=".csv" class="hidden" id="csvFileInput">
+                            <button onclick="document.getElementById('csvFileInput').click()" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">
+                                选择文件
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <a href="#" class="text-primary hover:underline flex items-center">
+                            <i class="fas fa-download mr-2"></i>
+                            下载导入模板
+                        </a>
+                    </div>
+
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <h4 class="font-medium text-yellow-800 mb-2">导入说明：</h4>
+                        <ul class="text-sm text-yellow-700 space-y-1">
+                            <li>• 文件格式必须为CSV</li>
+                            <li>• 必填字段：设备名称、设备类型、设备标识符</li>
+                            <li>• 设备名称不能重复</li>
+                            <li>• 单次最多导入1000条记录</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+                    <button id="cancelImport" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">取消</button>
+                    <button id="startImport" class="px-4 py-2 bg-success text-white rounded-md hover:bg-green-700">开始导入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ○8 分配给用户组弹窗 -->
+    <div id="assignGroupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-800">分配给用户组</h3>
+                        <button id="closeAssignModal" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">选择用户组</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2">
+                            <option>生产部门</option>
+                            <option>质量部门</option>
+                            <option>设备部门</option>
+                            <option>技术部门</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">权限设置</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" checked class="mr-2">
+                                <span>查看设备状态</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2">
+                                <span>控制设备</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="mr-2">
+                                <span>修改设备配置</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+                    <button id="cancelAssign" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">取消</button>
+                    <button id="confirmAssign" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">确认分配</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟设备数据
+        const deviceData = [
+            {
+                id: 1,
+                name: '冷却水循环泵传感器',
+                type: '传感器',
+                status: 'online',
+                assigned: true,
+                public: true,
+                createTime: '2023-04-23 16:31:42',
+                lastActive: '2分钟前',
+                identifier: 'sensor_001'
+            },
+            {
+                id: 2,
+                name: 'PLC控制器',
+                type: '控制器',
+                status: 'online',
+                assigned: false,
+                public: true,
+                createTime: '2023-04-23 16:24:33',
+                lastActive: '5分钟前',
+                identifier: 'plc_001'
+            },
+            {
+                id: 3,
+                name: '温度传感器',
+                type: '传感器',
+                status: 'offline',
+                assigned: true,
+                public: true,
+                createTime: '2023-04-23 16:23:27',
+                lastActive: '1小时前',
+                identifier: 'temp_001'
+            },
+            {
+                id: 4,
+                name: '测试设备1',
+                type: 'default',
+                status: 'online',
+                assigned: false,
+                public: true,
+                createTime: '2023-04-20 17:03:30',
+                lastActive: '刚刚',
+                identifier: 'test_001'
+            },
+            {
+                id: 5,
+                name: '测试设备2',
+                type: 'default',
+                status: 'fault',
+                assigned: false,
+                public: false,
+                createTime: '2023-04-20 17:06:26',
+                lastActive: '30分钟前',
+                identifier: 'test_002'
+            },
+            {
+                id: 6,
+                name: 'FLASH',
+                type: 'default',
+                status: 'online',
+                assigned: false,
+                public: true,
+                createTime: '2023-04-20 17:05:46',
+                lastActive: '15分钟前',
+                identifier: 'flash_001'
+            },
+            {
+                id: 7,
+                name: 'GLORY',
+                type: 'default',
+                status: 'online',
+                assigned: false,
+                public: true,
+                createTime: '2023-04-20 17:05:26',
+                lastActive: '10分钟前',
+                identifier: 'glory_001'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            online: { text: '在线', class: 'bg-green-100 text-green-800' },
+            offline: { text: '离线', class: 'bg-red-100 text-red-800' },
+            fault: { text: '故障', class: 'bg-yellow-100 text-yellow-800' }
+        };
+
+        // 渲染设备列表
+        function renderDeviceTable() {
+            const tbody = document.getElementById('deviceTableBody');
+            tbody.innerHTML = '';
+
+            deviceData.forEach(device => {
+                const status = statusMap[device.status];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <input type="checkbox" class="rounded">
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${device.name}</div>
+                        <div class="text-sm text-gray-500">${device.identifier}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${device.type}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            ${status.text}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-sm ${device.assigned ? 'text-green-600' : 'text-gray-500'}">
+                            ${device.assigned ? '已分配' : '未分配'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="text-sm ${device.public ? 'text-blue-600' : 'text-gray-500'}">
+                            ${device.public ? '公开' : '私有'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${device.createTime}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${device.lastActive}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-2">
+                            ${device.assigned ? `
+                                <button onclick="unassignDevice(${device.id})" class="text-orange-600 hover:text-orange-900" title="○4 取消分配用户">
+                                    <i class="fas fa-user-times"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="manageCredentials(${device.id})" class="text-blue-600 hover:text-blue-900" title="○5 管理凭据">
+                                <i class="fas fa-key"></i>
+                            </button>
+                            <button onclick="deleteDevice(${device.id})" class="text-red-600 hover:text-red-900" title="○6 删除设备">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            ${!device.public ? `
+                                <button onclick="makePublic(${device.id})" class="text-green-600 hover:text-green-900" title="○7 公开设备">
+                                    <i class="fas fa-globe"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="assignToGroup(${device.id})" class="text-purple-600 hover:text-purple-900" title="○8 分配给用户组">
+                                <i class="fas fa-users"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // 设备操作函数
+        function unassignDevice(deviceId) {
+            if (confirm('确定要取消分配此设备吗？')) {
+                const device = deviceData.find(d => d.id === deviceId);
+                if (device) {
+                    device.assigned = false;
+                    renderDeviceTable();
+                    showNotification('设备已取消分配', 'success');
+                }
+            }
+        }
+
+        function manageCredentials(deviceId) {
+            document.getElementById('credentialsModal').classList.remove('hidden');
+        }
+
+        function deleteDevice(deviceId) {
+            if (confirm('确定要删除此设备吗？此操作不可恢复。')) {
+                const index = deviceData.findIndex(d => d.id === deviceId);
+                if (index !== -1) {
+                    deviceData.splice(index, 1);
+                    renderDeviceTable();
+                    showNotification('设备已删除', 'success');
+                }
+            }
+        }
+
+        function makePublic(deviceId) {
+            const device = deviceData.find(d => d.id === deviceId);
+            if (device) {
+                device.public = true;
+                renderDeviceTable();
+                showNotification('设备已设为公开', 'success');
+            }
+        }
+
+        function assignToGroup(deviceId) {
+            document.getElementById('assignGroupModal').classList.remove('hidden');
+        }
+
+        // 通知函数
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${
+                type === 'success' ? 'bg-green-500 text-white' :
+                type === 'error' ? 'bg-red-500 text-white' :
+                'bg-blue-500 text-white'
+            }`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            // 渲染设备列表
+            renderDeviceTable();
+
+            // ○1 添加设备按钮
+            document.getElementById('addDeviceBtn').addEventListener('click', function() {
+                document.getElementById('addDeviceModal').classList.remove('hidden');
+            });
+
+            // ○2 导入设备按钮
+            document.getElementById('importDeviceBtn').addEventListener('click', function() {
+                document.getElementById('importDeviceModal').classList.remove('hidden');
+            });
+
+            // 关闭弹窗事件
+            document.getElementById('closeAddModal').addEventListener('click', function() {
+                document.getElementById('addDeviceModal').classList.add('hidden');
+            });
+
+            document.getElementById('cancelAddDevice').addEventListener('click', function() {
+                document.getElementById('addDeviceModal').classList.add('hidden');
+            });
+
+            document.getElementById('closeCredentialsModal').addEventListener('click', function() {
+                document.getElementById('credentialsModal').classList.add('hidden');
+            });
+
+            document.getElementById('closeCredentials').addEventListener('click', function() {
+                document.getElementById('credentialsModal').classList.add('hidden');
+            });
+
+            document.getElementById('closeImportModal').addEventListener('click', function() {
+                document.getElementById('importDeviceModal').classList.add('hidden');
+            });
+
+            document.getElementById('cancelImport').addEventListener('click', function() {
+                document.getElementById('importDeviceModal').classList.add('hidden');
+            });
+
+            document.getElementById('closeAssignModal').addEventListener('click', function() {
+                document.getElementById('assignGroupModal').classList.add('hidden');
+            });
+
+            document.getElementById('cancelAssign').addEventListener('click', function() {
+                document.getElementById('assignGroupModal').classList.add('hidden');
+            });
+
+            // 添加设备表单提交
+            document.getElementById('nextStep').addEventListener('click', function() {
+                const form = document.getElementById('addDeviceForm');
+                const formData = new FormData(form);
+
+                if (formData.get('deviceName')) {
+                    showNotification('设备添加成功！', 'success');
+                    document.getElementById('addDeviceModal').classList.add('hidden');
+                    form.reset();
+                } else {
+                    showNotification('请填写必填字段', 'error');
+                }
+            });
+
+            // 导入设备
+            document.getElementById('startImport').addEventListener('click', function() {
+                const fileInput = document.getElementById('csvFileInput');
+                if (fileInput.files.length > 0) {
+                    showNotification('设备导入成功！', 'success');
+                    document.getElementById('importDeviceModal').classList.add('hidden');
+                } else {
+                    showNotification('请选择CSV文件', 'error');
+                }
+            });
+
+            // 确认分配
+            document.getElementById('confirmAssign').addEventListener('click', function() {
+                showNotification('设备分配成功！', 'success');
+                document.getElementById('assignGroupModal').classList.add('hidden');
+            });
+
+            // 点击弹窗外部关闭
+            document.querySelectorAll('.fixed.inset-0').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

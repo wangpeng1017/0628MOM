@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务概览与统计 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-concierge-bell text-primary mr-3"></i>
+                综合服务概览与统计
+            </h1>
+            <p class="text-gray-600 mt-2">全方位园区服务管理，提升员工生活品质</p>
+        </div>
+
+        <!-- 服务统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">服务人次</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">2,856</p>
+                        <p class="text-sm text-gray-500">本月</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-users text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">+12.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>日均:</span>
+                        <span class="text-blue-600 font-medium">95人次</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">满意度</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">4.8</p>
+                        <p class="text-sm text-gray-500">5分制</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-star text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>评价数:</span>
+                        <span class="text-green-600 font-medium">1,245条</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>好评率:</span>
+                        <span class="text-green-600 font-medium">96%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">服务收入</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">¥68.5万</p>
+                        <p class="text-sm text-gray-500">本月</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-coins text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">+8.2%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>利润率:</span>
+                        <span class="text-purple-600 font-medium">25%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">投诉处理</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">8</p>
+                        <p class="text-sm text-gray-500">本月</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-exclamation-circle text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>已处理:</span>
+                        <span class="text-green-600 font-medium">8件</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>处理率:</span>
+                        <span class="text-green-600 font-medium">100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务分类统计 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-pie text-blue-600 mr-2"></i>
+                服务分类统计
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-4 border border-orange-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">餐饮服务</h4>
+                        <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">热门</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 订餐人次: 1,856次</div>
+                        <div>• 满意度: 4.9分</div>
+                        <div>• 收入占比: 45%</div>
+                        <div>• 增长率: +15%</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-orange-500 h-2 rounded-full" style="width: 65%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">利用率: 65%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">班车服务</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">稳定</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 乘车人次: 658次</div>
+                        <div>• 满意度: 4.7分</div>
+                        <div>• 收入占比: 20%</div>
+                        <div>• 增长率: +5%</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 82%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">利用率: 82%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">住宿服务</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">优质</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 入住人次: 186次</div>
+                        <div>• 满意度: 4.8分</div>
+                        <div>• 收入占比: 25%</div>
+                        <div>• 增长率: +8%</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 75%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">入住率: 75%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">场地预订</h4>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">增长</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 预订次数: 156次</div>
+                        <div>• 满意度: 4.6分</div>
+                        <div>• 收入占比: 10%</div>
+                        <div>• 增长率: +25%</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-500 h-2 rounded-full" style="width: 68%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">利用率: 68%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务质量监控 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-green-600 mr-2"></i>
+                    服务质量监控
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">服务响应时间</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 平均响应: 2.5分钟</div>
+                            <div>• 目标时间: ≤3分钟</div>
+                            <div>• 达标率: 95%</div>
+                            <div class="text-green-600">• 表现优秀</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">服务完成率</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 按时完成: 98.5%</div>
+                            <div>• 质量合格: 99.2%</div>
+                            <div>• 客户满意: 96%</div>
+                            <div class="text-blue-600">• 质量稳定</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">投诉处理效率</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 24小时内处理: 100%</div>
+                            <div>• 平均处理时间: 4.2小时</div>
+                            <div>• 客户满意度: 92%</div>
+                            <div class="text-purple-600">• 处理及时</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-users text-blue-600 mr-2"></i>
+                    用户行为分析
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">高频用户</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 活跃用户: 1,245人</div>
+                            <div>• 月均消费: ¥285</div>
+                            <div>• 忠诚度: 85%</div>
+                            <div class="text-orange-600">• 粘性较高</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">使用偏好</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 餐饮服务: 65%偏好</div>
+                            <div>• 班车服务: 23%偏好</div>
+                            <div>• 住宿服务: 8%偏好</div>
+                            <div class="text-blue-600">• 餐饮最受欢迎</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">时间分布</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 高峰时段: 12:00-13:00</div>
+                            <div>• 次高峰: 18:00-19:00</div>
+                            <div>• 低峰时段: 15:00-17:00</div>
+                            <div class="text-green-600">• 分布合理</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务提供商管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-handshake text-purple-600 mr-2"></i>
+                服务提供商管理
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-4 border border-orange-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">美食天地餐厅</h4>
+                        <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">A级</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>服务类型:</span>
+                            <span class="font-medium">餐饮服务</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>合作期限:</span>
+                            <span class="font-medium">2023-2026</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>满意度:</span>
+                            <span class="font-medium text-orange-600">4.9分</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>月营业额:</span>
+                            <span class="font-medium text-green-600">¥32万</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 transition-colors">
+                        查看详情
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">便民班车公司</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">A级</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>服务类型:</span>
+                            <span class="font-medium">班车服务</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>合作期限:</span>
+                            <span class="font-medium">2024-2027</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>满意度:</span>
+                            <span class="font-medium text-blue-600">4.7分</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>月营业额:</span>
+                            <span class="font-medium text-green-600">¥14万</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                        查看详情
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">舒适住宿中心</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">A级</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>服务类型:</span>
+                            <span class="font-medium">住宿服务</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>合作期限:</span>
+                            <span class="font-medium">2023-2025</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>满意度:</span>
+                            <span class="font-medium text-green-600">4.8分</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>月营业额:</span>
+                            <span class="font-medium text-green-600">¥18万</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                        查看详情
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">多功能场地服务</h4>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">B级</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>服务类型:</span>
+                            <span class="font-medium">场地预订</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>合作期限:</span>
+                            <span class="font-medium">2024-2026</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>满意度:</span>
+                            <span class="font-medium text-purple-600">4.6分</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>月营业额:</span>
+                            <span class="font-medium text-green-600">¥4.5万</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                        查看详情
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">新增服务</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-chart-bar text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">数据分析</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-star text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">满意度调查</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">服务报告</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 综合服务概览功能
+        function initServiceOverview() {
+            console.log('初始化综合服务概览功能');
+            
+            // 服务提供商详情按钮事件
+            const providerButtons = document.querySelectorAll('button');
+            providerButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('查看详情')) {
+                    button.addEventListener('click', function() {
+                        const providerName = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('查看服务提供商详情:', providerName);
+                        alert(`正在查看 ${providerName} 的详细信息...`);
+                    });
+                } else if (text.includes('数据分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('查看服务数据分析');
+                        alert('正在加载服务数据分析报表...');
+                    });
+                } else if (text.includes('满意度调查')) {
+                    button.addEventListener('click', function() {
+                        console.log('启动满意度调查');
+                        alert('正在启动满意度调查功能...');
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initServiceOverview();
+            console.log('综合服务概览页面加载完成');
+        });
+    </script>
+</body>
+</html>

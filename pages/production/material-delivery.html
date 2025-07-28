@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>车间物料配送 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">车间物料配送系统</h1>
+            <p class="text-gray-600">基于Process.md 2.3.2-2.3.3流程：AGV智能调度→线边库管理→工单投料→配送监控，实现智能化物料配送</p>
+        </div>
+
+        <!-- 物料配送流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">物料配送执行流程</h3>
+                    <span class="text-sm text-gray-600">智能AGV配送系统</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-6">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">需求识别</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">AGV调度</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">物料配送</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">投料确认</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="agvDispatchBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-robot mr-2"></i>
+                AGV调度
+            </button>
+            <button id="lineSideManageBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-warehouse mr-2"></i>
+                线边库管理
+            </button>
+            <button id="materialFeedBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-hand-holding-box mr-2"></i>
+                工单投料
+            </button>
+            <button id="deliveryMonitorBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-truck mr-2"></i>
+                配送监控
+            </button>
+            <button id="inventoryCheckBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-clipboard-check mr-2"></i>
+                库存盘点
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 配送统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">8</div>
+                        <div class="text-sm text-gray-600">AGV在线</div>
+                        <div class="text-xs text-gray-500">运行状态</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-robot text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">156</div>
+                        <div class="text-sm text-gray-600">配送任务</div>
+                        <div class="text-xs text-gray-500">今日完成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-truck text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">24</div>
+                        <div class="text-sm text-gray-600">线边库位</div>
+                        <div class="text-xs text-gray-500">管理中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-warehouse text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">89</div>
+                        <div class="text-sm text-gray-600">投料记录</div>
+                        <div class="text-xs text-gray-500">今日投料</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-hand-holding-box text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">12</div>
+                        <div class="text-sm text-gray-600">配送异常</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">95%</div>
+                        <div class="text-sm text-gray-600">配送及时率</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AGV状态监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- AGV实时状态 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">AGV实时状态</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">AGV-001</div>
+                                <div class="text-xs text-gray-500">任务: 配送至产线1 | 电量: 85%</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">运行中</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">AGV-002</div>
+                                <div class="text-xs text-gray-500">任务: 返回充电站 | 电量: 25%</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">充电中</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">AGV-003</div>
+                                <div class="text-xs text-gray-500">任务: 等待调度 | 电量: 92%</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">待机</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 线边库状态 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">线边库状态</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-warehouse text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">产线1-库位A</div>
+                                <div class="text-xs text-gray-500">物料: 硅钢片 | 库存: 85%</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">充足</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-yellow-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">产线2-库位B</div>
+                                <div class="text-xs text-gray-500">物料: 铜线 | 库存: 25%</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">预警</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                        <div class="flex items-center">
+                            <i class="fas fa-times-circle text-red-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">产线3-库位C</div>
+                                <div class="text-xs text-gray-500">物料: M6螺栓 | 库存: 5%</div>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">缺料</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 配送任务管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">配送任务管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>待配送</option>
+                        <option>配送中</option>
+                        <option>已完成</option>
+                        <option>异常</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部AGV</option>
+                        <option>AGV-001</option>
+                        <option>AGV-002</option>
+                        <option>AGV-003</option>
+                    </select>
+                    <input type="text" placeholder="搜索工单号、物料编码..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">任务编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工单号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">配送数量</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">起点/终点</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">AGV编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="deliveryTableBody">
+                        <!-- 配送数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.3.2-2.3.3的物料配送数据模型
+        const deliveryData = [
+            {
+                id: 'DEL202501001',
+                workOrderId: 'WO202501001',
+                materialCode: 'MT001',
+                materialName: '硅钢片',
+                materialSpec: '0.5mm*1200mm',
+                quantity: 50,
+                unit: 'kg',
+                sourceLocation: '中央仓库-A01',
+                targetLocation: '产线1-库位A',
+                agvId: 'AGV-001',
+                status: 'delivering',
+                priority: 'high',
+                createTime: '2025-01-16 14:20:00',
+                startTime: '2025-01-16 14:25:00',
+                estimatedTime: '2025-01-16 14:35:00',
+                actualTime: null,
+                operator: '系统自动',
+                progress: 75
+            },
+            {
+                id: 'DEL202501002',
+                workOrderId: 'WO202501001',
+                materialCode: 'MT002',
+                materialName: '铜线',
+                materialSpec: '2.5mm²',
+                quantity: 100,
+                unit: 'm',
+                sourceLocation: '中央仓库-B02',
+                targetLocation: '产线2-库位B',
+                agvId: 'AGV-002',
+                status: 'pending',
+                priority: 'medium',
+                createTime: '2025-01-16 14:30:00',
+                startTime: null,
+                estimatedTime: '2025-01-16 14:45:00',
+                actualTime: null,
+                operator: '系统自动',
+                progress: 0
+            },
+            {
+                id: 'DEL202501003',
+                workOrderId: 'WO202501003',
+                materialCode: 'ST001',
+                materialName: 'M6螺栓',
+                materialSpec: '不锈钢304',
+                quantity: 200,
+                unit: '个',
+                sourceLocation: '中央仓库-C03',
+                targetLocation: '产线3-库位C',
+                agvId: 'AGV-003',
+                status: 'completed',
+                priority: 'urgent',
+                createTime: '2025-01-16 13:45:00',
+                startTime: '2025-01-16 13:50:00',
+                estimatedTime: '2025-01-16 14:00:00',
+                actualTime: '2025-01-16 13:58:00',
+                operator: '系统自动',
+                progress: 100
+            },
+            {
+                id: 'DEL202501004',
+                workOrderId: 'WO202501002',
+                materialCode: 'PK001',
+                materialName: '包装箱',
+                materialSpec: '600*400*300mm',
+                quantity: 20,
+                unit: '个',
+                sourceLocation: '中央仓库-D04',
+                targetLocation: '产线4-库位D',
+                agvId: null,
+                status: 'pending',
+                priority: 'low',
+                createTime: '2025-01-16 14:35:00',
+                startTime: null,
+                estimatedTime: '2025-01-16 15:00:00',
+                actualTime: null,
+                operator: '系统自动',
+                progress: 0
+            },
+            {
+                id: 'DEL202501005',
+                workOrderId: 'WO202501004',
+                materialCode: 'SM001',
+                materialName: 'PCBA主板',
+                materialSpec: 'V2.1版本',
+                quantity: 10,
+                unit: '个',
+                sourceLocation: '中央仓库-E05',
+                targetLocation: '产线1-库位E',
+                agvId: 'AGV-001',
+                status: 'exception',
+                priority: 'urgent',
+                createTime: '2025-01-16 14:10:00',
+                startTime: '2025-01-16 14:15:00',
+                estimatedTime: '2025-01-16 14:25:00',
+                actualTime: null,
+                operator: '系统自动',
+                progress: 45,
+                exceptionReason: 'AGV路径阻塞'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            pending: { text: '待配送', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-clock' },
+            delivering: { text: '配送中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-truck' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            exception: { text: '异常', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            cancelled: { text: '已取消', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-times-circle' }
+        };
+
+        // 优先级映射
+        const priorityMap = {
+            urgent: { text: '紧急', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            high: { text: '高', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-arrow-up' },
+            medium: { text: '中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-minus' },
+            low: { text: '低', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-arrow-down' }
+        };
+
+        let filteredData = [...deliveryData];
+
+        // 渲染配送任务表格
+        function renderDeliveryTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('deliveryTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(delivery => {
+                const status = statusMap[delivery.status];
+                const priority = priorityMap[delivery.priority];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewDeliveryDetail('${delivery.id}')">
+                            ${delivery.id}
+                        </div>
+                        <div class="text-xs text-gray-500">${delivery.createTime}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-blue-600 cursor-pointer hover:underline" onclick="viewWorkOrderDetail('${delivery.workOrderId}')">
+                            ${delivery.workOrderId}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${delivery.materialName}</div>
+                        <div class="text-xs text-gray-500">${delivery.materialCode}</div>
+                        <div class="text-xs text-gray-500">${delivery.materialSpec}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-center">
+                        <span class="text-sm font-medium text-gray-900">${delivery.quantity} ${delivery.unit}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${delivery.sourceLocation}</div>
+                        <div class="text-xs text-gray-500 flex items-center">
+                            <i class="fas fa-arrow-down mr-1"></i>
+                            ${delivery.targetLocation}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${delivery.agvId ? `
+                            <div class="text-sm text-gray-900">${delivery.agvId}</div>
+                            ${delivery.status === 'delivering' ? `
+                                <div class="text-xs text-blue-600">
+                                    <i class="fas fa-robot mr-1"></i>运行中
+                                </div>
+                            ` : ''}
+                        ` : `
+                            <span class="text-xs text-gray-500">未分配</span>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        <div class="mt-1">
+                            <span class="inline-flex items-center px-1 py-0.5 text-xs rounded-full ${priority.class}">
+                                <i class="${priority.icon} mr-1"></i>
+                                ${priority.text}
+                            </span>
+                        </div>
+                        ${delivery.progress > 0 && delivery.progress < 100 ? `
+                            <div class="mt-1 flex items-center">
+                                <div class="w-12 bg-gray-200 rounded-full h-1 mr-1">
+                                    <div class="bg-blue-600 h-1 rounded-full" style="width: ${delivery.progress}%"></div>
+                                </div>
+                                <span class="text-xs text-gray-600">${delivery.progress}%</span>
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">
+                            ${delivery.startTime ? `开始: ${delivery.startTime.split(' ')[1]}` : '未开始'}
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            ${delivery.actualTime ? `完成: ${delivery.actualTime.split(' ')[1]}` : `预计: ${delivery.estimatedTime.split(' ')[1]}`}
+                        </div>
+                        ${delivery.exceptionReason ? `
+                            <div class="text-xs text-red-600 mt-1">
+                                <i class="fas fa-exclamation-triangle mr-1"></i>
+                                ${delivery.exceptionReason}
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewDeliveryDetail('${delivery.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${delivery.status === 'pending' ? `
+                                <button onclick="assignAGV('${delivery.id}')" class="text-green-600 hover:text-green-900 p-1" title="分配AGV">
+                                    <i class="fas fa-robot"></i>
+                                </button>
+                            ` : ''}
+                            ${delivery.status === 'exception' ? `
+                                <button onclick="handleException('${delivery.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="处理异常">
+                                    <i class="fas fa-tools"></i>
+                                </button>
+                            ` : ''}
+                            ${delivery.status === 'delivering' ? `
+                                <button onclick="trackAGV('${delivery.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="跟踪AGV">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </button>
+                            ` : ''}
+                            ${delivery.status === 'pending' || delivery.status === 'exception' ? `
+                                <button onclick="cancelDelivery('${delivery.id}')" class="text-red-600 hover:text-red-900 p-1" title="取消任务">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${deliveryData.length} 条记录`;
+        }
+
+        // 配送操作函数
+        function viewDeliveryDetail(deliveryId) {
+            const delivery = deliveryData.find(d => d.id === deliveryId);
+            if (delivery) {
+                alert(`配送任务详情：\n任务编号: ${delivery.id}\n工单号: ${delivery.workOrderId}\n物料: ${delivery.materialName} (${delivery.materialCode})\n数量: ${delivery.quantity} ${delivery.unit}\n起点: ${delivery.sourceLocation}\n终点: ${delivery.targetLocation}\nAGV: ${delivery.agvId || '未分配'}\n状态: ${statusMap[delivery.status].text}\n优先级: ${priorityMap[delivery.priority].text}\n创建时间: ${delivery.createTime}\n${delivery.exceptionReason ? `异常原因: ${delivery.exceptionReason}` : ''}`);
+            }
+        }
+
+        function assignAGV(deliveryId) {
+            const availableAGVs = ['AGV-001', 'AGV-002', 'AGV-003', 'AGV-004'];
+            const selectedAGV = prompt(`请选择AGV：\n${availableAGVs.map((agv, index) => `${index + 1}. ${agv}`).join('\n')}\n\n请输入序号 (1-${availableAGVs.length}):`);
+
+            if (selectedAGV && selectedAGV >= 1 && selectedAGV <= availableAGVs.length) {
+                const delivery = deliveryData.find(d => d.id === deliveryId);
+                if (delivery) {
+                    delivery.agvId = availableAGVs[selectedAGV - 1];
+                    delivery.status = 'delivering';
+                    delivery.startTime = new Date().toLocaleString('zh-CN');
+                    delivery.progress = 10;
+                    renderDeliveryTable();
+                    alert(`AGV ${delivery.agvId} 已分配给任务 ${deliveryId}，开始配送！`);
+                }
+            }
+        }
+
+        function handleException(deliveryId) {
+            if (confirm('确认处理此配送异常？将重新调度AGV执行任务。')) {
+                const delivery = deliveryData.find(d => d.id === deliveryId);
+                if (delivery) {
+                    delivery.status = 'delivering';
+                    delivery.progress = 20;
+                    delivery.exceptionReason = null;
+                    renderDeliveryTable();
+                    alert('异常已处理！AGV重新开始配送任务。');
+                }
+            }
+        }
+
+        function trackAGV(deliveryId) {
+            const delivery = deliveryData.find(d => d.id === deliveryId);
+            if (delivery) {
+                alert(`AGV跟踪信息：\nAGV编号: ${delivery.agvId}\n当前位置: 产线走廊-B段\n目标位置: ${delivery.targetLocation}\n预计到达: ${delivery.estimatedTime}\n当前速度: 1.2 m/s\n电池电量: 78%\n任务进度: ${delivery.progress}%`);
+            }
+        }
+
+        function cancelDelivery(deliveryId) {
+            if (confirm('确认取消此配送任务？取消后需要重新创建任务。')) {
+                const delivery = deliveryData.find(d => d.id === deliveryId);
+                if (delivery) {
+                    delivery.status = 'cancelled';
+                    delivery.agvId = null;
+                    renderDeliveryTable();
+                    alert('配送任务已取消！');
+                }
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderDeliveryTable();
+
+            // AGV调度
+            document.getElementById('agvDispatchBtn').addEventListener('click', function() {
+                alert('AGV调度功能：\n- 智能路径规划\n- 任务优先级排序\n- 负载均衡调度\n- 充电时间管理\n- 避障路径优化');
+            });
+
+            // 线边库管理
+            document.getElementById('lineSideManageBtn').addEventListener('click', function() {
+                alert('线边库管理功能：\n- 库位状态监控\n- 库存水位预警\n- 自动补料触发\n- 物料先进先出\n- 库位优化配置');
+            });
+
+            // 工单投料
+            document.getElementById('materialFeedBtn').addEventListener('click', function() {
+                alert('工单投料功能：\n- 工单物料清单\n- 投料时间记录\n- 批次追溯管理\n- 投料量核对\n- 异常投料处理');
+            });
+
+            // 配送监控
+            document.getElementById('deliveryMonitorBtn').addEventListener('click', function() {
+                alert('配送监控功能：\n- 实时位置跟踪\n- 配送进度监控\n- 异常报警处理\n- 配送效率分析\n- 路径优化建议');
+            });
+
+            // 库存盘点
+            document.getElementById('inventoryCheckBtn').addEventListener('click', function() {
+                alert('库存盘点功能：\n- 线边库盘点\n- 差异分析报告\n- 盘点计划制定\n- 盘点结果确认\n- 库存调整处理');
+            });
+        });
+    </script>
+</body>
+</html>

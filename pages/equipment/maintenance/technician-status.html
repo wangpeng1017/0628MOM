@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术员状态 - 数字工厂平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面操作栏 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">技术员状态</h1>
+                <p class="text-gray-600">实时监控技术员工作状态和任务分配情况</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-user-plus mr-2"></i>添加技术员
+                </button>
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-calendar-alt mr-2"></i>排班管理
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chart-bar mr-2"></i>绩效统计
+                </button>
+            </div>
+        </div>
+        
+        <!-- 技术员概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-green-600 mb-1">18</div>
+                <div class="text-sm text-gray-600">在线技术员</div>
+                <div class="text-xs text-green-600 mt-1">当前在岗</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-yellow-600 mb-1">12</div>
+                <div class="text-sm text-gray-600">执行任务中</div>
+                <div class="text-xs text-yellow-600 mt-1">平均负载75%</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-blue-600 mb-1">6</div>
+                <div class="text-sm text-gray-600">空闲可用</div>
+                <div class="text-xs text-blue-600 mt-1">可分配任务</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">3</div>
+                <div class="text-sm text-gray-600">请假/离岗</div>
+                <div class="text-xs text-red-600 mt-1">暂不可用</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-purple-600 mb-1">4.2</div>
+                <div class="text-sm text-gray-600">平均响应时间</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-arrow-down mr-1"></i>-0.8分钟
+                </div>
+            </div>
+        </div>
+        
+        <!-- 筛选条件区域 -->
+        <div class="card">
+            <div class="p-4">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                    <div class="flex-1">
+                        <input type="text" placeholder="搜索技术员姓名、工号..." 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部状态</option>
+                        <option>在线</option>
+                        <option>忙碌</option>
+                        <option>空闲</option>
+                        <option>离线</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部技能</option>
+                        <option>电气维修</option>
+                        <option>机械维修</option>
+                        <option>液压维修</option>
+                        <option>综合维修</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部班次</option>
+                        <option>早班</option>
+                        <option>中班</option>
+                        <option>晚班</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部区域</option>
+                        <option>注塑车间</option>
+                        <option>装配车间</option>
+                        <option>包装车间</option>
+                        <option>公用设施</option>
+                    </select>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 技术员状态列表 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h3 class="card-title">技术员状态列表</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            <i class="fas fa-th"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>工号</th>
+                            <th>姓名</th>
+                            <th>技能等级</th>
+                            <th>当前状态</th>
+                            <th>当前任务</th>
+                            <th>工作负载</th>
+                            <th>所在位置</th>
+                            <th>班次</th>
+                            <th>联系方式</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-green-50">
+                            <td class="font-medium">T001</td>
+                            <td>张师傅</td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <span class="text-sm">电气维修</span>
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-success">在线</span></td>
+                            <td>WO-2024-003</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill" style="width: 75%"></div>
+                                    </div>
+                                    <span class="text-sm">75%</span>
+                                </div>
+                            </td>
+                            <td>注塑车间A区</td>
+                            <td>早班</td>
+                            <td>138****1234</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="分配任务">
+                                        <i class="fas fa-tasks"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="联系">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-yellow-50">
+                            <td class="font-medium">T002</td>
+                            <td>李师傅</td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <span class="text-sm">机械维修</span>
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="far fa-star text-xs"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-warning">忙碌</span></td>
+                            <td>WO-2024-004</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill bg-yellow-500" style="width: 90%"></div>
+                                    </div>
+                                    <span class="text-sm">90%</span>
+                                </div>
+                            </td>
+                            <td>包装车间C区</td>
+                            <td>早班</td>
+                            <td>139****5678</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-gray-400" title="任务已满" disabled>
+                                        <i class="fas fa-tasks"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="联系">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-blue-50">
+                            <td class="font-medium">T003</td>
+                            <td>王师傅</td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <span class="text-sm">综合维修</span>
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="far fa-star text-xs"></i>
+                                        <i class="far fa-star text-xs"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-info">空闲</span></td>
+                            <td>-</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill bg-blue-400" style="width: 20%"></div>
+                                    </div>
+                                    <span class="text-sm">20%</span>
+                                </div>
+                            </td>
+                            <td>装配车间B区</td>
+                            <td>早班</td>
+                            <td>137****9012</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="分配任务">
+                                        <i class="fas fa-tasks"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="联系">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-red-50">
+                            <td class="font-medium">T004</td>
+                            <td>陈师傅</td>
+                            <td>
+                                <div class="flex items-center space-x-1">
+                                    <span class="text-sm">液压维修</span>
+                                    <div class="flex text-yellow-400">
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="fas fa-star text-xs"></i>
+                                        <i class="far fa-star text-xs"></i>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-danger">离线</span></td>
+                            <td>-</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill bg-gray-400" style="width: 0%"></div>
+                                    </div>
+                                    <span class="text-sm">0%</span>
+                                </div>
+                            </td>
+                            <td>请假</td>
+                            <td>早班</td>
+                            <td>136****3456</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-gray-400" title="不可用" disabled>
+                                        <i class="fas fa-tasks"></i>
+                                    </button>
+                                    <button class="text-gray-400" title="不可用" disabled>
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+                <div class="text-sm text-gray-600">
+                    显示 1-4 条，共 21 名技术员
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

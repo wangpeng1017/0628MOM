@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>产能管理 - 计划管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">产能预估管理</h1>
+            <p class="text-gray-600">基于Process.md 2.1.10流程：产能数据填报→确认→预估报告生成，为PMC交期承诺提供数据支撑</p>
+        </div>
+
+        <!-- 流程状态指示器 -->
+        <div class="mb-6">
+            <div class="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                        <span class="ml-2 text-sm font-medium text-gray-900">发起填报任务</span>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-200 mx-4">
+                        <div class="h-1 bg-primary" style="width: 25%"></div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                        <span class="ml-2 text-sm text-gray-600">填报产能数据</span>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                        <span class="ml-2 text-sm text-gray-600">部门确认</span>
+                    </div>
+                    <div class="flex-1 h-1 bg-gray-200 mx-4"></div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                        <span class="ml-2 text-sm text-gray-600">生成预估报告</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="createTaskBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                发起填报任务
+            </button>
+            <button id="autoTaskBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-clock mr-2"></i>
+                定时任务设置
+            </button>
+            <button id="capacityEstimateBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-calculator mr-2"></i>
+                产能预估
+            </button>
+            <button id="simulationBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-brain mr-2"></i>
+                仿真预估
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 产能数据概览 - 基于Process.md定义的产能要素 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-600">人员考勤</div>
+                        <div class="text-xs text-gray-500">在岗/总数</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: 92%"></div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">出勤率: 92%</div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">78%</div>
+                        <div class="text-sm text-gray-600">设备OEE</div>
+                        <div class="text-xs text-gray-500">综合效率</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cogs text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-600 h-2 rounded-full" style="width: 78%"></div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">目标: 85%</div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-yellow-600">3</div>
+                        <div class="text-sm text-gray-600">班次安排</div>
+                        <div class="text-xs text-gray-500">早/中/晚班</div>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <div class="text-xs text-gray-500">24小时连续生产</div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">245</div>
+                        <div class="text-sm text-gray-600">在制品</div>
+                        <div class="text-xs text-gray-500">WIP数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-boxes text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <div class="text-xs text-gray-500">影响产能计算</div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">7天</div>
+                        <div class="text-sm text-gray-600">采购交期</div>
+                        <div class="text-xs text-gray-500">平均周期</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-truck text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <div class="text-xs text-gray-500">影响交期承诺</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 产能填报任务管理 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">产能数据填报任务</h3>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-600">自动任务状态:</span>
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                            <i class="fas fa-check-circle mr-1"></i>已启用
+                        </span>
+                    </div>
+                </div>
+                <!-- 6列响应式筛选区域 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-4">
+                    <select id="departmentFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部部门</option>
+                        <option value="production">生产制造部</option>
+                        <option value="equipment">设备部</option>
+                        <option value="quality">质量部</option>
+                        <option value="planning">计划部</option>
+                    </select>
+                    <select id="lineFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部产线</option>
+                        <option value="inv-line1">逆变器产线1</option>
+                        <option value="inv-line2">逆变器产线2</option>
+                        <option value="ctrl-line">控制器产线</option>
+                        <option value="test-line">测试产线</option>
+                        <option value="pack-line">PACK产线</option>
+                    </select>
+                    <select id="statusFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部状态</option>
+                        <option value="pending">待填报</option>
+                        <option value="submitted">已提交</option>
+                        <option value="confirmed">已确认</option>
+                        <option value="completed">已完成</option>
+                    </select>
+                    <select id="periodFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部周期</option>
+                        <option value="daily">日报</option>
+                        <option value="weekly">周报</option>
+                        <option value="monthly">月报</option>
+                    </select>
+                    <input type="date" id="dateFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <div class="flex gap-2">
+                        <button onclick="searchTasks()" class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-search mr-1"></i>查询
+                        </button>
+                        <button onclick="clearFilters()" class="bg-gray-500 text-white px-4 py-2 rounded-md text-sm hover:bg-gray-600 transition-colors">
+                            <i class="fas fa-times mr-1"></i>清除
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 产能填报任务表格 -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <input type="checkbox" id="selectAllTasks" class="rounded">
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">任务编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">填报部门</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产线/设备</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">填报周期</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">截止时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">任务状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">填报进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">负责人</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">创建时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="capacityTaskTableBody">
+                        <!-- 产能填报任务数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 产能预估分析 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 产能趋势图 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">产能趋势分析</h3>
+                <div class="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-line text-4xl mb-2"></i>
+                        <p>产能趋势图表</p>
+                        <p class="text-sm">显示近30天产能变化趋势</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 产能预估工具 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">产能预估工具</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">选择产线</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2">
+                            <option>逆变器产线1</option>
+                            <option>逆变器产线2</option>
+                            <option>控制器产线</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">预估时间范围</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="date" class="border border-gray-300 rounded-md px-3 py-2">
+                            <input type="date" class="border border-gray-300 rounded-md px-3 py-2">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">产品类型</label>
+                        <select class="w-full border border-gray-300 rounded-md px-3 py-2">
+                            <option>5KW逆变器</option>
+                            <option>10KW逆变器</option>
+                            <option>20KW逆变器</option>
+                            <option>基础控制器</option>
+                        </select>
+                    </div>
+                    <button class="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-calculator mr-2"></i>
+                        开始预估
+                    </button>
+                </div>
+
+                <!-- 预估结果 -->
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <h4 class="font-medium text-blue-800 mb-2">预估结果</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-blue-700">预估产能：</span>
+                            <span class="font-medium text-blue-800">2,400台</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-blue-700">可承诺交期：</span>
+                            <span class="font-medium text-blue-800">2025-02-28</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-blue-700">产能利用率：</span>
+                            <span class="font-medium text-blue-800">85%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.1.10的产能预估数据模型
+        const capacityTasks = [
+            {
+                id: 'CT202501001',
+                department: 'production',
+                departmentName: '生产制造部',
+                line: 'inv-line1',
+                lineName: '逆变器产线1',
+                period: 'weekly',
+                periodName: '周报',
+                deadline: '2025-01-20',
+                status: 'pending',
+                progress: 0,
+                responsible: '张主管',
+                createTime: '2025-01-15 09:00',
+                isAutoTask: true
+            },
+            {
+                id: 'CT202501002',
+                department: 'production',
+                departmentName: '生产制造部',
+                line: 'inv-line2',
+                lineName: '逆变器产线2',
+                period: 'weekly',
+                periodName: '周报',
+                deadline: '2025-01-20',
+                status: 'submitted',
+                progress: 80,
+                responsible: '李主管',
+                createTime: '2025-01-15 09:00',
+                isAutoTask: true
+            },
+            {
+                id: 'CT202501003',
+                department: 'equipment',
+                departmentName: '设备部',
+                line: 'all',
+                lineName: '全部设备',
+                period: 'monthly',
+                periodName: '月报',
+                deadline: '2025-01-25',
+                status: 'confirmed',
+                progress: 100,
+                responsible: '王工程师',
+                createTime: '2025-01-10 14:30',
+                isAutoTask: false
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            pending: { text: '待填报', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-clock' },
+            submitted: { text: '已提交', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-upload' },
+            confirmed: { text: '已确认', class: 'bg-green-100 text-green-800', icon: 'fas fa-check' },
+            completed: { text: '已完成', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-check-circle' }
+        };
+
+        let filteredTasks = [...capacityTasks];
+
+        // 渲染产能填报任务表格
+        function renderCapacityTaskTable(dataToRender = filteredTasks) {
+            const tbody = document.getElementById('capacityTaskTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(task => {
+                const status = statusMap[task.status];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <input type="checkbox" class="rounded task-checkbox" data-id="${task.id}">
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewTaskDetail('${task.id}')">
+                            ${task.id}
+                        </div>
+                        ${task.isAutoTask ? '<span class="inline-flex px-1 py-0.5 text-xs bg-green-100 text-green-800 rounded">自动</span>' : '<span class="inline-flex px-1 py-0.5 text-xs bg-blue-100 text-blue-800 rounded">手动</span>'}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${task.departmentName}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${task.lineName}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${task.periodName}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${task.deadline}</span>
+                        ${isDeadlineUrgent(task.deadline) ? '<div class="text-xs text-red-600"><i class="fas fa-exclamation-triangle mr-1"></i>即将到期</div>' : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${task.progress}%"></div>
+                            </div>
+                            <span class="text-xs text-gray-600">${task.progress}%</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${task.responsible}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${task.createTime}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewTaskDetail('${task.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${task.status === 'pending' ? `
+                                <button onclick="fillCapacityData('${task.id}')" class="text-green-600 hover:text-green-900 p-1" title="填报数据">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            ` : ''}
+                            ${task.status === 'submitted' ? `
+                                <button onclick="confirmTask('${task.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="确认数据">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            ${task.status === 'confirmed' ? `
+                                <button onclick="generateReport('${task.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="生成报告">
+                                    <i class="fas fa-chart-bar"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // 判断截止日期是否紧急（3天内）
+        function isDeadlineUrgent(deadlineStr) {
+            const deadline = new Date(deadlineStr);
+            const today = new Date();
+            const diffTime = deadline - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays <= 3 && diffDays >= 0;
+        }
+
+        // 搜索任务
+        function searchTasks() {
+            const departmentFilter = document.getElementById('departmentFilter').value;
+            const lineFilter = document.getElementById('lineFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const periodFilter = document.getElementById('periodFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+
+            filteredTasks = capacityTasks.filter(task => {
+                const matchesDepartment = !departmentFilter || task.department === departmentFilter;
+                const matchesLine = !lineFilter || task.line === lineFilter;
+                const matchesStatus = !statusFilter || task.status === statusFilter;
+                const matchesPeriod = !periodFilter || task.period === periodFilter;
+                const matchesDate = !dateFilter || task.deadline === dateFilter;
+
+                return matchesDepartment && matchesLine && matchesStatus && matchesPeriod && matchesDate;
+            });
+
+            renderCapacityTaskTable();
+        }
+
+        // 清除筛选
+        function clearFilters() {
+            document.getElementById('departmentFilter').value = '';
+            document.getElementById('lineFilter').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('periodFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            filteredTasks = [...capacityTasks];
+            renderCapacityTaskTable();
+        }
+
+        // 任务操作函数 - 基于Process.md的关键控制点
+        function viewTaskDetail(taskId) {
+            const task = capacityTasks.find(t => t.id === taskId);
+            if (task) {
+                alert(`任务详情：\n编号：${task.id}\n部门：${task.departmentName}\n产线：${task.lineName}\n周期：${task.periodName}\n截止时间：${task.deadline}\n负责人：${task.responsible}\n${task.isAutoTask ? '类型：定时自动任务' : '类型：手动创建任务'}`);
+            }
+        }
+
+        function fillCapacityData(taskId) {
+            if (confirm('确认开始填报产能数据？填报完成后需要部门确认。')) {
+                const task = capacityTasks.find(t => t.id === taskId);
+                if (task) {
+                    task.status = 'submitted';
+                    task.progress = 80;
+                    renderCapacityTaskTable();
+                    alert('产能数据填报完成，已提交部门确认！');
+                }
+            }
+        }
+
+        function confirmTask(taskId) {
+            if (confirm('确认产能数据无误？确认后将生成产能预估报告。')) {
+                const task = capacityTasks.find(t => t.id === taskId);
+                if (task) {
+                    task.status = 'confirmed';
+                    task.progress = 100;
+                    renderCapacityTaskTable();
+                    alert('产能数据已确认，可生成预估报告！');
+                }
+            }
+        }
+
+        function generateReport(taskId) {
+            if (confirm('确认生成产能预估报告？报告将结合仿真技术进行精准预估。')) {
+                const task = capacityTasks.find(t => t.id === taskId);
+                if (task) {
+                    task.status = 'completed';
+                    renderCapacityTaskTable();
+                    alert('产能预估报告生成完成！可用于PMC交期承诺决策。');
+                }
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCapacityTaskTable();
+
+            // 发起填报任务
+            document.getElementById('createTaskBtn').addEventListener('click', function() {
+                const newTask = {
+                    id: 'CT' + Date.now(),
+                    department: 'production',
+                    departmentName: '生产制造部',
+                    line: 'inv-line1',
+                    lineName: '逆变器产线1',
+                    period: 'weekly',
+                    periodName: '周报',
+                    deadline: '2025-01-25',
+                    status: 'pending',
+                    progress: 0,
+                    responsible: '新任务负责人',
+                    createTime: new Date().toLocaleString('zh-CN'),
+                    isAutoTask: false
+                };
+                capacityTasks.push(newTask);
+                filteredTasks = [...capacityTasks];
+                renderCapacityTaskTable();
+                alert('产能填报任务创建成功！');
+            });
+
+            // 定时任务设置
+            document.getElementById('autoTaskBtn').addEventListener('click', function() {
+                alert('定时任务设置：\n- 每周一自动触发产能填报任务\n- 每月1号自动触发月度产能评估\n- 可根据需要调整触发频率');
+            });
+
+            // 产能预估
+            document.getElementById('capacityEstimateBtn').addEventListener('click', function() {
+                alert('产能预估功能：\n- 基于实时产能数据\n- 结合需求优先级和期望交期\n- 为PMC交期承诺提供依据\n- 支持多种算法试算');
+            });
+
+            // 仿真预估
+            document.getElementById('simulationBtn').addEventListener('click', function() {
+                alert('仿真技术预估：\n- 结合历史数据和当前状态\n- 模拟不同生产场景\n- 提供更精准的产能预估\n- 支持风险评估和优化建议');
+            });
+
+            // 全选功能
+            document.getElementById('selectAllTasks').addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.task-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

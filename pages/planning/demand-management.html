@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>需求管理 - 计划管理 - 数字工厂一体化平台</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">需求管理</h1>
+            <p class="text-gray-600">基于"一单到底"原则，实现9种需求来源的统一管理：销售、售后、项目、研发、返工、PCBA、需求变更、返修、紧急插单</p>
+        </div>
+
+        <!-- 需求类型导航 -->
+        <div class="mb-6">
+            <div class="flex flex-wrap gap-2">
+                <button onclick="switchDemandType('all')" class="demand-type-btn active px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-primary text-white">
+                    <i class="fas fa-list mr-2"></i>全部需求
+                </button>
+                <button onclick="switchDemandType('sales')" class="demand-type-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-gray-700 border border-gray-300 hover:bg-gray-50">
+                    <i class="fas fa-shopping-cart mr-2"></i>销售需求
+                </button>
+                <button onclick="switchDemandType('aftersales')" class="demand-type-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-gray-700 border border-gray-300 hover:bg-gray-50">
+                    <i class="fas fa-tools mr-2"></i>售后需求
+                </button>
+                <button onclick="switchDemandType('project')" class="demand-type-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-gray-700 border border-gray-300 hover:bg-gray-50">
+                    <i class="fas fa-project-diagram mr-2"></i>项目需求
+                </button>
+                <button onclick="switchDemandType('rd')" class="demand-type-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-gray-700 border border-gray-300 hover:bg-gray-50">
+                    <i class="fas fa-flask mr-2"></i>研发需求
+                </button>
+                <button onclick="switchDemandType('rework')" class="demand-type-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-gray-700 border border-gray-300 hover:bg-gray-50">
+                    <i class="fas fa-redo mr-2"></i>返工需求
+                </button>
+                <button onclick="switchDemandType('pcba')" class="demand-type-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-gray-700 border border-gray-300 hover:bg-gray-50">
+                    <i class="fas fa-microchip mr-2"></i>PCBA需求
+                </button>
+                <button onclick="switchDemandType('change')" class="demand-type-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-gray-700 border border-gray-300 hover:bg-gray-50">
+                    <i class="fas fa-edit mr-2"></i>需求变更
+                </button>
+                <button onclick="switchDemandType('repair')" class="demand-type-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-gray-700 border border-gray-300 hover:bg-gray-50">
+                    <i class="fas fa-wrench mr-2"></i>返修需求
+                </button>
+                <button onclick="switchDemandType('urgent')" class="demand-type-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white text-gray-700 border border-gray-300 hover:bg-gray-50">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>紧急插单
+                </button>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="addDemandBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                新增需求
+            </button>
+            <button id="batchLockBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-lock mr-2"></i>
+                批量锁定
+            </button>
+            <button id="changeRequestBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-edit mr-2"></i>
+                需求变更
+            </button>
+            <button id="urgentInsertBtn" class="bg-danger text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                紧急插单
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出数据
+            </button>
+        </div>
+
+        <!-- 需求统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">186</div>
+                        <div class="text-sm text-gray-600">总需求数</div>
+                    </div>
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-list text-blue-600"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">28</div>
+                        <div class="text-sm text-gray-600">待审核</div>
+                    </div>
+                    <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-orange-600"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">142</div>
+                        <div class="text-sm text-gray-600">已锁定</div>
+                    </div>
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-lock text-green-600"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">6</div>
+                        <div class="text-sm text-gray-600">已驳回</div>
+                    </div>
+                    <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-times-circle text-red-600"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">8</div>
+                        <div class="text-sm text-gray-600">变更中</div>
+                    </div>
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-edit text-purple-600"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">2</div>
+                        <div class="text-sm text-gray-600">紧急插单</div>
+                    </div>
+                    <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-indigo-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 需求列表 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">需求列表 - 基于"一单到底"原则管理</h3>
+                <!-- 6列响应式筛选区域 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-4">
+                    <select id="statusFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部状态</option>
+                        <option value="pending">待审核</option>
+                        <option value="locked">已锁定</option>
+                        <option value="rejected">已驳回</option>
+                        <option value="changing">变更中</option>
+                        <option value="urgent">紧急插单</option>
+                    </select>
+                    <select id="sourceFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部来源</option>
+                        <option value="sales">销售需求</option>
+                        <option value="aftersales">售后需求</option>
+                        <option value="project">项目需求</option>
+                        <option value="rd">研发需求</option>
+                        <option value="rework">返工需求</option>
+                        <option value="pcba">PCBA需求</option>
+                        <option value="repair">返修需求</option>
+                    </select>
+                    <select id="typeFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部类型</option>
+                        <option value="order">订单</option>
+                        <option value="forecast">预测</option>
+                        <option value="project">项目</option>
+                        <option value="odm">ODM产品</option>
+                        <option value="maintenance">维修</option>
+                        <option value="trial">试产</option>
+                    </select>
+                    <select id="priorityFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部优先级</option>
+                        <option value="urgent">紧急</option>
+                        <option value="high">高</option>
+                        <option value="normal">正常</option>
+                        <option value="low">低</option>
+                    </select>
+                    <input type="date" id="dateFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="期望交期">
+                    <div class="flex gap-2">
+                        <input type="text" id="searchInput" placeholder="搜索需求编号、产品..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <button onclick="searchDemands()" class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- 快速操作按钮 -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="showPendingOnly()" class="px-3 py-1 text-xs bg-orange-100 text-orange-800 rounded-full hover:bg-orange-200 transition-colors">
+                        <i class="fas fa-clock mr-1"></i>仅显示待审核
+                    </button>
+                    <button onclick="showLockedOnly()" class="px-3 py-1 text-xs bg-green-100 text-green-800 rounded-full hover:bg-green-200 transition-colors">
+                        <i class="fas fa-lock mr-1"></i>仅显示已锁定
+                    </button>
+                    <button onclick="showUrgentOnly()" class="px-3 py-1 text-xs bg-red-100 text-red-800 rounded-full hover:bg-red-200 transition-colors">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>仅显示紧急
+                    </button>
+                    <button onclick="clearFilters()" class="px-3 py-1 text-xs bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition-colors">
+                        <i class="fas fa-times mr-1"></i>清除筛选
+                    </button>
+                </div>
+            </div>
+
+            <!-- 需求表格 - 10-12列数据表格 -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <input type="checkbox" id="selectAll" class="rounded">
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">需求编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">需求来源</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">需求类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品名称</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">需求数量</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">期望交期</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">优先级</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">提报人</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">提报时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="demandTableBody">
+                        <!-- 需求数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700">
+                    显示 1-10 条，共 156 条记录
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增需求弹窗 -->
+    <div id="addDemandModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-800">新增需求</h3>
+                        <button id="closeAddModal" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <form id="addDemandForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    需求来源 <span class="text-red-500">*</span>
+                                </label>
+                                <select name="demandSource" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">请选择</option>
+                                    <option value="sales">销售需求</option>
+                                    <option value="aftersales">售后需求</option>
+                                    <option value="project">项目需求</option>
+                                    <option value="rd">研发需求</option>
+                                    <option value="rework">返工需求</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    需求类型 <span class="text-red-500">*</span>
+                                </label>
+                                <select name="demandType" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">请选择</option>
+                                    <option value="order">订单</option>
+                                    <option value="forecast">预测</option>
+                                    <option value="project">项目</option>
+                                    <option value="odm">ODM产品</option>
+                                </select>
+                            </div>
+                            
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    产品名称 <span class="text-red-500">*</span>
+                                </label>
+                                <select name="productName" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">请选择产品</option>
+                                    <option value="inverter-5kw">5KW逆变器</option>
+                                    <option value="inverter-10kw">10KW逆变器</option>
+                                    <option value="inverter-20kw">20KW逆变器</option>
+                                    <option value="controller-basic">基础控制器</option>
+                                    <option value="controller-advanced">高级控制器</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    需求数量 <span class="text-red-500">*</span>
+                                </label>
+                                <input type="number" name="demandQuantity" required min="1" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    期望交期 <span class="text-red-500">*</span>
+                                </label>
+                                <input type="date" name="expectedDate" required class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">需求说明</label>
+                                <textarea name="demandDescription" rows="3" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入需求的详细说明..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+                    <button id="cancelAddDemand" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">取消</button>
+                    <button id="submitDemand" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">提交需求</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.1章节的需求管理数据模型
+        const demandData = [
+            {
+                id: 'DM202501001',
+                source: 'sales',
+                sourceName: '销售需求',
+                type: 'order',
+                typeName: '订单',
+                product: '5KW逆变器',
+                productCode: 'INV-5KW-001',
+                quantity: 100,
+                expectedDate: '2025-02-15',
+                priority: 'high',
+                status: 'pending',
+                progress: 25,
+                submitter: '张三',
+                submitTime: '2025-01-15 09:30',
+                department: '销售部',
+                bomVersion: 'V1.2',
+                isODM: false,
+                urgentReason: '',
+                changeHistory: []
+            },
+            {
+                id: 'DM202501002',
+                source: 'project',
+                sourceName: '项目需求',
+                type: 'project',
+                typeName: '项目',
+                product: '储能逆变器',
+                productCode: 'ESS-10KW-002',
+                quantity: 50,
+                expectedDate: '2025-02-20',
+                priority: 'urgent',
+                status: 'locked',
+                progress: 80,
+                submitter: '李四',
+                submitTime: '2025-01-14 14:20',
+                department: '项目部',
+                bomVersion: 'V2.1',
+                isODM: false,
+                urgentReason: '',
+                changeHistory: []
+            },
+            {
+                id: 'DM202501003',
+                source: 'rd',
+                sourceName: '研发需求',
+                type: 'trial',
+                typeName: '试产',
+                product: '高级控制器',
+                productCode: 'CTRL-ADV-003',
+                quantity: 20,
+                expectedDate: '2025-03-01',
+                priority: 'normal',
+                status: 'rejected',
+                progress: 0,
+                submitter: '王五',
+                submitTime: '2025-01-13 11:15',
+                department: '研发部',
+                bomVersion: 'V1.0',
+                isODM: true,
+                urgentReason: '',
+                changeHistory: []
+            },
+            {
+                id: 'DM202501004',
+                source: 'aftersales',
+                sourceName: '售后需求',
+                type: 'maintenance',
+                typeName: '维修',
+                product: '3KW逆变器',
+                productCode: 'INV-3KW-004',
+                quantity: 5,
+                expectedDate: '2025-01-25',
+                priority: 'urgent',
+                status: 'changing',
+                progress: 60,
+                submitter: '赵六',
+                submitTime: '2025-01-12 16:45',
+                department: '售后部',
+                bomVersion: 'V1.1',
+                isODM: false,
+                urgentReason: '客户紧急维修需求',
+                changeHistory: [
+                    { date: '2025-01-16', action: '数量调整', from: '3', to: '5', operator: '赵六' }
+                ]
+            },
+            {
+                id: 'DM202501005',
+                source: 'pcba',
+                sourceName: 'PCBA需求',
+                type: 'order',
+                typeName: '订单',
+                product: 'PCBA主板',
+                productCode: 'PCBA-MAIN-005',
+                quantity: 200,
+                expectedDate: '2025-02-10',
+                priority: 'high',
+                status: 'locked',
+                progress: 90,
+                submitter: '孙七',
+                submitTime: '2025-01-10 08:30',
+                department: '生产部',
+                bomVersion: 'V3.0',
+                isODM: false,
+                urgentReason: '',
+                changeHistory: []
+            },
+            {
+                id: 'DM202501006',
+                source: 'urgent',
+                sourceName: '紧急插单',
+                type: 'order',
+                typeName: '订单',
+                product: '20KW逆变器',
+                productCode: 'INV-20KW-006',
+                quantity: 30,
+                expectedDate: '2025-01-30',
+                priority: 'urgent',
+                status: 'pending',
+                progress: 10,
+                submitter: '周八',
+                submitTime: '2025-01-16 14:20',
+                department: '销售部',
+                bomVersion: 'V2.3',
+                isODM: false,
+                urgentReason: '重要客户紧急订单',
+                changeHistory: []
+            }
+        ];
+
+        // 状态映射 - 基于Process.md定义的需求状态
+        const statusMap = {
+            pending: { text: '待审核', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-clock' },
+            locked: { text: '已锁定', class: 'bg-green-100 text-green-800', icon: 'fas fa-lock' },
+            rejected: { text: '已驳回', class: 'bg-red-100 text-red-800', icon: 'fas fa-times-circle' },
+            changing: { text: '变更中', class: 'bg-purple-100 text-purple-800', icon: 'fas fa-edit' },
+            urgent: { text: '紧急插单', class: 'bg-indigo-100 text-indigo-800', icon: 'fas fa-exclamation-triangle' }
+        };
+
+        // 优先级映射
+        const priorityMap = {
+            urgent: { text: '紧急', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            high: { text: '高', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-arrow-up' },
+            normal: { text: '正常', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-minus' },
+            low: { text: '低', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-arrow-down' }
+        };
+
+        // 需求来源映射
+        const sourceMap = {
+            sales: { text: '销售需求', icon: 'fas fa-shopping-cart', color: 'text-blue-600' },
+            aftersales: { text: '售后需求', icon: 'fas fa-tools', color: 'text-green-600' },
+            project: { text: '项目需求', icon: 'fas fa-project-diagram', color: 'text-purple-600' },
+            rd: { text: '研发需求', icon: 'fas fa-flask', color: 'text-indigo-600' },
+            rework: { text: '返工需求', icon: 'fas fa-redo', color: 'text-yellow-600' },
+            pcba: { text: 'PCBA需求', icon: 'fas fa-microchip', color: 'text-gray-600' },
+            repair: { text: '返修需求', icon: 'fas fa-wrench', color: 'text-orange-600' },
+            urgent: { text: '紧急插单', icon: 'fas fa-exclamation-triangle', color: 'text-red-600' }
+        };
+
+        let currentDemandType = 'all';
+        let filteredData = [...demandData];
+
+        // 渲染需求列表 - 基于Process.md的完整信息展示
+        function renderDemandTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('demandTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(demand => {
+                const status = statusMap[demand.status];
+                const priority = priorityMap[demand.priority];
+                const source = sourceMap[demand.source];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+                row.setAttribute('data-demand-id', demand.id);
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <input type="checkbox" class="rounded demand-checkbox" data-id="${demand.id}">
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewDemandDetail('${demand.id}')">
+                            ${demand.id}
+                        </div>
+                        <div class="text-xs text-gray-500">${demand.productCode}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${source.icon} ${source.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${source.text}</span>
+                        </div>
+                        ${demand.isODM ? '<span class="inline-flex px-1 py-0.5 text-xs bg-purple-100 text-purple-800 rounded">ODM</span>' : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${demand.typeName}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${demand.product}</div>
+                        <div class="text-xs text-gray-500">BOM: ${demand.bomVersion}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-center">
+                        <span class="text-sm font-medium text-gray-900">${demand.quantity}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${demand.expectedDate}</span>
+                        ${isDateUrgent(demand.expectedDate) ? '<div class="text-xs text-red-600"><i class="fas fa-exclamation-triangle mr-1"></i>临期</div>' : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${priority.class}">
+                            <i class="${priority.icon} mr-1"></i>
+                            ${priority.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${demand.progress}%"></div>
+                            </div>
+                            <span class="text-xs text-gray-600">${demand.progress}%</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${demand.submitter}</div>
+                        <div class="text-xs text-gray-500">${demand.department}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${demand.submitTime}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewDemandDetail('${demand.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${demand.status === 'pending' ? `
+                                <button onclick="approveDemand('${demand.id}')" class="text-green-600 hover:text-green-900 p-1" title="审核通过">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button onclick="rejectDemand('${demand.id}')" class="text-red-600 hover:text-red-900 p-1" title="驳回">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            ` : ''}
+                            ${demand.status === 'locked' ? `
+                                <button onclick="changeDemand('${demand.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="发起变更">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            ` : ''}
+                            ${demand.changeHistory.length > 0 ? `
+                                <button onclick="viewChangeHistory('${demand.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="变更历史">
+                                    <i class="fas fa-history"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // 判断日期是否紧急（7天内）
+        function isDateUrgent(dateStr) {
+            const targetDate = new Date(dateStr);
+            const today = new Date();
+            const diffTime = targetDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays <= 7 && diffDays >= 0;
+        }
+
+        // 需求类型切换 - 基于Process.md的9种需求类型
+        function switchDemandType(type) {
+            currentDemandType = type;
+
+            // 更新按钮状态
+            document.querySelectorAll('.demand-type-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-primary', 'text-white');
+                btn.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-300');
+            });
+
+            event.target.classList.add('active', 'bg-primary', 'text-white');
+            event.target.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-300');
+
+            // 筛选数据
+            if (type === 'all') {
+                filteredData = [...demandData];
+            } else {
+                filteredData = demandData.filter(demand => demand.source === type);
+            }
+
+            renderDemandTable();
+        }
+
+        // 搜索需求
+        function searchDemands() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const sourceFilter = document.getElementById('sourceFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+
+            filteredData = demandData.filter(demand => {
+                const matchesSearch = !searchTerm ||
+                    demand.id.toLowerCase().includes(searchTerm) ||
+                    demand.product.toLowerCase().includes(searchTerm) ||
+                    demand.productCode.toLowerCase().includes(searchTerm);
+
+                const matchesStatus = !statusFilter || demand.status === statusFilter;
+                const matchesSource = !sourceFilter || demand.source === sourceFilter;
+                const matchesType = !typeFilter || demand.type === typeFilter;
+                const matchesPriority = !priorityFilter || demand.priority === priorityFilter;
+                const matchesDate = !dateFilter || demand.expectedDate === dateFilter;
+
+                return matchesSearch && matchesStatus && matchesSource && matchesType && matchesPriority && matchesDate;
+            });
+
+            renderDemandTable();
+        }
+
+        // 快速筛选函数
+        function showPendingOnly() {
+            document.getElementById('statusFilter').value = 'pending';
+            searchDemands();
+        }
+
+        function showLockedOnly() {
+            document.getElementById('statusFilter').value = 'locked';
+            searchDemands();
+        }
+
+        function showUrgentOnly() {
+            document.getElementById('priorityFilter').value = 'urgent';
+            searchDemands();
+        }
+
+        function clearFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('sourceFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('priorityFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            document.getElementById('searchInput').value = '';
+            filteredData = [...demandData];
+            renderDemandTable();
+        }
+
+        // 需求操作函数 - 基于Process.md的关键控制点
+        function viewDemandDetail(demandId) {
+            const demand = demandData.find(d => d.id === demandId);
+            if (demand) {
+                alert(`需求详情：\n编号：${demand.id}\n来源：${demand.sourceName}\n产品：${demand.product}\n数量：${demand.quantity}\nBOM版本：${demand.bomVersion}\n${demand.urgentReason ? '紧急原因：' + demand.urgentReason : ''}`);
+            }
+        }
+
+        function approveDemand(demandId) {
+            if (confirm('确认审核通过此需求？审核通过后可进行锁定操作。')) {
+                const demand = demandData.find(d => d.id === demandId);
+                if (demand) {
+                    demand.status = 'locked';
+                    demand.progress = 50;
+                    renderDemandTable();
+                    alert('需求审核通过，已可进行锁定操作！');
+                }
+            }
+        }
+
+        function rejectDemand(demandId) {
+            const reason = prompt('请输入驳回原因：');
+            if (reason) {
+                const demand = demandData.find(d => d.id === demandId);
+                if (demand) {
+                    demand.status = 'rejected';
+                    demand.progress = 0;
+                    renderDemandTable();
+                    alert('需求已驳回！');
+                }
+            }
+        }
+
+        function changeDemand(demandId) {
+            if (confirm('确认发起需求变更？变更将影响MPS主计划和物料计划。')) {
+                const demand = demandData.find(d => d.id === demandId);
+                if (demand) {
+                    demand.status = 'changing';
+                    demand.progress = 30;
+                    renderDemandTable();
+                    alert('需求变更已发起，将触发MPS主计划变更流程！');
+                }
+            }
+        }
+
+        function viewChangeHistory(demandId) {
+            const demand = demandData.find(d => d.id === demandId);
+            if (demand && demand.changeHistory.length > 0) {
+                let historyText = '变更历史：\n';
+                demand.changeHistory.forEach(change => {
+                    historyText += `${change.date} - ${change.action}: ${change.from} → ${change.to} (操作人: ${change.operator})\n`;
+                });
+                alert(historyText);
+            }
+        }
+
+        // URL参数处理 - 支持从AI助手跳转时高亮显示对应单据
+        function handleURLParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const docNumber = urlParams.get('doc');
+
+            if (docNumber) {
+                // 在搜索框中填入单据编号
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.value = docNumber;
+                    searchDemands();
+                }
+
+                // 高亮显示对应的行
+                setTimeout(() => {
+                    const targetRow = document.querySelector(`tr[data-demand-id="${docNumber}"]`);
+                    if (targetRow) {
+                        targetRow.classList.add('bg-blue-50', 'border-2', 'border-blue-300');
+                        targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                        // 3秒后移除高亮
+                        setTimeout(() => {
+                            targetRow.classList.remove('bg-blue-50', 'border-2', 'border-blue-300');
+                        }, 3000);
+                    }
+                }, 500);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderDemandTable();
+            handleURLParams();
+
+            // 新增需求按钮
+            document.getElementById('addDemandBtn').addEventListener('click', function() {
+                document.getElementById('addDemandModal').classList.remove('hidden');
+            });
+
+            // 批量锁定
+            document.getElementById('batchLockBtn').addEventListener('click', function() {
+                const checkedBoxes = document.querySelectorAll('.demand-checkbox:checked');
+                if (checkedBoxes.length === 0) {
+                    alert('请选择要锁定的需求！');
+                    return;
+                }
+
+                if (confirm(`确认锁定选中的 ${checkedBoxes.length} 个需求？锁定后将作为MPS主计划的输入。`)) {
+                    checkedBoxes.forEach(checkbox => {
+                        const demandId = checkbox.dataset.id;
+                        const demand = demandData.find(d => d.id === demandId);
+                        if (demand && demand.status === 'pending') {
+                            demand.status = 'locked';
+                            demand.progress = 60;
+                        }
+                    });
+                    renderDemandTable();
+                    alert('批量锁定完成！');
+                }
+            });
+
+            // 全选功能
+            document.getElementById('selectAll').addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.demand-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+
+            // 关闭弹窗
+            document.getElementById('closeAddModal').addEventListener('click', function() {
+                document.getElementById('addDemandModal').classList.add('hidden');
+            });
+
+            document.getElementById('cancelAddDemand').addEventListener('click', function() {
+                document.getElementById('addDemandModal').classList.add('hidden');
+            });
+
+            // 提交需求
+            document.getElementById('submitDemand').addEventListener('click', function() {
+                const form = document.getElementById('addDemandForm');
+                const formData = new FormData(form);
+
+                if (form.checkValidity()) {
+                    alert('需求提交成功！将进入审核流程。');
+                    document.getElementById('addDemandModal').classList.add('hidden');
+                    form.reset();
+                } else {
+                    alert('请填写必填字段');
+                }
+            });
+
+            // 点击弹窗外部关闭
+            document.getElementById('addDemandModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

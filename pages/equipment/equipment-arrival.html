@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备到货确认 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">设备到货确认</h1>
+            <p class="text-gray-600">基于Process.md 2.4.2流程：到货通知→外观检查→数量核对→质量验收，确保设备到货的完整性和质量</p>
+        </div>
+
+        <!-- 设备到货确认流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">设备到货确认流程</h3>
+                    <span class="text-sm text-gray-600">标准验收流程</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">到货通知</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">外观检查</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">数量核对</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">质量验收</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="arrivalNoticeBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-bell mr-2"></i>
+                到货通知
+            </button>
+            <button id="appearanceCheckBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-eye mr-2"></i>
+                外观检查
+            </button>
+            <button id="quantityCheckBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-list-ol mr-2"></i>
+                数量核对
+            </button>
+            <button id="qualityAcceptanceBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                质量验收
+            </button>
+            <button id="documentManageBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-file-alt mr-2"></i>
+                文档管理
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 设备到货统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">23</div>
+                        <div class="text-sm text-gray-600">到货通知</div>
+                        <div class="text-xs text-gray-500">本月接收</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-truck text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">18</div>
+                        <div class="text-sm text-gray-600">验收完成</div>
+                        <div class="text-xs text-gray-500">通过验收</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">5</div>
+                        <div class="text-sm text-gray-600">验收中</div>
+                        <div class="text-xs text-gray-500">进行中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-search text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">95.7%</div>
+                        <div class="text-sm text-gray-600">验收通过率</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">2.3天</div>
+                        <div class="text-sm text-gray-600">平均周期</div>
+                        <div class="text-xs text-gray-500">验收时间</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">1</div>
+                        <div class="text-sm text-gray-600">验收异常</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 验收流程和待处理任务面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 验收流程管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">验收流程管理</h3>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-bell text-blue-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">到货通知接收</div>
+                                    <div class="text-xs text-gray-500">供应商通知、物流信息确认</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-blue-600">3个</div>
+                                <div class="text-xs text-gray-500">待处理</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-green-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-eye text-green-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">外观质量检查</div>
+                                    <div class="text-xs text-gray-500">包装完整性、设备外观检查</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-green-600">2个</div>
+                                <div class="text-xs text-gray-500">进行中</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-purple-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-list-ol text-purple-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">数量规格核对</div>
+                                    <div class="text-xs text-gray-500">清单核对、规格确认</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-purple-600">1个</div>
+                                <div class="text-xs text-gray-500">待核对</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 待处理任务 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">待处理任务</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">紧急验收</div>
+                                <div class="text-xs text-gray-600">PACK产线装配设备 - 外观检查异常</div>
+                                <div class="text-xs text-gray-500">到货时间: 14:25:30</div>
+                            </div>
+                            <button onclick="handleUrgentAcceptance('ARR001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                立即处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">数量核对</div>
+                                <div class="text-xs text-gray-600">PCBA测试设备配件 - 清单核对</div>
+                                <div class="text-xs text-gray-500">到货时间: 15:10:15</div>
+                            </div>
+                            <button onclick="handleQuantityCheck('ARR002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                                开始核对
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">质量验收</div>
+                                <div class="text-xs text-gray-600">6轴机器人 - 功能测试</div>
+                                <div class="text-xs text-gray-500">到货时间: 15:35:45</div>
+                            </div>
+                            <button onclick="handleQualityAcceptance('ARR003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                质量验收
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备到货记录表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备到货记录</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部设备类型</option>
+                        <option>生产设备</option>
+                        <option>检测设备</option>
+                        <option>辅助设备</option>
+                        <option>配件耗材</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>待验收</option>
+                        <option>验收中</option>
+                        <option>验收完成</option>
+                        <option>验收异常</option>
+                    </select>
+                    <input type="date" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                    <input type="text" placeholder="搜索设备名称、供应商..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">到货编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">供应商信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">验收项目</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">验收人员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">验收状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">验收结果</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="arrivalTableBody">
+                        <!-- 到货数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.2的设备到货确认数据模型
+        const arrivalData = [
+            {
+                id: 'ARR202501001',
+                arrivalCode: 'ARR-PACK-001',
+                equipmentName: 'PACK产线装配设备',
+                equipmentType: '生产设备',
+                model: 'SIMATIC S7-1500',
+                quantity: 1,
+                unit: '台',
+                supplier: '德国西门子',
+                supplierContact: '张经理',
+                supplierPhone: '138-0000-1234',
+                purchaseOrder: 'PO-2024-001',
+                arrivalDate: '2025-01-16',
+                arrivalTime: '14:25:30',
+                expectedDate: '2025-01-15',
+                status: 'appearance_check',
+                statusName: '外观检查',
+                inspector: '李工程师',
+                inspectorId: 'ENG001',
+                acceptanceItems: [
+                    { item: '包装完整性检查', standard: '包装无破损', result: 'pass', notes: '包装完好' },
+                    { item: '设备外观检查', standard: '无明显损伤', result: 'fail', notes: '发现表面划痕' },
+                    { item: '配件清单核对', standard: '与清单一致', result: 'pending', notes: '' },
+                    { item: '技术文档检查', standard: '文档齐全', result: 'pending', notes: '' }
+                ],
+                documents: ['装箱单', '质量证书', '操作手册', '保修卡'],
+                photos: ['外观照片1.jpg', '包装照片.jpg'],
+                overallResult: 'abnormal',
+                issues: ['设备表面有划痕，需要供应商确认'],
+                notes: '外观检查发现异常，等待供应商回复'
+            },
+            {
+                id: 'ARR202501002',
+                arrivalCode: 'ARR-PCBA-002',
+                equipmentName: 'PCBA测试设备配件',
+                equipmentType: '配件耗材',
+                model: 'MT8870A-ACC',
+                quantity: 15,
+                unit: '套',
+                supplier: '日本安立',
+                supplierContact: '田中先生',
+                supplierPhone: '139-0000-5678',
+                purchaseOrder: 'PO-2024-002',
+                arrivalDate: '2025-01-16',
+                arrivalTime: '15:10:15',
+                expectedDate: '2025-01-16',
+                status: 'quantity_check',
+                statusName: '数量核对',
+                inspector: '王技术员',
+                inspectorId: 'TECH001',
+                acceptanceItems: [
+                    { item: '包装完整性检查', standard: '包装无破损', result: 'pass', notes: '包装良好' },
+                    { item: '数量清点', standard: '15套配件', result: 'pending', notes: '正在清点' },
+                    { item: '规格确认', standard: '符合订单要求', result: 'pending', notes: '' },
+                    { item: '质量证书核对', standard: '证书齐全有效', result: 'pass', notes: '证书完整' }
+                ],
+                documents: ['装箱单', '质量证书', '检验报告'],
+                photos: ['配件照片1.jpg'],
+                overallResult: 'pending',
+                issues: [],
+                notes: '正在进行数量核对，预计1小时完成'
+            },
+            {
+                id: 'ARR202501003',
+                arrivalCode: 'ARR-ROBOT-003',
+                equipmentName: '6轴机器人',
+                equipmentType: '生产设备',
+                model: 'FANUC M-20iD/25',
+                quantity: 1,
+                unit: '台',
+                supplier: '日本发那科',
+                supplierContact: '佐藤先生',
+                supplierPhone: '137-0000-9012',
+                purchaseOrder: 'PO-2024-003',
+                arrivalDate: '2025-01-16',
+                arrivalTime: '15:35:45',
+                expectedDate: '2025-01-17',
+                status: 'quality_acceptance',
+                statusName: '质量验收',
+                inspector: '孙技师',
+                inspectorId: 'TECH002',
+                acceptanceItems: [
+                    { item: '包装完整性检查', standard: '包装无破损', result: 'pass', notes: '包装完好' },
+                    { item: '设备外观检查', standard: '无明显损伤', result: 'pass', notes: '外观良好' },
+                    { item: '功能测试', standard: '基本功能正常', result: 'pending', notes: '准备功能测试' },
+                    { item: '精度检测', standard: '重复定位精度±0.02mm', result: 'pending', notes: '' }
+                ],
+                documents: ['装箱单', '质量证书', '操作手册', '校准证书'],
+                photos: ['机器人照片1.jpg', '包装照片.jpg'],
+                overallResult: 'pending',
+                issues: [],
+                notes: '提前到货，准备进行质量验收'
+            },
+            {
+                id: 'ARR202501004',
+                arrivalCode: 'ARR-TEST-004',
+                equipmentName: '电子测试仪器',
+                equipmentType: '检测设备',
+                model: 'Keysight E5071C',
+                quantity: 2,
+                unit: '台',
+                supplier: '是德科技',
+                supplierContact: '陈经理',
+                supplierPhone: '136-0000-3456',
+                purchaseOrder: 'PO-2024-004',
+                arrivalDate: '2025-01-15',
+                arrivalTime: '09:30:00',
+                expectedDate: '2025-01-15',
+                status: 'completed',
+                statusName: '验收完成',
+                inspector: '钱工程师',
+                inspectorId: 'ENG002',
+                acceptanceItems: [
+                    { item: '包装完整性检查', standard: '包装无破损', result: 'pass', notes: '包装完好' },
+                    { item: '设备外观检查', standard: '无明显损伤', result: 'pass', notes: '外观良好' },
+                    { item: '数量核对', standard: '2台设备', result: 'pass', notes: '数量正确' },
+                    { item: '功能测试', standard: '基本功能正常', result: 'pass', notes: '功能正常' },
+                    { item: '校准验证', standard: '校准证书有效', result: 'pass', notes: '校准有效' }
+                ],
+                documents: ['装箱单', '质量证书', '操作手册', '校准证书', '验收报告'],
+                photos: ['设备照片1.jpg', '设备照片2.jpg', '校准标签.jpg'],
+                overallResult: 'pass',
+                issues: [],
+                completionDate: '2025-01-15',
+                completionTime: '16:45:00',
+                notes: '验收完成，设备状态良好，已移交使用部门'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            arrival_notice: { text: '到货通知', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-bell' },
+            appearance_check: { text: '外观检查', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-eye' },
+            quantity_check: { text: '数量核对', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-list-ol' },
+            quality_acceptance: { text: '质量验收', class: 'bg-purple-100 text-purple-800', icon: 'fas fa-search' },
+            completed: { text: '验收完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            abnormal: { text: '验收异常', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' }
+        };
+
+        // 验收结果映射
+        const resultMap = {
+            pass: { text: '通过', class: 'text-green-600', icon: 'fas fa-check-circle' },
+            fail: { text: '不通过', class: 'text-red-600', icon: 'fas fa-times-circle' },
+            pending: { text: '待检', class: 'text-gray-600', icon: 'fas fa-clock' }
+        };
+
+        let filteredData = [...arrivalData];
+
+        // 渲染设备到货表格
+        function renderArrivalTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('arrivalTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(arrival => {
+                const status = statusMap[arrival.status];
+                const overallResult = resultMap[arrival.overallResult] || { text: '进行中', class: 'text-blue-600', icon: 'fas fa-clock' };
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewArrivalDetail('${arrival.id}')">
+                            ${arrival.arrivalCode}
+                        </div>
+                        <div class="text-xs text-gray-500">${arrival.arrivalDate}</div>
+                        <div class="text-xs text-gray-500">${arrival.arrivalTime}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${arrival.equipmentName}</div>
+                        <div class="text-xs text-gray-500">${arrival.equipmentType}</div>
+                        <div class="text-xs text-gray-500">${arrival.model}</div>
+                        <div class="text-xs text-blue-600">${arrival.quantity}${arrival.unit}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${arrival.supplier}</div>
+                        <div class="text-xs text-gray-500">${arrival.supplierContact}</div>
+                        <div class="text-xs text-gray-500">${arrival.supplierPhone}</div>
+                        <div class="text-xs text-blue-600">${arrival.purchaseOrder}</div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="space-y-1">
+                            ${arrival.acceptanceItems.slice(0, 3).map(item => `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-600">${item.item}</span>
+                                    <span class="text-xs ${resultMap[item.result].class}">
+                                        <i class="${resultMap[item.result].icon}"></i>
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${arrival.acceptanceItems.length > 3 ? `
+                            <button onclick="viewAllAcceptanceItems('${arrival.id}')" class="text-xs text-blue-600 hover:underline mt-1">
+                                查看全部 (${arrival.acceptanceItems.length})
+                            </button>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${arrival.inspector}</div>
+                        <div class="text-xs text-gray-500">${arrival.inspectorId}</div>
+                        <div class="text-xs text-blue-600">负责验收</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">到货: ${arrival.arrivalDate}</div>
+                        <div class="text-xs text-gray-500">预期: ${arrival.expectedDate}</div>
+                        ${arrival.completionDate ? `
+                            <div class="text-xs text-green-600">完成: ${arrival.completionDate}</div>
+                        ` : ''}
+                        ${arrival.arrivalDate !== arrival.expectedDate ? `
+                            <div class="text-xs ${arrival.arrivalDate < arrival.expectedDate ? 'text-green-600' : 'text-red-600'}">
+                                ${arrival.arrivalDate < arrival.expectedDate ? '提前' : '延期'}
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${arrival.issues.length > 0 ? `
+                            <div class="text-xs text-red-600 mt-1">
+                                异常: ${arrival.issues.length}项
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${overallResult.icon} ${overallResult.class} mr-2"></i>
+                            <span class="text-sm ${overallResult.class}">${overallResult.text}</span>
+                        </div>
+                        ${arrival.documents.length > 0 ? `
+                            <div class="text-xs text-blue-600 mt-1">
+                                文档: ${arrival.documents.length}份
+                            </div>
+                        ` : ''}
+                        ${arrival.photos.length > 0 ? `
+                            <div class="text-xs text-green-600 mt-1">
+                                照片: ${arrival.photos.length}张
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewArrivalDetail('${arrival.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${arrival.status === 'appearance_check' ? `
+                                <button onclick="continueAppearanceCheck('${arrival.id}')" class="text-green-600 hover:text-green-900 p-1" title="继续外观检查">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            ` : ''}
+                            ${arrival.status === 'quantity_check' ? `
+                                <button onclick="continueQuantityCheck('${arrival.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="继续数量核对">
+                                    <i class="fas fa-list-ol"></i>
+                                </button>
+                            ` : ''}
+                            ${arrival.status === 'quality_acceptance' ? `
+                                <button onclick="continueQualityAcceptance('${arrival.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="继续质量验收">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            ${arrival.photos.length > 0 ? `
+                                <button onclick="viewPhotos('${arrival.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="查看照片">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewDocuments('${arrival.id}')" class="text-yellow-600 hover:text-yellow-900 p-1" title="查看文档">
+                                <i class="fas fa-file-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${arrivalData.length} 条记录`;
+        }
+
+        // 设备到货操作函数
+        function viewArrivalDetail(arrivalId) {
+            const arrival = arrivalData.find(a => a.id === arrivalId);
+            if (arrival) {
+                let detailText = `到货详情：\n编号: ${arrival.arrivalCode}\n设备: ${arrival.equipmentName}\n型号: ${arrival.model}\n数量: ${arrival.quantity}${arrival.unit}\n供应商: ${arrival.supplier}\n联系人: ${arrival.supplierContact}\n验收人: ${arrival.inspector}\n状态: ${statusMap[arrival.status].text}`;
+
+                detailText += `\n\n时间信息:\n到货日期: ${arrival.arrivalDate} ${arrival.arrivalTime}\n预期日期: ${arrival.expectedDate}`;
+                if (arrival.completionDate) {
+                    detailText += `\n完成日期: ${arrival.completionDate} ${arrival.completionTime}`;
+                }
+
+                detailText += `\n\n验收项目:`;
+                arrival.acceptanceItems.forEach((item, index) => {
+                    const resultText = resultMap[item.result].text;
+                    detailText += `\n${index + 1}. ${item.item}\n   标准: ${item.standard}\n   结果: ${resultText}`;
+                    if (item.notes) {
+                        detailText += `\n   备注: ${item.notes}`;
+                    }
+                });
+
+                if (arrival.documents.length > 0) {
+                    detailText += `\n\n相关文档:`;
+                    arrival.documents.forEach((doc, index) => {
+                        detailText += `\n${index + 1}. ${doc}`;
+                    });
+                }
+
+                if (arrival.photos.length > 0) {
+                    detailText += `\n\n验收照片: ${arrival.photos.length}张`;
+                    arrival.photos.forEach((photo, index) => {
+                        detailText += `\n${index + 1}. ${photo}`;
+                    });
+                }
+
+                if (arrival.issues.length > 0) {
+                    detailText += `\n\n发现问题:`;
+                    arrival.issues.forEach((issue, index) => {
+                        detailText += `\n${index + 1}. ${issue}`;
+                    });
+                }
+
+                if (arrival.notes) {
+                    detailText += `\n\n备注: ${arrival.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function handleUrgentAcceptance(arrivalId) {
+            alert(`紧急验收处理：\n到货ID: ${arrivalId}\n\n处理措施：\n- 立即安排验收人员\n- 优先级设为最高\n- 联系供应商确认\n- 加急处理流程`);
+        }
+
+        function handleQuantityCheck(arrivalId) {
+            alert(`数量核对：\n到货ID: ${arrivalId}\n\n核对流程：\n- 清点设备数量\n- 核对装箱单\n- 确认规格型号\n- 记录核对结果`);
+        }
+
+        function handleQualityAcceptance(arrivalId) {
+            alert(`质量验收：\n到货ID: ${arrivalId}\n\n验收流程：\n- 功能测试\n- 精度检测\n- 性能验证\n- 质量确认`);
+        }
+
+        function continueAppearanceCheck(arrivalId) {
+            const arrival = arrivalData.find(a => a.id === arrivalId);
+            if (arrival) {
+                if (confirm(`继续外观检查？\n设备: ${arrival.equipmentName}\n\n检查项目：\n- 包装完整性\n- 设备外观\n- 配件清单\n- 技术文档`)) {
+                    // 模拟检查进度
+                    arrival.acceptanceItems.forEach(item => {
+                        if (item.result === 'pending') {
+                            item.result = 'pass';
+                            item.notes = '检查通过';
+                        }
+                    });
+                    arrival.status = 'quantity_check';
+                    arrival.overallResult = 'pending';
+                    renderArrivalTable();
+                    alert('外观检查完成！\n- 检查结果已记录\n- 进入数量核对阶段');
+                }
+            }
+        }
+
+        function continueQuantityCheck(arrivalId) {
+            const arrival = arrivalData.find(a => a.id === arrivalId);
+            if (arrival) {
+                if (confirm(`继续数量核对？\n设备: ${arrival.equipmentName}\n数量: ${arrival.quantity}${arrival.unit}`)) {
+                    arrival.acceptanceItems.find(item => item.item === '数量清点').result = 'pass';
+                    arrival.acceptanceItems.find(item => item.item === '数量清点').notes = '数量正确';
+                    arrival.status = 'quality_acceptance';
+                    renderArrivalTable();
+                    alert('数量核对完成！\n- 数量确认无误\n- 进入质量验收阶段');
+                }
+            }
+        }
+
+        function continueQualityAcceptance(arrivalId) {
+            const arrival = arrivalData.find(a => a.id === arrivalId);
+            if (arrival) {
+                if (confirm(`继续质量验收？\n设备: ${arrival.equipmentName}\n\n验收项目：\n- 功能测试\n- 精度检测\n- 性能验证`)) {
+                    arrival.acceptanceItems.forEach(item => {
+                        if (item.result === 'pending') {
+                            item.result = 'pass';
+                            item.notes = '验收通过';
+                        }
+                    });
+                    arrival.status = 'completed';
+                    arrival.overallResult = 'pass';
+                    arrival.completionDate = new Date().toISOString().split('T')[0];
+                    arrival.completionTime = new Date().toTimeString().split(' ')[0];
+                    renderArrivalTable();
+                    alert('质量验收完成！\n- 所有项目验收通过\n- 设备可以投入使用\n- 验收报告已生成');
+                }
+            }
+        }
+
+        function viewAllAcceptanceItems(arrivalId) {
+            const arrival = arrivalData.find(a => a.id === arrivalId);
+            if (arrival) {
+                let itemsText = `${arrival.equipmentName} - 验收项目：\n\n`;
+                arrival.acceptanceItems.forEach((item, index) => {
+                    const resultText = resultMap[item.result].text;
+                    itemsText += `${index + 1}. ${item.item}\n   标准: ${item.standard}\n   结果: ${resultText}`;
+                    if (item.notes) {
+                        itemsText += `\n   备注: ${item.notes}`;
+                    }
+                    itemsText += '\n\n';
+                });
+                alert(itemsText);
+            }
+        }
+
+        function viewPhotos(arrivalId) {
+            const arrival = arrivalData.find(a => a.id === arrivalId);
+            if (arrival) {
+                let photosText = `${arrival.equipmentName} - 验收照片：\n\n`;
+                if (arrival.photos.length > 0) {
+                    arrival.photos.forEach((photo, index) => {
+                        photosText += `${index + 1}. ${photo}\n`;
+                    });
+                    photosText += `\n总计: ${arrival.photos.length}张照片\n拍摄时间: ${arrival.arrivalDate}`;
+                } else {
+                    photosText += '暂无验收照片';
+                }
+                alert(photosText);
+            }
+        }
+
+        function viewDocuments(arrivalId) {
+            const arrival = arrivalData.find(a => a.id === arrivalId);
+            if (arrival) {
+                let documentsText = `${arrival.equipmentName} - 相关文档：\n\n`;
+                if (arrival.documents.length > 0) {
+                    arrival.documents.forEach((doc, index) => {
+                        documentsText += `${index + 1}. ${doc}\n`;
+                    });
+                    documentsText += `\n总计: ${arrival.documents.length}份文档`;
+                } else {
+                    documentsText += '暂无相关文档';
+                }
+                alert(documentsText);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderArrivalTable();
+
+            // 到货通知
+            document.getElementById('arrivalNoticeBtn').addEventListener('click', function() {
+                alert('到货通知功能：\n- 供应商通知接收\n- 物流信息确认\n- 到货时间安排\n- 验收人员分配\n- 验收计划制定');
+            });
+
+            // 外观检查
+            document.getElementById('appearanceCheckBtn').addEventListener('click', function() {
+                alert('外观检查功能：\n- 包装完整性检查\n- 设备外观检查\n- 明显损伤识别\n- 照片记录\n- 异常问题记录');
+            });
+
+            // 数量核对
+            document.getElementById('quantityCheckBtn').addEventListener('click', function() {
+                alert('数量核对功能：\n- 设备数量清点\n- 配件清单核对\n- 规格型号确认\n- 序列号记录\n- 差异问题处理');
+            });
+
+            // 质量验收
+            document.getElementById('qualityAcceptanceBtn').addEventListener('click', function() {
+                alert('质量验收功能：\n- 功能测试\n- 性能验证\n- 精度检测\n- 质量确认\n- 验收报告生成');
+            });
+
+            // 文档管理
+            document.getElementById('documentManageBtn').addEventListener('click', function() {
+                alert('文档管理功能：\n- 技术文档收集\n- 质量证书管理\n- 操作手册归档\n- 保修卡登记\n- 文档版本控制');
+            });
+        });
+    </script>
+</body>
+</html>

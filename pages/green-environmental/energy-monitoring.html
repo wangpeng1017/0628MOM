@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>能耗监控管理 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-bolt text-primary mr-3"></i>
+                能耗监控管理
+            </h1>
+            <p class="text-gray-600 mt-2">智能能耗监控，节能降耗优化</p>
+        </div>
+
+        <!-- 能耗概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">总能耗</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">1,256</p>
+                        <p class="text-sm text-gray-500">MWh</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-bolt text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">-8.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>预算完成:</span>
+                        <span class="text-blue-600 font-medium">92.3%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">电力消耗</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">856</p>
+                        <p class="text-sm text-gray-500">MWh</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-plug text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>占比:</span>
+                        <span class="text-green-600 font-medium">68.2%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>峰值:</span>
+                        <span class="text-green-600 font-medium">1,250kW</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">天然气</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">285</p>
+                        <p class="text-sm text-gray-500">万m³</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-fire text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>占比:</span>
+                        <span class="text-purple-600 font-medium">22.7%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">-5.2%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">节能效果</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">12.5%</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-leaf text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>节约成本:</span>
+                        <span class="text-green-600 font-medium">¥156万</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>年度目标:</span>
+                        <span class="text-yellow-600 font-medium">15%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时能耗监控 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                实时能耗监控
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">生产区域</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 当前功率: 850kW</div>
+                        <div>• 日累计: 18.5MWh</div>
+                        <div>• 负荷率: 85%</div>
+                        <div>• 效率: 92.3%</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">负荷率: 85%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">办公区域</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 当前功率: 180kW</div>
+                        <div>• 日累计: 3.8MWh</div>
+                        <div>• 负荷率: 72%</div>
+                        <div>• 效率: 88.6%</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 72%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">负荷率: 72%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">辅助设施</h4>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 当前功率: 220kW</div>
+                        <div>• 日累计: 4.2MWh</div>
+                        <div>• 负荷率: 68%</div>
+                        <div>• 效率: 90.1%</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-500 h-2 rounded-full" style="width: 68%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">负荷率: 68%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 能耗分析和设备监控 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-pie text-green-600 mr-2"></i>
+                    能耗结构分析
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-green-50 to-teal-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-pie text-6xl mb-4 text-green-400"></i>
+                        <p class="text-lg font-medium">能耗分布图</p>
+                        <p class="text-sm">各区域能耗占比分析</p>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">68%</div>
+                                <div class="text-xs text-gray-500">生产用电</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">15%</div>
+                                <div class="text-xs text-gray-500">办公用电</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">12%</div>
+                                <div class="text-xs text-gray-500">辅助设施</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-yellow-600">5%</div>
+                                <div class="text-xs text-gray-500">其他</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-cogs text-purple-600 mr-2"></i>
+                    重点设备监控
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">空压机组</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div class="flex justify-between">
+                                <span>功率:</span>
+                                <span class="font-medium text-blue-600">285kW</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>效率:</span>
+                                <span class="font-medium text-green-600">92.5%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>运行时间:</span>
+                                <span class="font-medium">18.5小时</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">冷却系统</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div class="flex justify-between">
+                                <span>功率:</span>
+                                <span class="font-medium text-green-600">156kW</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>效率:</span>
+                                <span class="font-medium text-green-600">88.9%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>运行时间:</span>
+                                <span class="font-medium">22.3小时</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">照明系统</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div class="flex justify-between">
+                                <span>功率:</span>
+                                <span class="font-medium text-purple-600">85kW</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>效率:</span>
+                                <span class="font-medium text-green-600">95.2%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>运行时间:</span>
+                                <span class="font-medium">12.0小时</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 能耗设备管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-server text-blue-600 mr-2"></i>
+                能耗设备管理
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备名称</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">当前功率</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">日累计</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">效率</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">生产线1主机</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">285kW</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">6.8MWh</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">92.5%</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">空压机组A</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">156kW</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3.7MWh</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">88.9%</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">冷却塔系统</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">125kW</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3.0MWh</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">90.1%</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">注意</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-green-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-chart-line text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">能耗分析</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-cog text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">设备控制</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-bell text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">告警设置</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">导出报告</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 能耗监控管理功能
+        function initEnergyMonitoring() {
+            console.log('初始化能耗监控管理功能');
+            
+            // 快速操作按钮事件
+            const quickButtons = document.querySelectorAll('button');
+            quickButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('能耗分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开能耗分析');
+                        alert('正在打开能耗分析报告...');
+                    });
+                } else if (text.includes('设备控制')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开设备控制');
+                        alert('正在打开设备控制面板...');
+                    });
+                } else if (text.includes('告警设置')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开告警设置');
+                        alert('正在打开能耗告警设置...');
+                    });
+                } else if (text.includes('导出报告')) {
+                    button.addEventListener('click', function() {
+                        console.log('导出能耗报告');
+                        alert('正在导出能耗监控报告...');
+                    });
+                }
+            });
+            
+            // 设备管理表格操作
+            const tableLinks = document.querySelectorAll('.cursor-pointer');
+            tableLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const deviceName = this.closest('tr').querySelector('td').textContent;
+                    console.log('查看设备详情:', deviceName);
+                    alert(`正在查看设备 ${deviceName} 的详细信息...`);
+                });
+            });
+            
+            // 实时数据更新
+            function updateEnergyData() {
+                console.log('更新能耗数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateEnergyData, 10000); // 每10秒更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initEnergyMonitoring();
+            console.log('能耗监控管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

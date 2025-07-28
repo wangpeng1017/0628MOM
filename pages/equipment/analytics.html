@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>统计分析 - MOM系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面操作栏 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">统计分析</h1>
+                <p class="text-gray-600">OEE分析、统计报表和可视化看板</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-chart-line mr-2"></i>生成报表
+                </button>
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-download mr-2"></i>导出数据
+                </button>
+                <button class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-cog mr-2"></i>自定义看板
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-calendar mr-2"></i>时间范围
+                </button>
+            </div>
+        </div>
+        
+        <!-- KPI仪表盘 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-green-600 mb-2">92.5%</div>
+                <div class="text-gray-600">设备综合效率(OEE)</div>
+                <div class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+2.1% 较上月
+                </div>
+            </div>
+            
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-blue-600 mb-2">96.8%</div>
+                <div class="text-gray-600">设备可用率</div>
+                <div class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+1.5% 较上月
+                </div>
+            </div>
+            
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-purple-600 mb-2">4.2h</div>
+                <div class="text-gray-600">平均故障修复时间</div>
+                <div class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-arrow-down mr-1"></i>-0.8h 较上月
+                </div>
+            </div>
+            
+            <div class="card text-center">
+                <div class="text-3xl font-bold text-yellow-600 mb-2">¥45.6K</div>
+                <div class="text-gray-600">月维护成本</div>
+                <div class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-arrow-down mr-1"></i>-8.5% 较上月
+                </div>
+            </div>
+        </div>
+        
+        <!-- OEE分析 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h3 class="card-title">OEE综合效率分析</h3>
+                    <div class="flex space-x-3">
+                        <select class="border border-gray-300 rounded px-3 py-1 text-sm">
+                            <option>本月数据</option>
+                            <option>本周数据</option>
+                            <option>本季度数据</option>
+                        </select>
+                        <select class="border border-gray-300 rounded px-3 py-1 text-sm">
+                            <option>全部设备</option>
+                            <option>注塑设备</option>
+                            <option>装配设备</option>
+                            <option>包装设备</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- OEE组成分析 -->
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">OEE组成分析</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">可用率 (Availability)</span>
+                                    <span class="text-lg font-bold text-green-600">96.8%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-green-500" style="width: 96.8%"></div>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    计划运行时间: 720h | 实际运行时间: 697h | 停机时间: 23h
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">性能率 (Performance)</span>
+                                    <span class="text-lg font-bold text-blue-600">88.5%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-blue-500" style="width: 88.5%"></div>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    理论产能: 15,000件 | 实际产量: 13,275件 | 效率损失: 11.5%
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">质量率 (Quality)</span>
+                                    <span class="text-lg font-bold text-purple-600">98.2%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill bg-purple-500" style="width: 98.2%"></div>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    总产量: 13,275件 | 合格品: 13,036件 | 不良品: 239件
+                                </div>
+                            </div>
+                            
+                            <div class="pt-4 border-t border-gray-200">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-lg font-semibold">综合OEE</span>
+                                    <span class="text-2xl font-bold text-green-600">92.5%</span>
+                                </div>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    OEE = 96.8% × 88.5% × 98.2% = 92.5%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 设备OEE对比 -->
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">设备OEE对比</h4>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-green-50 border border-green-200 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">注塑机A1</span>
+                                    <span class="text-lg font-bold text-green-600">95.2%</span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 text-xs">
+                                    <div class="text-center">
+                                        <div class="text-green-600 font-semibold">98.1%</div>
+                                        <div class="text-gray-500">可用率</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-blue-600 font-semibold">92.5%</div>
+                                        <div class="text-gray-500">性能率</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-purple-600 font-semibold">99.1%</div>
+                                        <div class="text-gray-500">质量率</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">装配机B1</span>
+                                    <span class="text-lg font-bold text-blue-600">91.8%</span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 text-xs">
+                                    <div class="text-center">
+                                        <div class="text-green-600 font-semibold">96.5%</div>
+                                        <div class="text-gray-500">可用率</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-blue-600 font-semibold">87.2%</div>
+                                        <div class="text-gray-500">性能率</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-purple-600 font-semibold">98.9%</div>
+                                        <div class="text-gray-500">质量率</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">包装机C1</span>
+                                    <span class="text-lg font-bold text-yellow-600">88.5%</span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 text-xs">
+                                    <div class="text-center">
+                                        <div class="text-green-600 font-semibold">94.2%</div>
+                                        <div class="text-gray-500">可用率</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-blue-600 font-semibold">85.8%</div>
+                                        <div class="text-gray-500">性能率</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-purple-600 font-semibold">97.5%</div>
+                                        <div class="text-gray-500">质量率</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-3 bg-red-50 border border-red-200 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">检测设备D1</span>
+                                    <span class="text-lg font-bold text-red-600">82.3%</span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2 text-xs">
+                                    <div class="text-center">
+                                        <div class="text-green-600 font-semibold">89.5%</div>
+                                        <div class="text-gray-500">可用率</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-blue-600 font-semibold">78.2%</div>
+                                        <div class="text-gray-500">性能率</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="text-purple-600 font-semibold">98.8%</div>
+                                        <div class="text-gray-500">质量率</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 统计报表 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 故障分析报表 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">故障分析报表</h3>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>故障频次分布</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">电气故障</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-20 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-red-500 rounded" style="width: 45%"></div>
+                                        </div>
+                                        <span class="text-xs">18次</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">机械故障</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-20 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-yellow-500 rounded" style="width: 30%"></div>
+                                        </div>
+                                        <span class="text-xs">12次</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">液压故障</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-20 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-blue-500 rounded" style="width: 15%"></div>
+                                        </div>
+                                        <span class="text-xs">6次</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">其他故障</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-20 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-green-500 rounded" style="width: 10%"></div>
+                                        </div>
+                                        <span class="text-xs">4次</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="pt-4 border-t border-gray-200">
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <div class="text-gray-600">总故障次数</div>
+                                    <div class="text-xl font-bold text-red-600">40次</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-600">平均修复时间</div>
+                                    <div class="text-xl font-bold text-blue-600">4.2小时</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-600">故障率</div>
+                                    <div class="text-xl font-bold text-yellow-600">2.8%</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-600">重复故障率</div>
+                                    <div class="text-xl font-bold text-purple-600">15%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 维修成本分析 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">维修成本分析</h3>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>成本构成分析</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">人工成本</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-20 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-blue-500 rounded" style="width: 40%"></div>
+                                        </div>
+                                        <span class="text-xs">¥18.2K</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">备件成本</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-20 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-green-500 rounded" style="width: 35%"></div>
+                                        </div>
+                                        <span class="text-xs">¥15.9K</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">外协成本</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-20 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-yellow-500 rounded" style="width: 20%"></div>
+                                        </div>
+                                        <span class="text-xs">¥9.1K</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">其他费用</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-20 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-purple-500 rounded" style="width: 5%"></div>
+                                        </div>
+                                        <span class="text-xs">¥2.4K</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="pt-4 border-t border-gray-200">
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <div class="text-gray-600">总维修成本</div>
+                                    <div class="text-xl font-bold text-red-600">¥45.6K</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-600">单次平均成本</div>
+                                    <div class="text-xl font-bold text-blue-600">¥1,140</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-600">预防性维护占比</div>
+                                    <div class="text-xl font-bold text-green-600">65%</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-600">紧急维修占比</div>
+                                    <div class="text-xl font-bold text-yellow-600">35%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 趋势分析和预测 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 设备状态趋势 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">设备状态趋势（近30天）</h3>
+                </div>
+                <div class="p-4">
+                    <div class="grid grid-cols-6 gap-2 text-xs text-center mb-4">
+                        <div>
+                            <div class="h-16 bg-gray-100 rounded mb-2 flex items-end">
+                                <div class="w-full bg-green-500 rounded" style="height: 85%;"></div>
+                            </div>
+                            <div class="text-gray-600">第1周</div>
+                            <div class="text-green-600 font-semibold">85%</div>
+                        </div>
+                        <div>
+                            <div class="h-16 bg-gray-100 rounded mb-2 flex items-end">
+                                <div class="w-full bg-green-500 rounded" style="height: 88%;"></div>
+                            </div>
+                            <div class="text-gray-600">第2周</div>
+                            <div class="text-green-600 font-semibold">88%</div>
+                        </div>
+                        <div>
+                            <div class="h-16 bg-gray-100 rounded mb-2 flex items-end">
+                                <div class="w-full bg-green-500 rounded" style="height: 90%;"></div>
+                            </div>
+                            <div class="text-gray-600">第3周</div>
+                            <div class="text-green-600 font-semibold">90%</div>
+                        </div>
+                        <div>
+                            <div class="h-16 bg-gray-100 rounded mb-2 flex items-end">
+                                <div class="w-full bg-green-500 rounded" style="height: 92%;"></div>
+                            </div>
+                            <div class="text-gray-600">第4周</div>
+                            <div class="text-green-600 font-semibold">92%</div>
+                        </div>
+                        <div>
+                            <div class="h-16 bg-gray-100 rounded mb-2 flex items-end">
+                                <div class="w-full bg-blue-500 rounded" style="height: 93%;"></div>
+                            </div>
+                            <div class="text-gray-600">本周</div>
+                            <div class="text-blue-600 font-semibold">93%</div>
+                        </div>
+                        <div>
+                            <div class="h-16 bg-gray-100 rounded mb-2 flex items-end">
+                                <div class="w-full bg-gray-300 rounded" style="height: 95%;"></div>
+                            </div>
+                            <div class="text-gray-600">预测</div>
+                            <div class="text-gray-600 font-semibold">95%</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">平均OEE：</span>
+                            <span class="font-semibold">89.7%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">最高OEE：</span>
+                            <span class="font-semibold text-green-600">93%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">最低OEE：</span>
+                            <span class="font-semibold text-red-600">85%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">改善趋势：</span>
+                            <span class="font-semibold text-green-600">+8% 月增长</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 备件消耗分析 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">备件消耗分析</h3>
+                </div>
+                <div class="p-4">
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>消耗量TOP5备件</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">温度传感器</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-16 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-red-500 rounded" style="width: 90%;"></div>
+                                        </div>
+                                        <span class="text-xs">45个</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">液压油滤芯</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-16 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-yellow-500 rounded" style="width: 70%;"></div>
+                                        </div>
+                                        <span class="text-xs">35个</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">轴承</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-16 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-blue-500 rounded" style="width: 60%;"></div>
+                                        </div>
+                                        <span class="text-xs">30个</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">气压阀门</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-16 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-green-500 rounded" style="width: 50%;"></div>
+                                        </div>
+                                        <span class="text-xs">25个</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs">润滑油</span>
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-16 h-2 bg-gray-200 rounded">
+                                            <div class="h-2 bg-purple-500 rounded" style="width: 40%;"></div>
+                                        </div>
+                                        <span class="text-xs">20桶</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-gray-200">
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <div class="text-gray-600">总消耗价值</div>
+                                    <div class="text-xl font-bold text-red-600">¥156.8K</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-600">平均单价</div>
+                                    <div class="text-xl font-bold text-blue-600">¥285</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-600">消耗增长率</div>
+                                    <div class="text-xl font-bold text-yellow-600">+12%</div>
+                                </div>
+                                <div>
+                                    <div class="text-gray-600">库存周转率</div>
+                                    <div class="text-xl font-bold text-green-600">12.5次</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 综合分析和建议 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 设备健康度评估 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">设备健康度评估</h3>
+                </div>
+                <div class="p-4 space-y-3">
+                    <div class="p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium text-green-800">注塑机A1</span>
+                            <span class="text-lg font-bold text-green-600">95分</span>
+                        </div>
+                        <div class="text-xs text-gray-600">
+                            运行稳定，维护及时，预计可正常运行6个月
+                        </div>
+                        <div class="mt-2">
+                            <div class="progress-bar h-2">
+                                <div class="progress-fill bg-green-500" style="width: 95%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium text-blue-800">装配机B1</span>
+                            <span class="text-lg font-bold text-blue-600">88分</span>
+                        </div>
+                        <div class="text-xs text-gray-600">
+                            运行良好，建议加强预防性维护
+                        </div>
+                        <div class="mt-2">
+                            <div class="progress-bar h-2">
+                                <div class="progress-fill bg-blue-500" style="width: 88%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium text-yellow-800">包装机C1</span>
+                            <span class="text-lg font-bold text-yellow-600">75分</span>
+                        </div>
+                        <div class="text-xs text-gray-600">
+                            需要关注，建议进行大修保养
+                        </div>
+                        <div class="mt-2">
+                            <div class="progress-bar h-2">
+                                <div class="progress-fill bg-yellow-500" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium text-red-800">检测设备D1</span>
+                            <span class="text-lg font-bold text-red-600">68分</span>
+                        </div>
+                        <div class="text-xs text-gray-600">
+                            健康度较低，建议制定改善计划
+                        </div>
+                        <div class="mt-2">
+                            <div class="progress-bar h-2">
+                                <div class="progress-fill bg-red-500" style="width: 68%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 关键指标对比 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">关键指标对比</h3>
+                </div>
+                <div class="p-4 space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>本月 vs 上月</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">OEE</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm">92.5%</span>
+                                    <span class="text-xs text-green-600">+2.1%</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">可用率</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm">96.8%</span>
+                                    <span class="text-xs text-green-600">+1.5%</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">故障次数</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm">40次</span>
+                                    <span class="text-xs text-green-600">-8次</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">维修成本</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm">¥45.6K</span>
+                                    <span class="text-xs text-green-600">-8.5%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-200">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span>行业对比</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">OEE水平</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm">92.5%</span>
+                                    <span class="text-xs text-green-600">高于行业8%</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">维修成本</span>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-sm">1.8%</span>
+                                    <span class="text-xs text-green-600">低于行业0.5%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 改善建议 -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">改善建议</h3>
+                </div>
+                <div class="p-4 space-y-3">
+                    <div class="p-3 bg-red-50 border-l-4 border-red-400">
+                        <div class="font-medium text-red-700">紧急改善</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            检测设备D1健康度偏低，建议立即制定维修计划
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-yellow-50 border-l-4 border-yellow-400">
+                        <div class="font-medium text-yellow-700">性能优化</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            包装机C1性能率偏低，建议优化工艺参数
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-blue-50 border-l-4 border-blue-400">
+                        <div class="font-medium text-blue-700">预防维护</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            加强温度传感器的预防性更换，减少故障率
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-green-50 border-l-4 border-green-400">
+                        <div class="font-medium text-green-700">成本控制</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            优化备件库存结构，降低库存持有成本
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-purple-50 border-l-4 border-purple-400">
+                        <div class="font-medium text-purple-700">技术升级</div>
+                        <div class="text-sm text-gray-600 mt-1">
+                            考虑引入IoT监测技术，实现预测性维护
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

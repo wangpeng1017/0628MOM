@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备台账列表 - 数字工厂平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面操作栏 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">设备台账列表</h1>
+                <p class="text-gray-600">管理设备基础信息、状态监控和层级结构</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>新增设备
+                </button>
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-upload mr-2"></i>批量导入
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-download mr-2"></i>导出数据
+                </button>
+            </div>
+        </div>
+        
+        <!-- 设备概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-blue-600 mb-1">156</div>
+                <div class="text-sm text-gray-600">设备总数</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+3 本月新增
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-green-600 mb-1">142</div>
+                <div class="text-sm text-gray-600">运行中</div>
+                <div class="text-xs text-green-600 mt-1">正常运行率91%</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-yellow-600 mb-1">8</div>
+                <div class="text-sm text-gray-600">维修中</div>
+                <div class="text-xs text-yellow-600 mt-1">预计2天完成</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">6</div>
+                <div class="text-sm text-gray-600">故障停机</div>
+                <div class="text-xs text-red-600 mt-1">需要紧急处理</div>
+            </div>
+        </div>
+        
+        <!-- 主要内容区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- 设备树形结构 -->
+            <div class="lg:col-span-1">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">设备组织架构</h3>
+                    </div>
+                    <div class="p-4">
+                        <div class="space-y-2 text-sm">
+                            <!-- 公司级别 -->
+                            <div class="font-medium text-gray-800 cursor-pointer hover:text-blue-600" onclick="expandNode('company')">
+                                <i class="fas fa-building text-blue-600 mr-2"></i>
+                                <span>制造公司</span>
+                                <i class="fas fa-chevron-down ml-2 transition-transform" id="chevron-company"></i>
+                            </div>
+                            
+                            <!-- 厂区级别 -->
+                            <div class="ml-4 space-y-1" id="node-company">
+                                <div class="font-medium text-gray-700 cursor-pointer hover:text-blue-600" onclick="expandNode('factory1')">
+                                    <i class="fas fa-industry text-green-600 mr-2"></i>
+                                    <span>第一工厂</span>
+                                    <i class="fas fa-chevron-down ml-2 transition-transform" id="chevron-factory1"></i>
+                                </div>
+                                
+                                <!-- 车间级别 -->
+                                <div class="ml-4 space-y-1" id="node-factory1">
+                                    <div class="text-gray-600 cursor-pointer hover:text-blue-600" onclick="expandNode('workshop1')">
+                                        <i class="fas fa-warehouse text-purple-600 mr-2"></i>
+                                        <span>注塑车间</span>
+                                        <i class="fas fa-chevron-down ml-2 transition-transform" id="chevron-workshop1"></i>
+                                    </div>
+                                    
+                                    <!-- 产线级别 -->
+                                    <div class="ml-4 space-y-1" id="node-workshop1">
+                                        <div class="text-gray-600 cursor-pointer hover:text-blue-600" onclick="selectEquipmentGroup('line1')">
+                                            <i class="fas fa-conveyor-belt text-yellow-600 mr-2"></i>
+                                            <span>注塑产线A</span>
+                                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded ml-2">(5台)</span>
+                                        </div>
+                                        <div class="text-gray-600 cursor-pointer hover:text-blue-600" onclick="selectEquipmentGroup('line2')">
+                                            <i class="fas fa-conveyor-belt text-yellow-600 mr-2"></i>
+                                            <span>注塑产线B</span>
+                                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded ml-2">(4台)</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="text-gray-600 cursor-pointer hover:text-blue-600" onclick="expandNode('workshop2')">
+                                        <i class="fas fa-warehouse text-purple-600 mr-2"></i>
+                                        <span>装配车间</span>
+                                        <i class="fas fa-chevron-down ml-2 transition-transform" id="chevron-workshop2"></i>
+                                    </div>
+                                    
+                                    <div class="ml-4 space-y-1 hidden" id="node-workshop2">
+                                        <div class="text-gray-600 cursor-pointer hover:text-blue-600" onclick="selectEquipmentGroup('line3')">
+                                            <i class="fas fa-conveyor-belt text-yellow-600 mr-2"></i>
+                                            <span>装配产线A</span>
+                                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded ml-2">(6台)</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="text-gray-600 cursor-pointer hover:text-blue-600" onclick="expandNode('workshop3')">
+                                        <i class="fas fa-warehouse text-purple-600 mr-2"></i>
+                                        <span>包装车间</span>
+                                        <i class="fas fa-chevron-down ml-2 transition-transform" id="chevron-workshop3"></i>
+                                    </div>
+                                    
+                                    <div class="ml-4 space-y-1 hidden" id="node-workshop3">
+                                        <div class="text-gray-600 cursor-pointer hover:text-blue-600" onclick="selectEquipmentGroup('line4')">
+                                            <i class="fas fa-conveyor-belt text-yellow-600 mr-2"></i>
+                                            <span>包装产线A</span>
+                                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded ml-2">(3台)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 设备列表和详情 -->
+            <div class="lg:col-span-3 space-y-6">
+                <!-- 筛选和搜索 -->
+                <div class="card">
+                    <div class="p-4">
+                        <div class="flex space-x-4">
+                            <div class="flex-1">
+                                <input type="text" placeholder="搜索设备编号、名称..." 
+                                       class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                            </div>
+                            <select class="border border-gray-300 rounded-lg px-3 py-2">
+                                <option>全部状态</option>
+                                <option>运行中</option>
+                                <option>待机</option>
+                                <option>维修中</option>
+                                <option>故障</option>
+                            </select>
+                            <select class="border border-gray-300 rounded-lg px-3 py-2">
+                                <option>全部类型</option>
+                                <option>注塑设备</option>
+                                <option>装配设备</option>
+                                <option>包装设备</option>
+                                <option>检测设备</option>
+                            </select>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 设备列表 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="flex justify-between items-center">
+                            <h3 class="card-title">设备列表 - 注塑产线A</h3>
+                            <div class="flex space-x-2">
+                                <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                                    <i class="fas fa-list"></i>
+                                </button>
+                                <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+                                    <i class="fas fa-th"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>设备编号</th>
+                                    <th>设备名称</th>
+                                    <th>规格型号</th>
+                                    <th>制造商</th>
+                                    <th>运行状态</th>
+                                    <th>健康度</th>
+                                    <th>最后维护</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr onclick="selectEquipment('EQ001')" class="cursor-pointer hover:bg-blue-50">
+                                    <td class="font-medium">EQ-INJ-001</td>
+                                    <td>注塑机A1</td>
+                                    <td>HT-350T</td>
+                                    <td>海天国际</td>
+                                    <td>
+                                        <div class="equipment-status">
+                                            <div class="equipment-status-dot equipment-running"></div>
+                                            <span class="text-green-600 font-medium">运行中</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="flex items-center space-x-2">
+                                            <div class="progress-bar w-16">
+                                                <div class="progress-fill" style="width: 95%"></div>
+                                            </div>
+                                            <span class="text-sm text-green-600 font-medium">95%</span>
+                                        </div>
+                                    </td>
+                                    <td>2024-06-25</td>
+                                    <td>
+                                        <div class="flex space-x-1">
+                                            <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-green-600 hover:text-green-800" title="维护记录">
+                                                <i class="fas fa-wrench"></i>
+                                            </button>
+                                            <button class="text-purple-600 hover:text-purple-800" title="编辑">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr onclick="selectEquipment('EQ002')" class="cursor-pointer hover:bg-blue-50">
+                                    <td class="font-medium">EQ-INJ-002</td>
+                                    <td>注塑机A2</td>
+                                    <td>HT-280T</td>
+                                    <td>海天国际</td>
+                                    <td>
+                                        <div class="equipment-status">
+                                            <div class="equipment-status-dot equipment-running"></div>
+                                            <span class="text-green-600 font-medium">运行中</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="flex items-center space-x-2">
+                                            <div class="progress-bar w-16">
+                                                <div class="progress-fill" style="width: 88%"></div>
+                                            </div>
+                                            <span class="text-sm text-green-600 font-medium">88%</span>
+                                        </div>
+                                    </td>
+                                    <td>2024-06-20</td>
+                                    <td>
+                                        <div class="flex space-x-1">
+                                            <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-green-600 hover:text-green-800" title="维护记录">
+                                                <i class="fas fa-wrench"></i>
+                                            </button>
+                                            <button class="text-purple-600 hover:text-purple-800" title="编辑">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                
+                                <tr onclick="selectEquipment('EQ003')" class="cursor-pointer hover:bg-blue-50 bg-yellow-50">
+                                    <td class="font-medium">EQ-INJ-003</td>
+                                    <td>注塑机A3</td>
+                                    <td>HT-350T</td>
+                                    <td>海天国际</td>
+                                    <td>
+                                        <div class="equipment-status">
+                                            <div class="equipment-status-dot equipment-maintenance"></div>
+                                            <span class="text-red-600 font-medium">维修中</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="flex items-center space-x-2">
+                                            <div class="progress-bar w-16">
+                                                <div class="progress-fill bg-yellow-500" style="width: 65%"></div>
+                                            </div>
+                                            <span class="text-sm text-yellow-600 font-medium">65%</span>
+                                        </div>
+                                    </td>
+                                    <td>2024-06-15</td>
+                                    <td>
+                                        <div class="flex space-x-1">
+                                            <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-800" title="维修进度">
+                                                <i class="fas fa-tools"></i>
+                                            </button>
+                                            <button class="text-purple-600 hover:text-purple-800" title="编辑">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- 设备详情面板 -->
+                <div class="card" id="equipment-detail" style="display: none;">
+                    <div class="card-header">
+                        <h3 class="card-title">设备详情 - 注塑机A1</h3>
+                    </div>
+                    <div class="p-4">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- 基本信息 -->
+                            <div>
+                                <h4 class="text-lg font-semibold mb-4">基本信息</h4>
+                                <div class="space-y-3 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">设备编号：</span>
+                                        <span class="font-medium">EQ-INJ-001</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">设备名称：</span>
+                                        <span class="font-medium">注塑机A1</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">规格型号：</span>
+                                        <span class="font-medium">HT-350T</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">制造商：</span>
+                                        <span class="font-medium">海天国际</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">购置日期：</span>
+                                        <span class="font-medium">2020-03-15</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">投产日期：</span>
+                                        <span class="font-medium">2020-04-01</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">资产价值：</span>
+                                        <span class="font-medium">¥850,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 运行状态 -->
+                            <div>
+                                <h4 class="text-lg font-semibold mb-4">运行状态</h4>
+                                <div class="space-y-3 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">当前状态：</span>
+                                        <span class="text-green-600 font-medium">运行中</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">健康度：</span>
+                                        <span class="text-green-600 font-medium">95%</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">运行时间：</span>
+                                        <span class="font-medium">1,245小时</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">累计产量：</span>
+                                        <span class="font-medium">125,680件</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">故障次数：</span>
+                                        <span class="font-medium">3次</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">最后维护：</span>
+                                        <span class="font-medium">2024-06-25</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">下次维护：</span>
+                                        <span class="font-medium">2024-07-10</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 展开/收起节点
+        function expandNode(nodeId) {
+            const node = document.getElementById(`node-${nodeId}`);
+            const chevron = document.getElementById(`chevron-${nodeId}`);
+            
+            if (node.classList.contains('hidden')) {
+                node.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                node.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        // 选择设备组
+        function selectEquipmentGroup(groupId) {
+            console.log('选择设备组:', groupId);
+            // 这里可以添加加载对应设备组的逻辑
+        }
+        
+        // 选择设备
+        function selectEquipment(equipmentId) {
+            console.log('选择设备:', equipmentId);
+            document.getElementById('equipment-detail').style.display = 'block';
+        }
+        
+        // 页面加载时默认展开第一级
+        document.addEventListener('DOMContentLoaded', function() {
+            expandNode('company');
+            expandNode('factory1');
+            expandNode('workshop1');
+        });
+    </script>
+</body>
+</html>

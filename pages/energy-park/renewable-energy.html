@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新能源管理 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-solar-panel text-primary mr-3"></i>
+                新能源管理
+            </h1>
+            <p class="text-gray-600 mt-2">光伏储能系统管理，优化清洁能源利用</p>
+        </div>
+
+        <!-- 新能源统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">光伏发电</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">1,234</p>
+                        <p class="text-sm text-gray-500">kWh/今日</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-sun text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>发电效率:</span>
+                        <span class="text-green-600 font-medium">18.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>较昨日:</span>
+                        <span class="text-blue-600 font-medium">+12.3%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">储能容量</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">2,500</p>
+                        <p class="text-sm text-gray-500">kWh</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-battery-three-quarters text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>当前电量:</span>
+                        <span class="text-blue-600 font-medium">75%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>可用容量:</span>
+                        <span class="text-green-600 font-medium">1,875 kWh</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">自发自用率</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">85.3%</p>
+                        <p class="text-sm text-gray-500">能源利用</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-recycle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>自用电量:</span>
+                        <span class="text-green-600 font-medium">1,053 kWh</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>上网电量:</span>
+                        <span class="text-purple-600 font-medium">181 kWh</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">发电收益</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">¥856</p>
+                        <p class="text-sm text-gray-500">今日收益</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-coins text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>本月累计:</span>
+                        <span class="text-purple-600 font-medium">¥25,680</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>年度目标:</span>
+                        <span class="text-blue-600 font-medium">¥300,000</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备运行状态 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-cogs text-blue-600 mr-2"></i>
+                设备运行状态
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">光伏阵列</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>装机容量:</span>
+                            <span class="font-medium text-yellow-600">1,500 kWp</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>当前功率:</span>
+                            <span class="font-medium">1,285 kW</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>发电效率:</span>
+                            <span class="font-medium text-green-600">85.7%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>运行时间:</span>
+                            <span class="font-medium text-blue-600">8.5小时</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">储能系统</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">充电中</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>总容量:</span>
+                            <span class="font-medium text-blue-600">2,500 kWh</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>当前电量:</span>
+                            <span class="font-medium">1,875 kWh</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>充电功率:</span>
+                            <span class="font-medium text-green-600">450 kW</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>预计充满:</span>
+                            <span class="font-medium text-orange-600">2.5小时</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">逆变器</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>设备数量:</span>
+                            <span class="font-medium text-green-600">12台</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>运行状态:</span>
+                            <span class="font-medium">12台正常</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>转换效率:</span>
+                            <span class="font-medium text-green-600">97.8%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>温度状态:</span>
+                            <span class="font-medium text-blue-600">正常</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 智能调度策略 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-robot text-purple-600 mr-2"></i>
+                    智能调度策略
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">自发自用模式</h4>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">执行中</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 优先满足园区用电需求</div>
+                            <div>• 多余电量储存到电池</div>
+                            <div>• 电池满后余电上网</div>
+                            <div class="text-green-600">• 自用率: 85.3%</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">峰谷套利模式</h4>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">待机</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 谷时充电储能</div>
+                            <div>• 峰时放电供电</div>
+                            <div>• 最大化电价差收益</div>
+                            <div class="text-blue-600">• 预计收益: ¥450/日</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-green-600 mr-2"></i>
+                    发电效益分析
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">经济效益</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 今日发电收益: ¥856</div>
+                            <div>• 本月累计收益: ¥25,680</div>
+                            <div>• 年度预计收益: ¥308,160</div>
+                            <div class="text-green-600">• 投资回收期: 6.8年</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">环境效益</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 今日减排CO₂: 0.8吨</div>
+                            <div>• 本月减排CO₂: 24吨</div>
+                            <div>• 年度预计减排: 288吨</div>
+                            <div class="text-green-600">• 等效植树: 1,440棵</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 发电趋势分析 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-area text-yellow-600 mr-2"></i>
+                发电趋势分析
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2">
+                    <div class="h-64 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg flex items-center justify-center">
+                        <div class="text-center text-gray-500">
+                            <i class="fas fa-chart-line text-4xl mb-4"></i>
+                            <p>光伏发电趋势图</p>
+                            <p class="text-sm">显示24小时发电功率变化</p>
+                            <p class="text-sm text-yellow-600 mt-2">当前功率: 1,285 kW</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">发电统计</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 今日发电: 1,234 kWh</div>
+                            <div>• 本周发电: 8,638 kWh</div>
+                            <div>• 本月发电: 37,020 kWh</div>
+                            <div class="text-blue-600">• 月度完成率: 92.5%</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">天气影响</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 当前天气: 晴朗</div>
+                            <div>• 光照强度: 850 W/m²</div>
+                            <div>• 发电效率: 85.7%</div>
+                            <div class="text-green-600">• 预计全天: 1,450 kWh</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-yellow-50 border border-yellow-200 rounded-lg hover:bg-yellow-100 transition-colors">
+                    <i class="fas fa-sun text-yellow-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">发电监控</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-battery-half text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">储能管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-cog text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">策略配置</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-download text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">发电报表</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 新能源管理功能
+        function initRenewableEnergyManagement() {
+            console.log('初始化新能源管理功能');
+            
+            // 实时数据更新
+            function updateRenewableData() {
+                console.log('更新新能源数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateRenewableData, 30000); // 每30秒更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initRenewableEnergyManagement();
+            console.log('新能源管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>闲置设备处置 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">闲置设备处置</h1>
+            <p class="text-gray-600">基于Process.md 2.4.13流程：闲置识别→价值评估→处置决策→处置执行，实现闲置设备的有效处置和资源优化</p>
+        </div>
+
+        <!-- 闲置设备处置流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">闲置设备处置流程</h3>
+                    <span class="text-sm text-gray-600">资源优化处置管理</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">闲置识别</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">价值评估</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">处置决策</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">处置执行</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="idleIdentificationBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-search mr-2"></i>
+                闲置识别
+            </button>
+            <button id="valueAssessmentBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-calculator mr-2"></i>
+                价值评估
+            </button>
+            <button id="disposalDecisionBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-gavel mr-2"></i>
+                处置决策
+            </button>
+            <button id="disposalExecutionBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-truck mr-2"></i>
+                处置执行
+            </button>
+            <button id="assetRecoveryBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-recycle mr-2"></i>
+                资产回收
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 闲置设备统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">45</div>
+                        <div class="text-sm text-gray-600">闲置设备</div>
+                        <div class="text-xs text-gray-500">总数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-pause-circle text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">28</div>
+                        <div class="text-sm text-gray-600">已处置</div>
+                        <div class="text-xs text-gray-500">本年度</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">17</div>
+                        <div class="text-sm text-gray-600">处置中</div>
+                        <div class="text-xs text-gray-500">进行中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-spinner text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">¥2.8M</div>
+                        <div class="text-sm text-gray-600">资产价值</div>
+                        <div class="text-xs text-gray-500">闲置总值</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-dollar-sign text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">¥1.2M</div>
+                        <div class="text-sm text-gray-600">回收价值</div>
+                        <div class="text-xs text-gray-500">预期收益</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-coins text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">42.9%</div>
+                        <div class="text-sm text-gray-600">回收率</div>
+                        <div class="text-xs text-gray-500">价值回收</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-percentage text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 处置方式和闲置原因面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 处置方式分析 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">处置方式分析</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-exchange-alt text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">内部调拨</div>
+                                <div class="text-xs text-gray-500">部门间设备调配</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-blue-600">12台</div>
+                            <div class="text-xs text-gray-500">42.9%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-handshake text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">对外销售</div>
+                                <div class="text-xs text-gray-500">二手设备销售</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-green-600">8台</div>
+                            <div class="text-xs text-gray-500">28.6%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-recycle text-purple-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">报废回收</div>
+                                <div class="text-xs text-gray-500">材料回收利用</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-purple-600">5台</div>
+                            <div class="text-xs text-gray-500">17.9%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-donate text-orange-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">捐赠处置</div>
+                                <div class="text-xs text-gray-500">公益捐赠</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-orange-600">3台</div>
+                            <div class="text-xs text-gray-500">10.7%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 闲置原因分析 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">闲置原因分析</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">技术淘汰</div>
+                                <div class="text-xs text-gray-600">设备技术落后，无法满足生产需求</div>
+                                <div class="text-xs text-gray-500">影响设备: 18台</div>
+                            </div>
+                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">40%</span>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">产能过剩</div>
+                                <div class="text-xs text-gray-600">生产需求下降，设备利用率低</div>
+                                <div class="text-xs text-gray-500">影响设备: 15台</div>
+                            </div>
+                            <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">33%</span>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">故障停机</div>
+                                <div class="text-xs text-gray-600">设备故障频繁，维修成本过高</div>
+                                <div class="text-xs text-gray-500">影响设备: 8台</div>
+                            </div>
+                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">18%</span>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-blue-800">工艺变更</div>
+                                <div class="text-xs text-gray-600">生产工艺调整，设备不再适用</div>
+                                <div class="text-xs text-gray-500">影响设备: 4台</div>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">9%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 闲置设备处置管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">闲置设备处置管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部处置方式</option>
+                        <option>内部调拨</option>
+                        <option>对外销售</option>
+                        <option>报废回收</option>
+                        <option>捐赠处置</option>
+                        <option>待决策</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>闲置识别</option>
+                        <option>价值评估</option>
+                        <option>处置决策</option>
+                        <option>处置执行</option>
+                        <option>已完成</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部闲置原因</option>
+                        <option>技术淘汰</option>
+                        <option>产能过剩</option>
+                        <option>故障停机</option>
+                        <option>工艺变更</option>
+                    </select>
+                    <input type="text" placeholder="搜索设备编号、名称..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">闲置原因</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">资产价值</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">价值评估</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">处置方式</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">处置进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">处置状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">回收价值</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="disposalTableBody">
+                        <!-- 处置数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.13的闲置设备处置数据模型
+        const disposalEquipment = [
+            {
+                id: 'DISP202501001',
+                disposalCode: 'DISP-OLD-PACK-001',
+                equipmentId: 'EQP005',
+                equipmentCode: 'OLD-PACK-ASM-001',
+                equipmentName: '旧PACK装配线',
+                equipmentType: '生产设备',
+                idleReason: 'technology_obsolete',
+                idleReasonName: '技术淘汰',
+                idleDate: '2024-10-15',
+                idleDuration: 93, // 天数
+                assetValue: {
+                    originalValue: 1200000,
+                    currentBookValue: 480000,
+                    depreciationRate: 60,
+                    marketValue: 320000
+                },
+                valueAssessment: {
+                    assessmentDate: '2024-12-01',
+                    assessor: '资产评估公司',
+                    assessmentValue: 350000,
+                    assessmentMethod: '市场比较法',
+                    condition: 'fair',
+                    conditionName: '一般',
+                    usableLife: 2 // 剩余可用年限
+                },
+                disposalMethod: 'external_sale',
+                disposalMethodName: '对外销售',
+                disposalStatus: 'decision',
+                disposalStatusName: '处置决策',
+                disposalProgress: 65,
+                disposalPlan: {
+                    plannedDate: '2025-02-15',
+                    expectedValue: 320000,
+                    buyer: '待确定',
+                    approvalRequired: true,
+                    approvalStatus: 'pending'
+                },
+                actualDisposal: null,
+                recoveryValue: null,
+                recoveryRate: null,
+                responsiblePerson: '张工程师',
+                responsibleId: 'ENG001',
+                department: 'PACK产线',
+                location: '仓库A区',
+                documents: ['闲置申请', '价值评估报告', '处置方案'],
+                photos: ['设备现状1.jpg', '设备现状2.jpg'],
+                notes: '设备整体状况良好，但技术已落后，建议对外销售'
+            },
+            {
+                id: 'DISP202501002',
+                disposalCode: 'DISP-TEST-EQUIP-002',
+                equipmentId: 'EQP006',
+                equipmentCode: 'OLD-TEST-001',
+                equipmentName: '老旧测试设备',
+                equipmentType: '检测设备',
+                idleReason: 'frequent_failure',
+                idleReasonName: '故障停机',
+                idleDate: '2024-11-20',
+                idleDuration: 58,
+                assetValue: {
+                    originalValue: 800000,
+                    currentBookValue: 160000,
+                    depreciationRate: 80,
+                    marketValue: 80000
+                },
+                valueAssessment: {
+                    assessmentDate: '2024-12-15',
+                    assessor: '内部评估',
+                    assessmentValue: 100000,
+                    assessmentMethod: '成本法',
+                    condition: 'poor',
+                    conditionName: '较差',
+                    usableLife: 0.5
+                },
+                disposalMethod: 'scrap_recycle',
+                disposalMethodName: '报废回收',
+                disposalStatus: 'execution',
+                disposalStatusName: '处置执行',
+                disposalProgress: 85,
+                disposalPlan: {
+                    plannedDate: '2025-01-30',
+                    expectedValue: 50000,
+                    buyer: '金属回收公司',
+                    approvalRequired: true,
+                    approvalStatus: 'approved'
+                },
+                actualDisposal: {
+                    disposalDate: '2025-01-25',
+                    actualValue: 55000,
+                    buyer: '金属回收公司',
+                    disposalMethod: 'scrap_recycle'
+                },
+                recoveryValue: 55000,
+                recoveryRate: 34.4, // (55000/160000)*100
+                responsiblePerson: '王技术员',
+                responsibleId: 'TECH001',
+                department: 'PCBA车间',
+                location: '仓库B区',
+                documents: ['闲置申请', '价值评估报告', '处置合同', '回收凭证'],
+                photos: ['设备拆解1.jpg', '回收现场.jpg'],
+                notes: '设备故障频繁，维修成本过高，已完成报废回收'
+            },
+            {
+                id: 'DISP202501003',
+                disposalCode: 'DISP-ROBOT-ARM-003',
+                equipmentId: 'EQP007',
+                equipmentCode: 'ROBOT-ARM-002',
+                equipmentName: '4轴机械臂',
+                equipmentType: '生产设备',
+                idleReason: 'capacity_surplus',
+                idleReasonName: '产能过剩',
+                idleDate: '2024-09-01',
+                idleDuration: 137,
+                assetValue: {
+                    originalValue: 450000,
+                    currentBookValue: 315000,
+                    depreciationRate: 30,
+                    marketValue: 280000
+                },
+                valueAssessment: {
+                    assessmentDate: '2024-11-10',
+                    assessor: '设备评估师',
+                    assessmentValue: 300000,
+                    assessmentMethod: '收益法',
+                    condition: 'good',
+                    conditionName: '良好',
+                    usableLife: 5
+                },
+                disposalMethod: 'internal_transfer',
+                disposalMethodName: '内部调拨',
+                disposalStatus: 'completed',
+                disposalStatusName: '已完成',
+                disposalProgress: 100,
+                disposalPlan: {
+                    plannedDate: '2025-01-10',
+                    expectedValue: 315000,
+                    buyer: '逆变器车间',
+                    approvalRequired: true,
+                    approvalStatus: 'approved'
+                },
+                actualDisposal: {
+                    disposalDate: '2025-01-08',
+                    actualValue: 315000,
+                    buyer: '逆变器车间',
+                    disposalMethod: 'internal_transfer'
+                },
+                recoveryValue: 315000,
+                recoveryRate: 100.0,
+                responsiblePerson: '孙技师',
+                responsibleId: 'TECH002',
+                department: 'PACK产线',
+                location: '逆变器车间',
+                documents: ['闲置申请', '价值评估报告', '调拨单', '验收单'],
+                photos: ['调拨前.jpg', '调拨后.jpg'],
+                notes: '设备状况良好，已成功调拨至逆变器车间使用'
+            },
+            {
+                id: 'DISP202501004',
+                disposalCode: 'DISP-CONV-BELT-004',
+                equipmentId: 'EQP008',
+                equipmentCode: 'CONV-BELT-003',
+                equipmentName: '传送带系统',
+                equipmentType: '辅助设备',
+                idleReason: 'process_change',
+                idleReasonName: '工艺变更',
+                idleDate: '2024-12-01',
+                idleDuration: 47,
+                assetValue: {
+                    originalValue: 180000,
+                    currentBookValue: 126000,
+                    depreciationRate: 30,
+                    marketValue: 90000
+                },
+                valueAssessment: {
+                    assessmentDate: '2025-01-05',
+                    assessor: '内部评估',
+                    assessmentValue: 100000,
+                    assessmentMethod: '重置成本法',
+                    condition: 'good',
+                    conditionName: '良好',
+                    usableLife: 3
+                },
+                disposalMethod: 'donation',
+                disposalMethodName: '捐赠处置',
+                disposalStatus: 'assessment',
+                disposalStatusName: '价值评估',
+                disposalProgress: 40,
+                disposalPlan: {
+                    plannedDate: '2025-03-01',
+                    expectedValue: 0,
+                    buyer: '职业技术学院',
+                    approvalRequired: true,
+                    approvalStatus: 'pending'
+                },
+                actualDisposal: null,
+                recoveryValue: null,
+                recoveryRate: null,
+                responsiblePerson: '李班长',
+                responsibleId: 'LEAD001',
+                department: '包装车间',
+                location: '仓库C区',
+                documents: ['闲置申请', '价值评估中'],
+                photos: ['设备现状.jpg'],
+                notes: '工艺变更后不再需要，计划捐赠给职业技术学院'
+            },
+            {
+                id: 'DISP202501005',
+                disposalCode: 'DISP-AGING-OLD-005',
+                equipmentId: 'EQP009',
+                equipmentCode: 'AGING-OLD-001',
+                equipmentName: '老式老化箱',
+                equipmentType: '辅助设备',
+                idleReason: 'technology_obsolete',
+                idleReasonName: '技术淘汰',
+                idleDate: '2024-08-15',
+                idleDuration: 154,
+                assetValue: {
+                    originalValue: 120000,
+                    currentBookValue: 24000,
+                    depreciationRate: 80,
+                    marketValue: 15000
+                },
+                valueAssessment: {
+                    assessmentDate: '2024-10-20',
+                    assessor: '设备评估师',
+                    assessmentValue: 20000,
+                    assessmentMethod: '市场比较法',
+                    condition: 'poor',
+                    conditionName: '较差',
+                    usableLife: 1
+                },
+                disposalMethod: 'pending',
+                disposalMethodName: '待决策',
+                disposalStatus: 'identification',
+                disposalStatusName: '闲置识别',
+                disposalProgress: 20,
+                disposalPlan: {
+                    plannedDate: null,
+                    expectedValue: null,
+                    buyer: null,
+                    approvalRequired: true,
+                    approvalStatus: 'not_submitted'
+                },
+                actualDisposal: null,
+                recoveryValue: null,
+                recoveryRate: null,
+                responsiblePerson: '周操作员',
+                responsibleId: 'OP002',
+                department: '包装车间',
+                location: '仓库D区',
+                documents: ['闲置申请'],
+                photos: ['设备照片.jpg'],
+                notes: '设备老旧，功能落后，需要确定处置方式'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            identification: { text: '闲置识别', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-search' },
+            assessment: { text: '价值评估', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-calculator' },
+            decision: { text: '处置决策', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-gavel' },
+            execution: { text: '处置执行', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-truck' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' }
+        };
+
+        // 闲置原因映射
+        const idleReasonMap = {
+            technology_obsolete: { text: '技术淘汰', icon: 'fas fa-microchip', color: 'text-red-600' },
+            capacity_surplus: { text: '产能过剩', icon: 'fas fa-chart-line', color: 'text-orange-600' },
+            frequent_failure: { text: '故障停机', icon: 'fas fa-exclamation-triangle', color: 'text-yellow-600' },
+            process_change: { text: '工艺变更', icon: 'fas fa-exchange-alt', color: 'text-blue-600' },
+            quality_issue: { text: '质量问题', icon: 'fas fa-times-circle', color: 'text-purple-600' }
+        };
+
+        // 处置方式映射
+        const disposalMethodMap = {
+            internal_transfer: { text: '内部调拨', icon: 'fas fa-exchange-alt', color: 'text-blue-600' },
+            external_sale: { text: '对外销售', icon: 'fas fa-handshake', color: 'text-green-600' },
+            scrap_recycle: { text: '报废回收', icon: 'fas fa-recycle', color: 'text-purple-600' },
+            donation: { text: '捐赠处置', icon: 'fas fa-donate', color: 'text-orange-600' },
+            pending: { text: '待决策', icon: 'fas fa-clock', color: 'text-gray-600' }
+        };
+
+        // 设备状况映射
+        const conditionMap = {
+            excellent: { text: '优秀', class: 'text-green-600' },
+            good: { text: '良好', class: 'text-blue-600' },
+            fair: { text: '一般', class: 'text-yellow-600' },
+            poor: { text: '较差', class: 'text-red-600' }
+        };
+
+        let filteredData = [...disposalEquipment];
+
+        // 渲染闲置设备处置表格
+        function renderDisposalTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('disposalTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(equipment => {
+                const status = statusMap[equipment.disposalStatus];
+                const idleReason = idleReasonMap[equipment.idleReason];
+                const disposalMethod = disposalMethodMap[equipment.disposalMethod];
+                const condition = conditionMap[equipment.valueAssessment.condition];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-pause-circle text-gray-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewDisposalDetail('${equipment.id}')">
+                                    ${equipment.equipmentCode}
+                                </div>
+                                <div class="text-sm text-gray-900">${equipment.equipmentName}</div>
+                                <div class="text-xs text-gray-500">${equipment.equipmentType}</div>
+                                <div class="text-xs text-gray-500">闲置: ${equipment.idleDuration}天</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${idleReason.icon} ${idleReason.color} mr-2"></i>
+                            <div>
+                                <div class="text-sm text-gray-900">${idleReason.text}</div>
+                                <div class="text-xs text-gray-500">闲置日期: ${equipment.idleDate}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">¥${equipment.assetValue.originalValue.toLocaleString()}</div>
+                        <div class="text-xs text-gray-500">账面: ¥${equipment.assetValue.currentBookValue.toLocaleString()}</div>
+                        <div class="text-xs text-gray-500">市场: ¥${equipment.assetValue.marketValue.toLocaleString()}</div>
+                        <div class="text-xs text-gray-500">折旧: ${equipment.assetValue.depreciationRate}%</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">¥${equipment.valueAssessment.assessmentValue.toLocaleString()}</div>
+                        <div class="text-xs text-gray-500">${equipment.valueAssessment.assessmentMethod}</div>
+                        <div class="text-xs ${condition.class}">状况: ${condition.text}</div>
+                        <div class="text-xs text-gray-500">剩余: ${equipment.valueAssessment.usableLife}年</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${disposalMethod.icon} ${disposalMethod.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${disposalMethod.text}</span>
+                        </div>
+                        ${equipment.disposalPlan.buyer && equipment.disposalPlan.buyer !== '待确定' ? `
+                            <div class="text-xs text-blue-600 mt-1">${equipment.disposalPlan.buyer}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${equipment.disposalPlan.plannedDate ? `
+                            <div class="text-sm text-gray-900">计划: ${equipment.disposalPlan.plannedDate}</div>
+                        ` : ''}
+                        ${equipment.actualDisposal ? `
+                            <div class="text-xs text-green-600">完成: ${equipment.actualDisposal.disposalDate}</div>
+                        ` : ''}
+                        <div class="mt-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${equipment.disposalProgress}%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">进度: ${equipment.disposalProgress}%</div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        <div class="text-xs text-gray-500 mt-1">${equipment.responsiblePerson}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${equipment.recoveryValue ? `
+                            <div class="text-sm font-medium text-green-600">¥${equipment.recoveryValue.toLocaleString()}</div>
+                            <div class="text-xs text-green-600">回收率: ${equipment.recoveryRate}%</div>
+                        ` : equipment.disposalPlan.expectedValue ? `
+                            <div class="text-sm text-gray-600">预期: ¥${equipment.disposalPlan.expectedValue.toLocaleString()}</div>
+                            <div class="text-xs text-gray-500">预期回收率: ${((equipment.disposalPlan.expectedValue / equipment.assetValue.currentBookValue) * 100).toFixed(1)}%</div>
+                        ` : `
+                            <div class="text-sm text-gray-600">待评估</div>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewDisposalDetail('${equipment.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${equipment.disposalStatus === 'identification' ? `
+                                <button onclick="startAssessment('${equipment.id}')" class="text-green-600 hover:text-green-900 p-1" title="开始评估">
+                                    <i class="fas fa-calculator"></i>
+                                </button>
+                            ` : ''}
+                            ${equipment.disposalStatus === 'assessment' ? `
+                                <button onclick="makeDecision('${equipment.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="处置决策">
+                                    <i class="fas fa-gavel"></i>
+                                </button>
+                            ` : ''}
+                            ${equipment.disposalStatus === 'decision' ? `
+                                <button onclick="executeDisposal('${equipment.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="执行处置">
+                                    <i class="fas fa-truck"></i>
+                                </button>
+                            ` : ''}
+                            ${equipment.photos.length > 0 ? `
+                                <button onclick="viewPhotos('${equipment.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="查看照片">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewDocuments('${equipment.id}')" class="text-yellow-600 hover:text-yellow-900 p-1" title="查看文档">
+                                <i class="fas fa-file-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${disposalEquipment.length} 条记录`;
+        }
+
+        // 闲置设备处置操作函数
+        function viewDisposalDetail(equipmentId) {
+            const equipment = disposalEquipment.find(e => e.id === equipmentId);
+            if (equipment) {
+                let detailText = `闲置设备处置详情：\n处置编号: ${equipment.disposalCode}\n设备编号: ${equipment.equipmentCode}\n设备名称: ${equipment.equipmentName}\n设备类型: ${equipment.equipmentType}\n闲置原因: ${idleReasonMap[equipment.idleReason].text}\n闲置日期: ${equipment.idleDate}\n闲置天数: ${equipment.idleDuration}天`;
+
+                detailText += `\n\n资产价值:\n原值: ¥${equipment.assetValue.originalValue.toLocaleString()}\n账面价值: ¥${equipment.assetValue.currentBookValue.toLocaleString()}\n市场价值: ¥${equipment.assetValue.marketValue.toLocaleString()}\n折旧率: ${equipment.assetValue.depreciationRate}%`;
+
+                detailText += `\n\n价值评估:\n评估日期: ${equipment.valueAssessment.assessmentDate}\n评估机构: ${equipment.valueAssessment.assessor}\n评估价值: ¥${equipment.valueAssessment.assessmentValue.toLocaleString()}\n评估方法: ${equipment.valueAssessment.assessmentMethod}\n设备状况: ${conditionMap[equipment.valueAssessment.condition].text}\n剩余寿命: ${equipment.valueAssessment.usableLife}年`;
+
+                detailText += `\n\n处置信息:\n处置方式: ${disposalMethodMap[equipment.disposalMethod].text}\n处置状态: ${statusMap[equipment.disposalStatus].text}\n处置进度: ${equipment.disposalProgress}%\n负责人: ${equipment.responsiblePerson}\n所在部门: ${equipment.department}\n存放位置: ${equipment.location}`;
+
+                if (equipment.disposalPlan.plannedDate) {
+                    detailText += `\n\n处置计划:\n计划日期: ${equipment.disposalPlan.plannedDate}\n预期价值: ¥${equipment.disposalPlan.expectedValue.toLocaleString()}\n接收方: ${equipment.disposalPlan.buyer}\n审批状态: ${equipment.disposalPlan.approvalStatus}`;
+                }
+
+                if (equipment.actualDisposal) {
+                    detailText += `\n\n实际处置:\n处置日期: ${equipment.actualDisposal.disposalDate}\n实际价值: ¥${equipment.actualDisposal.actualValue.toLocaleString()}\n接收方: ${equipment.actualDisposal.buyer}\n回收率: ${equipment.recoveryRate}%`;
+                }
+
+                if (equipment.notes) {
+                    detailText += `\n\n备注: ${equipment.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function startAssessment(equipmentId) {
+            const equipment = disposalEquipment.find(e => e.id === equipmentId);
+            if (equipment) {
+                if (confirm(`开始价值评估？\n设备: ${equipment.equipmentName}\n\n评估内容：\n- 设备状况检查\n- 市场价值分析\n- 技术价值评估\n- 使用寿命评估`)) {
+                    equipment.disposalStatus = 'assessment';
+                    equipment.disposalProgress = 40;
+                    renderDisposalTable();
+                    alert('价值评估已开始！\n- 评估师已安排\n- 现场检查已计划\n- 评估报告将在3个工作日内完成');
+                }
+            }
+        }
+
+        function makeDecision(equipmentId) {
+            const equipment = disposalEquipment.find(e => e.id === equipmentId);
+            if (equipment) {
+                if (confirm(`制定处置决策？\n设备: ${equipment.equipmentName}\n评估价值: ¥${equipment.valueAssessment.assessmentValue.toLocaleString()}\n\n决策依据：\n- 价值评估结果\n- 市场需求分析\n- 成本效益分析\n- 政策法规要求`)) {
+                    equipment.disposalStatus = 'decision';
+                    equipment.disposalProgress = 65;
+                    equipment.disposalPlan.plannedDate = '2025-02-28';
+                    equipment.disposalPlan.expectedValue = equipment.valueAssessment.assessmentValue * 0.9;
+                    renderDisposalTable();
+                    alert('处置决策已制定！\n- 处置方式已确定\n- 处置计划已制定\n- 审批流程已启动');
+                }
+            }
+        }
+
+        function executeDisposal(equipmentId) {
+            const equipment = disposalEquipment.find(e => e.id === equipmentId);
+            if (equipment) {
+                if (confirm(`执行处置？\n设备: ${equipment.equipmentName}\n处置方式: ${disposalMethodMap[equipment.disposalMethod].text}\n预期价值: ¥${equipment.disposalPlan.expectedValue.toLocaleString()}`)) {
+                    equipment.disposalStatus = 'execution';
+                    equipment.disposalProgress = 85;
+                    renderDisposalTable();
+                    alert('处置执行已开始！\n- 处置合同已签署\n- 处置流程已启动\n- 预计1周内完成');
+                }
+            }
+        }
+
+        function viewPhotos(equipmentId) {
+            const equipment = disposalEquipment.find(e => e.id === equipmentId);
+            if (equipment) {
+                let photosText = `${equipment.equipmentName} - 设备照片：\n\n`;
+                if (equipment.photos.length > 0) {
+                    equipment.photos.forEach((photo, index) => {
+                        photosText += `${index + 1}. ${photo}\n`;
+                    });
+                    photosText += `\n总计: ${equipment.photos.length}张照片`;
+                } else {
+                    photosText += '暂无设备照片';
+                }
+                alert(photosText);
+            }
+        }
+
+        function viewDocuments(equipmentId) {
+            const equipment = disposalEquipment.find(e => e.id === equipmentId);
+            if (equipment) {
+                let documentsText = `${equipment.equipmentName} - 相关文档：\n\n`;
+                if (equipment.documents.length > 0) {
+                    equipment.documents.forEach((doc, index) => {
+                        documentsText += `${index + 1}. ${doc}\n`;
+                    });
+                    documentsText += `\n总计: ${equipment.documents.length}份文档`;
+                } else {
+                    documentsText += '暂无相关文档';
+                }
+                alert(documentsText);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderDisposalTable();
+
+            // 闲置识别
+            document.getElementById('idleIdentificationBtn').addEventListener('click', function() {
+                alert('闲置识别功能：\n- 设备利用率分析\n- 闲置设备筛选\n- 闲置原因分析\n- 闲置时间统计\n- 闲置成本计算');
+            });
+
+            // 价值评估
+            document.getElementById('valueAssessmentBtn').addEventListener('click', function() {
+                alert('价值评估功能：\n- 资产价值评估\n- 市场价值分析\n- 技术价值评估\n- 使用寿命评估\n- 评估报告生成');
+            });
+
+            // 处置决策
+            document.getElementById('disposalDecisionBtn').addEventListener('click', function() {
+                alert('处置决策功能：\n- 处置方式选择\n- 成本效益分析\n- 风险评估分析\n- 决策方案制定\n- 审批流程管理');
+            });
+
+            // 处置执行
+            document.getElementById('disposalExecutionBtn').addEventListener('click', function() {
+                alert('处置执行功能：\n- 处置计划执行\n- 处置合同管理\n- 处置进度跟踪\n- 处置结果确认\n- 处置档案管理');
+            });
+
+            // 资产回收
+            document.getElementById('assetRecoveryBtn').addEventListener('click', function() {
+                alert('资产回收功能：\n- 回收价值统计\n- 回收率分析\n- 回收效益评估\n- 回收渠道管理\n- 回收流程优化');
+            });
+        });
+    </script>
+</body>
+</html>

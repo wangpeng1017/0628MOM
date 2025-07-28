@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智慧安防 - 慧新全智厂园一体平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+                <i class="fas fa-shield-alt text-red-600 mr-3"></i>
+                智慧安防
+            </h1>
+            <p class="text-gray-600">视频监控、入侵检测、消防报警 - 全方位安全保障</p>
+        </div>
+
+        <!-- 安防状态概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-video text-red-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-red-600">48</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">监控摄像头</h3>
+                <p class="text-sm text-gray-600">在线运行</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-fire-extinguisher text-green-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-green-600">正常</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">消防系统</h3>
+                <p class="text-sm text-gray-600">设备状态良好</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-yellow-600">1</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">安全告警</h3>
+                <p class="text-sm text-gray-600">待处理事件</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-shield text-blue-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-blue-600">24/7</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">安保值班</h3>
+                <p class="text-sm text-gray-600">全天候监控</p>
+            </div>
+        </div>
+
+        <!-- 主要功能区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 视频监控与智能分析 -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-video text-primary mr-2"></i>
+                        视频监控与智能分析
+                    </h2>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">实时监控</button>
+                        <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">录像回放</button>
+                        <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">智能分析</button>
+                    </div>
+                </div>
+                <!-- 主监控画面 -->
+                <div class="mb-4">
+                    <div class="relative bg-black rounded-lg h-64 overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-white text-center">
+                                <i class="fas fa-video text-4xl mb-2"></i>
+                                <div>主监控画面</div>
+                                <div class="text-sm opacity-75">摄像头 #001 - 园区大门</div>
+                            </div>
+                        </div>
+
+                        <!-- AI分析标签 -->
+                        <div class="absolute top-4 left-4 bg-green-500 bg-opacity-80 text-white px-2 py-1 rounded text-xs">
+                            <i class="fas fa-user mr-1"></i>
+                            人脸识别: 3人
+                        </div>
+                        <div class="absolute top-4 right-4 bg-blue-500 bg-opacity-80 text-white px-2 py-1 rounded text-xs">
+                            <i class="fas fa-car mr-1"></i>
+                            车牌识别: 2辆
+                        </div>
+                        <div class="absolute bottom-4 left-4 bg-yellow-500 bg-opacity-80 text-white px-2 py-1 rounded text-xs">
+                            <i class="fas fa-walking mr-1"></i>
+                            行为分析: 正常
+                        </div>
+                        <div class="absolute bottom-4 right-4 bg-red-500 bg-opacity-80 text-white px-2 py-1 rounded text-xs animate-pulse">
+                            <i class="fas fa-exclamation-triangle mr-1"></i>
+                            异常检测
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 多画面监控 -->
+                <div class="grid grid-cols-4 gap-2 mb-4">
+                    <div class="relative bg-gray-900 rounded-lg p-2 cursor-pointer hover:bg-gray-800 transition-colors">
+                        <div class="text-white text-xs mb-1">主入口 #01</div>
+                        <div class="bg-gray-800 rounded h-16 flex items-center justify-center">
+                            <i class="fas fa-play text-gray-400"></i>
+                        </div>
+                        <div class="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full"></div>
+                        <div class="text-xs text-gray-400 mt-1">正常</div>
+                    </div>
+                    <div class="relative bg-gray-900 rounded-lg p-2 cursor-pointer hover:bg-gray-800 transition-colors">
+                        <div class="text-white text-xs mb-1">停车场 #02</div>
+                        <div class="bg-gray-800 rounded h-16 flex items-center justify-center">
+                            <i class="fas fa-play text-gray-400"></i>
+                        </div>
+                        <div class="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full"></div>
+                        <div class="text-xs text-gray-400 mt-1">正常</div>
+                    </div>
+                    <div class="relative bg-gray-900 rounded-lg p-2 cursor-pointer hover:bg-gray-800 transition-colors">
+                        <div class="text-white text-xs mb-1">生产区 #03</div>
+                        <div class="bg-gray-800 rounded h-16 flex items-center justify-center">
+                            <i class="fas fa-play text-gray-400"></i>
+                        </div>
+                        <div class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></div>
+                        <div class="text-xs text-red-400 mt-1">异常</div>
+                    </div>
+                    <div class="relative bg-gray-900 rounded-lg p-2 cursor-pointer hover:bg-gray-800 transition-colors">
+                        <div class="text-white text-xs mb-1">仓库区 #04</div>
+                        <div class="bg-gray-800 rounded h-16 flex items-center justify-center">
+                            <i class="fas fa-play text-gray-400"></i>
+                        </div>
+                        <div class="absolute top-1 right-1 w-2 h-2 bg-green-500 rounded-full"></div>
+                        <div class="text-xs text-gray-400 mt-1">正常</div>
+                    </div>
+                </div>
+                <!-- 控制面板 -->
+                <div class="flex justify-between items-center">
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                            <i class="fas fa-play mr-1"></i>实时
+                        </button>
+                        <button class="px-3 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700">
+                            <i class="fas fa-pause mr-1"></i>暂停
+                        </button>
+                        <button class="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+                            <i class="fas fa-download mr-1"></i>录制
+                        </button>
+                        <button class="px-3 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700">
+                            <i class="fas fa-expand mr-1"></i>全屏
+                        </button>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        分辨率: 1920x1080 | 帧率: 25fps
+                    </div>
+                </div>
+
+                <!-- AI智能分析结果 -->
+                <div class="mt-6 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-robot text-indigo-600 mr-2"></i>
+                        AI智能分析结果
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div class="bg-white rounded-lg p-3 border border-green-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-user-check text-green-600 mr-2"></i>
+                                <span class="text-sm font-medium">人脸识别</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 员工通行: 142人次</div>
+                                <div>• 访客识别: 14人次</div>
+                                <div>• 黑名单检测: 0人</div>
+                                <div class="text-green-600">• 识别准确率: 98.5%</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-blue-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-car text-blue-600 mr-2"></i>
+                                <span class="text-sm font-medium">车辆识别</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 车牌识别: 89次</div>
+                                <div>• 内部车辆: 67次</div>
+                                <div>• 外来车辆: 22次</div>
+                                <div class="text-blue-600">• 识别准确率: 96.8%</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-orange-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-exclamation-triangle text-orange-600 mr-2"></i>
+                                <span class="text-sm font-medium">异常检测</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 周界入侵: 0次</div>
+                                <div>• 异常行为: 2次</div>
+                                <div>• 烟火检测: 1次</div>
+                                <div class="text-orange-600">• 误报率: 5.2%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 安防控制与应急指挥 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-shield-alt text-primary mr-2"></i>
+                    安防控制与应急指挥
+                </h2>
+                <!-- 安防系统状态 -->
+                <div class="space-y-3 mb-6">
+                    <div class="p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">入侵检测</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                        </div>
+                        <div class="text-xs text-gray-500">周界防护系统 | 24个探测点</div>
+                        <div class="flex space-x-2 mt-2">
+                            <button class="px-2 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                                <i class="fas fa-cog mr-1"></i>设置
+                            </button>
+                            <button class="px-2 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+                                <i class="fas fa-eye mr-1"></i>查看
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">消防报警</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                        </div>
+                        <div class="text-xs text-gray-500">烟感、温感系统</div>
+                    </div>
+
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">门禁系统</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                        </div>
+                        <div class="text-xs text-gray-500">出入口控制</div>
+                    </div>
+
+                    <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">应急广播</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">待机</span>
+                        </div>
+                        <div class="text-xs text-gray-500">紧急通知系统</div>
+                    </div>
+
+                    <button class="w-full bg-red-600 text-white py-2 px-4 rounded-lg text-sm hover:bg-red-700 transition-colors">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        紧急报警
+                    </button>
+                </div>
+
+                <!-- 应急指挥中心 -->
+                <div class="border-t pt-4 mt-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-headset text-red-600 mr-2"></i>
+                        应急指挥中心
+                    </h3>
+
+                    <!-- 当前紧急事件 -->
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-red-800">消防报警 - C区烟感触发</span>
+                            <span class="text-xs text-red-600">2分钟前</span>
+                        </div>
+                        <div class="text-xs text-gray-600 mb-3">
+                            位置: C栋3楼东侧走廊 | 级别: 紧急
+                        </div>
+                        <div class="grid grid-cols-1 gap-2">
+                            <button class="px-3 py-2 bg-red-600 text-white text-xs rounded hover:bg-red-700">
+                                <i class="fas fa-fire-extinguisher mr-1"></i>
+                                启动应急预案
+                            </button>
+                            <button class="px-3 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                                <i class="fas fa-users mr-1"></i>
+                                调度消防队
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 应急资源 -->
+                    <div class="grid grid-cols-2 gap-2 mb-4">
+                        <div class="bg-green-50 border border-green-200 rounded p-2">
+                            <div class="text-xs font-medium text-green-800">安保人员</div>
+                            <div class="text-sm font-bold text-green-600">8人在岗</div>
+                            <div class="text-xs text-gray-500">平均响应: 3分钟</div>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded p-2">
+                            <div class="text-xs font-medium text-blue-800">消防设备</div>
+                            <div class="text-sm font-bold text-blue-600">12套就绪</div>
+                            <div class="text-xs text-gray-500">最近距离: 50米</div>
+                        </div>
+                    </div>
+
+                    <!-- 通讯控制 -->
+                    <div class="grid grid-cols-1 gap-2">
+                        <button class="px-2 py-2 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+                            <i class="fas fa-phone mr-1"></i>
+                            呼叫现场
+                        </button>
+                        <button class="px-2 py-2 bg-orange-600 text-white text-xs rounded hover:bg-orange-700">
+                            <i class="fas fa-broadcast-tower mr-1"></i>
+                            园区广播
+                        </button>
+                        <button class="px-2 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                            <i class="fas fa-sms mr-1"></i>
+                            群发短信
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 门禁与周界安防、车辆管理 -->
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 门禁与周界安防 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-key text-primary mr-2"></i>
+                    门禁与周界安防
+                </h2>
+
+                <!-- 门禁状态 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">门禁控制点</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-green-50 border border-green-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-medium text-gray-700">主入口</span>
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">刷卡通行 | 156人次</div>
+                        </div>
+                        <div class="bg-green-50 border border-green-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-medium text-gray-700">员工通道</span>
+                                <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">人脸识别 | 89人次</div>
+                        </div>
+                        <div class="bg-yellow-50 border border-yellow-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-medium text-gray-700">货物通道</span>
+                                <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">权限验证 | 23车次</div>
+                        </div>
+                        <div class="bg-red-50 border border-red-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-medium text-gray-700">紧急出口</span>
+                                <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">异常开启 | 1次</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 周界防护 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">周界防护系统</h3>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">电子围栏</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                        </div>
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 围栏长度: 2.8公里</div>
+                            <div>• 探测点位: 24个</div>
+                            <div>• 今日告警: 0次</div>
+                            <div>• 系统状态: 全部在线</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 快速操作 -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button class="px-3 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                        <i class="fas fa-key mr-1"></i>权限管理
+                    </button>
+                    <button class="px-3 py-2 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+                        <i class="fas fa-door-open mr-1"></i>远程开门
+                    </button>
+                    <button class="px-3 py-2 bg-orange-600 text-white text-xs rounded hover:bg-orange-700">
+                        <i class="fas fa-shield-alt mr-1"></i>布防设置
+                    </button>
+                    <button class="px-3 py-2 bg-purple-600 text-white text-xs rounded hover:bg-purple-700">
+                        <i class="fas fa-history mr-1"></i>通行记录
+                    </button>
+                </div>
+            </div>
+
+            <!-- 车辆与交通管理 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-car text-primary mr-2"></i>
+                    车辆与交通管理
+                </h2>
+
+                <!-- 车辆统计 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">实时车辆统计</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-3">
+                            <div class="text-2xl font-bold text-blue-600">23</div>
+                            <div class="text-xs text-gray-500">在园车辆</div>
+                            <div class="text-xs text-blue-600 mt-1">内部: 18 | 外来: 5</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-3">
+                            <div class="text-2xl font-bold text-green-600">78%</div>
+                            <div class="text-xs text-gray-500">停车位占用</div>
+                            <div class="text-xs text-green-600 mt-1">剩余: 22个车位</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 出入口状态 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">出入口状态</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between p-2 bg-green-50 border border-green-200 rounded">
+                            <div>
+                                <span class="text-sm font-medium text-gray-700">主入口道闸</span>
+                                <div class="text-xs text-gray-500">车牌识别正常</div>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-blue-50 border border-blue-200 rounded">
+                            <div>
+                                <span class="text-sm font-medium text-gray-700">货物出口</span>
+                                <div class="text-xs text-gray-500">等待车辆: 2辆</div>
+                            </div>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">繁忙</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 交通违章监控 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">交通违章监控</h3>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">今日违章记录</span>
+                            <span class="text-lg font-bold text-orange-600">2</span>
+                        </div>
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 超速行驶: 1次 (限速20km/h)</div>
+                            <div>• 违规停车: 1次 (消防通道)</div>
+                            <div>• 处理状态: 已通知车主</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 车辆管理操作 -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button class="px-3 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                        <i class="fas fa-car mr-1"></i>车辆登记
+                    </button>
+                    <button class="px-3 py-2 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+                        <i class="fas fa-parking mr-1"></i>停车引导
+                    </button>
+                    <button class="px-3 py-2 bg-orange-600 text-white text-xs rounded hover:bg-orange-700">
+                        <i class="fas fa-camera mr-1"></i>违章抓拍
+                    </button>
+                    <button class="px-3 py-2 bg-purple-600 text-white text-xs rounded hover:bg-purple-700">
+                        <i class="fas fa-chart-bar mr-1"></i>流量统计
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 安全事件记录 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-clipboard-list text-primary mr-2"></i>
+                安全事件记录
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">时间</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">事件类型</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">位置</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">状态</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">处理人</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4 text-gray-600">2025-01-17 14:30</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">异常检测</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">A区入口</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">处理中</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">张安保</td>
+                            <td class="py-3 px-4">
+                                <button class="text-blue-600 hover:text-blue-700 text-xs">查看详情</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4 text-gray-600">2025-01-17 12:15</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">门禁记录</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">主入口</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">系统自动</td>
+                            <td class="py-3 px-4">
+                                <button class="text-blue-600 hover:text-blue-700 text-xs">查看详情</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4 text-gray-600">2025-01-17 09:45</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">系统检查</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">全区域</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">李维护</td>
+                            <td class="py-3 px-4">
+                                <button class="text-blue-600 hover:text-blue-700 text-xs">查看详情</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟实时安防数据更新
+        function updateSecurityData() {
+            console.log('智慧安防数据更新');
+
+            // 更新AI识别统计
+            updateAIRecognitionStats();
+
+            // 更新车辆统计
+            updateVehicleStats();
+
+            // 更新门禁状态
+            updateAccessControlStatus();
+
+            // 检查安全事件
+            checkSecurityEvents();
+        }
+
+        // 更新AI识别统计
+        function updateAIRecognitionStats() {
+            const faceRecognition = Math.floor(140 + Math.random() * 20);
+            const vehicleRecognition = Math.floor(85 + Math.random() * 10);
+            const anomalyDetection = Math.floor(Math.random() * 5);
+
+            console.log('AI识别统计更新:', {
+                faceRecognition,
+                vehicleRecognition,
+                anomalyDetection
+            });
+        }
+
+        // 更新车辆统计
+        function updateVehicleStats() {
+            const vehiclesInPark = Math.floor(20 + Math.random() * 10);
+            const parkingOccupancy = Math.floor(75 + Math.random() * 10);
+
+            console.log('车辆统计更新:', {
+                vehiclesInPark,
+                parkingOccupancy: parkingOccupancy + '%'
+            });
+        }
+
+        // 更新门禁状态
+        function updateAccessControlStatus() {
+            const accessPoints = [
+                { name: '主入口', status: 'online', count: Math.floor(150 + Math.random() * 20) },
+                { name: '员工通道', status: 'online', count: Math.floor(85 + Math.random() * 15) },
+                { name: '货物通道', status: 'online', count: Math.floor(20 + Math.random() * 10) },
+                { name: '紧急出口', status: Math.random() > 0.9 ? 'alert' : 'online', count: Math.floor(Math.random() * 2) }
+            ];
+
+            console.log('门禁状态更新:', accessPoints);
+        }
+
+        // 检查安全事件
+        function checkSecurityEvents() {
+            const events = [
+                { type: '异常检测', location: 'A区入口', status: '处理中' },
+                { type: '门禁记录', location: '主入口', status: '已完成' },
+                { type: '系统检查', location: '全区域', status: '已完成' }
+            ];
+
+            // 随机生成新事件
+            if (Math.random() > 0.8) {
+                const newEvent = {
+                    type: ['异常检测', '门禁异常', '车辆违章'][Math.floor(Math.random() * 3)],
+                    location: ['A区', 'B区', 'C区', '停车场'][Math.floor(Math.random() * 4)],
+                    status: '待处理'
+                };
+                events.unshift(newEvent);
+                console.log('新安全事件:', newEvent);
+            }
+        }
+
+        // 初始化视频监控功能
+        function initVideoMonitoring() {
+            console.log('初始化视频监控功能');
+
+            // 添加摄像头切换事件
+            const cameraButtons = document.querySelectorAll('.bg-gray-900.rounded-lg');
+            cameraButtons.forEach((button, index) => {
+                button.addEventListener('click', function() {
+                    console.log(`切换到摄像头 #${index + 2}`);
+                    // 这里可以添加切换摄像头的逻辑
+                });
+            });
+
+            // 添加控制按钮事件
+            const controlButtons = document.querySelectorAll('.bg-blue-600, .bg-gray-600, .bg-green-600, .bg-purple-600');
+            controlButtons.forEach(button => {
+                if (button.textContent.includes('实时') || button.textContent.includes('暂停') ||
+                    button.textContent.includes('录制') || button.textContent.includes('全屏')) {
+                    button.addEventListener('click', function() {
+                        const action = this.textContent.trim();
+                        console.log('视频控制操作:', action);
+
+                        if (action.includes('实时')) {
+                            alert('切换到实时监控模式');
+                        } else if (action.includes('暂停')) {
+                            alert('暂停视频播放');
+                        } else if (action.includes('录制')) {
+                            alert('开始录制视频');
+                        } else if (action.includes('全屏')) {
+                            alert('切换到全屏模式');
+                        }
+                    });
+                }
+            });
+        }
+
+        // 初始化应急指挥功能
+        function initEmergencyCommand() {
+            console.log('初始化应急指挥功能');
+
+            // 添加应急按钮事件
+            const emergencyButtons = document.querySelectorAll('.bg-red-600, .bg-blue-600');
+            emergencyButtons.forEach(button => {
+                if (button.textContent.includes('应急预案') || button.textContent.includes('调度消防队')) {
+                    button.addEventListener('click', function() {
+                        const action = this.textContent.trim();
+                        console.log('应急指挥操作:', action);
+
+                        if (action.includes('应急预案')) {
+                            alert('正在启动消防应急预案...\n1. 疏散人员\n2. 关闭相关设备\n3. 联系消防部门');
+                        } else if (action.includes('调度消防队')) {
+                            alert('正在调度园区消防队前往现场...\n预计到达时间: 3分钟');
+                        }
+                    });
+                }
+            });
+
+            // 添加通讯控制事件
+            const commButtons = document.querySelectorAll('.bg-green-600, .bg-orange-600');
+            commButtons.forEach(button => {
+                if (button.textContent.includes('呼叫') || button.textContent.includes('广播') || button.textContent.includes('短信')) {
+                    button.addEventListener('click', function() {
+                        const action = this.textContent.trim();
+                        console.log('通讯控制操作:', action);
+
+                        if (action.includes('呼叫')) {
+                            alert('正在呼叫现场安保人员...');
+                        } else if (action.includes('广播')) {
+                            alert('正在启动园区应急广播系统...');
+                        } else if (action.includes('短信')) {
+                            alert('正在群发应急短信通知...');
+                        }
+                    });
+                }
+            });
+        }
+
+        // 初始化门禁和车辆管理功能
+        function initAccessAndVehicleManagement() {
+            console.log('初始化门禁和车辆管理功能');
+
+            // 门禁管理按钮事件
+            const accessButtons = document.querySelectorAll('button');
+            accessButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('权限管理') || text.includes('远程开门') ||
+                    text.includes('布防设置') || text.includes('通行记录')) {
+                    button.addEventListener('click', function() {
+                        console.log('门禁管理操作:', text);
+
+                        if (text.includes('权限管理')) {
+                            alert('打开权限管理界面...');
+                        } else if (text.includes('远程开门')) {
+                            alert('执行远程开门操作...');
+                        } else if (text.includes('布防设置')) {
+                            alert('打开布防设置界面...');
+                        } else if (text.includes('通行记录')) {
+                            alert('查看通行记录...');
+                        }
+                    });
+                }
+
+                // 车辆管理按钮事件
+                if (text.includes('车辆登记') || text.includes('停车引导') ||
+                    text.includes('违章抓拍') || text.includes('流量统计')) {
+                    button.addEventListener('click', function() {
+                        console.log('车辆管理操作:', text);
+
+                        if (text.includes('车辆登记')) {
+                            alert('打开车辆登记界面...');
+                        } else if (text.includes('停车引导')) {
+                            alert('启动智能停车引导系统...');
+                        } else if (text.includes('违章抓拍')) {
+                            alert('查看违章抓拍记录...');
+                        } else if (text.includes('流量统计')) {
+                            alert('查看车辆流量统计...');
+                        }
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后启动实时更新
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化实时数据更新
+            updateSecurityData();
+            setInterval(updateSecurityData, 30000); // 每30秒更新一次
+
+            // 初始化各功能模块
+            initVideoMonitoring();
+            initEmergencyCommand();
+            initAccessAndVehicleManagement();
+
+            console.log('智慧安防深度功能初始化完成');
+        });
+    </script>
+</body>
+</html>

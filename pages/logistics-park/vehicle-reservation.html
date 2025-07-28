@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>车辆预约管理 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-calendar-alt text-primary mr-3"></i>
+                车辆预约管理
+            </h1>
+            <p class="text-gray-600 mt-2">智能车辆预约系统，优化园区物流时间安排</p>
+        </div>
+
+        <!-- 预约统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">今日预约</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">68</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-calendar-check text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>已完成:</span>
+                        <span class="text-green-600 font-medium">45个</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>进行中:</span>
+                        <span class="text-blue-600 font-medium">23个</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">预约准时率</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">95%</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-clock text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>准时到达:</span>
+                        <span class="text-green-600 font-medium">65次</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>延误:</span>
+                        <span class="text-red-600 font-medium">3次</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">平均等待</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">12</p>
+                        <p class="text-sm text-gray-500">分钟</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-hourglass-half text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较昨日:</span>
+                        <span class="text-green-600 font-medium">-3分钟</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>目标:</span>
+                        <span class="text-blue-600 font-medium">≤15分钟</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">取消率</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">5%</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-times-circle text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>本周取消:</span>
+                        <span class="text-purple-600 font-medium">8个</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>目标:</span>
+                        <span class="text-green-600 font-medium">≤3%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预约时段管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-clock text-blue-600 mr-2"></i>
+                预约时段管理
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">上午时段 (08:00-12:00)</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">充足</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>总容量:</span>
+                            <span class="font-medium">40车次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>已预约:</span>
+                            <span class="font-medium text-green-600">25车次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>剩余:</span>
+                            <span class="font-medium text-blue-600">15车次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>利用率:</span>
+                            <span class="font-medium text-green-600">62.5%</span>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 62.5%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">下午时段 (13:00-17:00)</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">紧张</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>总容量:</span>
+                            <span class="font-medium">35车次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>已预约:</span>
+                            <span class="font-medium text-yellow-600">32车次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>剩余:</span>
+                            <span class="font-medium text-orange-600">3车次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>利用率:</span>
+                            <span class="font-medium text-yellow-600">91.4%</span>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 91.4%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4 border border-red-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">晚间时段 (18:00-22:00)</h4>
+                        <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">已满</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>总容量:</span>
+                            <span class="font-medium">20车次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>已预约:</span>
+                            <span class="font-medium text-red-600">20车次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>剩余:</span>
+                            <span class="font-medium text-red-600">0车次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>利用率:</span>
+                            <span class="font-medium text-red-600">100%</span>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-red-500 h-2 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预约申请处理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-clipboard-check text-orange-600 mr-2"></i>
+                预约申请处理
+            </h3>
+            <div class="space-y-4">
+                <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">待审批</span>
+                            <h4 class="font-semibold text-gray-800">苏A12345 - 华为技术有限公司</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">申请时间: 2025-01-17 10:30</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">货物类型:</span>
+                            <p class="font-medium">电子设备</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">预约时间:</span>
+                            <p class="font-medium">2025-01-18 14:00</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">预计时长:</span>
+                            <p class="font-medium">2小时</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">目的地:</span>
+                            <p class="font-medium">装卸区A</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">联系人:</span>
+                            <p class="font-medium">张经理</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>备注: 精密设备，需要专业装卸 | 联系电话: 138****8888</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                                <i class="fas fa-check mr-1"></i>批准
+                            </button>
+                            <button class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors">
+                                <i class="fas fa-times mr-1"></i>拒绝
+                            </button>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-edit mr-1"></i>调整时间
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已批准</span>
+                            <h4 class="font-semibold text-gray-800">沪B67890 - 腾讯科技有限公司</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">批准时间: 2025-01-17 11:15</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">货物类型:</span>
+                            <p class="font-medium">办公用品</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">预约时间:</span>
+                            <p class="font-medium">2025-01-17 15:30</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">预计时长:</span>
+                            <p class="font-medium">1.5小时</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">目的地:</span>
+                            <p class="font-medium">仓储区C</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">联系人:</span>
+                            <p class="font-medium">李主任</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>状态: 等待入园 | 预计到达: 15:25 | 联系电话: 139****9999</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                                <i class="fas fa-eye mr-1"></i>查看详情
+                            </button>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-phone mr-1"></i>联系司机
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">已拒绝</span>
+                            <h4 class="font-semibold text-gray-800">京C11111 - 创新科技有限公司</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">拒绝时间: 2025-01-17 12:00</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">货物类型:</span>
+                            <p class="font-medium">化学原料</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">申请时间:</span>
+                            <p class="font-medium">2025-01-17 18:00</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">预计时长:</span>
+                            <p class="font-medium">3小时</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">目的地:</span>
+                            <p class="font-medium">危化品区D</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">拒绝原因:</span>
+                            <p class="font-medium text-red-600">证件不全</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>拒绝原因: 危化品运输证过期，安全资质不符合要求</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 transition-colors">
+                                <i class="fas fa-redo mr-1"></i>重新申请
+                            </button>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-info mr-1"></i>查看要求
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预约日历视图 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-calendar text-purple-600 mr-2"></i>
+                    预约日历视图
+                </h3>
+                <div class="h-96 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-calendar-alt text-6xl mb-4 text-purple-400"></i>
+                        <p class="text-lg font-medium">智能预约日历</p>
+                        <p class="text-sm">可视化车辆预约时间管理</p>
+                        <div class="mt-4 flex justify-center space-x-4">
+                            <button class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700">
+                                <i class="fas fa-plus mr-1"></i>新建预约
+                            </button>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                <i class="fas fa-search mr-1"></i>查找时段
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-bar text-green-600 mr-2"></i>
+                    预约统计
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">今日统计</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 总预约: 68个</div>
+                            <div>• 已完成: 45个</div>
+                            <div>• 进行中: 23个</div>
+                            <div class="text-blue-600">• 完成率: 66%</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">本周趋势</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 平均预约: 65个/天</div>
+                            <div>• 准时率: 95%</div>
+                            <div>• 取消率: 5%</div>
+                            <div class="text-green-600">• 满意度: 4.6/5</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">热门时段</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 上午: 62.5%利用率</div>
+                            <div>• 下午: 91.4%利用率</div>
+                            <div>• 晚间: 100%利用率</div>
+                            <div class="text-yellow-600">• 建议错峰预约</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">新建预约</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-search text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">查找时段</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-calendar-alt text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">预约日历</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">预约报表</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 车辆预约管理功能
+        function initVehicleReservation() {
+            console.log('初始化车辆预约管理功能');
+            
+            // 预约审批按钮事件
+            const approvalButtons = document.querySelectorAll('button');
+            approvalButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('批准')) {
+                    button.addEventListener('click', function() {
+                        const vehicleInfo = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('批准预约申请:', vehicleInfo);
+                        alert(`已批准 ${vehicleInfo} 的预约申请`);
+                    });
+                } else if (text.includes('拒绝')) {
+                    button.addEventListener('click', function() {
+                        const vehicleInfo = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('拒绝预约申请:', vehicleInfo);
+                        alert(`已拒绝 ${vehicleInfo} 的预约申请`);
+                    });
+                } else if (text.includes('调整时间')) {
+                    button.addEventListener('click', function() {
+                        const vehicleInfo = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('调整预约时间:', vehicleInfo);
+                        alert(`正在为 ${vehicleInfo} 调整预约时间...`);
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initVehicleReservation();
+            console.log('车辆预约管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

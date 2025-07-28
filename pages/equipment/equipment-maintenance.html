@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备保养 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">设备保养</h1>
+            <p class="text-gray-600">基于Process.md 2.4.8流程：三级保养体系→计划制定→执行确认→效果评估，实现设备预防性维护管理</p>
+        </div>
+
+        <!-- 设备保养流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">设备保养管理流程</h3>
+                    <span class="text-sm text-gray-600">三级保养体系管理</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">保养计划</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">任务下发</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">执行确认</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">效果评估</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="maintenancePlanBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-calendar-alt mr-2"></i>
+                保养计划
+            </button>
+            <button id="taskManageBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-tasks mr-2"></i>
+                任务管理
+            </button>
+            <button id="executionConfirmBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                执行确认
+            </button>
+            <button id="effectEvaluationBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-chart-line mr-2"></i>
+                效果评估
+            </button>
+            <button id="sparePartsBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-boxes mr-2"></i>
+                备件管理
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 设备保养统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-600">保养计划</div>
+                        <div class="text-xs text-gray-500">本月制定</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">142</div>
+                        <div class="text-sm text-gray-600">已完成</div>
+                        <div class="text-xs text-gray-500">保养任务</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">23</div>
+                        <div class="text-sm text-gray-600">进行中</div>
+                        <div class="text-xs text-gray-500">保养任务</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wrench text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">91.2%</div>
+                        <div class="text-sm text-gray-600">完成率</div>
+                        <div class="text-xs text-gray-500">按时完成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">8</div>
+                        <div class="text-sm text-gray-600">逾期任务</div>
+                        <div class="text-xs text-gray-500">需要关注</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">5</div>
+                        <div class="text-sm text-gray-600">紧急保养</div>
+                        <div class="text-xs text-gray-500">待安排</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-fire text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 保养计划和任务管理面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 三级保养体系 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">三级保养体系</h3>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-user text-blue-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">一级保养 (操作工)</div>
+                                    <div class="text-xs text-gray-500">日常维护、清洁润滑、紧固调整</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-blue-600">85个</div>
+                                <div class="text-xs text-gray-500">本周任务</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-green-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-users text-green-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">二级保养 (维修工)</div>
+                                    <div class="text-xs text-gray-500">定期检查、部件更换、精度调整</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-green-600">32个</div>
+                                <div class="text-xs text-gray-500">本月任务</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-purple-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-user-tie text-purple-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">三级保养 (专业技师)</div>
+                                    <div class="text-xs text-gray-500">大修改造、精密检测、性能恢复</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-purple-600">8个</div>
+                                <div class="text-xs text-gray-500">本季任务</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 保养提醒面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">保养提醒</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">紧急保养</div>
+                                <div class="text-xs text-gray-600">PACK产线装配线1 - 二级保养</div>
+                                <div class="text-xs text-gray-500">逾期: 3天</div>
+                            </div>
+                            <button onclick="scheduleUrgentMaintenance('EQP001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                立即安排
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">即将到期</div>
+                                <div class="text-xs text-gray-600">PCBA测试设备 - 一级保养</div>
+                                <div class="text-xs text-gray-500">剩余: 2天</div>
+                            </div>
+                            <button onclick="scheduleMaintenance('EQP002')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                安排保养
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-blue-800">计划保养</div>
+                                <div class="text-xs text-gray-600">6轴机器人 - 三级保养</div>
+                                <div class="text-xs text-gray-500">计划: 下周</div>
+                            </div>
+                            <button onclick="viewMaintenancePlan('EQP003')" class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200">
+                                查看计划
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备保养记录表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备保养记录</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部保养级别</option>
+                        <option>一级保养</option>
+                        <option>二级保养</option>
+                        <option>三级保养</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>计划中</option>
+                        <option>进行中</option>
+                        <option>已完成</option>
+                        <option>逾期</option>
+                    </select>
+                    <input type="text" placeholder="搜索设备名称、保养人员..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">保养编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">保养级别</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">保养内容</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">执行人员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">执行状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">备件消耗</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="maintenanceTableBody">
+                        <!-- 保养数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.8的设备保养数据模型
+        const maintenanceData = [
+            {
+                id: 'MAINT202501001',
+                maintenanceCode: 'PM-PACK-001-001',
+                equipmentId: 'EQP001',
+                equipmentCode: 'PACK-ASM-001',
+                equipmentName: 'PACK产线装配线1',
+                workshop: 'PACK产线',
+                maintenanceLevel: 'level1',
+                maintenanceLevelName: '一级保养',
+                maintenanceType: 'preventive',
+                maintenanceTypeName: '预防性保养',
+                status: 'completed',
+                statusName: '已完成',
+                planDate: '2025-01-15',
+                actualStartDate: '2025-01-15',
+                actualEndDate: '2025-01-15',
+                duration: 2.5,
+                executor: '张操作员',
+                executorId: 'OP001',
+                supervisor: '李班长',
+                supervisorId: 'SUP001',
+                maintenanceItems: [
+                    { item: '设备清洁', status: 'completed', duration: 0.5 },
+                    { item: '润滑加油', status: 'completed', duration: 1.0 },
+                    { item: '紧固检查', status: 'completed', duration: 1.0 }
+                ],
+                sparePartsUsed: [
+                    { partName: '润滑油', quantity: 2, unit: 'L', cost: 45.00 },
+                    { partName: '清洁剂', quantity: 1, unit: '瓶', cost: 15.00 }
+                ],
+                totalCost: 60.00,
+                effectEvaluation: {
+                    score: 95,
+                    oeeImprovement: 2.5,
+                    reliabilityImprovement: 'good',
+                    nextMaintenanceDate: '2025-01-22'
+                },
+                notes: '保养完成，设备运行正常'
+            },
+            {
+                id: 'MAINT202501002',
+                maintenanceCode: 'PM-PCBA-002-001',
+                equipmentId: 'EQP002',
+                equipmentCode: 'PCBA-TEST-001',
+                equipmentName: 'PCBA测试设备',
+                workshop: 'PCBA车间',
+                maintenanceLevel: 'level2',
+                maintenanceLevelName: '二级保养',
+                maintenanceType: 'preventive',
+                maintenanceTypeName: '预防性保养',
+                status: 'in_progress',
+                statusName: '进行中',
+                planDate: '2025-01-16',
+                actualStartDate: '2025-01-16',
+                actualEndDate: null,
+                duration: null,
+                executor: '王维修工',
+                executorId: 'MAINT001',
+                supervisor: '赵工程师',
+                supervisorId: 'ENG001',
+                maintenanceItems: [
+                    { item: '电气检查', status: 'completed', duration: 1.5 },
+                    { item: '校准调试', status: 'in_progress', duration: null },
+                    { item: '部件更换', status: 'pending', duration: null }
+                ],
+                sparePartsUsed: [
+                    { partName: '传感器', quantity: 2, unit: '个', cost: 280.00 }
+                ],
+                totalCost: 280.00,
+                effectEvaluation: null,
+                notes: '正在进行校准调试'
+            },
+            {
+                id: 'MAINT202501003',
+                maintenanceCode: 'PM-ROBOT-003-001',
+                equipmentId: 'EQP003',
+                equipmentCode: 'ROBOT-6AXIS-001',
+                equipmentName: '6轴机器人',
+                workshop: '逆变器车间',
+                maintenanceLevel: 'level3',
+                maintenanceLevelName: '三级保养',
+                maintenanceType: 'preventive',
+                maintenanceTypeName: '预防性保养',
+                status: 'planned',
+                statusName: '计划中',
+                planDate: '2025-01-20',
+                actualStartDate: null,
+                actualEndDate: null,
+                duration: null,
+                executor: '孙技师',
+                executorId: 'TECH001',
+                supervisor: '钱工程师',
+                supervisorId: 'ENG002',
+                maintenanceItems: [
+                    { item: '精度检测', status: 'pending', duration: null },
+                    { item: '伺服调试', status: 'pending', duration: null },
+                    { item: '软件升级', status: 'pending', duration: null },
+                    { item: '性能测试', status: 'pending', duration: null }
+                ],
+                sparePartsUsed: [],
+                totalCost: 0,
+                effectEvaluation: null,
+                estimatedDuration: 8,
+                notes: '计划进行三级保养，预计需要8小时'
+            },
+            {
+                id: 'MAINT202501004',
+                maintenanceCode: 'PM-AGING-004-001',
+                equipmentId: 'EQP004',
+                equipmentCode: 'AGING-ROOM-001',
+                equipmentName: '自动老化房',
+                workshop: '包装车间',
+                maintenanceLevel: 'level1',
+                maintenanceLevelName: '一级保养',
+                maintenanceType: 'emergency',
+                maintenanceTypeName: '紧急保养',
+                status: 'overdue',
+                statusName: '逾期',
+                planDate: '2025-01-13',
+                actualStartDate: null,
+                actualEndDate: null,
+                duration: null,
+                executor: '周操作员',
+                executorId: 'OP003',
+                supervisor: '吴班长',
+                supervisorId: 'SUP002',
+                maintenanceItems: [
+                    { item: '温控检查', status: 'pending', duration: null },
+                    { item: '安全检查', status: 'pending', duration: null }
+                ],
+                sparePartsUsed: [],
+                totalCost: 0,
+                effectEvaluation: null,
+                overdueReason: '设备故障导致保养延期',
+                notes: '设备故障中，保养任务逾期'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            planned: { text: '计划中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-calendar' },
+            in_progress: { text: '进行中', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-wrench' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            overdue: { text: '逾期', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            cancelled: { text: '已取消', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-ban' }
+        };
+
+        // 保养级别映射
+        const maintenanceLevelMap = {
+            level1: { text: '一级保养', icon: 'fas fa-user', color: 'text-blue-600', description: '操作工日常保养' },
+            level2: { text: '二级保养', icon: 'fas fa-users', color: 'text-green-600', description: '维修工定期保养' },
+            level3: { text: '三级保养', icon: 'fas fa-user-tie', color: 'text-purple-600', description: '专业技师大修保养' }
+        };
+
+        // 保养类型映射
+        const maintenanceTypeMap = {
+            preventive: { text: '预防性保养', class: 'bg-blue-100 text-blue-800' },
+            corrective: { text: '纠正性保养', class: 'bg-orange-100 text-orange-800' },
+            emergency: { text: '紧急保养', class: 'bg-red-100 text-red-800' },
+            predictive: { text: '预测性保养', class: 'bg-purple-100 text-purple-800' }
+        };
+
+        let filteredData = [...maintenanceData];
+
+        // 渲染设备保养表格
+        function renderMaintenanceTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('maintenanceTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(maintenance => {
+                const status = statusMap[maintenance.status];
+                const level = maintenanceLevelMap[maintenance.maintenanceLevel];
+                const type = maintenanceTypeMap[maintenance.maintenanceType];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewMaintenanceDetail('${maintenance.id}')">
+                            ${maintenance.maintenanceCode}
+                        </div>
+                        <div class="text-xs text-gray-500">${maintenance.planDate}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewEquipmentDetail('${maintenance.equipmentId}')">
+                            ${maintenance.equipmentCode}
+                        </div>
+                        <div class="text-sm text-gray-900">${maintenance.equipmentName}</div>
+                        <div class="text-xs text-gray-500">${maintenance.workshop}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${level.icon} ${level.color} mr-2"></i>
+                            <div>
+                                <div class="text-sm text-gray-900">${level.text}</div>
+                                <div class="text-xs text-gray-500">${level.description}</div>
+                            </div>
+                        </div>
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${type.class} mt-1">
+                            ${type.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="space-y-1">
+                            ${maintenance.maintenanceItems.slice(0, 3).map(item => `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-600">${item.item}</span>
+                                    <span class="text-xs ${item.status === 'completed' ? 'text-green-600' : item.status === 'in_progress' ? 'text-yellow-600' : 'text-gray-500'}">
+                                        ${item.status === 'completed' ? '✓' : item.status === 'in_progress' ? '⏳' : '○'}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${maintenance.maintenanceItems.length > 3 ? `
+                            <button onclick="viewAllItems('${maintenance.id}')" class="text-xs text-blue-600 hover:underline mt-1">
+                                查看全部 (${maintenance.maintenanceItems.length})
+                            </button>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${maintenance.executor}</div>
+                        <div class="text-xs text-gray-500">${maintenance.executorId}</div>
+                        <div class="text-xs text-blue-600">监督: ${maintenance.supervisor}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">计划: ${maintenance.planDate}</div>
+                        ${maintenance.actualStartDate ? `
+                            <div class="text-xs text-gray-500">开始: ${maintenance.actualStartDate}</div>
+                        ` : ''}
+                        ${maintenance.actualEndDate ? `
+                            <div class="text-xs text-gray-500">完成: ${maintenance.actualEndDate}</div>
+                        ` : maintenance.estimatedDuration ? `
+                            <div class="text-xs text-gray-500">预计: ${maintenance.estimatedDuration}小时</div>
+                        ` : ''}
+                        ${maintenance.duration ? `
+                            <div class="text-xs text-orange-600">用时: ${maintenance.duration}小时</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${maintenance.effectEvaluation ? `
+                            <div class="text-xs text-green-600 mt-1">
+                                评分: ${maintenance.effectEvaluation.score}
+                            </div>
+                        ` : ''}
+                        ${maintenance.overdueReason ? `
+                            <div class="text-xs text-red-600 mt-1">${maintenance.overdueReason}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${maintenance.sparePartsUsed.length > 0 ? `
+                            <div class="space-y-1">
+                                ${maintenance.sparePartsUsed.slice(0, 2).map(part => `
+                                    <div class="text-xs text-gray-600">
+                                        ${part.partName}: ${part.quantity}${part.unit}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="text-xs text-orange-600 mt-1">
+                                成本: ¥${maintenance.totalCost}
+                            </div>
+                        ` : `
+                            <span class="text-xs text-gray-500">无备件消耗</span>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewMaintenanceDetail('${maintenance.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${maintenance.status === 'planned' ? `
+                                <button onclick="startMaintenance('${maintenance.id}')" class="text-green-600 hover:text-green-900 p-1" title="开始保养">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            ` : ''}
+                            ${maintenance.status === 'in_progress' ? `
+                                <button onclick="completeMaintenance('${maintenance.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="完成保养">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            ${maintenance.status === 'overdue' ? `
+                                <button onclick="rescheduleUrgent('${maintenance.id}')" class="text-red-600 hover:text-red-900 p-1" title="紧急安排">
+                                    <i class="fas fa-fire"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewSparePartsList('${maintenance.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="备件清单">
+                                <i class="fas fa-boxes"></i>
+                            </button>
+                            ${maintenance.status === 'completed' ? `
+                                <button onclick="viewEffectEvaluation('${maintenance.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="效果评估">
+                                    <i class="fas fa-chart-line"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${maintenanceData.length} 条记录`;
+        }
+
+        // 设备保养操作函数
+        function viewMaintenanceDetail(maintenanceId) {
+            const maintenance = maintenanceData.find(m => m.id === maintenanceId);
+            if (maintenance) {
+                let detailText = `保养详情：\n编号: ${maintenance.maintenanceCode}\n设备: ${maintenance.equipmentName}\n保养级别: ${maintenanceLevelMap[maintenance.maintenanceLevel].text}\n保养类型: ${maintenanceTypeMap[maintenance.maintenanceType].text}\n执行人: ${maintenance.executor}\n监督人: ${maintenance.supervisor}\n状态: ${statusMap[maintenance.status].text}`;
+
+                detailText += `\n\n时间安排:\n计划日期: ${maintenance.planDate}`;
+                if (maintenance.actualStartDate) {
+                    detailText += `\n开始时间: ${maintenance.actualStartDate}`;
+                }
+                if (maintenance.actualEndDate) {
+                    detailText += `\n完成时间: ${maintenance.actualEndDate}\n实际用时: ${maintenance.duration}小时`;
+                }
+
+                detailText += `\n\n保养项目:`;
+                maintenance.maintenanceItems.forEach((item, index) => {
+                    const statusText = item.status === 'completed' ? '已完成' : item.status === 'in_progress' ? '进行中' : '待执行';
+                    detailText += `\n${index + 1}. ${item.item} - ${statusText}`;
+                    if (item.duration) {
+                        detailText += ` (${item.duration}小时)`;
+                    }
+                });
+
+                if (maintenance.sparePartsUsed.length > 0) {
+                    detailText += `\n\n备件消耗:`;
+                    maintenance.sparePartsUsed.forEach(part => {
+                        detailText += `\n• ${part.partName}: ${part.quantity}${part.unit} - ¥${part.cost}`;
+                    });
+                    detailText += `\n总成本: ¥${maintenance.totalCost}`;
+                }
+
+                if (maintenance.effectEvaluation) {
+                    detailText += `\n\n效果评估:\n评分: ${maintenance.effectEvaluation.score}/100\nOEE提升: ${maintenance.effectEvaluation.oeeImprovement}%\n可靠性: ${maintenance.effectEvaluation.reliabilityImprovement}\n下次保养: ${maintenance.effectEvaluation.nextMaintenanceDate}`;
+                }
+
+                if (maintenance.notes) {
+                    detailText += `\n\n备注: ${maintenance.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function startMaintenance(maintenanceId) {
+            const maintenance = maintenanceData.find(m => m.id === maintenanceId);
+            if (maintenance) {
+                if (confirm(`确认开始保养？\n设备: ${maintenance.equipmentName}\n保养级别: ${maintenanceLevelMap[maintenance.maintenanceLevel].text}\n执行人: ${maintenance.executor}`)) {
+                    maintenance.status = 'in_progress';
+                    maintenance.actualStartDate = new Date().toISOString().split('T')[0];
+                    maintenance.maintenanceItems[0].status = 'in_progress';
+                    renderMaintenanceTable();
+                    alert('保养已开始！\n- 请按照保养规程执行\n- 及时记录保养过程\n- 注意安全操作');
+                }
+            }
+        }
+
+        function completeMaintenance(maintenanceId) {
+            const maintenance = maintenanceData.find(m => m.id === maintenanceId);
+            if (maintenance) {
+                const allCompleted = maintenance.maintenanceItems.every(item => item.status === 'completed');
+                if (!allCompleted) {
+                    alert('请先完成所有保养项目！');
+                    return;
+                }
+
+                if (confirm(`确认完成保养？\n设备: ${maintenance.equipmentName}\n保养级别: ${maintenanceLevelMap[maintenance.maintenanceLevel].text}`)) {
+                    maintenance.status = 'completed';
+                    maintenance.actualEndDate = new Date().toISOString().split('T')[0];
+                    maintenance.duration = 4.5; // 模拟用时
+                    maintenance.effectEvaluation = {
+                        score: 92,
+                        oeeImprovement: 3.2,
+                        reliabilityImprovement: 'excellent',
+                        nextMaintenanceDate: '2025-02-16'
+                    };
+                    renderMaintenanceTable();
+                    alert('保养完成！\n- 设备状态已更新\n- 效果评估已记录\n- 下次保养已安排');
+                }
+            }
+        }
+
+        function scheduleUrgentMaintenance(equipmentId) {
+            alert(`紧急保养安排：\n设备ID: ${equipmentId}\n\n安排措施：\n- 立即停机检查\n- 安排专业技师\n- 准备必要备件\n- 制定应急方案\n\n预计完成时间: 4小时内`);
+        }
+
+        function scheduleMaintenance(equipmentId) {
+            alert(`保养安排：\n设备ID: ${equipmentId}\n\n安排流程：\n- 确认保养时间\n- 分配执行人员\n- 准备保养工具\n- 申请备件材料\n\n计划执行时间: 明天上午`);
+        }
+
+        function viewMaintenancePlan(equipmentId) {
+            alert(`保养计划：\n设备ID: ${equipmentId}\n\n计划详情：\n- 保养类型: 三级保养\n- 计划时间: 下周一\n- 预计用时: 8小时\n- 执行人员: 专业技师\n- 备件需求: 已确认`);
+        }
+
+        function viewAllItems(maintenanceId) {
+            const maintenance = maintenanceData.find(m => m.id === maintenanceId);
+            if (maintenance) {
+                let itemsText = `${maintenance.equipmentName} - 保养项目：\n\n`;
+                maintenance.maintenanceItems.forEach((item, index) => {
+                    const statusText = item.status === 'completed' ? '已完成' : item.status === 'in_progress' ? '进行中' : '待执行';
+                    itemsText += `${index + 1}. ${item.item}\n   状态: ${statusText}`;
+                    if (item.duration) {
+                        itemsText += `\n   用时: ${item.duration}小时`;
+                    }
+                    itemsText += '\n\n';
+                });
+                alert(itemsText);
+            }
+        }
+
+        function viewSparePartsList(maintenanceId) {
+            const maintenance = maintenanceData.find(m => m.id === maintenanceId);
+            if (maintenance) {
+                let partsText = `${maintenance.equipmentName} - 备件清单：\n\n`;
+                if (maintenance.sparePartsUsed.length > 0) {
+                    maintenance.sparePartsUsed.forEach((part, index) => {
+                        partsText += `${index + 1}. ${part.partName}\n   数量: ${part.quantity}${part.unit}\n   成本: ¥${part.cost}\n\n`;
+                    });
+                    partsText += `总成本: ¥${maintenance.totalCost}`;
+                } else {
+                    partsText += '本次保养无备件消耗';
+                }
+                alert(partsText);
+            }
+        }
+
+        function viewEffectEvaluation(maintenanceId) {
+            const maintenance = maintenanceData.find(m => m.id === maintenanceId);
+            if (maintenance && maintenance.effectEvaluation) {
+                const eval = maintenance.effectEvaluation;
+                alert(`保养效果评估：\n设备: ${maintenance.equipmentName}\n\n评估结果:\n综合评分: ${eval.score}/100\nOEE提升: ${eval.oeeImprovement}%\n可靠性改善: ${eval.reliabilityImprovement}\n\n下次保养计划:\n计划日期: ${eval.nextMaintenanceDate}\n\n评估结论:\n${eval.score >= 90 ? '保养效果优秀' : eval.score >= 80 ? '保养效果良好' : '保养效果一般，需要改进'}`);
+            }
+        }
+
+        function rescheduleUrgent(maintenanceId) {
+            const maintenance = maintenanceData.find(m => m.id === maintenanceId);
+            if (maintenance) {
+                if (confirm(`紧急重新安排保养？\n设备: ${maintenance.equipmentName}\n逾期: ${maintenance.overdueReason}`)) {
+                    maintenance.status = 'planned';
+                    maintenance.planDate = new Date().toISOString().split('T')[0];
+                    maintenance.overdueReason = null;
+                    renderMaintenanceTable();
+                    alert('保养已重新安排！\n- 优先级设为最高\n- 已通知执行人员\n- 备件正在准备');
+                }
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMaintenanceTable();
+
+            // 保养计划
+            document.getElementById('maintenancePlanBtn').addEventListener('click', function() {
+                alert('保养计划功能：\n- 三级保养体系管理\n- 保养周期设定\n- 保养内容标准化\n- 人员技能匹配\n- 备件需求计划');
+            });
+
+            // 任务管理
+            document.getElementById('taskManageBtn').addEventListener('click', function() {
+                alert('任务管理功能：\n- 保养任务下发\n- 执行进度跟踪\n- 人员工作安排\n- 优先级管理\n- 任务协调调度');
+            });
+
+            // 执行确认
+            document.getElementById('executionConfirmBtn').addEventListener('click', function() {
+                alert('执行确认功能：\n- 保养过程记录\n- 质量检查确认\n- 备件消耗登记\n- 异常情况处理\n- 完成状态确认');
+            });
+
+            // 效果评估
+            document.getElementById('effectEvaluationBtn').addEventListener('click', function() {
+                alert('效果评估功能：\n- 保养效果评分\n- OEE改善分析\n- 可靠性提升评估\n- 成本效益分析\n- 改进建议制定');
+            });
+
+            // 备件管理
+            document.getElementById('sparePartsBtn').addEventListener('click', function() {
+                alert('备件管理功能：\n- 备件需求计划\n- 库存状态监控\n- 采购申请流程\n- 消耗统计分析\n- 成本控制管理');
+            });
+        });
+    </script>
+</body>
+</html>

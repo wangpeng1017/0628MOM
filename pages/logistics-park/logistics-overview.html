@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调度概览与统计 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-truck text-primary mr-3"></i>
+                物流调度概览与统计
+            </h1>
+            <p class="text-gray-600 mt-2">智能物流调度管理，优化园区物流效率</p>
+        </div>
+
+        <!-- 物流统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">今日车次</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">156</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-truck text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>进园:</span>
+                        <span class="text-green-600 font-medium">89次</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>出园:</span>
+                        <span class="text-red-600 font-medium">67次</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">货物吞吐</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">2,456</p>
+                        <p class="text-sm text-gray-500">吨</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-boxes text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较昨日:</span>
+                        <span class="text-green-600 font-medium">+12.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>月累计:</span>
+                        <span class="text-blue-600 font-medium">45,680吨</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">平均等待</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">15</p>
+                        <p class="text-sm text-gray-500">分钟</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>目标:</span>
+                        <span class="text-green-600 font-medium">≤20分钟</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>最长:</span>
+                        <span class="text-red-600 font-medium">45分钟</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">调度效率</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">92%</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">+5.2%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>目标:</span>
+                        <span class="text-blue-600 font-medium">95%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时调度状态 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-map-marked-alt text-blue-600 mr-2"></i>
+                实时调度状态
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">装卸区A</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 当前车辆: 3台</div>
+                        <div>• 等待时间: 8分钟</div>
+                        <div>• 作业进度: 75%</div>
+                        <div>• 预计完成: 15分钟</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">装卸区B</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">繁忙</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 当前车辆: 5台</div>
+                        <div>• 等待时间: 25分钟</div>
+                        <div>• 排队车辆: 2台</div>
+                        <div>• 预计完成: 45分钟</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">仓储区C</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">空闲</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 当前车辆: 0台</div>
+                        <div>• 可用泊位: 4个</div>
+                        <div>• 下次预约: 14:30</div>
+                        <div>• 状态: 可立即使用</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4 border border-red-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">危化品区D</h4>
+                        <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">管制</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 当前车辆: 1台</div>
+                        <div>• 安全检查: 进行中</div>
+                        <div>• 预计时间: 30分钟</div>
+                        <div>• 状态: 严格管控</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 车辆调度监控 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-route text-green-600 mr-2"></i>
+                    车辆调度监控
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">在园车辆</span>
+                            <span class="text-lg font-bold text-green-600">23台</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 76%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">容量: 30台</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">排队等待</span>
+                            <span class="text-lg font-bold text-blue-600">8台</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-blue-500 h-3 rounded-full" style="width: 40%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">平均等待: 15分钟</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">作业中</span>
+                            <span class="text-lg font-bold text-yellow-600">15台</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-yellow-500 h-3 rounded-full" style="width: 65%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">平均作业: 35分钟</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-pie text-purple-600 mr-2"></i>
+                    货物类型分布
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">原材料</span>
+                            <span class="text-lg font-bold text-blue-600">45%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-blue-500 h-3 rounded-full" style="width: 45%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">1,105吨</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">成品</span>
+                            <span class="text-lg font-bold text-green-600">35%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 35%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">860吨</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">包装材料</span>
+                            <span class="text-lg font-bold text-yellow-600">15%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-yellow-500 h-3 rounded-full" style="width: 15%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">368吨</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">危化品</span>
+                            <span class="text-lg font-bold text-red-600">5%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-red-500 h-3 rounded-full" style="width: 5%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">123吨</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 调度任务列表 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-tasks text-orange-600 mr-2"></i>
+                调度任务列表
+            </h3>
+            <div class="space-y-4">
+                <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">进行中</span>
+                            <h4 class="font-semibold text-gray-800">苏A12345 - 原材料运输</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">预约时间: 14:00</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">货物类型:</span>
+                            <p class="font-medium">钢材</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">重量:</span>
+                            <p class="font-medium">25吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">目的地:</span>
+                            <p class="font-medium">仓储区A</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">司机:</span>
+                            <p class="font-medium">张师傅</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">进度:</span>
+                            <p class="font-medium text-green-600">卸货中</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>联系电话: 138****8888 | 预计完成: 14:45</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                                查看详情
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                实时跟踪
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">等待中</span>
+                            <h4 class="font-semibold text-gray-800">沪B67890 - 成品出库</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">预约时间: 15:30</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">货物类型:</span>
+                            <p class="font-medium">电子产品</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">重量:</span>
+                            <p class="font-medium">8吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">目的地:</span>
+                            <p class="font-medium">装卸区B</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">司机:</span>
+                            <p class="font-medium">李师傅</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">等待:</span>
+                            <p class="font-medium text-blue-600">15分钟</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>联系电话: 139****9999 | 排队位置: 第2位</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                优先调度
+                            </button>
+                            <button class="px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700">
+                                调整时间
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">异常</span>
+                            <h4 class="font-semibold text-gray-800">京C11111 - 危化品运输</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">预约时间: 16:00</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">货物类型:</span>
+                            <p class="font-medium">化学试剂</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">重量:</span>
+                            <p class="font-medium">5吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">目的地:</span>
+                            <p class="font-medium">危化品区D</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">司机:</span>
+                            <p class="font-medium">王师傅</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">状态:</span>
+                            <p class="font-medium text-red-600">证件过期</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>联系电话: 137****7777 | 问题: 危化品运输证过期</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                                拒绝入园
+                            </button>
+                            <button class="px-3 py-1 bg-orange-600 text-white text-sm rounded hover:bg-orange-700">
+                                协调处理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">新增调度</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-route text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">路线优化</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-eye text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">实时监控</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">调度报表</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 物流调度概览功能
+        function initLogisticsOverview() {
+            console.log('初始化物流调度概览功能');
+            
+            // 调度任务按钮事件
+            const taskButtons = document.querySelectorAll('button');
+            taskButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('优先调度')) {
+                    button.addEventListener('click', function() {
+                        const vehicleInfo = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('优先调度:', vehicleInfo);
+                        alert(`正在为 ${vehicleInfo} 安排优先调度...`);
+                    });
+                } else if (text.includes('拒绝入园')) {
+                    button.addEventListener('click', function() {
+                        const vehicleInfo = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('拒绝入园:', vehicleInfo);
+                        alert(`已拒绝 ${vehicleInfo} 入园申请`);
+                    });
+                }
+            });
+            
+            // 实时数据更新
+            function updateLogisticsData() {
+                console.log('更新物流调度数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateLogisticsData, 30000); // 每30秒更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initLogisticsOverview();
+            console.log('物流调度概览页面加载完成');
+        });
+    </script>
+</body>
+</html>

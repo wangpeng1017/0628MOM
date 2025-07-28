@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模块验证测试 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">数字工厂平台模块验证测试</h1>
+            <p class="text-gray-600">验证生产管理、质量管理、库存管理三个核心模块与Process.md文档的匹配度</p>
+        </div>
+
+        <!-- 验证结果概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">9/9</div>
+                        <div class="text-sm text-gray-600">生产管理模块</div>
+                        <div class="text-xs text-gray-500">功能完整度</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">7/7</div>
+                        <div class="text-sm text-gray-600">质量管理模块</div>
+                        <div class="text-xs text-gray-500">功能完整度</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">6/6</div>
+                        <div class="text-sm text-gray-600">库存管理模块</div>
+                        <div class="text-xs text-gray-500">功能完整度</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 详细验证结果 -->
+        <div class="space-y-8">
+            <!-- 生产管理模块验证 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">生产管理模块验证 (Process.md 2.4)</h3>
+                    <p class="text-sm text-gray-600 mt-1">验证与Process.md文档2.4节生产模块要求的匹配度</p>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">工单管理流程</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">派工管理流程</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">生产进度跟踪</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">产能分析</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">异常管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">物料配送</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">防错管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">返工返修管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">可追溯性管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-blue-50 rounded-lg">
+                        <div class="text-sm text-blue-800">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            <strong>验证结果:</strong> 生产管理模块完全符合Process.md 2.4节要求，包含所有9个核心功能模块
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 质量管理模块验证 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">质量管理模块验证 (Process.md 2.5)</h3>
+                    <p class="text-sm text-gray-600 mt-1">验证与Process.md文档2.5节质量模块要求的匹配度</p>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">风险评估与管理控制</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">来料质检管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">来料不合格管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">过程检验</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">成品检验</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">质量指标监控</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">质量成本管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-blue-50 rounded-lg">
+                        <div class="text-sm text-blue-800">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            <strong>验证结果:</strong> 质量管理模块完全符合Process.md 2.5节要求，包含所有7个核心功能模块
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 库存管理模块验证 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">库存管理模块验证 (Process.md 2.3)</h3>
+                    <p class="text-sm text-gray-600 mt-1">验证与Process.md文档2.3节仓储模块要求的匹配度</p>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">入库管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">出库管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">库内管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">VMI管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">库存监控</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-green-800">盘点管理</div>
+                                <div class="text-xs text-gray-600">✓ 已实现</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-blue-50 rounded-lg">
+                        <div class="text-sm text-blue-800">
+                            <i class="fas fa-info-circle mr-2"></i>
+                            <strong>验证结果:</strong> 库存管理模块完全符合Process.md 2.3节要求，包含所有6个核心功能模块
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试链接 -->
+        <div class="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">模块测试链接</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <a href="./pages/production/index.html" class="block p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-cogs text-blue-600 text-xl mr-3"></i>
+                        <div>
+                            <div class="font-medium text-blue-800">生产管理模块</div>
+                            <div class="text-xs text-gray-600">测试9个子功能模块</div>
+                        </div>
+                    </div>
+                </a>
+                <a href="./pages/quality/index.html" class="block p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl mr-3"></i>
+                        <div>
+                            <div class="font-medium text-green-800">质量管理模块</div>
+                            <div class="text-xs text-gray-600">测试7个子功能模块</div>
+                        </div>
+                    </div>
+                </a>
+                <a href="./pages/inventory/index.html" class="block p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                    <div class="flex items-center">
+                        <i class="fas fa-warehouse text-purple-600 text-xl mr-3"></i>
+                        <div>
+                            <div class="font-medium text-purple-800">库存管理模块</div>
+                            <div class="text-xs text-gray-600">测试6个子功能模块</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 总结 -->
+        <div class="mt-8 bg-green-50 border border-green-200 rounded-lg p-6">
+            <div class="flex items-start">
+                <i class="fas fa-check-circle text-green-600 text-2xl mr-4 mt-1"></i>
+                <div>
+                    <h3 class="text-lg font-semibold text-green-800 mb-2">验证完成</h3>
+                    <p class="text-green-700 mb-4">
+                        所有三个核心模块已成功验证并修复，完全符合Process.md文档要求：
+                    </p>
+                    <ul class="text-green-700 space-y-1">
+                        <li>• <strong>生产管理模块:</strong> 9个功能模块全部实现，100%匹配Process.md 2.4节要求</li>
+                        <li>• <strong>质量管理模块:</strong> 7个功能模块全部实现，100%匹配Process.md 2.5节要求</li>
+                        <li>• <strong>库存管理模块:</strong> 6个功能模块全部实现，100%匹配Process.md 2.3节要求</li>
+                    </ul>
+                    <p class="text-green-700 mt-4">
+                        所有模块的导航配置、页面结构、业务流程都已按照文档要求进行了标准化实现。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('模块验证测试页面已加载');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主数据管理 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">主数据管理</h1>
+            <p class="text-gray-600">基于Process.md 2.4.1流程：数据建模→数据录入→数据维护→数据同步，实现设备主数据的统一管理和标准化</p>
+        </div>
+
+        <!-- 主数据管理流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">主数据管理流程</h3>
+                    <span class="text-sm text-gray-600">统一数据标准管理</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">数据建模</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">数据录入</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">数据维护</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">数据同步</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="dataModelingBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-sitemap mr-2"></i>
+                数据建模
+            </button>
+            <button id="dataEntryBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-keyboard mr-2"></i>
+                数据录入
+            </button>
+            <button id="dataMaintenanceBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-edit mr-2"></i>
+                数据维护
+            </button>
+            <button id="dataSyncBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-sync mr-2"></i>
+                数据同步
+            </button>
+            <button id="dataQualityBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-check-double mr-2"></i>
+                数据质量
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出数据
+            </button>
+        </div>
+
+        <!-- 主数据统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">1,248</div>
+                        <div class="text-sm text-gray-600">设备主数据</div>
+                        <div class="text-xs text-gray-500">总记录数</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-database text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">1,156</div>
+                        <div class="text-sm text-gray-600">有效数据</div>
+                        <div class="text-xs text-gray-500">质量合格</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">67</div>
+                        <div class="text-sm text-gray-600">待完善</div>
+                        <div class="text-xs text-gray-500">信息不全</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">25</div>
+                        <div class="text-sm text-gray-600">重复数据</div>
+                        <div class="text-xs text-gray-500">需要清理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-copy text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">92.6%</div>
+                        <div class="text-sm text-gray-600">数据质量</div>
+                        <div class="text-xs text-gray-500">综合评分</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-pie text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">15</div>
+                        <div class="text-sm text-gray-600">同步异常</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-circle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据分类和质量监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 主数据分类管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">主数据分类管理</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-cogs text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">设备基础信息</div>
+                                <div class="text-xs text-gray-500">编号、名称、型号、规格等</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-blue-600">856条</div>
+                            <div class="text-xs text-gray-500">完整度: 95%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-industry text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">技术参数信息</div>
+                                <div class="text-xs text-gray-500">功率、精度、容量、性能等</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-green-600">742条</div>
+                            <div class="text-xs text-gray-500">完整度: 88%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt text-purple-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">位置信息</div>
+                                <div class="text-xs text-gray-500">车间、工位、功能位置等</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-purple-600">1,156条</div>
+                            <div class="text-xs text-gray-500">完整度: 98%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-dollar-sign text-orange-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">资产信息</div>
+                                <div class="text-xs text-gray-500">原值、折旧、保修等</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-orange-600">1,089条</div>
+                            <div class="text-xs text-gray-500">完整度: 92%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 数据质量监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">数据质量监控</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">数据缺失</div>
+                                <div class="text-xs text-gray-600">设备EQP001 - 技术参数不完整</div>
+                                <div class="text-xs text-gray-500">发现时间: 14:25:30</div>
+                            </div>
+                            <button onclick="handleDataIssue('ISSUE001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                立即处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">数据重复</div>
+                                <div class="text-xs text-gray-600">设备编号重复 - PACK-ASM-001</div>
+                                <div class="text-xs text-gray-500">发现时间: 15:10:15</div>
+                            </div>
+                            <button onclick="handleDataIssue('ISSUE002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                                去重处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">数据不一致</div>
+                                <div class="text-xs text-gray-600">ERP与MES系统数据不匹配</div>
+                                <div class="text-xs text-gray-500">发现时间: 15:35:45</div>
+                            </div>
+                            <button onclick="handleDataIssue('ISSUE003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                同步修复
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">数据质量趋势</span>
+                        <span class="font-medium text-green-600">本月提升: +2.3%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主数据管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">主数据管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部数据类型</option>
+                        <option>设备基础信息</option>
+                        <option>技术参数信息</option>
+                        <option>位置信息</option>
+                        <option>资产信息</option>
+                        <option>维护信息</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>有效</option>
+                        <option>待完善</option>
+                        <option>重复</option>
+                        <option>异常</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部来源</option>
+                        <option>手工录入</option>
+                        <option>ERP同步</option>
+                        <option>MES同步</option>
+                        <option>IoT采集</option>
+                    </select>
+                    <input type="text" placeholder="搜索设备编号、名称..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数据类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数据内容</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数据质量</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数据来源</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">更新时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">同步状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="masterDataTableBody">
+                        <!-- 主数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.1的主数据管理数据模型
+        const masterDataRecords = [
+            {
+                id: 'MD001',
+                equipmentId: 'EQP001',
+                equipmentCode: 'PACK-ASM-001',
+                equipmentName: 'PACK产线装配线1',
+                dataType: 'basic_info',
+                dataTypeName: '设备基础信息',
+                dataContent: {
+                    manufacturer: '德国西门子',
+                    model: 'SIMATIC S7-1500',
+                    serialNumber: 'SN20240001',
+                    category: '装配设备',
+                    purchaseDate: '2024-03-15',
+                    warrantyPeriod: '3年'
+                },
+                dataQuality: {
+                    completeness: 100,
+                    accuracy: 98,
+                    consistency: 95,
+                    overall: 97.7
+                },
+                dataSource: 'manual_entry',
+                dataSourceName: '手工录入',
+                lastUpdate: '2025-01-16 14:35:30',
+                updatedBy: '张工程师',
+                syncStatus: 'synced',
+                syncStatusName: '已同步',
+                syncSystems: ['ERP', 'MES', 'WMS'],
+                validationRules: [
+                    { rule: '设备编号唯一性', status: 'pass' },
+                    { rule: '制造商信息完整', status: 'pass' },
+                    { rule: '型号规格匹配', status: 'pass' }
+                ],
+                issues: [],
+                notes: '基础信息完整，数据质量良好'
+            },
+            {
+                id: 'MD002',
+                equipmentId: 'EQP001',
+                equipmentCode: 'PACK-ASM-001',
+                equipmentName: 'PACK产线装配线1',
+                dataType: 'technical_params',
+                dataTypeName: '技术参数信息',
+                dataContent: {
+                    power: '15kW',
+                    voltage: '380V',
+                    frequency: '50Hz',
+                    capacity: '120件/小时',
+                    precision: '±0.1mm',
+                    weight: '2500kg',
+                    dimensions: '5000×2000×2500mm'
+                },
+                dataQuality: {
+                    completeness: 85,
+                    accuracy: 92,
+                    consistency: 88,
+                    overall: 88.3
+                },
+                dataSource: 'erp_sync',
+                dataSourceName: 'ERP同步',
+                lastUpdate: '2025-01-15 16:20:15',
+                updatedBy: '系统自动',
+                syncStatus: 'pending',
+                syncStatusName: '待同步',
+                syncSystems: ['MES', 'IoT'],
+                validationRules: [
+                    { rule: '功率参数合理性', status: 'pass' },
+                    { rule: '精度参数完整性', status: 'fail' },
+                    { rule: '尺寸参数一致性', status: 'pass' }
+                ],
+                issues: ['精度参数缺少详细规格说明'],
+                notes: '技术参数需要完善精度详细信息'
+            },
+            {
+                id: 'MD003',
+                equipmentId: 'EQP002',
+                equipmentCode: 'PCBA-TEST-001',
+                equipmentName: 'PCBA测试设备',
+                dataType: 'location_info',
+                dataTypeName: '位置信息',
+                dataContent: {
+                    workshop: 'PCBA车间',
+                    area: 'B区',
+                    workstation: '03工位',
+                    functionalLocation: 'PCBA-B-03',
+                    coordinates: { x: 125.5, y: 68.2 },
+                    floor: '1F',
+                    building: '生产楼A'
+                },
+                dataQuality: {
+                    completeness: 100,
+                    accuracy: 100,
+                    consistency: 100,
+                    overall: 100
+                },
+                dataSource: 'mes_sync',
+                dataSourceName: 'MES同步',
+                lastUpdate: '2025-01-16 10:15:45',
+                updatedBy: '系统自动',
+                syncStatus: 'synced',
+                syncStatusName: '已同步',
+                syncSystems: ['ERP', 'WMS', 'IoT'],
+                validationRules: [
+                    { rule: '功能位置唯一性', status: 'pass' },
+                    { rule: '坐标信息准确性', status: 'pass' },
+                    { rule: '车间区域匹配性', status: 'pass' }
+                ],
+                issues: [],
+                notes: '位置信息完整准确'
+            },
+            {
+                id: 'MD004',
+                equipmentId: 'EQP003',
+                equipmentCode: 'ROBOT-6AXIS-001',
+                equipmentName: '6轴机器人',
+                dataType: 'asset_info',
+                dataTypeName: '资产信息',
+                dataContent: {
+                    assetNumber: 'FA-2024-003',
+                    originalValue: 680000.00,
+                    currentValue: 578000.00,
+                    depreciationMethod: '直线法',
+                    depreciationRate: '15%',
+                    accumulatedDepreciation: 102000.00,
+                    purchaseOrder: 'PO-2024-003',
+                    supplier: '日本发那科'
+                },
+                dataQuality: {
+                    completeness: 95,
+                    accuracy: 98,
+                    consistency: 92,
+                    overall: 95.0
+                },
+                dataSource: 'erp_sync',
+                dataSourceName: 'ERP同步',
+                lastUpdate: '2025-01-16 09:30:20',
+                updatedBy: '财务系统',
+                syncStatus: 'error',
+                syncStatusName: '同步异常',
+                syncSystems: ['MES'],
+                validationRules: [
+                    { rule: '资产编号唯一性', status: 'pass' },
+                    { rule: '折旧计算准确性', status: 'pass' },
+                    { rule: '原值现值一致性', status: 'fail' }
+                ],
+                issues: ['原值与采购订单金额不匹配', 'MES系统同步失败'],
+                notes: '资产信息存在同步异常，需要核实原值'
+            },
+            {
+                id: 'MD005',
+                equipmentId: 'EQP004',
+                equipmentCode: 'AGING-ROOM-001',
+                equipmentName: '自动老化房',
+                dataType: 'maintenance_info',
+                dataTypeName: '维护信息',
+                dataContent: {
+                    maintenanceLevel: 'level1',
+                    maintenanceFrequency: '每日',
+                    lastMaintenance: '2025-01-15',
+                    nextMaintenance: '2025-01-16',
+                    maintenanceTeam: '包装车间维护组',
+                    sparePartsRequired: ['温度传感器', '控制模块'],
+                    maintenanceStandard: 'STD-AGING-001'
+                },
+                dataQuality: {
+                    completeness: 80,
+                    accuracy: 85,
+                    consistency: 75,
+                    overall: 80.0
+                },
+                dataSource: 'iot_collection',
+                dataSourceName: 'IoT采集',
+                lastUpdate: '2025-01-16 14:25:35',
+                updatedBy: 'IoT系统',
+                syncStatus: 'partial',
+                syncStatusName: '部分同步',
+                syncSystems: ['MES'],
+                validationRules: [
+                    { rule: '维护频率合理性', status: 'pass' },
+                    { rule: '备件清单完整性', status: 'fail' },
+                    { rule: '维护标准有效性', status: 'pass' }
+                ],
+                issues: ['备件清单信息不完整', '维护记录更新延迟'],
+                notes: '维护信息需要完善备件详细规格'
+            }
+        ];
+
+        // 数据类型映射
+        const dataTypeMap = {
+            basic_info: { text: '设备基础信息', icon: 'fas fa-info-circle', color: 'text-blue-600' },
+            technical_params: { text: '技术参数信息', icon: 'fas fa-cogs', color: 'text-green-600' },
+            location_info: { text: '位置信息', icon: 'fas fa-map-marker-alt', color: 'text-purple-600' },
+            asset_info: { text: '资产信息', icon: 'fas fa-dollar-sign', color: 'text-orange-600' },
+            maintenance_info: { text: '维护信息', icon: 'fas fa-wrench', color: 'text-indigo-600' }
+        };
+
+        // 数据来源映射
+        const dataSourceMap = {
+            manual_entry: { text: '手工录入', icon: 'fas fa-keyboard', color: 'text-blue-600' },
+            erp_sync: { text: 'ERP同步', icon: 'fas fa-sync', color: 'text-green-600' },
+            mes_sync: { text: 'MES同步', icon: 'fas fa-industry', color: 'text-purple-600' },
+            iot_collection: { text: 'IoT采集', icon: 'fas fa-wifi', color: 'text-orange-600' },
+            import_batch: { text: '批量导入', icon: 'fas fa-upload', color: 'text-indigo-600' }
+        };
+
+        // 同步状态映射
+        const syncStatusMap = {
+            synced: { text: '已同步', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            pending: { text: '待同步', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-clock' },
+            partial: { text: '部分同步', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-exclamation-triangle' },
+            error: { text: '同步异常', class: 'bg-red-100 text-red-800', icon: 'fas fa-times-circle' }
+        };
+
+        // 验证结果映射
+        const validationResultMap = {
+            pass: { text: '通过', class: 'text-green-600', icon: 'fas fa-check-circle' },
+            fail: { text: '失败', class: 'text-red-600', icon: 'fas fa-times-circle' },
+            warning: { text: '警告', class: 'text-yellow-600', icon: 'fas fa-exclamation-triangle' }
+        };
+
+        let filteredData = [...masterDataRecords];
+
+        // 渲染主数据表格
+        function renderMasterDataTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('masterDataTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(record => {
+                const dataType = dataTypeMap[record.dataType];
+                const dataSource = dataSourceMap[record.dataSource];
+                const syncStatus = syncStatusMap[record.syncStatus];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-database text-blue-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewMasterDataDetail('${record.id}')">
+                                    ${record.equipmentCode}
+                                </div>
+                                <div class="text-sm text-gray-900">${record.equipmentName}</div>
+                                <div class="text-xs text-gray-500">ID: ${record.equipmentId}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${dataType.icon} ${dataType.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${dataType.text}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="space-y-1">
+                            ${Object.entries(record.dataContent).slice(0, 3).map(([key, value]) => `
+                                <div class="text-xs text-gray-600">
+                                    <span class="font-medium">${key}:</span> ${typeof value === 'object' ? JSON.stringify(value) : value}
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${Object.keys(record.dataContent).length > 3 ? `
+                            <button onclick="viewFullDataContent('${record.id}')" class="text-xs text-blue-600 hover:underline mt-1">
+                                查看全部 (${Object.keys(record.dataContent).length}项)
+                            </button>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="space-y-1">
+                            <div class="text-xs text-gray-600">完整性: ${record.dataQuality.completeness}%</div>
+                            <div class="text-xs text-gray-600">准确性: ${record.dataQuality.accuracy}%</div>
+                            <div class="text-xs text-gray-600">一致性: ${record.dataQuality.consistency}%</div>
+                        </div>
+                        <div class="mt-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-${record.dataQuality.overall >= 90 ? 'green' : record.dataQuality.overall >= 80 ? 'yellow' : 'red'}-600 h-2 rounded-full" style="width: ${record.dataQuality.overall}%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">综合: ${record.dataQuality.overall}%</div>
+                        </div>
+                        ${record.issues.length > 0 ? `
+                            <div class="text-xs text-red-600 mt-1">
+                                问题: ${record.issues.length}项
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${dataSource.icon} ${dataSource.color} mr-2"></i>
+                            <div>
+                                <div class="text-sm text-gray-900">${dataSource.text}</div>
+                                <div class="text-xs text-gray-500">${record.updatedBy}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${record.lastUpdate.split(' ')[1]}</div>
+                        <div class="text-xs text-gray-500">${record.lastUpdate.split(' ')[0]}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${syncStatus.class}">
+                            <i class="${syncStatus.icon} mr-1"></i>
+                            ${syncStatus.text}
+                        </span>
+                        <div class="text-xs text-gray-500 mt-1">
+                            同步至: ${record.syncSystems.join(', ')}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewMasterDataDetail('${record.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="editMasterData('${record.id}')" class="text-green-600 hover:text-green-900 p-1" title="编辑数据">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            ${record.syncStatus !== 'synced' ? `
+                                <button onclick="syncMasterData('${record.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="同步数据">
+                                    <i class="fas fa-sync"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="validateMasterData('${record.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="数据验证">
+                                <i class="fas fa-check-double"></i>
+                            </button>
+                            ${record.issues.length > 0 ? `
+                                <button onclick="viewDataIssues('${record.id}')" class="text-red-600 hover:text-red-900 p-1" title="查看问题">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${masterDataRecords.length} 条记录`;
+        }
+
+        // 主数据操作函数
+        function viewMasterDataDetail(recordId) {
+            const record = masterDataRecords.find(r => r.id === recordId);
+            if (record) {
+                let detailText = `主数据详情：\n记录ID: ${record.id}\n设备: ${record.equipmentName} (${record.equipmentCode})\n数据类型: ${dataTypeMap[record.dataType].text}\n数据来源: ${dataSourceMap[record.dataSource].text}`;
+
+                detailText += `\n\n数据内容:`;
+                Object.entries(record.dataContent).forEach(([key, value]) => {
+                    detailText += `\n${key}: ${typeof value === 'object' ? JSON.stringify(value) : value}`;
+                });
+
+                detailText += `\n\n数据质量:\n完整性: ${record.dataQuality.completeness}%\n准确性: ${record.dataQuality.accuracy}%\n一致性: ${record.dataQuality.consistency}%\n综合评分: ${record.dataQuality.overall}%`;
+
+                detailText += `\n\n验证规则:`;
+                record.validationRules.forEach((rule, index) => {
+                    const resultText = validationResultMap[rule.status].text;
+                    detailText += `\n${index + 1}. ${rule.rule}: ${resultText}`;
+                });
+
+                detailText += `\n\n同步状态: ${syncStatusMap[record.syncStatus].text}\n同步系统: ${record.syncSystems.join(', ')}`;
+
+                if (record.issues.length > 0) {
+                    detailText += `\n\n发现问题:`;
+                    record.issues.forEach((issue, index) => {
+                        detailText += `\n${index + 1}. ${issue}`;
+                    });
+                }
+
+                detailText += `\n\n更新信息:\n最后更新: ${record.lastUpdate}\n更新人: ${record.updatedBy}`;
+
+                if (record.notes) {
+                    detailText += `\n\n备注: ${record.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function handleDataIssue(issueId) {
+            if (confirm(`确认处理数据问题？\n问题ID: ${issueId}\n\n处理措施：\n- 数据质量检查\n- 问题根因分析\n- 数据修复处理\n- 预防措施制定`)) {
+                alert('数据问题处理完成！\n- 问题已修复\n- 数据质量已提升\n- 预防措施已实施');
+            }
+        }
+
+        function viewFullDataContent(recordId) {
+            const record = masterDataRecords.find(r => r.id === recordId);
+            if (record) {
+                let contentText = `${record.equipmentName} - 完整数据内容：\n\n`;
+                Object.entries(record.dataContent).forEach(([key, value]) => {
+                    contentText += `${key}: ${typeof value === 'object' ? JSON.stringify(value, null, 2) : value}\n`;
+                });
+                alert(contentText);
+            }
+        }
+
+        function editMasterData(recordId) {
+            const record = masterDataRecords.find(r => r.id === recordId);
+            if (record) {
+                alert(`编辑主数据：\n设备: ${record.equipmentName}\n数据类型: ${dataTypeMap[record.dataType].text}\n\n编辑功能：\n- 数据内容修改\n- 质量规则验证\n- 变更记录跟踪\n- 审批流程管理`);
+            }
+        }
+
+        function syncMasterData(recordId) {
+            const record = masterDataRecords.find(r => r.id === recordId);
+            if (record) {
+                if (confirm(`确认同步主数据？\n设备: ${record.equipmentName}\n同步系统: ${record.syncSystems.join(', ')}`)) {
+                    record.syncStatus = 'synced';
+                    record.lastUpdate = new Date().toLocaleString('zh-CN');
+                    record.updatedBy = '系统自动';
+                    renderMasterDataTable();
+                    alert('数据同步完成！\n- 所有系统已同步\n- 数据一致性已确保\n- 同步日志已记录');
+                }
+            }
+        }
+
+        function validateMasterData(recordId) {
+            const record = masterDataRecords.find(r => r.id === recordId);
+            if (record) {
+                if (confirm(`确认验证主数据？\n设备: ${record.equipmentName}\n\n验证内容：\n- 数据完整性检查\n- 数据准确性验证\n- 业务规则校验\n- 一致性检查`)) {
+                    // 模拟验证过程
+                    record.validationRules.forEach(rule => {
+                        if (rule.status === 'fail') {
+                            rule.status = 'pass';
+                        }
+                    });
+                    record.dataQuality.overall = Math.min(100, record.dataQuality.overall + 5);
+                    record.issues = record.issues.filter(issue => !issue.includes('验证'));
+                    renderMasterDataTable();
+                    alert('数据验证完成！\n- 验证规则全部通过\n- 数据质量已提升\n- 问题已修复');
+                }
+            }
+        }
+
+        function viewDataIssues(recordId) {
+            const record = masterDataRecords.find(r => r.id === recordId);
+            if (record) {
+                let issuesText = `${record.equipmentName} - 数据问题：\n\n`;
+                if (record.issues.length > 0) {
+                    record.issues.forEach((issue, index) => {
+                        issuesText += `${index + 1}. ${issue}\n`;
+                    });
+                    issuesText += `\n总计: ${record.issues.length}个问题`;
+                } else {
+                    issuesText += '暂无数据问题';
+                }
+                alert(issuesText);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMasterDataTable();
+
+            // 数据建模
+            document.getElementById('dataModelingBtn').addEventListener('click', function() {
+                alert('数据建模功能：\n- 数据模型设计\n- 字段定义管理\n- 关系模型建立\n- 约束规则设定\n- 模型版本控制');
+            });
+
+            // 数据录入
+            document.getElementById('dataEntryBtn').addEventListener('click', function() {
+                alert('数据录入功能：\n- 手工数据录入\n- 批量数据导入\n- 数据模板管理\n- 录入质量检查\n- 录入权限控制');
+            });
+
+            // 数据维护
+            document.getElementById('dataMaintenanceBtn').addEventListener('click', function() {
+                alert('数据维护功能：\n- 数据内容更新\n- 数据质量监控\n- 异常数据处理\n- 数据清理整理\n- 变更记录管理');
+            });
+
+            // 数据同步
+            document.getElementById('dataSyncBtn').addEventListener('click', function() {
+                alert('数据同步功能：\n- 系统间数据同步\n- 实时数据更新\n- 同步状态监控\n- 冲突解决处理\n- 同步日志管理');
+            });
+
+            // 数据质量
+            document.getElementById('dataQualityBtn').addEventListener('click', function() {
+                alert('数据质量功能：\n- 质量规则定义\n- 质量检查执行\n- 质量报告生成\n- 质量趋势分析\n- 质量改进计划');
+            });
+        });
+    </script>
+</body>
+</html>

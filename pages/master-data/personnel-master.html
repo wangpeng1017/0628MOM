@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人员主数据管理 - 主数据平台 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">人员主数据管理</h1>
+            <p class="text-gray-600">统一管理员工档案、技能认证、岗位权限、组织关系等核心人员信息</p>
+        </div>
+
+        <!-- 人员统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">245</div>
+                        <div class="text-sm text-gray-600">员工总数</div>
+                        <div class="text-xs text-gray-500">在职人员</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">15</div>
+                        <div class="text-sm text-gray-600">部门数量</div>
+                        <div class="text-xs text-gray-500">组织架构</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-sitemap text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">92%</div>
+                        <div class="text-sm text-gray-600">活跃率</div>
+                        <div class="text-xs text-gray-500">本月登录</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-check text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">156</div>
+                        <div class="text-sm text-gray-600">技能认证</div>
+                        <div class="text-xs text-gray-500">有效证书</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-certificate text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 人员管理功能选项卡 -->
+        <div class="mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8">
+                    <button onclick="showTab('personnel')" class="tab-button border-b-2 border-orange-500 text-orange-600 py-2 px-1 text-sm font-medium" id="personnel-tab">
+                        员工档案管理
+                    </button>
+                    <button onclick="showTab('skills')" class="tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium" id="skills-tab">
+                        技能认证管理
+                    </button>
+                    <button onclick="showTab('positions')" class="tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium" id="positions-tab">
+                        岗位权限管理
+                    </button>
+                    <button onclick="showTab('organization')" class="tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium" id="organization-tab">
+                        组织关系管理
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- 员工档案管理 -->
+        <div id="personnel-content" class="tab-content">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-800">员工档案管理</h3>
+                        <div class="flex space-x-2">
+                            <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="addPersonnel()">
+                                <i class="fas fa-plus mr-2"></i>新增员工
+                            </button>
+                            <button class="bg-success text-white px-4 py-2 rounded-md text-sm hover:bg-green-700" onclick="importPersonnel()">
+                                <i class="fas fa-upload mr-2"></i>批量导入
+                            </button>
+                            <button class="bg-secondary text-white px-4 py-2 rounded-md text-sm hover:bg-gray-700" onclick="exportPersonnel()">
+                                <i class="fas fa-download mr-2"></i>导出数据
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 搜索和筛选 -->
+                    <div class="flex flex-wrap gap-4 mt-4">
+                        <select class="border border-gray-300 rounded-md px-3 py-2 text-sm" id="departmentFilter">
+                            <option>全部部门</option>
+                            <option>生产部</option>
+                            <option>质量部</option>
+                            <option>物流部</option>
+                            <option>技术部</option>
+                        </select>
+                        <select class="border border-gray-300 rounded-md px-3 py-2 text-sm" id="statusFilter">
+                            <option>全部状态</option>
+                            <option>在职</option>
+                            <option>离职</option>
+                            <option>休假</option>
+                        </select>
+                        <input type="text" placeholder="搜索姓名、工号..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64" id="searchInput">
+                        <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="searchPersonnel()">
+                            <i class="fas fa-search mr-1"></i>搜索
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 人员数据表格 -->
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">员工信息</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">部门岗位</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">联系方式</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">入职时间</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">技能等级</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="personnelTableBody">
+                            <!-- 人员数据将通过JavaScript动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 分页 -->
+                <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                    <div class="text-sm text-gray-700" id="personnelRecordInfo">
+                        显示记录信息
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                        <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技能认证管理 -->
+        <div id="skills-content" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">技能认证管理</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- SMT操作认证 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">SMT操作认证</h4>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">技能</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">认证人数:</span>
+                                <span class="text-gray-900">45人</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">有效期:</span>
+                                <span class="text-gray-900">2年</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">即将到期:</span>
+                                <span class="text-orange-600">8人</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200">查看详情</button>
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">管理</button>
+                        </div>
+                    </div>
+
+                    <!-- 质量检验认证 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">质量检验认证</h4>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">质量</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">认证人数:</span>
+                                <span class="text-gray-900">32人</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">有效期:</span>
+                                <span class="text-gray-900">3年</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">即将到期:</span>
+                                <span class="text-orange-600">5人</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">查看详情</button>
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">管理</button>
+                        </div>
+                    </div>
+
+                    <!-- 设备维护认证 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">设备维护认证</h4>
+                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">维护</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">认证人数:</span>
+                                <span class="text-gray-900">18人</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">有效期:</span>
+                                <span class="text-gray-900">2年</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">即将到期:</span>
+                                <span class="text-orange-600">3人</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded hover:bg-purple-200">查看详情</button>
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">管理</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 岗位权限管理 -->
+        <div id="positions-content" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">岗位权限管理</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">岗位名称</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">所属部门</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">权限范围</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">人员数量</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">生产主管</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">生产部</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">生产管理</span>
+                                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">工单管理</span>
+                                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">人员调度</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-900">5人</span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                        启用
+                                    </span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-900">编辑</button>
+                                        <button class="text-green-600 hover:text-green-900">权限</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">质量工程师</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">质量部</div>
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex flex-wrap gap-1">
+                                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">质量检验</span>
+                                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">不合格处理</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-900">12人</span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                        启用
+                                    </span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-900">编辑</button>
+                                        <button class="text-green-600 hover:text-green-900">权限</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 组织关系管理 -->
+        <div id="organization-content" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">组织关系管理</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 组织架构树 -->
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-3">组织架构</h4>
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center">
+                                    <i class="fas fa-building text-blue-600 mr-2"></i>
+                                    <span class="font-medium">数字工厂</span>
+                                </div>
+                                <div class="ml-6 space-y-1">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-users text-green-600 mr-2"></i>
+                                        <span>生产部 (85人)</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-users text-red-600 mr-2"></i>
+                                        <span>质量部 (32人)</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-users text-purple-600 mr-2"></i>
+                                        <span>物流部 (45人)</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-users text-orange-600 mr-2"></i>
+                                        <span>技术部 (28人)</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-users text-indigo-600 mr-2"></i>
+                                        <span>管理部 (15人)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 部门统计 -->
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-3">部门统计</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                                <div>
+                                    <div class="text-sm font-medium text-green-800">生产部</div>
+                                    <div class="text-xs text-gray-600">负责产品生产制造</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-green-600">85</div>
+                                    <div class="text-xs text-gray-500">人员</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                                <div>
+                                    <div class="text-sm font-medium text-red-800">质量部</div>
+                                    <div class="text-xs text-gray-600">负责质量检验控制</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-red-600">32</div>
+                                    <div class="text-xs text-gray-500">人员</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                                <div>
+                                    <div class="text-sm font-medium text-purple-800">物流部</div>
+                                    <div class="text-xs text-gray-600">负责物料配送管理</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-lg font-bold text-purple-600">45</div>
+                                    <div class="text-xs text-gray-500">人员</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 人员数据模型
+        const personnelData = [
+            {
+                id: 'PER001',
+                code: 'EMP001',
+                name: '张三',
+                department: '生产部',
+                position: '生产主管',
+                phone: '13800138001',
+                email: 'zhang@company.com',
+                joinDate: '2020-03-15',
+                skillLevel: '高级',
+                status: 'active',
+                statusName: '在职'
+            },
+            {
+                id: 'PER002',
+                code: 'EMP002',
+                name: '李四',
+                department: '质量部',
+                position: '质量工程师',
+                phone: '13800138002',
+                email: 'li@company.com',
+                joinDate: '2021-06-20',
+                skillLevel: '中级',
+                status: 'active',
+                statusName: '在职'
+            },
+            {
+                id: 'PER003',
+                code: 'EMP003',
+                name: '王五',
+                department: '物流部',
+                position: '物流主管',
+                phone: '13800138003',
+                email: 'wang@company.com',
+                joinDate: '2019-09-10',
+                skillLevel: '高级',
+                status: 'active',
+                statusName: '在职'
+            },
+            {
+                id: 'PER004',
+                code: 'EMP004',
+                name: '赵六',
+                department: '技术部',
+                position: '工艺工程师',
+                phone: '13800138004',
+                email: 'zhao@company.com',
+                joinDate: '2022-01-08',
+                skillLevel: '初级',
+                status: 'vacation',
+                statusName: '休假'
+            }
+        ];
+
+        // 显示选项卡
+        function showTab(tabName) {
+            // 隐藏所有内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // 重置所有选项卡样式
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('border-orange-500', 'text-orange-600');
+                button.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // 显示选中的内容
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+            
+            // 设置选中的选项卡样式
+            const activeTab = document.getElementById(tabName + '-tab');
+            activeTab.classList.remove('border-transparent', 'text-gray-500');
+            activeTab.classList.add('border-orange-500', 'text-orange-600');
+
+            // 根据选项卡类型渲染相应数据
+            if (tabName === 'personnel') {
+                renderPersonnelTable();
+            }
+        }
+
+        // 渲染人员数据表格
+        function renderPersonnelTable() {
+            const tbody = document.getElementById('personnelTableBody');
+            tbody.innerHTML = '';
+
+            personnelData.forEach(person => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+                
+                const statusClass = person.status === 'active' ? 'bg-green-100 text-green-800' : 
+                                  person.status === 'vacation' ? 'bg-orange-100 text-orange-800' : 
+                                  'bg-red-100 text-red-800';
+                
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-orange-600"></i>
+                            </div>
+                            <div class="ml-3">
+                                <div class="text-sm font-medium text-gray-900">${person.name}</div>
+                                <div class="text-xs text-gray-500">工号: ${person.code}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${person.department}</div>
+                        <div class="text-xs text-gray-500">${person.position}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${person.phone}</div>
+                        <div class="text-xs text-gray-500">${person.email}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${person.joinDate}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                            ${person.skillLevel}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${statusClass}">
+                            ${person.statusName}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-2">
+                            <button onclick="editPersonnel('${person.id}')" class="text-blue-600 hover:text-blue-900">编辑</button>
+                            <button onclick="viewPersonnel('${person.id}')" class="text-green-600 hover:text-green-900">查看</button>
+                            <button onclick="deletePersonnel('${person.id}')" class="text-red-600 hover:text-red-900">删除</button>
+                        </div>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('personnelRecordInfo').textContent = `显示 1-${personnelData.length} 条，共 ${personnelData.length} 条记录`;
+        }
+
+        // 操作函数
+        function addPersonnel() {
+            alert('新增员工功能');
+        }
+
+        function importPersonnel() {
+            alert('批量导入员工功能');
+        }
+
+        function exportPersonnel() {
+            alert('导出员工数据功能');
+        }
+
+        function searchPersonnel() {
+            alert('搜索员工功能');
+        }
+
+        function editPersonnel(id) {
+            alert(`编辑员工: ${id}`);
+        }
+
+        function viewPersonnel(id) {
+            alert(`查看员工详情: ${id}`);
+        }
+
+        function deletePersonnel(id) {
+            if (confirm(`确认删除员工: ${id}？`)) {
+                alert(`已删除员工: ${id}`);
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('personnel');
+        });
+    </script>
+</body>
+</html>

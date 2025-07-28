@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>委外/VMI管理 - 仓储管理系统(WMS) - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">委外/VMI管理</h1>
+            <p class="text-gray-600">委外发料收货管理、供应商管理库存(VMI)、虚拟仓库管理</p>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                新增委外单
+            </button>
+            <button class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-handshake mr-2"></i>
+                VMI协议管理
+            </button>
+            <button class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-sync-alt mr-2"></i>
+                库存同步
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- VMI统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">45</div>
+                        <div class="text-sm text-gray-600">委外在制</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-industry text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">1,256</div>
+                        <div class="text-sm text-gray-600">VMI库存(SKU)</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-boxes text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">8</div>
+                        <div class="text-sm text-gray-600">VMI供应商</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-handshake text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">15</div>
+                        <div class="text-sm text-gray-600">待收货</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 功能模块选项卡 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-8 px-6" aria-label="Tabs">
+                    <button class="tab-button active py-4 px-1 border-b-2 border-primary text-primary font-medium text-sm" data-tab="outsourcing">
+                        委外管理
+                    </button>
+                    <button class="tab-button py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm" data-tab="vmi">
+                        VMI管理
+                    </button>
+                    <button class="tab-button py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 font-medium text-sm" data-tab="virtual-warehouse">
+                        虚拟仓库
+                    </button>
+                </nav>
+            </div>
+
+            <!-- 委外管理内容 -->
+            <div id="outsourcing-content" class="tab-content p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">委外发料收货</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">委外单号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">委外商</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">委外产品</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">发料数量</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">预计收货</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">发料日期</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">OS202501001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">委外厂A</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5KW逆变器外壳</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">100套</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-20</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        加工中
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-01-15</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-900" title="查看详情">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-green-600 hover:text-green-900" title="收货">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">OS202501002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">委外厂B</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">控制器PCB</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">200片</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-18</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
+                                        待收货
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-01-12</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-900" title="查看详情">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-green-600 hover:text-green-900" title="收货">
+                                            <i class="fas fa-arrow-down"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VMI管理内容 -->
+            <div id="vmi-content" class="tab-content p-6 hidden">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">VMI库存管理</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料编码</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料名称</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">VMI供应商</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">当前库存</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">安全库存</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最大库存</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最后同步</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VMI001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">标准螺丝</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">供应商A</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">5,000个</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2,000个</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">10,000个</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                        正常
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-01-16 10:30</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-900" title="查看详情">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-green-600 hover:text-green-900" title="同步库存">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VMI002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">包装材料</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">供应商B</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1,500个</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2,000个</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">8,000个</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                        低库存
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-01-16 09:15</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-900" title="查看详情">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="text-orange-600 hover:text-orange-900" title="补货提醒">
+                                            <i class="fas fa-bell"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 虚拟仓库内容 -->
+            <div id="virtual-warehouse-content" class="tab-content p-6 hidden">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">虚拟仓库管理</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-medium text-blue-800">供应商A虚拟仓</h4>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">活跃</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-blue-700">物料种类:</span>
+                                <span class="font-medium text-blue-800">156种</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-blue-700">总库存值:</span>
+                                <span class="font-medium text-blue-800">¥2,456,789</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-blue-700">周转率:</span>
+                                <span class="font-medium text-blue-800">12.5次/年</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-blue-600 hover:text-blue-900 text-sm">
+                                <i class="fas fa-eye mr-1"></i>查看
+                            </button>
+                            <button class="text-green-600 hover:text-green-900 text-sm">
+                                <i class="fas fa-sync-alt mr-1"></i>同步
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-medium text-green-800">供应商B虚拟仓</h4>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">活跃</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-green-700">物料种类:</span>
+                                <span class="font-medium text-green-800">89种</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-green-700">总库存值:</span>
+                                <span class="font-medium text-green-800">¥1,234,567</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-green-700">周转率:</span>
+                                <span class="font-medium text-green-800">15.2次/年</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-blue-600 hover:text-blue-900 text-sm">
+                                <i class="fas fa-eye mr-1"></i>查看
+                            </button>
+                            <button class="text-green-600 hover:text-green-900 text-sm">
+                                <i class="fas fa-sync-alt mr-1"></i>同步
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-medium text-gray-800">供应商C虚拟仓</h4>
+                            <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">暂停</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">物料种类:</span>
+                                <span class="font-medium text-gray-800">45种</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">总库存值:</span>
+                                <span class="font-medium text-gray-800">¥567,890</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-700">周转率:</span>
+                                <span class="font-medium text-gray-800">8.3次/年</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-blue-600 hover:text-blue-900 text-sm">
+                                <i class="fas fa-eye mr-1"></i>查看
+                            </button>
+                            <button class="text-orange-600 hover:text-orange-900 text-sm">
+                                <i class="fas fa-play mr-1"></i>启用
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 选项卡切换功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+
+                    // 移除所有活跃状态
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active', 'border-primary', 'text-primary');
+                        btn.classList.add('border-transparent', 'text-gray-500');
+                    });
+
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+
+                    // 激活当前选项卡
+                    this.classList.add('active', 'border-primary', 'text-primary');
+                    this.classList.remove('border-transparent', 'text-gray-500');
+
+                    // 显示对应内容
+                    document.getElementById(targetTab + '-content').classList.remove('hidden');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

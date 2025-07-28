@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据分析报表 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-chart-bar text-primary mr-3"></i>
+                IOC数据分析报表
+            </h1>
+            <p class="text-gray-600 mt-2">深度数据分析，洞察运营趋势</p>
+        </div>
+
+        <!-- 分析维度选择 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-filter text-blue-600 mr-2"></i>
+                分析维度选择
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">时间范围</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>今日</option>
+                        <option>本周</option>
+                        <option selected>本月</option>
+                        <option>本季度</option>
+                        <option>本年度</option>
+                        <option>自定义</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">分析类型</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option selected>综合分析</option>
+                        <option>生产分析</option>
+                        <option>质量分析</option>
+                        <option>设备分析</option>
+                        <option>能耗分析</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">对比基准</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>上期对比</option>
+                        <option selected>同期对比</option>
+                        <option>目标对比</option>
+                        <option>行业对比</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-search mr-2"></i>生成报表
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心指标分析 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">生产效率</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">92.5%</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-industry text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>同期对比:</span>
+                        <span class="text-green-600 font-medium">+5.2%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>目标达成:</span>
+                        <span class="text-green-600 font-medium">103%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">质量合格率</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">99.2%</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-check-circle text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>同期对比:</span>
+                        <span class="text-green-600 font-medium">+1.8%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>目标达成:</span>
+                        <span class="text-green-600 font-medium">100.2%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">设备利用率</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">87.3%</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-cogs text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>同期对比:</span>
+                        <span class="text-green-600 font-medium">+3.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>目标达成:</span>
+                        <span class="text-yellow-600 font-medium">97.0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">能耗效率</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">85.7%</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-bolt text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>同期对比:</span>
+                        <span class="text-green-600 font-medium">+7.2%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>节能目标:</span>
+                        <span class="text-green-600 font-medium">108%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 趋势分析图表 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-green-600 mr-2"></i>
+                    生产效率趋势分析
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-green-50 to-teal-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-area text-6xl mb-4 text-green-400"></i>
+                        <p class="text-lg font-medium">生产效率趋势图</p>
+                        <p class="text-sm">30天生产效率变化趋势</p>
+                        <div class="mt-4 grid grid-cols-3 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">92.5%</div>
+                                <div class="text-xs text-gray-500">当前效率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">89.8%</div>
+                                <div class="text-xs text-gray-500">月均效率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">+5.2%</div>
+                                <div class="text-xs text-gray-500">同期增长</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-pie text-blue-600 mr-2"></i>
+                    质量指标分析
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-pie text-6xl mb-4 text-blue-400"></i>
+                        <p class="text-lg font-medium">质量分布图</p>
+                        <p class="text-sm">产品质量等级分布</p>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">99.2%</div>
+                                <div class="text-xs text-gray-500">合格率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">95.8%</div>
+                                <div class="text-xs text-gray-500">优良率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-yellow-600">0.8%</div>
+                                <div class="text-xs text-gray-500">不合格率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">+1.8%</div>
+                                <div class="text-xs text-gray-500">同期提升</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 详细数据分析 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-table text-purple-600 mr-2"></i>
+                详细数据分析表
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">指标项目</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">当前值</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">目标值</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">同期对比</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">达成率</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">趋势</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">生产效率</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">92.5%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">90.0%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">+5.2%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">103%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">↗ 上升</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">质量合格率</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">99.2%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">99.0%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">+1.8%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">100.2%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">↗ 上升</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">设备利用率</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">87.3%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">90.0%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">+3.5%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-yellow-600">97.0%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">↗ 上升</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">能耗效率</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">85.7%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">80.0%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">+7.2%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">107.1%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">↗ 上升</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">交付及时率</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">96.8%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">95.0%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">+2.3%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">101.9%</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">→ 稳定</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 分析洞察和建议 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-lightbulb text-yellow-600 mr-2"></i>
+                    数据洞察
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                        <h4 class="font-semibold text-gray-800 mb-2">优势分析</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 生产效率超目标3%，同期增长5.2%</div>
+                            <div>• 质量合格率稳定在99%以上</div>
+                            <div>• 能耗效率显著提升，节能效果明显</div>
+                            <div>• 交付及时率保持高水平</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                        <h4 class="font-semibold text-gray-800 mb-2">改进空间</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 设备利用率仍有3%提升空间</div>
+                            <div>• 部分生产线效率不均衡</div>
+                            <div>• 质量检测环节可进一步优化</div>
+                            <div>• 能耗管理精细化程度待提高</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-clipboard-list text-blue-600 mr-2"></i>
+                    优化建议
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                        <h4 class="font-semibold text-gray-800 mb-2">短期建议 (1个月)</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 优化设备维护计划，提升利用率</div>
+                            <div>• 加强生产线平衡管理</div>
+                            <div>• 完善质量预警机制</div>
+                            <div>• 推广节能最佳实践</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                        <h4 class="font-semibold text-gray-800 mb-2">中长期建议 (3-6个月)</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 引入AI预测性维护</div>
+                            <div>• 建立智能排产系统</div>
+                            <div>• 实施全面质量管理</div>
+                            <div>• 构建能源管理体系</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-download text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">导出报表</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-share text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">分享报表</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-calendar text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">定时报表</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-cog text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">报表设置</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // IOC数据分析报表功能
+        function initDataAnalytics() {
+            console.log('初始化IOC数据分析报表功能');
+            
+            // 生成报表按钮事件
+            const generateButton = document.querySelector('button');
+            if (generateButton && generateButton.textContent.includes('生成报表')) {
+                generateButton.addEventListener('click', function() {
+                    console.log('生成数据分析报表');
+                    alert('正在生成数据分析报表...');
+                });
+            }
+            
+            // 快速操作按钮事件
+            const quickButtons = document.querySelectorAll('button');
+            quickButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('导出报表')) {
+                    button.addEventListener('click', function() {
+                        console.log('导出数据分析报表');
+                        alert('正在导出数据分析报表...');
+                    });
+                } else if (text.includes('分享报表')) {
+                    button.addEventListener('click', function() {
+                        console.log('分享数据分析报表');
+                        alert('正在生成分享链接...');
+                    });
+                } else if (text.includes('定时报表')) {
+                    button.addEventListener('click', function() {
+                        console.log('设置定时报表');
+                        alert('正在设置定时报表...');
+                    });
+                } else if (text.includes('报表设置')) {
+                    button.addEventListener('click', function() {
+                        console.log('报表设置');
+                        alert('正在打开报表设置...');
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initDataAnalytics();
+            console.log('IOC数据分析报表页面加载完成');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>综合服务 - 慧新全智厂园一体平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+                <i class="fas fa-concierge-bell text-indigo-600 mr-3"></i>
+                综合服务
+            </h1>
+            <p class="text-gray-600">生活服务、会议预约、设施维护 - 一站式园区服务平台</p>
+        </div>
+
+        <!-- 服务概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-utensils text-indigo-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-indigo-600">3</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">餐厅服务</h3>
+                <p class="text-sm text-gray-600">正在营业</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-check text-blue-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-blue-600">15</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">今日预约</h3>
+                <p class="text-sm text-gray-600">会议室预约</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tools text-green-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-green-600">8</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">维护工单</h3>
+                <p class="text-sm text-gray-600">待处理</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-headset text-purple-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-purple-600">24/7</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">客服热线</h3>
+                <p class="text-sm text-gray-600">全天候服务</p>
+            </div>
+        </div>
+
+        <!-- 餐饮服务在线订餐系统 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-utensils text-primary mr-2"></i>
+                    餐饮服务在线订餐系统
+                </h2>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">在线订餐</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">菜单管理</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">营养分析</button>
+                </div>
+            </div>
+
+            <!-- 订餐统计 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">今日订餐</span>
+                        <i class="fas fa-shopping-cart text-orange-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-orange-600">856</div>
+                    <div class="text-xs text-gray-500">份</div>
+                    <div class="text-xs text-green-600 mt-1">较昨日: ↑12.5%</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">满意度</span>
+                        <i class="fas fa-star text-green-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-green-600">4.6</div>
+                    <div class="text-xs text-gray-500">分</div>
+                    <div class="text-xs text-blue-600 mt-1">评价数: 245条</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">营业额</span>
+                        <i class="fas fa-dollar-sign text-blue-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-blue-600">¥12.8K</div>
+                    <div class="text-xs text-gray-500">今日</div>
+                    <div class="text-xs text-green-600 mt-1">月累计: ¥285K</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">热门菜品</span>
+                        <i class="fas fa-fire text-purple-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-purple-600">宫保鸡丁</div>
+                    <div class="text-xs text-gray-500">订购: 156份</div>
+                    <div class="text-xs text-orange-600 mt-1">库存预警</div>
+                </div>
+            </div>
+
+            <!-- 订餐系统功能 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 今日菜单 -->
+                <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-list text-orange-600 mr-2"></i>
+                        今日菜单
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-lg p-3 border border-orange-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">主食类</span>
+                                <span class="text-xs text-orange-600">8种</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 米饭: ¥2 (充足)</div>
+                                <div>• 面条: ¥8 (充足)</div>
+                                <div>• 包子: ¥3 (剩余50个)</div>
+                                <div>• 饺子: ¥12 (剩余30份)</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-green-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">荤菜类</span>
+                                <span class="text-xs text-green-600">12种</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 宫保鸡丁: ¥18 (热门)</div>
+                                <div>• 红烧肉: ¥22 (剩余15份)</div>
+                                <div>• 糖醋里脊: ¥20 (充足)</div>
+                                <div>• 鱼香肉丝: ¥16 (充足)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 订餐管理 -->
+                <div class="bg-gradient-to-br from-green-50 to-teal-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-clipboard-list text-green-600 mr-2"></i>
+                        订餐管理
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-lg p-3 border border-green-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">预订统计</span>
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">实时</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 早餐预订: 245份</div>
+                                <div>• 午餐预订: 856份</div>
+                                <div>• 晚餐预订: 423份</div>
+                                <div class="text-green-600">• 总计: 1,524份</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-blue-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">配送状态</span>
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">进行中</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 已配送: 756份</div>
+                                <div>• 配送中: 85份</div>
+                                <div>• 待配送: 15份</div>
+                                <div class="text-blue-600">• 配送率: 88.2%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 营养健康分析 -->
+                <div class="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-heartbeat text-purple-600 mr-2"></i>
+                        营养健康分析
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-lg p-3 border border-purple-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">营养搭配</span>
+                                <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">优良</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 蛋白质: 25g (适宜)</div>
+                                <div>• 碳水化合物: 85g (适宜)</div>
+                                <div>• 脂肪: 18g (适宜)</div>
+                                <div class="text-purple-600">• 总热量: 580卡</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-pink-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">健康建议</span>
+                                <span class="px-2 py-1 bg-pink-100 text-pink-800 text-xs rounded-full">AI推荐</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 增加蔬菜摄入量</div>
+                                <div>• 减少油炸食品</div>
+                                <div>• 多选择蒸煮类菜品</div>
+                                <div class="text-pink-600">• 健康指数: 85分</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要功能区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 服务大厅 -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-store text-primary mr-2"></i>
+                    服务大厅
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- 餐饮服务 -->
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                        <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-utensils text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-gray-800 text-center mb-1">餐饮服务</h3>
+                        <p class="text-xs text-gray-600 text-center">在线订餐</p>
+                    </div>
+
+                    <!-- 班车服务 -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                        <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-bus text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-gray-800 text-center mb-1">班车服务</h3>
+                        <p class="text-xs text-gray-600 text-center">时刻表查询</p>
+                    </div>
+
+                    <!-- 快递服务 -->
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-box text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-gray-800 text-center mb-1">快递服务</h3>
+                        <p class="text-xs text-gray-600 text-center">收发管理</p>
+                    </div>
+
+                    <!-- 医务室 -->
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                        <div class="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-first-aid text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-gray-800 text-center mb-1">医务室</h3>
+                        <p class="text-xs text-gray-600 text-center">健康服务</p>
+                    </div>
+
+                    <!-- 健身房 -->
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                        <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-dumbbell text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-gray-800 text-center mb-1">健身房</h3>
+                        <p class="text-xs text-gray-600 text-center">预约使用</p>
+                    </div>
+
+                    <!-- 便利店 -->
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                        <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-shopping-cart text-white text-xl"></i>
+                        </div>
+                        <h3 class="text-sm font-semibold text-gray-800 text-center mb-1">便利店</h3>
+                        <p class="text-xs text-gray-600 text-center">日用品购买</p>
+                    </div>
+                </div>
+
+                <!-- 公告栏 -->
+                <div class="mt-6 bg-gray-50 rounded-lg p-4">
+                    <h3 class="text-sm font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-bullhorn text-primary mr-2"></i>
+                        园区公告
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="text-sm text-gray-700 p-2 bg-white rounded border-l-4 border-blue-500">
+                            <span class="font-medium">系统维护通知：</span>明日凌晨2:00-4:00进行系统升级维护
+                        </div>
+                        <div class="text-sm text-gray-700 p-2 bg-white rounded border-l-4 border-green-500">
+                            <span class="font-medium">新员工培训：</span>本周五下午2:00在培训室举行新员工入职培训
+                        </div>
+                        <div class="text-sm text-gray-700 p-2 bg-white rounded border-l-4 border-yellow-500">
+                            <span class="font-medium">食堂菜单：</span>本周新增川菜系列，欢迎品尝
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快捷服务 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-rocket text-primary mr-2"></i>
+                    快捷服务
+                </h2>
+                <div class="space-y-4">
+                    <button class="w-full bg-indigo-600 text-white p-4 rounded-lg text-left hover:bg-indigo-700 transition-colors">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar-plus text-2xl mr-3"></i>
+                            <div>
+                                <div class="font-medium">会议室预约</div>
+                                <div class="text-sm opacity-90">快速预约会议室</div>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="w-full bg-green-600 text-white p-4 rounded-lg text-left hover:bg-green-700 transition-colors">
+                        <div class="flex items-center">
+                            <i class="fas fa-wrench text-2xl mr-3"></i>
+                            <div>
+                                <div class="font-medium">报修服务</div>
+                                <div class="text-sm opacity-90">设施设备报修</div>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="w-full bg-blue-600 text-white p-4 rounded-lg text-left hover:bg-blue-700 transition-colors">
+                        <div class="flex items-center">
+                            <i class="fas fa-phone text-2xl mr-3"></i>
+                            <div>
+                                <div class="font-medium">客服热线</div>
+                                <div class="text-sm opacity-90">400-123-4567</div>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="w-full bg-purple-600 text-white p-4 rounded-lg text-left hover:bg-purple-700 transition-colors">
+                        <div class="flex items-center">
+                            <i class="fas fa-question-circle text-2xl mr-3"></i>
+                            <div>
+                                <div class="font-medium">在线客服</div>
+                                <div class="text-sm opacity-90">即时咨询服务</div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务工单 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-clipboard-list text-primary mr-2"></i>
+                    服务工单
+                </h2>
+                <button class="bg-primary text-white px-4 py-2 rounded text-sm hover:bg-primary-light transition-colors">
+                    <i class="fas fa-plus mr-2"></i>新建工单
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">工单号</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">服务类型</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">申请人</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">申请时间</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">状态</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">处理人</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4 text-gray-800">WO202501170001</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">设备维修</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">张三</td>
+                            <td class="py-3 px-4 text-gray-600">2025-01-17 14:30</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">处理中</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">李维修</td>
+                            <td class="py-3 px-4">
+                                <button class="text-blue-600 hover:text-blue-700 text-xs mr-2">查看</button>
+                                <button class="text-green-600 hover:text-green-700 text-xs">完成</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4 text-gray-800">WO202501170002</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">清洁服务</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">王五</td>
+                            <td class="py-3 px-4 text-gray-600">2025-01-17 13:15</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">赵清洁</td>
+                            <td class="py-3 px-4">
+                                <button class="text-blue-600 hover:text-blue-700 text-xs mr-2">查看</button>
+                                <button class="text-purple-600 hover:text-purple-700 text-xs">评价</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4 text-gray-800">WO202501170003</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">IT支持</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">刘六</td>
+                            <td class="py-3 px-4 text-gray-600">2025-01-17 11:45</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">待分配</span>
+                            </td>
+                            <td class="py-3 px-4 text-gray-600">-</td>
+                            <td class="py-3 px-4">
+                                <button class="text-blue-600 hover:text-blue-700 text-xs mr-2">查看</button>
+                                <button class="text-orange-600 hover:text-orange-700 text-xs">分配</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 住宿管理与班车服务 -->
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 公寓住宿管理 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-bed text-primary mr-2"></i>
+                        公寓住宿管理
+                    </h2>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">房间管理</button>
+                        <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">入住管理</button>
+                    </div>
+                </div>
+
+                <!-- 住宿统计 -->
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-lg font-bold text-blue-600">85.6%</div>
+                                <div class="text-xs text-gray-600">入住率</div>
+                            </div>
+                            <i class="fas fa-home text-blue-600"></i>
+                        </div>
+                        <div class="text-xs text-green-600 mt-1">已入住: 156间</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-lg font-bold text-green-600">26</div>
+                                <div class="text-xs text-gray-600">空余房间</div>
+                            </div>
+                            <i class="fas fa-door-open text-green-600"></i>
+                        </div>
+                        <div class="text-xs text-blue-600 mt-1">可预订: 22间</div>
+                    </div>
+                </div>
+
+                <!-- 房间类型管理 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">房间类型与状态</h3>
+                    <div class="space-y-2">
+                        <div class="bg-blue-50 border border-blue-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">单人间</span>
+                                    <div class="text-xs text-gray-500">总数: 120间 | 已入住: 98间</div>
+                                </div>
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">81.7%</span>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 border border-green-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">双人间</span>
+                                    <div class="text-xs text-gray-500">总数: 50间 | 已入住: 45间</div>
+                                </div>
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">90.0%</span>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border border-yellow-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">套房</span>
+                                    <div class="text-xs text-gray-500">总数: 12间 | 已入住: 8间</div>
+                                </div>
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">66.7%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 住宿服务 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">住宿服务管理</h3>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-3">
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 房间清洁: 每日清洁服务</div>
+                            <div>• 设施维护: 定期检查维修</div>
+                            <div>• 安全管理: 24小时门禁系统</div>
+                            <div class="text-purple-600">• 满意度: 4.7分</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 住宿管理操作 -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button class="px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                        <i class="fas fa-plus mr-1"></i>新增入住
+                    </button>
+                    <button class="px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                        <i class="fas fa-calendar mr-1"></i>预订管理
+                    </button>
+                </div>
+            </div>
+
+            <!-- 班车通勤服务 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-bus text-primary mr-2"></i>
+                        班车通勤服务
+                    </h2>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">班车调度</button>
+                        <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">路线管理</button>
+                    </div>
+                </div>
+
+                <!-- 班车统计 -->
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-lg font-bold text-green-600">8</div>
+                                <div class="text-xs text-gray-600">运行班车</div>
+                            </div>
+                            <i class="fas fa-bus text-green-600"></i>
+                        </div>
+                        <div class="text-xs text-blue-600 mt-1">总班次: 32次/日</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-lg font-bold text-orange-600">456</div>
+                                <div class="text-xs text-gray-600">今日乘客</div>
+                            </div>
+                            <i class="fas fa-users text-orange-600"></i>
+                        </div>
+                        <div class="text-xs text-green-600 mt-1">较昨日: ↑8.5%</div>
+                    </div>
+                </div>
+
+                <!-- 班车路线 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">班车路线状态</h3>
+                    <div class="space-y-2">
+                        <div class="bg-green-50 border border-green-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">A线 - 市中心</span>
+                                    <div class="text-xs text-gray-500">发车: 07:30 | 预计到达: 08:15</div>
+                                </div>
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                            </div>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">B线 - 高铁站</span>
+                                    <div class="text-xs text-gray-500">发车: 08:00 | 预计到达: 08:35</div>
+                                </div>
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">运行中</span>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 border border-yellow-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">C线 - 住宅区</span>
+                                    <div class="text-xs text-gray-500">发车: 08:30 | 延误: 5分钟</div>
+                                </div>
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">延误</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 班车服务分析 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">服务分析</h3>
+                    <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-3">
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 准点率: 92.5%</div>
+                            <div>• 满载率: 78.3%</div>
+                            <div>• 服务满意度: 4.5分</div>
+                            <div class="text-indigo-600">• 月度乘客: 12,850人次</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 班车服务操作 -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button class="px-3 py-2 bg-orange-600 text-white text-sm rounded hover:bg-orange-700">
+                        <i class="fas fa-route mr-1"></i>路线优化
+                    </button>
+                    <button class="px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                        <i class="fas fa-clock mr-1"></i>时刻表
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 会议室与活动场地预订 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-calendar-check text-primary mr-2"></i>
+                    会议室与活动场地预订
+                </h2>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">场地预订</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">设备管理</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">使用统计</button>
+                </div>
+            </div>
+
+            <!-- 场地预订统计 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-lg font-bold text-blue-600">15</div>
+                            <div class="text-xs text-gray-600">会议室总数</div>
+                        </div>
+                        <i class="fas fa-door-closed text-blue-600"></i>
+                    </div>
+                    <div class="text-xs text-green-600 mt-1">使用中: 8间</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-lg font-bold text-green-600">76.5%</div>
+                            <div class="text-xs text-gray-600">今日使用率</div>
+                        </div>
+                        <i class="fas fa-chart-pie text-green-600"></i>
+                    </div>
+                    <div class="text-xs text-blue-600 mt-1">预订: 23次</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-lg font-bold text-yellow-600">3</div>
+                            <div class="text-xs text-gray-600">活动场地</div>
+                        </div>
+                        <i class="fas fa-building text-yellow-600"></i>
+                    </div>
+                    <div class="text-xs text-green-600 mt-1">可用: 2个</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-lg font-bold text-purple-600">4.8</div>
+                            <div class="text-xs text-gray-600">服务评分</div>
+                        </div>
+                        <i class="fas fa-star text-purple-600"></i>
+                    </div>
+                    <div class="text-xs text-blue-600 mt-1">评价: 156条</div>
+                </div>
+            </div>
+
+            <!-- 场地预订管理 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 会议室预订 -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-users text-blue-600 mr-2"></i>
+                        会议室预订状态
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="bg-white rounded p-2 border border-blue-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">大会议室A (50人)</span>
+                                    <div class="text-xs text-gray-500">09:00-11:00 | 部门例会</div>
+                                </div>
+                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">使用中</span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded p-2 border border-green-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">中会议室B (20人)</span>
+                                    <div class="text-xs text-gray-500">14:00-16:00 | 项目讨论</div>
+                                </div>
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">已预订</span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded p-2 border border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">小会议室C (8人)</span>
+                                    <div class="text-xs text-gray-500">全天可用</div>
+                                </div>
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">空闲</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 活动场地管理 -->
+                <div class="bg-gradient-to-br from-green-50 to-teal-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-calendar-alt text-green-600 mr-2"></i>
+                        活动场地管理
+                    </h3>
+                    <div class="space-y-2">
+                        <div class="bg-white rounded p-2 border border-green-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">多功能厅 (200人)</span>
+                                    <div class="text-xs text-gray-500">明日 | 年会活动</div>
+                                </div>
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">已预订</span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded p-2 border border-yellow-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">培训中心 (100人)</span>
+                                    <div class="text-xs text-gray-500">本周三 | 技能培训</div>
+                                </div>
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">准备中</span>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded p-2 border border-gray-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <span class="text-sm font-medium text-gray-700">展示厅 (150人)</span>
+                                    <div class="text-xs text-gray-500">本月可预订</div>
+                                </div>
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">空闲</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 场地预订操作 -->
+            <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+                <button class="px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                    <i class="fas fa-plus mr-1"></i>新增预订
+                </button>
+                <button class="px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                    <i class="fas fa-cog mr-1"></i>设备配置
+                </button>
+                <button class="px-3 py-2 bg-orange-600 text-white text-sm rounded hover:bg-orange-700">
+                    <i class="fas fa-chart-bar mr-1"></i>使用统计
+                </button>
+                <button class="px-3 py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700">
+                    <i class="fas fa-calendar mr-1"></i>预订日历
+                </button>
+            </div>
+        </div>
+
+        <!-- 满意度调查 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-star text-primary mr-2"></i>
+                服务满意度
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-yellow-500 mb-2">4.8</div>
+                    <div class="flex justify-center mb-2">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                    </div>
+                    <div class="text-sm text-gray-600">总体满意度</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-500 mb-2">96%</div>
+                    <div class="text-sm text-gray-600 mb-2">服务及时性</div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-500 h-2 rounded-full" style="width: 96%"></div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-500 mb-2">94%</div>
+                    <div class="text-sm text-gray-600 mb-2">服务质量</div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 94%"></div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-500 mb-2">98%</div>
+                    <div class="text-sm text-gray-600 mb-2">服务态度</div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-purple-500 h-2 rounded-full" style="width: 98%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟实时服务数据更新
+        function updateServiceData() {
+            console.log('综合服务数据更新');
+
+            // 更新餐饮服务数据
+            updateCateringService();
+
+            // 更新住宿管理数据
+            updateAccommodationManagement();
+
+            // 更新班车服务数据
+            updateShuttleService();
+
+            // 更新场地预订数据
+            updateVenueReservation();
+        }
+
+        // 更新餐饮服务数据
+        function updateCateringService() {
+            const cateringData = {
+                todayOrders: Math.floor(850 + Math.random() * 50),
+                satisfaction: (4.5 + Math.random() * 0.3).toFixed(1),
+                revenue: (12 + Math.random() * 2).toFixed(1) + 'K',
+                popularDish: ['宫保鸡丁', '红烧肉', '糖醋里脊'][Math.floor(Math.random() * 3)],
+                deliveryRate: (85 + Math.random() * 10).toFixed(1) + '%'
+            };
+
+            console.log('餐饮服务数据更新:', cateringData);
+        }
+
+        // 更新住宿管理数据
+        function updateAccommodationManagement() {
+            const accommodationData = {
+                occupancyRate: (83 + Math.random() * 8).toFixed(1) + '%',
+                occupiedRooms: Math.floor(150 + Math.random() * 15),
+                availableRooms: Math.floor(20 + Math.random() * 10),
+                satisfaction: (4.6 + Math.random() * 0.3).toFixed(1),
+                maintenanceRequests: Math.floor(2 + Math.random() * 4)
+            };
+
+            console.log('住宿管理数据更新:', accommodationData);
+        }
+
+        // 更新班车服务数据
+        function updateShuttleService() {
+            const shuttleData = {
+                runningBuses: Math.floor(7 + Math.random() * 3),
+                todayPassengers: Math.floor(450 + Math.random() * 50),
+                onTimeRate: (90 + Math.random() * 8).toFixed(1) + '%',
+                loadRate: (75 + Math.random() * 10).toFixed(1) + '%',
+                monthlyPassengers: Math.floor(12500 + Math.random() * 500)
+            };
+
+            console.log('班车服务数据更新:', shuttleData);
+        }
+
+        // 更新场地预订数据
+        function updateVenueReservation() {
+            const venueData = {
+                totalMeetingRooms: 15,
+                roomsInUse: Math.floor(6 + Math.random() * 5),
+                todayUtilization: (70 + Math.random() * 15).toFixed(1) + '%',
+                todayReservations: Math.floor(20 + Math.random() * 8),
+                serviceRating: (4.7 + Math.random() * 0.3).toFixed(1)
+            };
+
+            console.log('场地预订数据更新:', venueData);
+        }
+
+        // 初始化餐饮服务系统
+        function initCateringService() {
+            console.log('初始化餐饮服务系统');
+
+            // 餐饮服务按钮事件
+            const cateringButtons = document.querySelectorAll('button');
+            cateringButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('在线订餐')) {
+                    button.addEventListener('click', function() {
+                        console.log('在线订餐系统');
+                        alert('在线订餐系统:\n今日菜单: 荤菜12种、素菜8种\n订餐时间: 06:00-10:30\n配送时间: 11:30-13:00\n支付方式: 员工卡、微信、支付宝');
+                    });
+                } else if (text.includes('菜单管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('菜单管理系统');
+                        alert('菜单管理系统:\n每日菜单更新\n营养搭配分析\n成本核算管理\n库存预警提醒');
+                    });
+                } else if (text.includes('营养分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('营养健康分析');
+                        alert('营养健康分析:\n蛋白质: 25g\n碳水化合物: 85g\n脂肪: 18g\n总热量: 580卡\n健康指数: 85分');
+                    });
+                }
+            });
+        }
+
+        // 初始化住宿管理系统
+        function initAccommodationManagement() {
+            console.log('初始化住宿管理系统');
+
+            // 住宿管理按钮事件
+            const accommodationButtons = document.querySelectorAll('button');
+            accommodationButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('房间管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('房间管理系统');
+                        alert('房间管理系统:\n单人间: 120间 (入住率81.7%)\n双人间: 50间 (入住率90.0%)\n套房: 12间 (入住率66.7%)\n维护状态: 良好');
+                    });
+                } else if (text.includes('入住管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('入住管理系统');
+                        alert('入住管理系统:\n在住人员: 156人\n今日入住: 8人\n今日退房: 5人\n预订管理: 22间可预订');
+                    });
+                } else if (text.includes('新增入住')) {
+                    button.addEventListener('click', function() {
+                        console.log('新增入住登记');
+                        alert('新增入住登记:\n房间选择: 单人间/双人间/套房\n入住时间: 选择日期\n住宿期限: 短期/长期\n费用结算: 月结/季结');
+                    });
+                } else if (text.includes('预订管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('预订管理系统');
+                        alert('预订管理系统:\n在线预订: 支持提前预订\n预订确认: 自动确认机制\n取消政策: 提前24小时\n房间分配: 智能分配系统');
+                    });
+                }
+            });
+        }
+
+        // 初始化班车服务系统
+        function initShuttleService() {
+            console.log('初始化班车服务系统');
+
+            // 班车服务按钮事件
+            const shuttleButtons = document.querySelectorAll('button');
+            shuttleButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('班车调度')) {
+                    button.addEventListener('click', function() {
+                        console.log('班车调度系统');
+                        alert('班车调度系统:\n运行班车: 8辆\n总班次: 32次/日\n准点率: 92.5%\n满载率: 78.3%');
+                    });
+                } else if (text.includes('路线管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('路线管理系统');
+                        alert('路线管理系统:\nA线-市中心: 正常运行\nB线-高铁站: 运行中\nC线-住宅区: 延误5分钟\n路线优化: AI智能推荐');
+                    });
+                } else if (text.includes('路线优化')) {
+                    button.addEventListener('click', function() {
+                        console.log('路线优化分析');
+                        alert('路线优化分析:\n客流分析: 高峰时段识别\n路线调整: 减少绕行\n时刻表优化: 提高准点率\n预计效果: 效率提升15%');
+                    });
+                } else if (text.includes('时刻表')) {
+                    button.addEventListener('click', function() {
+                        console.log('班车时刻表');
+                        alert('班车时刻表:\n早班: 07:00-09:00 (每30分钟)\n正常: 09:00-17:00 (每60分钟)\n晚班: 17:00-19:00 (每30分钟)\n节假日: 特殊安排');
+                    });
+                }
+            });
+        }
+
+        // 初始化场地预订系统
+        function initVenueReservation() {
+            console.log('初始化场地预订系统');
+
+            // 场地预订按钮事件
+            const venueButtons = document.querySelectorAll('button');
+            venueButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('场地预订')) {
+                    button.addEventListener('click', function() {
+                        console.log('场地预订系统');
+                        alert('场地预订系统:\n会议室: 15间 (使用率76.5%)\n活动场地: 3个 (可用2个)\n预订方式: 在线预订\n设备配套: 投影仪、音响等');
+                    });
+                } else if (text.includes('设备管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('设备管理系统');
+                        alert('设备管理系统:\n投影设备: 15套 (正常14套)\n音响系统: 12套 (正常12套)\n视频会议: 8套 (正常7套)\n维护状态: 定期保养');
+                    });
+                } else if (text.includes('使用统计')) {
+                    button.addEventListener('click', function() {
+                        console.log('使用统计分析');
+                        alert('使用统计分析:\n今日使用率: 76.5%\n热门时段: 09:00-11:00, 14:00-16:00\n热门会议室: 大会议室A\n月度趋势: 使用率稳步上升');
+                    });
+                } else if (text.includes('新增预订')) {
+                    button.addEventListener('click', function() {
+                        console.log('新增场地预订');
+                        alert('新增场地预订:\n选择场地: 会议室/活动厅\n预订时间: 选择日期时段\n设备需求: 投影仪、音响等\n审批流程: 自动审批');
+                    });
+                } else if (text.includes('预订日历')) {
+                    button.addEventListener('click', function() {
+                        console.log('预订日历查看');
+                        alert('预订日历:\n日历视图: 月度/周度/日度\n预订状态: 已预订/使用中/空闲\n冲突检测: 自动提醒\n批量预订: 支持重复预订');
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后启动实时更新
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化实时数据更新
+            updateServiceData();
+            setInterval(updateServiceData, 30000); // 每30秒更新一次
+
+            // 初始化各功能模块
+            initCateringService();
+            initAccommodationManagement();
+            initShuttleService();
+            initVenueReservation();
+
+            console.log('综合服务深度功能初始化完成');
+        });
+    </script>
+</body>
+</html>

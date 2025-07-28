@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备点巡检 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">设备点巡检</h1>
+            <p class="text-gray-600">基于Process.md 2.4.8流程：点检计划→执行检查→结果上传→确认归档，实现设备外观、功能的规范化检查</p>
+        </div>
+
+        <!-- 设备点巡检流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">设备点巡检流程</h3>
+                    <span class="text-sm text-gray-600">规范化检查管理</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">点检计划</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">执行检查</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">结果上传</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">确认归档</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="inspectionPlanBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-calendar-alt mr-2"></i>
+                点检计划
+            </button>
+            <button id="executeInspectionBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-search mr-2"></i>
+                执行检查
+            </button>
+            <button id="uploadResultBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-upload mr-2"></i>
+                结果上传
+            </button>
+            <button id="confirmArchiveBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                确认归档
+            </button>
+            <button id="inspectionStandardBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-clipboard-check mr-2"></i>
+                检查标准
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 设备点巡检统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">89</div>
+                        <div class="text-sm text-gray-600">点检计划</div>
+                        <div class="text-xs text-gray-500">本周制定</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">76</div>
+                        <div class="text-sm text-gray-600">已完成</div>
+                        <div class="text-xs text-gray-500">点检任务</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">13</div>
+                        <div class="text-sm text-gray-600">进行中</div>
+                        <div class="text-xs text-gray-500">点检任务</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-search text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">95.5%</div>
+                        <div class="text-sm text-gray-600">完成率</div>
+                        <div class="text-xs text-gray-500">按时完成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">156</div>
+                        <div class="text-sm text-gray-600">上传照片</div>
+                        <div class="text-xs text-gray-500">本周累计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-camera text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">4</div>
+                        <div class="text-sm text-gray-600">异常发现</div>
+                        <div class="text-xs text-gray-500">需要处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 点检计划和任务面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 点检计划管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">点检计划管理</h3>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-clock text-blue-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">日常点检计划</div>
+                                    <div class="text-xs text-gray-500">每日外观、按钮、指示灯检查</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-blue-600">45个</div>
+                                <div class="text-xs text-gray-500">今日任务</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-green-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar-week text-green-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">周点检计划</div>
+                                    <div class="text-xs text-gray-500">功能性能、精度检查</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-green-600">28个</div>
+                                <div class="text-xs text-gray-500">本周任务</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-purple-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar text-purple-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">月点检计划</div>
+                                    <div class="text-xs text-gray-500">深度检查、专项检测</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-purple-600">16个</div>
+                                <div class="text-xs text-gray-500">本月任务</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 点检提醒面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">点检提醒</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">逾期点检</div>
+                                <div class="text-xs text-gray-600">PACK产线装配线1 - 日常点检</div>
+                                <div class="text-xs text-gray-500">逾期: 2天</div>
+                            </div>
+                            <button onclick="executeUrgentInspection('INSP001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                立即执行
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">即将到期</div>
+                                <div class="text-xs text-gray-600">PCBA测试设备 - 周点检</div>
+                                <div class="text-xs text-gray-500">剩余: 1天</div>
+                            </div>
+                            <button onclick="scheduleInspection('INSP002')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                安排点检
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-blue-800">计划点检</div>
+                                <div class="text-xs text-gray-600">6轴机器人 - 月点检</div>
+                                <div class="text-xs text-gray-500">计划: 明天</div>
+                            </div>
+                            <button onclick="viewInspectionPlan('INSP003')" class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200">
+                                查看计划
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备点巡检记录表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备点巡检记录</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部点检类型</option>
+                        <option>日常点检</option>
+                        <option>周点检</option>
+                        <option>月点检</option>
+                        <option>专项点检</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>计划中</option>
+                        <option>进行中</option>
+                        <option>已完成</option>
+                        <option>逾期</option>
+                    </select>
+                    <input type="date" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                    <input type="text" placeholder="搜索设备名称、点检人员..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">点检编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">点检类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">点检项目</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">执行人员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">执行状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检查结果</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="inspectionTableBody">
+                        <!-- 点检数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.8的设备点巡检数据模型
+        const inspectionData = [
+            {
+                id: 'INSP202501001',
+                inspectionCode: 'DI-PACK-001-001',
+                equipmentId: 'EQP001',
+                equipmentCode: 'PACK-ASM-001',
+                equipmentName: 'PACK产线装配线1',
+                workshop: 'PACK产线',
+                inspectionType: 'daily',
+                inspectionTypeName: '日常点检',
+                frequency: '每日',
+                status: 'completed',
+                statusName: '已完成',
+                planDate: '2025-01-16',
+                actualDate: '2025-01-16',
+                inspector: '张操作员',
+                inspectorId: 'OP001',
+                supervisor: '李班长',
+                supervisorId: 'SUP001',
+                inspectionItems: [
+                    { item: '设备外观检查', standard: '无损伤、清洁', result: 'normal', notes: '外观良好' },
+                    { item: '按钮指示灯检查', standard: '功能正常、显示清晰', result: 'normal', notes: '指示正常' },
+                    { item: '运行声音检查', standard: '无异响', result: 'normal', notes: '运行平稳' },
+                    { item: '温度检查', standard: '≤40℃', result: 'normal', notes: '温度正常' }
+                ],
+                overallResult: 'normal',
+                photos: ['外观照片1.jpg', '指示灯照片.jpg'],
+                duration: 0.5,
+                nextInspectionDate: '2025-01-17',
+                notes: '设备状态良好，无异常发现'
+            },
+            {
+                id: 'INSP202501002',
+                inspectionCode: 'WI-PCBA-002-001',
+                equipmentId: 'EQP002',
+                equipmentCode: 'PCBA-TEST-001',
+                equipmentName: 'PCBA测试设备',
+                workshop: 'PCBA车间',
+                inspectionType: 'weekly',
+                inspectionTypeName: '周点检',
+                frequency: '每周',
+                status: 'in_progress',
+                statusName: '进行中',
+                planDate: '2025-01-16',
+                actualDate: '2025-01-16',
+                inspector: '王技术员',
+                inspectorId: 'TECH001',
+                supervisor: '赵工程师',
+                supervisorId: 'ENG001',
+                inspectionItems: [
+                    { item: '测试精度检查', standard: '±0.1%', result: 'normal', notes: '精度符合要求' },
+                    { item: '校准状态检查', standard: '校准有效期内', result: 'normal', notes: '校准有效' },
+                    { item: '接线检查', standard: '连接牢固、无松动', result: 'abnormal', notes: '发现一处接线松动' },
+                    { item: '软件功能检查', standard: '功能正常', result: 'pending', notes: '检查中' }
+                ],
+                overallResult: 'abnormal',
+                photos: ['接线问题照片.jpg'],
+                duration: null,
+                nextInspectionDate: '2025-01-23',
+                notes: '发现接线松动问题，正在处理'
+            },
+            {
+                id: 'INSP202501003',
+                inspectionCode: 'MI-ROBOT-003-001',
+                equipmentId: 'EQP003',
+                equipmentCode: 'ROBOT-6AXIS-001',
+                equipmentName: '6轴机器人',
+                workshop: '逆变器车间',
+                inspectionType: 'monthly',
+                inspectionTypeName: '月点检',
+                frequency: '每月',
+                status: 'planned',
+                statusName: '计划中',
+                planDate: '2025-01-17',
+                actualDate: null,
+                inspector: '孙技师',
+                inspectorId: 'TECH002',
+                supervisor: '钱工程师',
+                supervisorId: 'ENG002',
+                inspectionItems: [
+                    { item: '机械精度检查', standard: '重复定位精度±0.02mm', result: 'pending', notes: '' },
+                    { item: '伺服系统检查', standard: '响应正常、无报警', result: 'pending', notes: '' },
+                    { item: '安全系统检查', standard: '安全门、急停功能正常', result: 'pending', notes: '' },
+                    { item: '润滑系统检查', standard: '润滑充足、无泄漏', result: 'pending', notes: '' },
+                    { item: '程序备份检查', standard: '程序完整、备份有效', result: 'pending', notes: '' }
+                ],
+                overallResult: 'pending',
+                photos: [],
+                duration: null,
+                nextInspectionDate: '2025-02-17',
+                notes: '计划明天进行月度深度检查'
+            },
+            {
+                id: 'INSP202501004',
+                inspectionCode: 'DI-AGING-004-001',
+                equipmentId: 'EQP004',
+                equipmentCode: 'AGING-ROOM-001',
+                equipmentName: '自动老化房',
+                workshop: '包装车间',
+                inspectionType: 'daily',
+                inspectionTypeName: '日常点检',
+                frequency: '每日',
+                status: 'overdue',
+                statusName: '逾期',
+                planDate: '2025-01-14',
+                actualDate: null,
+                inspector: '周操作员',
+                inspectorId: 'OP003',
+                supervisor: '吴班长',
+                supervisorId: 'SUP002',
+                inspectionItems: [
+                    { item: '温度显示检查', standard: '显示正常', result: 'pending', notes: '' },
+                    { item: '安全门检查', standard: '关闭严密', result: 'pending', notes: '' },
+                    { item: '报警系统检查', standard: '功能正常', result: 'pending', notes: '' }
+                ],
+                overallResult: 'pending',
+                photos: [],
+                duration: null,
+                nextInspectionDate: '2025-01-17',
+                overdueReason: '设备故障导致点检延期',
+                notes: '设备故障中，点检任务逾期'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            planned: { text: '计划中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-calendar' },
+            in_progress: { text: '进行中', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-search' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            overdue: { text: '逾期', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' }
+        };
+
+        // 点检类型映射
+        const inspectionTypeMap = {
+            daily: { text: '日常点检', icon: 'fas fa-clock', color: 'text-blue-600', description: '每日外观功能检查' },
+            weekly: { text: '周点检', icon: 'fas fa-calendar-week', color: 'text-green-600', description: '每周功能性能检查' },
+            monthly: { text: '月点检', icon: 'fas fa-calendar', color: 'text-purple-600', description: '每月深度专项检查' },
+            special: { text: '专项点检', icon: 'fas fa-search-plus', color: 'text-orange-600', description: '特殊项目检查' }
+        };
+
+        // 检查结果映射
+        const resultMap = {
+            normal: { text: '正常', class: 'text-green-600', icon: 'fas fa-check-circle' },
+            abnormal: { text: '异常', class: 'text-red-600', icon: 'fas fa-times-circle' },
+            pending: { text: '待检', class: 'text-gray-600', icon: 'fas fa-clock' }
+        };
+
+        let filteredData = [...inspectionData];
+
+        // 渲染设备点巡检表格
+        function renderInspectionTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('inspectionTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(inspection => {
+                const status = statusMap[inspection.status];
+                const inspectionType = inspectionTypeMap[inspection.inspectionType];
+                const overallResult = resultMap[inspection.overallResult];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewInspectionDetail('${inspection.id}')">
+                            ${inspection.inspectionCode}
+                        </div>
+                        <div class="text-xs text-gray-500">${inspection.planDate}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewEquipmentDetail('${inspection.equipmentId}')">
+                            ${inspection.equipmentCode}
+                        </div>
+                        <div class="text-sm text-gray-900">${inspection.equipmentName}</div>
+                        <div class="text-xs text-gray-500">${inspection.workshop}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${inspectionType.icon} ${inspectionType.color} mr-2"></i>
+                            <div>
+                                <div class="text-sm text-gray-900">${inspectionType.text}</div>
+                                <div class="text-xs text-gray-500">${inspectionType.description}</div>
+                                <div class="text-xs text-blue-600">${inspection.frequency}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="space-y-1">
+                            ${inspection.inspectionItems.slice(0, 3).map(item => `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-600">${item.item}</span>
+                                    <span class="text-xs ${resultMap[item.result].class}">
+                                        <i class="${resultMap[item.result].icon}"></i>
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${inspection.inspectionItems.length > 3 ? `
+                            <button onclick="viewAllItems('${inspection.id}')" class="text-xs text-blue-600 hover:underline mt-1">
+                                查看全部 (${inspection.inspectionItems.length})
+                            </button>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${inspection.inspector}</div>
+                        <div class="text-xs text-gray-500">${inspection.inspectorId}</div>
+                        <div class="text-xs text-blue-600">监督: ${inspection.supervisor}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">计划: ${inspection.planDate}</div>
+                        ${inspection.actualDate ? `
+                            <div class="text-xs text-gray-500">实际: ${inspection.actualDate}</div>
+                        ` : ''}
+                        ${inspection.duration ? `
+                            <div class="text-xs text-orange-600">用时: ${inspection.duration}小时</div>
+                        ` : ''}
+                        <div class="text-xs text-gray-500">下次: ${inspection.nextInspectionDate}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${inspection.overdueReason ? `
+                            <div class="text-xs text-red-600 mt-1">${inspection.overdueReason}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${overallResult.icon} ${overallResult.class} mr-2"></i>
+                            <span class="text-sm ${overallResult.class}">${overallResult.text}</span>
+                        </div>
+                        ${inspection.photos.length > 0 ? `
+                            <div class="text-xs text-blue-600 mt-1">
+                                照片: ${inspection.photos.length}张
+                            </div>
+                        ` : ''}
+                        ${inspection.inspectionItems.filter(item => item.result === 'abnormal').length > 0 ? `
+                            <div class="text-xs text-red-600 mt-1">
+                                异常: ${inspection.inspectionItems.filter(item => item.result === 'abnormal').length}项
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewInspectionDetail('${inspection.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${inspection.status === 'planned' ? `
+                                <button onclick="startInspection('${inspection.id}')" class="text-green-600 hover:text-green-900 p-1" title="开始点检">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            ` : ''}
+                            ${inspection.status === 'in_progress' ? `
+                                <button onclick="completeInspection('${inspection.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="完成点检">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            ${inspection.status === 'overdue' ? `
+                                <button onclick="rescheduleInspection('${inspection.id}')" class="text-red-600 hover:text-red-900 p-1" title="重新安排">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            ` : ''}
+                            ${inspection.photos.length > 0 ? `
+                                <button onclick="viewPhotos('${inspection.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="查看照片">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewInspectionStandard('${inspection.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="检查标准">
+                                <i class="fas fa-clipboard-check"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${inspectionData.length} 条记录`;
+        }
+
+        // 设备点巡检操作函数
+        function viewInspectionDetail(inspectionId) {
+            const inspection = inspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                let detailText = `点检详情：\n编号: ${inspection.inspectionCode}\n设备: ${inspection.equipmentName}\n点检类型: ${inspectionTypeMap[inspection.inspectionType].text}\n频率: ${inspection.frequency}\n执行人: ${inspection.inspector}\n监督人: ${inspection.supervisor}\n状态: ${statusMap[inspection.status].text}`;
+
+                detailText += `\n\n时间安排:\n计划日期: ${inspection.planDate}`;
+                if (inspection.actualDate) {
+                    detailText += `\n实际日期: ${inspection.actualDate}`;
+                    if (inspection.duration) {
+                        detailText += `\n用时: ${inspection.duration}小时`;
+                    }
+                }
+                detailText += `\n下次点检: ${inspection.nextInspectionDate}`;
+
+                detailText += `\n\n点检项目:`;
+                inspection.inspectionItems.forEach((item, index) => {
+                    const resultText = resultMap[item.result].text;
+                    detailText += `\n${index + 1}. ${item.item}\n   标准: ${item.standard}\n   结果: ${resultText}`;
+                    if (item.notes) {
+                        detailText += `\n   备注: ${item.notes}`;
+                    }
+                });
+
+                detailText += `\n\n总体结果: ${resultMap[inspection.overallResult].text}`;
+
+                if (inspection.photos.length > 0) {
+                    detailText += `\n\n上传照片: ${inspection.photos.length}张`;
+                    inspection.photos.forEach((photo, index) => {
+                        detailText += `\n${index + 1}. ${photo}`;
+                    });
+                }
+
+                if (inspection.notes) {
+                    detailText += `\n\n备注: ${inspection.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function executeUrgentInspection(inspectionId) {
+            alert(`紧急点检执行：\n点检ID: ${inspectionId}\n\n执行措施：\n- 立即安排点检人员\n- 优先级设为最高\n- 加急处理流程\n- 及时上报结果`);
+        }
+
+        function scheduleInspection(inspectionId) {
+            alert(`安排点检：\n点检ID: ${inspectionId}\n\n安排流程：\n- 确认点检时间\n- 分配点检人员\n- 准备检查工具\n- 下发点检任务`);
+        }
+
+        function viewInspectionPlan(inspectionId) {
+            alert(`点检计划：\n点检ID: ${inspectionId}\n\n计划详情：\n- 点检类型: 月点检\n- 计划时间: 明天上午\n- 预计用时: 2小时\n- 执行人员: 专业技师\n- 检查项目: 5项`);
+        }
+
+        function startInspection(inspectionId) {
+            const inspection = inspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                if (confirm(`确认开始点检？\n设备: ${inspection.equipmentName}\n点检类型: ${inspectionTypeMap[inspection.inspectionType].text}\n执行人: ${inspection.inspector}`)) {
+                    inspection.status = 'in_progress';
+                    inspection.actualDate = new Date().toISOString().split('T')[0];
+                    inspection.inspectionItems[0].result = 'normal';
+                    renderInspectionTable();
+                    alert('点检已开始！\n- 请按照点检标准执行\n- 及时记录检查结果\n- 发现异常立即上报');
+                }
+            }
+        }
+
+        function completeInspection(inspectionId) {
+            const inspection = inspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                const pendingItems = inspection.inspectionItems.filter(item => item.result === 'pending');
+                if (pendingItems.length > 0) {
+                    alert(`请先完成所有点检项目！\n待检项目: ${pendingItems.length}个`);
+                    return;
+                }
+
+                if (confirm(`确认完成点检？\n设备: ${inspection.equipmentName}\n点检类型: ${inspectionTypeMap[inspection.inspectionType].text}`)) {
+                    inspection.status = 'completed';
+                    inspection.duration = 1.5; // 模拟用时
+                    inspection.overallResult = inspection.inspectionItems.some(item => item.result === 'abnormal') ? 'abnormal' : 'normal';
+                    renderInspectionTable();
+                    alert('点检完成！\n- 检查结果已记录\n- 照片已上传\n- 下次点检已安排\n- 异常问题已上报');
+                }
+            }
+        }
+
+        function rescheduleInspection(inspectionId) {
+            const inspection = inspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                if (confirm(`重新安排点检？\n设备: ${inspection.equipmentName}\n逾期原因: ${inspection.overdueReason}`)) {
+                    inspection.status = 'planned';
+                    inspection.planDate = new Date().toISOString().split('T')[0];
+                    inspection.overdueReason = null;
+                    renderInspectionTable();
+                    alert('点检已重新安排！\n- 优先级设为高\n- 已通知执行人员\n- 计划今日完成');
+                }
+            }
+        }
+
+        function viewAllItems(inspectionId) {
+            const inspection = inspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                let itemsText = `${inspection.equipmentName} - 点检项目：\n\n`;
+                inspection.inspectionItems.forEach((item, index) => {
+                    const resultText = resultMap[item.result].text;
+                    itemsText += `${index + 1}. ${item.item}\n   标准: ${item.standard}\n   结果: ${resultText}`;
+                    if (item.notes) {
+                        itemsText += `\n   备注: ${item.notes}`;
+                    }
+                    itemsText += '\n\n';
+                });
+                alert(itemsText);
+            }
+        }
+
+        function viewPhotos(inspectionId) {
+            const inspection = inspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                let photosText = `${inspection.equipmentName} - 点检照片：\n\n`;
+                if (inspection.photos.length > 0) {
+                    inspection.photos.forEach((photo, index) => {
+                        photosText += `${index + 1}. ${photo}\n`;
+                    });
+                    photosText += `\n总计: ${inspection.photos.length}张照片\n上传时间: ${inspection.actualDate}`;
+                } else {
+                    photosText += '暂无上传照片';
+                }
+                alert(photosText);
+            }
+        }
+
+        function viewInspectionStandard(inspectionId) {
+            const inspection = inspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                let standardText = `${inspection.equipmentName} - 点检标准：\n\n`;
+                standardText += `点检类型: ${inspectionTypeMap[inspection.inspectionType].text}\n频率: ${inspection.frequency}\n\n检查标准:\n`;
+                inspection.inspectionItems.forEach((item, index) => {
+                    standardText += `${index + 1}. ${item.item}\n   标准: ${item.standard}\n\n`;
+                });
+                alert(standardText);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderInspectionTable();
+
+            // 点检计划
+            document.getElementById('inspectionPlanBtn').addEventListener('click', function() {
+                alert('点检计划功能：\n- 点检周期设定\n- 点检项目配置\n- 人员技能匹配\n- 计划自动生成\n- 提醒通知机制');
+            });
+
+            // 执行检查
+            document.getElementById('executeInspectionBtn').addEventListener('click', function() {
+                alert('执行检查功能：\n- 点检任务下发\n- 移动端支持\n- 实时结果录入\n- 照片上传功能\n- 异常即时上报');
+            });
+
+            // 结果上传
+            document.getElementById('uploadResultBtn').addEventListener('click', function() {
+                alert('结果上传功能：\n- 检查结果录入\n- 照片视频上传\n- 异常问题描述\n- 改善建议记录\n- 数据同步更新');
+            });
+
+            // 确认归档
+            document.getElementById('confirmArchiveBtn').addEventListener('click', function() {
+                alert('确认归档功能：\n- 点检结果审核\n- 异常问题跟踪\n- 改善措施确认\n- 档案信息归档\n- 统计分析生成');
+            });
+
+            // 检查标准
+            document.getElementById('inspectionStandardBtn').addEventListener('click', function() {
+                alert('检查标准功能：\n- 点检标准制定\n- 检查项目维护\n- 标准图片管理\n- 判定标准设定\n- 标准版本控制');
+            });
+        });
+    </script>
+</body>
+</html>

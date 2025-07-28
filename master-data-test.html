@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主数据平台测试 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">主数据平台功能测试</h1>
+            <p class="text-gray-600">测试主数据平台各个模块的导航和功能</p>
+        </div>
+
+        <!-- 主数据概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">1,256</div>
+                        <div class="text-sm text-gray-600">物料主数据</div>
+                        <div class="text-xs text-gray-500">已标准化</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cube text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">156</div>
+                        <div class="text-sm text-gray-600">设备主数据</div>
+                        <div class="text-xs text-gray-500">在线管理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cogs text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">245</div>
+                        <div class="text-sm text-gray-600">人员主数据</div>
+                        <div class="text-xs text-gray-500">活跃用户</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">98.5%</div>
+                        <div class="text-sm text-gray-600">数据质量</div>
+                        <div class="text-xs text-gray-500">整体评分</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主数据管理功能模块测试 -->
+        <div class="mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-6">主数据管理功能模块测试</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- 物料主数据管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="testModule('material-master')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-cube text-blue-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">核心</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">物料主数据管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">物料编码、规格、属性、BOM结构等信息管理</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">物料种类: 1,256</span>
+                            <span class="text-green-600 font-medium">标准化率: 98%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 设备主数据管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="testModule('equipment-master')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-cogs text-green-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">设备</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">设备主数据管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">设备档案、技术参数、维护记录、备件信息</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">设备数量: 156台</span>
+                            <span class="text-green-600 font-medium">在线率: 96%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 人员主数据管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="testModule('personnel-master')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-users text-orange-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">人员</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">人员主数据管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">员工档案、技能认证、岗位权限、组织关系</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">员工总数: 245人</span>
+                            <span class="text-green-600 font-medium">活跃率: 92%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 供应商主数据管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="testModule('supplier-master')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-truck text-purple-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">供应商</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">供应商主数据管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">供应商档案、资质认证、绩效评价、合作历史</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">供应商: 89家</span>
+                            <span class="text-green-600 font-medium">合格率: 95%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 客户主数据管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="testModule('customer-master')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-handshake text-red-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">客户</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">客户主数据管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">客户档案、信用评级、订单历史、服务记录</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">客户数量: 156家</span>
+                            <span class="text-green-600 font-medium">满意度: 98%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 组织架构管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="testModule('organization-master')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-sitemap text-indigo-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">组织</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">组织架构管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">部门结构、岗位设置、汇报关系、权限分配</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">部门数量: 15个</span>
+                            <span class="text-green-600 font-medium">结构完整</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据标准管理 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="testModule('data-standards')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-ruler text-teal-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-teal-100 text-teal-800 px-2 py-1 rounded-full">标准</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">数据标准管理</h3>
+                        <p class="text-sm text-gray-600 mb-4">编码规则、数据字典、标准模板、校验规则</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">标准数量: 45项</span>
+                            <span class="text-green-600 font-medium">执行率: 100%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据质量监控 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="testModule('data-quality')">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-chart-line text-yellow-600 text-xl"></i>
+                            </div>
+                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">质量</span>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">数据质量监控</h3>
+                        <p class="text-sm text-gray-600 mb-4">质量检查、异常监控、清洗规则、质量报告</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">监控规则: 28条</span>
+                            <span class="text-green-600 font-medium">质量评分: 98.5%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试结果显示区域 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">测试结果</h3>
+            <div id="testResults" class="space-y-2">
+                <div class="text-gray-600">点击上方模块卡片开始测试...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 测试模块功能
+        function testModule(module) {
+            const moduleUrls = {
+                'material-master': './pages/master-data/material-master.html',
+                'equipment-master': './pages/master-data/equipment-master.html',
+                'personnel-master': './pages/master-data/personnel-master.html',
+                'supplier-master': './pages/master-data/supplier-master.html',
+                'customer-master': './pages/master-data/customer-master.html',
+                'organization-master': './pages/master-data/organization-master.html',
+                'data-standards': './pages/master-data/data-standards.html',
+                'data-quality': './pages/master-data/data-quality.html'
+            };
+            
+            const moduleNames = {
+                'material-master': '物料主数据管理',
+                'equipment-master': '设备主数据管理',
+                'personnel-master': '人员主数据管理',
+                'supplier-master': '供应商主数据管理',
+                'customer-master': '客户主数据管理',
+                'organization-master': '组织架构管理',
+                'data-standards': '数据标准管理',
+                'data-quality': '数据质量监控'
+            };
+            
+            const resultsDiv = document.getElementById('testResults');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            // 添加测试记录
+            const testRecord = document.createElement('div');
+            testRecord.className = 'flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500';
+            testRecord.innerHTML = `
+                <div>
+                    <div class="text-sm font-medium text-blue-800">正在测试: ${moduleNames[module]}</div>
+                    <div class="text-xs text-gray-600">模块URL: ${moduleUrls[module]}</div>
+                    <div class="text-xs text-gray-500">测试时间: ${timestamp}</div>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">测试中</span>
+                </div>
+            `;
+            
+            resultsDiv.appendChild(testRecord);
+            
+            // 模拟测试过程
+            setTimeout(() => {
+                testRecord.className = 'flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500';
+                testRecord.querySelector('.text-blue-800').className = 'text-sm font-medium text-green-800';
+                testRecord.querySelector('.text-blue-800').textContent = `测试完成: ${moduleNames[module]}`;
+                testRecord.querySelector('.bg-blue-100').className = 'text-xs bg-green-100 text-green-800 px-2 py-1 rounded';
+                testRecord.querySelector('.bg-green-100').textContent = '测试通过';
+                
+                // 在新窗口中打开模块页面
+                if (moduleUrls[module]) {
+                    window.open(moduleUrls[module], '_blank');
+                }
+            }, 1000);
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('主数据平台测试页面已加载');
+            
+            // 添加初始化成功记录
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = `
+                <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                    <div>
+                        <div class="text-sm font-medium text-green-800">主数据平台测试页面初始化成功</div>
+                        <div class="text-xs text-gray-600">所有模块已准备就绪，可以开始测试</div>
+                        <div class="text-xs text-gray-500">初始化时间: ${new Date().toLocaleTimeString()}</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">就绪</span>
+                    </div>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>

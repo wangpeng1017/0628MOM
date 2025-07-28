@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据标准管理 - 主数据平台 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">数据标准管理</h1>
+            <p class="text-gray-600">统一管理编码规则、数据字典、标准模板、校验规则等数据标准</p>
+        </div>
+
+        <!-- 数据标准统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-teal-600">45</div>
+                        <div class="text-sm text-gray-600">数据标准</div>
+                        <div class="text-xs text-gray-500">已制定</div>
+                    </div>
+                    <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-ruler text-teal-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-600">编码规则</div>
+                        <div class="text-xs text-gray-500">规则数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-code text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">100%</div>
+                        <div class="text-sm text-gray-600">执行率</div>
+                        <div class="text-xs text-gray-500">标准执行</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">1,256</div>
+                        <div class="text-sm text-gray-600">字典条目</div>
+                        <div class="text-xs text-gray-500">数据字典</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-book text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据标准管理功能选项卡 -->
+        <div class="mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8">
+                    <button onclick="showTab('coding')" class="tab-button border-b-2 border-teal-500 text-teal-600 py-2 px-1 text-sm font-medium" id="coding-tab">
+                        编码规则管理
+                    </button>
+                    <button onclick="showTab('dictionary')" class="tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium" id="dictionary-tab">
+                        数据字典管理
+                    </button>
+                    <button onclick="showTab('templates')" class="tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium" id="templates-tab">
+                        标准模板管理
+                    </button>
+                    <button onclick="showTab('validation')" class="tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium" id="validation-tab">
+                        校验规则管理
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- 编码规则管理 -->
+        <div id="coding-content" class="tab-content">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">编码规则管理</h3>
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="addCodingRule()">
+                        <i class="fas fa-plus mr-2"></i>新增规则
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 物料编码规则 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">物料编码规则</h4>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">核心</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">规则格式:</span>
+                                <span class="text-gray-900 font-mono">MAT-XXXX-XXX</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">长度:</span>
+                                <span class="text-gray-900">11位</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">已使用:</span>
+                                <span class="text-gray-900">1,256个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">状态:</span>
+                                <span class="text-green-600">启用</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200">查看详情</button>
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">编辑</button>
+                        </div>
+                    </div>
+
+                    <!-- 设备编码规则 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">设备编码规则</h4>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">设备</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">规则格式:</span>
+                                <span class="text-gray-900 font-mono">EQP-XXX-XXX</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">长度:</span>
+                                <span class="text-gray-900">10位</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">已使用:</span>
+                                <span class="text-gray-900">156个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">状态:</span>
+                                <span class="text-green-600">启用</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">查看详情</button>
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">编辑</button>
+                        </div>
+                    </div>
+
+                    <!-- 人员编码规则 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">人员编码规则</h4>
+                            <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">人员</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">规则格式:</span>
+                                <span class="text-gray-900 font-mono">EMP-XXXX</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">长度:</span>
+                                <span class="text-gray-900">8位</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">已使用:</span>
+                                <span class="text-gray-900">245个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">状态:</span>
+                                <span class="text-green-600">启用</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded hover:bg-orange-200">查看详情</button>
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">编辑</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据字典管理 -->
+        <div id="dictionary-content" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">数据字典管理</h3>
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="addDictionary()">
+                        <i class="fas fa-plus mr-2"></i>新增字典
+                    </button>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">字典类型</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">字典名称</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">条目数量</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">更新时间</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        物料类别
+                                    </span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">物料分类字典</div>
+                                    <div class="text-xs text-gray-500">MATERIAL_CATEGORY</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-900">15条</span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-900">2025-01-15</span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                        启用
+                                    </span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-900">编辑</button>
+                                        <button class="text-green-600 hover:text-green-900">查看</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                        设备状态
+                                    </span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">设备运行状态字典</div>
+                                    <div class="text-xs text-gray-500">EQUIPMENT_STATUS</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-900">8条</span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-900">2025-01-12</span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                        启用
+                                    </span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-900">编辑</button>
+                                        <button class="text-green-600 hover:text-green-900">查看</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-orange-100 text-orange-800">
+                                        质量等级
+                                    </span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">产品质量等级字典</div>
+                                    <div class="text-xs text-gray-500">QUALITY_LEVEL</div>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-900">5条</span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="text-sm text-gray-900">2025-01-10</span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                        启用
+                                    </span>
+                                </td>
+                                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="text-blue-600 hover:text-blue-900">编辑</button>
+                                        <button class="text-green-600 hover:text-green-900">查看</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 标准模板管理 -->
+        <div id="templates-content" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">标准模板管理</h3>
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="addTemplate()">
+                        <i class="fas fa-plus mr-2"></i>新增模板
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 物料导入模板 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">物料导入模板</h4>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Excel</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">字段数量:</span>
+                                <span class="text-gray-900">15个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">版本:</span>
+                                <span class="text-gray-900">v2.1</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">更新时间:</span>
+                                <span class="text-gray-900">2025-01-15</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded hover:bg-blue-200">下载</button>
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">编辑</button>
+                        </div>
+                    </div>
+
+                    <!-- 设备档案模板 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">设备档案模板</h4>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Excel</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">字段数量:</span>
+                                <span class="text-gray-900">20个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">版本:</span>
+                                <span class="text-gray-900">v1.8</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">更新时间:</span>
+                                <span class="text-gray-900">2025-01-12</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded hover:bg-green-200">下载</button>
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">编辑</button>
+                        </div>
+                    </div>
+
+                    <!-- 人员信息模板 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-semibold text-gray-800">人员信息模板</h4>
+                            <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">Excel</span>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">字段数量:</span>
+                                <span class="text-gray-900">12个</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">版本:</span>
+                                <span class="text-gray-900">v1.5</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">更新时间:</span>
+                                <span class="text-gray-900">2025-01-10</span>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded hover:bg-orange-200">下载</button>
+                            <button class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded hover:bg-gray-200">编辑</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 校验规则管理 -->
+        <div id="validation-content" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">校验规则管理</h3>
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700" onclick="addValidationRule()">
+                        <i class="fas fa-plus mr-2"></i>新增规则
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-blue-800">物料编号唯一性校验</div>
+                                <div class="text-xs text-gray-600">确保物料编号在系统中唯一，不允许重复</div>
+                                <div class="text-xs text-gray-500">规则类型: 唯一性校验 | 应用范围: 物料主数据</div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">启用</span>
+                                <div class="text-xs text-gray-500 mt-1">校验次数: 1,256</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-green-800">设备编号格式校验</div>
+                                <div class="text-xs text-gray-600">设备编号必须符合EQP-XXX-XXX格式</div>
+                                <div class="text-xs text-gray-500">规则类型: 格式校验 | 应用范围: 设备主数据</div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">启用</span>
+                                <div class="text-xs text-gray-500 mt-1">校验次数: 156</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">员工邮箱格式校验</div>
+                                <div class="text-xs text-gray-600">员工邮箱必须符合标准邮箱格式</div>
+                                <div class="text-xs text-gray-500">规则类型: 格式校验 | 应用范围: 人员主数据</div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">启用</span>
+                                <div class="text-xs text-gray-500 mt-1">校验次数: 245</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-purple-800">数值范围校验</div>
+                                <div class="text-xs text-gray-600">数值字段必须在指定范围内</div>
+                                <div class="text-xs text-gray-500">规则类型: 范围校验 | 应用范围: 所有数值字段</div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">启用</span>
+                                <div class="text-xs text-gray-500 mt-1">校验次数: 2,345</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示选项卡
+        function showTab(tabName) {
+            // 隐藏所有内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // 重置所有选项卡样式
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('border-teal-500', 'text-teal-600');
+                button.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // 显示选中的内容
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+            
+            // 设置选中的选项卡样式
+            const activeTab = document.getElementById(tabName + '-tab');
+            activeTab.classList.remove('border-transparent', 'text-gray-500');
+            activeTab.classList.add('border-teal-500', 'text-teal-600');
+        }
+
+        // 操作函数
+        function addCodingRule() {
+            alert('新增编码规则功能');
+        }
+
+        function addDictionary() {
+            alert('新增数据字典功能');
+        }
+
+        function addTemplate() {
+            alert('新增标准模板功能');
+        }
+
+        function addValidationRule() {
+            alert('新增校验规则功能');
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('coding');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频监控管理 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-video text-primary mr-3"></i>
+                视频监控管理系统
+            </h1>
+            <p class="text-gray-600 mt-2">全方位视频监控，智能分析预警</p>
+        </div>
+
+        <!-- 监控概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">摄像头总数</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">260</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-video text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>在线:</span>
+                        <span class="text-green-600 font-medium">256台</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>离线:</span>
+                        <span class="text-red-600 font-medium">4台</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">在线率</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">98.5%</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>目标:</span>
+                        <span class="text-blue-600 font-medium">≥95%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>达标:</span>
+                        <span class="text-green-600 font-medium">是</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">存储容量</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">50TB</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-hdd text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>已使用:</span>
+                        <span class="text-purple-600 font-medium">32TB</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>使用率:</span>
+                        <span class="text-yellow-600 font-medium">64%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">AI分析</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">启用</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-brain text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>识别准确率:</span>
+                        <span class="text-green-600 font-medium">96.8%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>今日事件:</span>
+                        <span class="text-blue-600 font-medium">23个</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 监控区域分布 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-map text-blue-600 mr-2"></i>
+                监控区域分布
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">生产区域</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">85台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 在线: 83台</div>
+                        <div>• 离线: 2台</div>
+                        <div>• 覆盖率: 100%</div>
+                        <div>• 状态: 良好</div>
+                    </div>
+                    <button class="w-full mt-3 px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                        查看监控
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">办公区域</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">68台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 在线: 68台</div>
+                        <div>• 离线: 0台</div>
+                        <div>• 覆盖率: 95%</div>
+                        <div>• 状态: 优秀</div>
+                    </div>
+                    <button class="w-full mt-3 px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                        查看监控
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">仓储区域</h4>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">72台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 在线: 70台</div>
+                        <div>• 离线: 2台</div>
+                        <div>• 覆盖率: 100%</div>
+                        <div>• 状态: 良好</div>
+                    </div>
+                    <button class="w-full mt-3 px-3 py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700">
+                        查看监控
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4 border border-red-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">周界区域</h4>
+                        <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">35台</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 在线: 35台</div>
+                        <div>• 离线: 0台</div>
+                        <div>• 覆盖率: 100%</div>
+                        <div>• 状态: 优秀</div>
+                    </div>
+                    <button class="w-full mt-3 px-3 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                        查看监控
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时监控画面 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-eye text-green-600 mr-2"></i>
+                实时监控画面
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-black rounded-lg aspect-video flex items-center justify-center relative">
+                    <div class="text-center text-white">
+                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
+                        <p class="text-sm">生产线1 - 主入口</p>
+                        <p class="text-xs opacity-75">摄像头ID: CAM001</p>
+                    </div>
+                    <div class="absolute top-2 right-2">
+                        <span class="px-2 py-1 bg-green-500 text-white text-xs rounded">在线</span>
+                    </div>
+                    <div class="absolute bottom-2 left-2 text-white text-xs">
+                        2025-01-17 14:30:25
+                    </div>
+                </div>
+
+                <div class="bg-black rounded-lg aspect-video flex items-center justify-center relative">
+                    <div class="text-center text-white">
+                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
+                        <p class="text-sm">办公楼 - 大厅</p>
+                        <p class="text-xs opacity-75">摄像头ID: CAM015</p>
+                    </div>
+                    <div class="absolute top-2 right-2">
+                        <span class="px-2 py-1 bg-green-500 text-white text-xs rounded">在线</span>
+                    </div>
+                    <div class="absolute bottom-2 left-2 text-white text-xs">
+                        2025-01-17 14:30:25
+                    </div>
+                </div>
+
+                <div class="bg-black rounded-lg aspect-video flex items-center justify-center relative">
+                    <div class="text-center text-white">
+                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
+                        <p class="text-sm">仓库3 - 货物区</p>
+                        <p class="text-xs opacity-75">摄像头ID: CAM089</p>
+                    </div>
+                    <div class="absolute top-2 right-2">
+                        <span class="px-2 py-1 bg-green-500 text-white text-xs rounded">在线</span>
+                    </div>
+                    <div class="absolute bottom-2 left-2 text-white text-xs">
+                        2025-01-17 14:30:25
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-lg aspect-video flex items-center justify-center relative">
+                    <div class="text-center text-gray-400">
+                        <i class="fas fa-video-slash text-4xl mb-2"></i>
+                        <p class="text-sm">东门 - 车辆通道</p>
+                        <p class="text-xs opacity-75">摄像头ID: CAM156</p>
+                    </div>
+                    <div class="absolute top-2 right-2">
+                        <span class="px-2 py-1 bg-red-500 text-white text-xs rounded">离线</span>
+                    </div>
+                    <div class="absolute bottom-2 left-2 text-gray-400 text-xs">
+                        连接中断
+                    </div>
+                </div>
+
+                <div class="bg-black rounded-lg aspect-video flex items-center justify-center relative">
+                    <div class="text-center text-white">
+                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
+                        <p class="text-sm">周界 - 北侧围墙</p>
+                        <p class="text-xs opacity-75">摄像头ID: CAM201</p>
+                    </div>
+                    <div class="absolute top-2 right-2">
+                        <span class="px-2 py-1 bg-green-500 text-white text-xs rounded">在线</span>
+                    </div>
+                    <div class="absolute bottom-2 left-2 text-white text-xs">
+                        2025-01-17 14:30:25
+                    </div>
+                </div>
+
+                <div class="bg-black rounded-lg aspect-video flex items-center justify-center relative">
+                    <div class="text-center text-white">
+                        <i class="fas fa-video text-4xl mb-2 opacity-50"></i>
+                        <p class="text-sm">停车场 - A区</p>
+                        <p class="text-xs opacity-75">摄像头ID: CAM245</p>
+                    </div>
+                    <div class="absolute top-2 right-2">
+                        <span class="px-2 py-1 bg-green-500 text-white text-xs rounded">在线</span>
+                    </div>
+                    <div class="absolute bottom-2 left-2 text-white text-xs">
+                        2025-01-17 14:30:25
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 flex justify-center space-x-4">
+                <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-expand mr-2"></i>全屏显示
+                </button>
+                <button class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                    <i class="fas fa-play mr-2"></i>录像回放
+                </button>
+                <button class="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-download mr-2"></i>导出视频
+                </button>
+            </div>
+        </div>
+
+        <!-- AI智能分析 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-brain text-yellow-600 mr-2"></i>
+                    AI智能分析
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                        <h4 class="font-semibold text-gray-800 mb-2">人脸识别</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 识别准确率: 98.5%</div>
+                            <div>• 今日识别: 2,856人次</div>
+                            <div>• 陌生人检测: 12人次</div>
+                            <div>• 黑名单匹配: 0人次</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                        <h4 class="font-semibold text-gray-800 mb-2">行为分析</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 异常行为检测: 启用</div>
+                            <div>• 今日异常事件: 3起</div>
+                            <div>• 徘徊检测: 1起</div>
+                            <div>• 跌倒检测: 0起</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                        <h4 class="font-semibold text-gray-800 mb-2">物体识别</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 车辆识别: 启用</div>
+                            <div>• 今日车辆: 186辆次</div>
+                            <div>• 违规停车: 2起</div>
+                            <div>• 物品遗留: 0起</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-bell text-red-600 mr-2"></i>
+                    实时事件告警
+                </h3>
+                <div class="space-y-4">
+                    <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">异常徘徊检测</h4>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">处理中</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 位置: 生产区入口</div>
+                            <div>• 摄像头: CAM003</div>
+                            <div>• 时间: 14:25</div>
+                            <div>• 持续时长: 5分钟</div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700">
+                                查看视频
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                派遣人员
+                            </button>
+                        </div>
+                    </div>
+                    <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">陌生人员检测</h4>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已处理</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 位置: 办公楼大厅</div>
+                            <div>• 摄像头: CAM015</div>
+                            <div>• 时间: 13:45</div>
+                            <div>• 处理结果: 访客登记</div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                                查看记录
+                            </button>
+                        </div>
+                    </div>
+                    <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">车辆违规停放</h4>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">已处理</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 位置: 停车场A区</div>
+                            <div>• 摄像头: CAM245</div>
+                            <div>• 时间: 12:30</div>
+                            <div>• 处理结果: 车主已移车</div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                查看记录
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-cogs text-purple-600 mr-2"></i>
+                摄像头设备管理
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">位置</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">分辨率</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最后在线</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAM001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">生产线1-主入口</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">在线</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1920x1080</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 14:30</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAM015</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">办公楼-大厅</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">在线</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1920x1080</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 14:30</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CAM156</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">东门-车辆通道</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">离线</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1920x1080</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 12:15</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 cursor-pointer hover:underline">故障处理</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">添加摄像头</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-expand text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">全屏监控</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-brain text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">AI设置</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">导出录像</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 视频监控管理功能
+        function initVideoSurveillance() {
+            console.log('初始化视频监控管理功能');
+            
+            // 监控区域按钮事件
+            const areaButtons = document.querySelectorAll('button');
+            areaButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('查看监控')) {
+                    button.addEventListener('click', function() {
+                        const areaName = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('查看监控区域:', areaName);
+                        alert(`正在打开 ${areaName} 的监控画面...`);
+                    });
+                } else if (text.includes('全屏显示')) {
+                    button.addEventListener('click', function() {
+                        console.log('全屏显示监控');
+                        if (document.documentElement.requestFullscreen) {
+                            document.documentElement.requestFullscreen();
+                        }
+                    });
+                } else if (text.includes('录像回放')) {
+                    button.addEventListener('click', function() {
+                        console.log('录像回放');
+                        alert('正在打开录像回放界面...');
+                    });
+                } else if (text.includes('查看视频')) {
+                    button.addEventListener('click', function() {
+                        console.log('查看告警视频');
+                        alert('正在播放告警相关视频...');
+                    });
+                } else if (text.includes('派遣人员')) {
+                    button.addEventListener('click', function() {
+                        console.log('派遣安保人员');
+                        alert('已通知安保人员前往现场处理');
+                    });
+                }
+            });
+            
+            // 设备管理表格操作
+            const tableLinks = document.querySelectorAll('.cursor-pointer');
+            tableLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const action = this.textContent.trim();
+                    const deviceId = this.closest('tr').querySelector('td').textContent;
+                    console.log('设备操作:', action, deviceId);
+                    if (action === '故障处理') {
+                        alert(`正在处理设备 ${deviceId} 的故障...`);
+                    } else {
+                        alert(`正在查看设备 ${deviceId} 的详细信息...`);
+                    }
+                });
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initVideoSurveillance();
+            console.log('视频监控管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

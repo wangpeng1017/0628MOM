@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>租赁运营管理 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-handshake text-primary mr-3"></i>
+                租赁运营管理
+            </h1>
+            <p class="text-gray-600 mt-2">园区空间租赁运营，优化资产收益</p>
+        </div>
+
+        <!-- 租赁统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">出租率</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">85%</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-percentage text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>已出租:</span>
+                        <span class="text-green-600 font-medium">68间</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>空置:</span>
+                        <span class="text-orange-600 font-medium">12间</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">月租金收入</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">¥156万</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-coins text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">+8.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>收缴率:</span>
+                        <span class="text-blue-600 font-medium">98%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">租户数量</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">45</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-users text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>新增:</span>
+                        <span class="text-green-600 font-medium">3户</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>续租:</span>
+                        <span class="text-blue-600 font-medium">38户</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">平均租期</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">2.3年</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-calendar-alt text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>最长:</span>
+                        <span class="text-green-600 font-medium">5年</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>最短:</span>
+                        <span class="text-orange-600 font-medium">6个月</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 租户管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-building text-blue-600 mr-2"></i>
+                租户管理
+            </h3>
+            <div class="space-y-4">
+                <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                            <h4 class="font-semibold text-gray-800">华为技术有限公司</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">租户编号: T001</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">租赁面积:</span>
+                            <p class="font-medium">1,200 m²</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">月租金:</span>
+                            <p class="font-medium text-green-600">¥36万</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">租期:</span>
+                            <p class="font-medium">2023-01-01 ~ 2026-12-31</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">联系人:</span>
+                            <p class="font-medium">张经理</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">缴费状态:</span>
+                            <p class="font-medium text-green-600">已缴费</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>业务类型: 软件研发 | 员工数: 85人 | 信用等级: AAA</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                                续租管理
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">即将到期</span>
+                            <h4 class="font-semibold text-gray-800">腾讯科技有限公司</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">租户编号: T015</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">租赁面积:</span>
+                            <p class="font-medium">800 m²</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">月租金:</span>
+                            <p class="font-medium text-yellow-600">¥24万</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">租期:</span>
+                            <p class="font-medium">2022-03-01 ~ 2025-02-28</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">联系人:</span>
+                            <p class="font-medium">李主任</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">到期时间:</span>
+                            <p class="font-medium text-red-600">42天</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>业务类型: 互联网服务 | 员工数: 56人 | 续租意向: 有意向</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700">
+                                续租洽谈
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                合同管理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">欠费</span>
+                            <h4 class="font-semibold text-gray-800">创新科技有限公司</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">租户编号: T028</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">租赁面积:</span>
+                            <p class="font-medium">300 m²</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">月租金:</span>
+                            <p class="font-medium text-red-600">¥9万</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">租期:</span>
+                            <p class="font-medium">2024-06-01 ~ 2026-05-31</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">联系人:</span>
+                            <p class="font-medium">王总</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">欠费金额:</span>
+                            <p class="font-medium text-red-600">¥18万</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>业务类型: 电子商务 | 员工数: 25人 | 欠费时长: 2个月</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                                催缴通知
+                            </button>
+                            <button class="px-3 py-1 bg-orange-600 text-white text-sm rounded hover:bg-orange-700">
+                                协商处理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 收益分析 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-green-600 mr-2"></i>
+                    收益分析
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">月度收益</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 租金收入: ¥156万</div>
+                            <div>• 物业费: ¥28万</div>
+                            <div>• 服务费: ¥12万</div>
+                            <div class="text-green-600">• 总收入: ¥196万</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">成本分析</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 运营成本: ¥45万</div>
+                            <div>• 维护费用: ¥18万</div>
+                            <div>• 管理费用: ¥12万</div>
+                            <div class="text-blue-600">• 净利润: ¥121万</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">投资回报</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 年化收益率: 8.5%</div>
+                            <div>• 投资回收期: 11.8年</div>
+                            <div>• 资产增值: 3.2%</div>
+                            <div class="text-purple-600">• 综合回报: 11.7%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-pie text-blue-600 mr-2"></i>
+                    租金分布
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">办公空间</span>
+                            <span class="text-lg font-bold text-blue-600">65%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-blue-500 h-3 rounded-full" style="width: 65%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">¥101.4万/月</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">生产车间</span>
+                            <span class="text-lg font-bold text-green-600">25%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 25%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">¥39万/月</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">仓储空间</span>
+                            <span class="text-lg font-bold text-yellow-600">10%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-yellow-500 h-3 rounded-full" style="width: 10%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">¥15.6万/月</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 合同管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-file-contract text-purple-600 mr-2"></i>
+                合同管理
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">有效合同</h4>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>合同总数:</span>
+                            <span class="font-medium text-green-600">45份</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>总金额:</span>
+                            <span class="font-medium">¥1,872万/年</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>平均租期:</span>
+                            <span class="font-medium text-blue-600">2.3年</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                        查看合同
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">即将到期</h4>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>6个月内:</span>
+                            <span class="font-medium text-yellow-600">8份</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>涉及金额:</span>
+                            <span class="font-medium">¥312万/年</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>续租意向:</span>
+                            <span class="font-medium text-green-600">6份</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors">
+                        续租管理
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">新签合同</h4>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>本月新签:</span>
+                            <span class="font-medium text-blue-600">3份</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>合同金额:</span>
+                            <span class="font-medium">¥156万/年</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>平均租期:</span>
+                            <span class="font-medium text-green-600">3年</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                        合同模板
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">新增租户</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-file-contract text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">合同管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-chart-bar text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">收益分析</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">运营报表</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 租赁运营管理功能
+        function initRentalManagement() {
+            console.log('初始化租赁运营管理功能');
+            
+            // 租户管理按钮事件
+            const tenantButtons = document.querySelectorAll('button');
+            tenantButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('续租管理') || text.includes('续租洽谈')) {
+                    button.addEventListener('click', function() {
+                        const tenantName = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('续租管理:', tenantName);
+                        alert(`正在处理 ${tenantName} 的续租事宜...`);
+                    });
+                } else if (text.includes('催缴通知')) {
+                    button.addEventListener('click', function() {
+                        const tenantName = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('催缴通知:', tenantName);
+                        alert(`正在向 ${tenantName} 发送催缴通知...`);
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initRentalManagement();
+            console.log('租赁运营管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

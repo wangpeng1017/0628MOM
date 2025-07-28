@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计划管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">计划管理</h1>
+            <p class="text-gray-600">实现从需求到生产的闭环计划管理，做到"一单到底"，精准响应市场变化</p>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-600">待处理需求</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-list text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">89</div>
+                        <div class="text-sm text-gray-600">已发布MPS</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-check text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-yellow-600">23</div>
+                        <div class="text-sm text-gray-600">物料缺料</div>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">67</div>
+                        <div class="text-sm text-gray-600">活跃工单</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tasks text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 功能模块卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 需求管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('demand-management')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-list text-blue-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-blue-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">需求管理</h3>
+                <p class="text-gray-600 text-sm mb-4">统一需求提报、审核锁定、变更管理</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">待审核需求</span>
+                        <span class="text-blue-600 font-medium">24</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">已锁定需求</span>
+                        <span class="text-green-600 font-medium">132</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 产能管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('capacity-management')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-bar text-green-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-green-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">产能管理</h3>
+                <p class="text-gray-600 text-sm mb-4">产能数据维护、产能预估分析</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">当前产能利用率</span>
+                        <span class="text-green-600 font-medium">85%</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">设备OEE</span>
+                        <span class="text-blue-600 font-medium">78%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主生产计划(MPS) -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('mps-management')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-purple-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-purple-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">主生产计划(MPS)</h3>
+                <p class="text-gray-600 text-sm mb-4">MPS制定发布、计划变更管理</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">本周计划</span>
+                        <span class="text-purple-600 font-medium">45</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">计划达成率</span>
+                        <span class="text-green-600 font-medium">92%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 物料需求计划(MRP) -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('mrp-management')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-boxes text-orange-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-orange-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">物料需求计划(MRP)</h3>
+                <p class="text-gray-600 text-sm mb-4">BOM展开计算、物料计划转采购</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">待转采购</span>
+                        <span class="text-orange-600 font-medium">18</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">缺料风险</span>
+                        <span class="text-red-600 font-medium">5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工单管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('work-order-management')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tasks text-indigo-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-indigo-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">工单管理</h3>
+                <p class="text-gray-600 text-sm mb-4">计划工单生成、工单变更关闭</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">进行中工单</span>
+                        <span class="text-indigo-600 font-medium">67</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">齐套率</span>
+                        <span class="text-green-600 font-medium">88%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 日排程(APS) -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('aps-scheduling')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-teal-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-teal-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">日排程(APS)</h3>
+                <p class="text-gray-600 text-sm mb-4">日排程制定下达、滚动计划调整</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">今日计划</span>
+                        <span class="text-teal-600 font-medium">12</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">执行进度</span>
+                        <span class="text-green-600 font-medium">75%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navigateToSubModule(subModuleId) {
+            // 通知父窗口切换到对应的子模块
+            if (parent && parent.switchSubMenu) {
+                parent.switchSubMenu('planning', subModuleId);
+            }
+        }
+    </script>
+</body>
+</html>

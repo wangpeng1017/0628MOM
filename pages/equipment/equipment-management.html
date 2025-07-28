@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备管理模块 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">设备管理模块</h1>
+            <p class="text-gray-600">基于Process.md 2.4章节：设备全生命周期管理，涵盖标准规范、到货安装、运行监控、维修保养、闲置处置5大业务模块</p>
+        </div>
+
+        <!-- 设备管理流程框架 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">设备管理业务流程框架</h3>
+                    <span class="text-sm text-gray-600">5大部分 | 15个三级流程</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">标准规范管理</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">设备到货安装</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">运行状态监控</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">维修与保养</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-gray-300" style="width: 50%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">5</div>
+                            <span class="ml-2 text-sm text-gray-600">闲置设备处置</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备管理统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">1,248</div>
+                        <div class="text-sm text-gray-600">设备总数</div>
+                        <div class="text-xs text-gray-500">在册设备</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-industry text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">1,156</div>
+                        <div class="text-sm text-gray-600">运行设备</div>
+                        <div class="text-xs text-gray-500">正常运行</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-play-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">45</div>
+                        <div class="text-sm text-gray-600">维修中</div>
+                        <div class="text-xs text-gray-500">故障维修</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tools text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">32</div>
+                        <div class="text-sm text-gray-600">保养中</div>
+                        <div class="text-xs text-gray-500">计划保养</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wrench text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-yellow-600">15</div>
+                        <div class="text-sm text-gray-600">闲置设备</div>
+                        <div class="text-xs text-gray-500">待处置</div>
+                    </div>
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-pause-circle text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">92.8%</div>
+                        <div class="text-sm text-gray-600">设备OEE</div>
+                        <div class="text-xs text-gray-500">综合效率</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备管理模块导航 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+            <!-- 标准规范管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-file-alt text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">标准规范管理</h3>
+                        <p class="text-sm text-gray-600">技术标准与主数据管理</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="technical-standards.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">技术标准规范管理</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">标准编制、审核、发布、归档</div>
+                    </a>
+                    <a href="master-data.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">主数据管理</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">设备分类、编号、功能位置</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 设备到货安装 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-truck text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">设备到货安装</h3>
+                        <p class="text-sm text-gray-600">到货确认与安装验收</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="equipment-arrival.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-green-50 hover:border-green-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">设备到货确认</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">预验收、送货、签收确认</div>
+                    </a>
+                    <a href="equipment-installation.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-green-50 hover:border-green-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">设备安装验收</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">安装申请、试运行、终验</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 运行状态监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-tv text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">运行状态监控</h3>
+                        <p class="text-sm text-gray-600">实时监控与台账管理</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="equipment-monitoring.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-purple-50 hover:border-purple-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">设备运行监控</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">指标维护、数据采集、告警</div>
+                    </a>
+                    <a href="energy-management.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-purple-50 hover:border-purple-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">能源管理</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">能耗监控、分析、绩效考核</div>
+                    </a>
+                    <a href="equipment-ledger.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-purple-50 hover:border-purple-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">设备台账管理</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">台账信息、自动更新</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 设备维修与保养 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-tools text-orange-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">设备维修与保养</h3>
+                        <p class="text-sm text-gray-600">点巡检、保养、维修管理</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="equipment-inspection.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-orange-50 hover:border-orange-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">设备点巡检</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">点检计划、执行、结果确认</div>
+                    </a>
+                    <a href="equipment-maintenance.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-orange-50 hover:border-orange-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">设备保养</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">三级保养体系、计划提醒</div>
+                    </a>
+                    <a href="equipment-repair.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-orange-50 hover:border-orange-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">设备故障维修</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">维修申请、评估、执行</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 技改与预算管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-cogs text-indigo-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">技改与预算管理</h3>
+                        <p class="text-sm text-gray-600">技改项目与预算执行</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="equipment-upgrade.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-indigo-50 hover:border-indigo-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">技改管理</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">立项、执行、验收</div>
+                    </a>
+                    <a href="budget-management.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-indigo-50 hover:border-indigo-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">预算执行管理</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">预算申请、执行分析</div>
+                    </a>
+                    <a href="spare-parts.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-indigo-50 hover:border-indigo-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">备品备件管理</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">采购、入库、出库、盘点</div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 闲置设备处置 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-recycle text-yellow-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">闲置设备处置</h3>
+                        <p class="text-sm text-gray-600">评估与处置管理</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="idle-equipment-assessment.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-yellow-50 hover:border-yellow-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">闲置设备评估</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">认定申请、技术评估</div>
+                    </a>
+                    <a href="idle-equipment-disposal.html" class="block p-3 border border-gray-200 rounded-lg hover:bg-yellow-50 hover:border-yellow-300 transition-colors">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-900">闲置设备处置</span>
+                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">封存、转卖、报废处理</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备状态实时监控面板 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">设备状态实时监控</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-sm text-gray-600">PACK产线设备</div>
+                            <div class="text-lg font-semibold text-green-600">运行正常</div>
+                            <div class="text-xs text-gray-500">OEE: 94.2%</div>
+                        </div>
+                        <i class="fas fa-check-circle text-green-600 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-sm text-gray-600">PCBA生产车间</div>
+                            <div class="text-lg font-semibold text-blue-600">运行正常</div>
+                            <div class="text-xs text-gray-500">OEE: 91.8%</div>
+                        </div>
+                        <i class="fas fa-play-circle text-blue-600 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-sm text-gray-600">逆变器车间</div>
+                            <div class="text-lg font-semibold text-yellow-600">保养中</div>
+                            <div class="text-xs text-gray-500">预计: 2小时</div>
+                        </div>
+                        <i class="fas fa-wrench text-yellow-600 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-sm text-gray-600">包装车间</div>
+                            <div class="text-lg font-semibold text-red-600">故障维修</div>
+                            <div class="text-xs text-gray-500">维修中</div>
+                        </div>
+                        <i class="fas fa-exclamation-triangle text-red-600 text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 设备管理模块初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('设备管理模块已加载');
+            
+            // 模拟实时数据更新
+            setInterval(updateEquipmentStatus, 30000); // 每30秒更新一次
+        });
+
+        // 更新设备状态
+        function updateEquipmentStatus() {
+            // 模拟设备状态数据更新
+            console.log('设备状态数据已更新');
+        }
+    </script>
+</body>
+</html>

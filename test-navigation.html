@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导航测试页面</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">智慧园区导航测试</h1>
+        
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">测试说明</h2>
+            <p class="text-gray-600 mb-4">
+                此页面用于测试智慧园区平台的导航功能是否正常工作。请按照以下步骤进行测试：
+            </p>
+            <ol class="list-decimal list-inside text-gray-600 space-y-2">
+                <li>点击下方的"打开主平台"按钮</li>
+                <li>在主平台中，尝试点击顶部导航栏的各个模块</li>
+                <li>在首页中，尝试点击快捷入口卡片</li>
+                <li>验证每个模块是否显示正确的内容页面</li>
+            </ol>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">快速访问</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <a href="http://localhost:8081/index.html" target="_blank" 
+                   class="bg-blue-600 text-white p-4 rounded-lg text-center hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-home text-2xl mb-2"></i>
+                    <div>打开主平台</div>
+                </a>
+                <a href="http://localhost:8081/login.html" target="_blank" 
+                   class="bg-green-600 text-white p-4 rounded-lg text-center hover:bg-green-700 transition-colors">
+                    <i class="fas fa-sign-in-alt text-2xl mb-2"></i>
+                    <div>登录页面</div>
+                </a>
+                <a href="http://localhost:8081/pages/dashboard.html" target="_blank" 
+                   class="bg-purple-600 text-white p-4 rounded-lg text-center hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-dashboard text-2xl mb-2"></i>
+                    <div>首页</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">智慧园区模块直接访问</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <a href="http://localhost:8081/pages/access.html" target="_blank" 
+                   class="bg-green-600 text-white p-3 rounded-lg text-center hover:bg-green-700 transition-colors">
+                    <i class="fas fa-key text-xl mb-2"></i>
+                    <div class="text-sm">便捷通行</div>
+                </a>
+                <a href="http://localhost:8081/pages/energy-park.html" target="_blank" 
+                   class="bg-yellow-600 text-white p-3 rounded-lg text-center hover:bg-yellow-700 transition-colors">
+                    <i class="fas fa-bolt text-xl mb-2"></i>
+                    <div class="text-sm">高效能源</div>
+                </a>
+                <a href="http://localhost:8081/pages/space.html" target="_blank" 
+                   class="bg-purple-600 text-white p-3 rounded-lg text-center hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-map text-xl mb-2"></i>
+                    <div class="text-sm">空间资产</div>
+                </a>
+                <a href="http://localhost:8081/pages/logistics-park.html" target="_blank" 
+                   class="bg-teal-600 text-white p-3 rounded-lg text-center hover:bg-teal-700 transition-colors">
+                    <i class="fas fa-truck text-xl mb-2"></i>
+                    <div class="text-sm">物流调度</div>
+                </a>
+                <a href="http://localhost:8081/pages/environment.html" target="_blank" 
+                   class="bg-emerald-600 text-white p-3 rounded-lg text-center hover:bg-emerald-700 transition-colors">
+                    <i class="fas fa-leaf text-xl mb-2"></i>
+                    <div class="text-sm">绿色环保</div>
+                </a>
+                <a href="http://localhost:8081/pages/service.html" target="_blank" 
+                   class="bg-indigo-600 text-white p-3 rounded-lg text-center hover:bg-indigo-700 transition-colors">
+                    <i class="fas fa-concierge-bell text-xl mb-2"></i>
+                    <div class="text-sm">综合服务</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">修复内容</h2>
+            <div class="text-gray-600 space-y-2">
+                <div class="flex items-start space-x-2">
+                    <i class="fas fa-check text-green-600 mt-1"></i>
+                    <span>修复了switchModule函数中没有子菜单时不加载页面内容的问题</span>
+                </div>
+                <div class="flex items-start space-x-2">
+                    <i class="fas fa-check text-green-600 mt-1"></i>
+                    <span>确保智慧园区模块（便捷通行、高效能源、空间资产、物流调度、绿色环保、综合服务）能正确加载对应页面</span>
+                </div>
+                <div class="flex items-start space-x-2">
+                    <i class="fas fa-check text-green-600 mt-1"></i>
+                    <span>验证了首页快捷入口卡片的链接配置正确</span>
+                </div>
+                <div class="flex items-start space-x-2">
+                    <i class="fas fa-check text-green-600 mt-1"></i>
+                    <span>验证了顶部导航栏的模块链接配置正确</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载完成后的提示
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('导航测试页面加载完成');
+            console.log('请点击"打开主平台"按钮开始测试导航功能');
+        });
+    </script>
+</body>
+</html>

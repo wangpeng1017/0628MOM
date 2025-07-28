@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>环保概览统计 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-leaf text-primary mr-3"></i>
+                绿色环保概览统计
+            </h1>
+            <p class="text-gray-600 mt-2">绿色发展，环保先行，智慧监控园区环境</p>
+        </div>
+
+        <!-- 环保核心指标 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">环保等级</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">优秀</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-award text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>合规率:</span>
+                        <span class="text-green-600 font-medium">100%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>连续达标:</span>
+                        <span class="text-green-600 font-medium">365天</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">能耗强度</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">0.85</p>
+                        <p class="text-sm text-gray-500">tce/万元</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-bolt text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较去年:</span>
+                        <span class="text-green-600 font-medium">-12.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>行业平均:</span>
+                        <span class="text-blue-600 font-medium">1.2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">碳排放量</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">2,856</p>
+                        <p class="text-sm text-gray-500">吨CO₂</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-cloud text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较去年:</span>
+                        <span class="text-green-600 font-medium">-8.3%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>减排目标:</span>
+                        <span class="text-purple-600 font-medium">-10%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">废物处理率</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">99.2%</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-recycle text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>回收利用:</span>
+                        <span class="text-green-600 font-medium">85.6%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>无害化处理:</span>
+                        <span class="text-yellow-600 font-medium">13.6%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 环保监测状态 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-eye text-green-600 mr-2"></i>
+                环保监测状态
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">大气监测</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">优秀</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• PM2.5: 15 μg/m³</div>
+                        <div>• PM10: 28 μg/m³</div>
+                        <div>• SO₂: 8 μg/m³</div>
+                        <div>• NOₓ: 12 μg/m³</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">水质监测</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">良好</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• COD: 45 mg/L</div>
+                        <div>• BOD: 18 mg/L</div>
+                        <div>• 氨氮: 2.5 mg/L</div>
+                        <div>• pH值: 7.2</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">噪声监测</h4>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">达标</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 昼间: 58 dB(A)</div>
+                        <div>• 夜间: 45 dB(A)</div>
+                        <div>• 标准: ≤65/55 dB(A)</div>
+                        <div>• 达标率: 100%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">土壤监测</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 重金属: 达标</div>
+                        <div>• 有机物: 达标</div>
+                        <div>• pH值: 6.8</div>
+                        <div>• 检测频次: 季度</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 能耗和排放趋势 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                    能耗趋势分析
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-area text-6xl mb-4 text-blue-400"></i>
+                        <p class="text-lg font-medium">能耗趋势图</p>
+                        <p class="text-sm">12个月能耗变化趋势</p>
+                        <div class="mt-4 grid grid-cols-3 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">1,256</div>
+                                <div class="text-xs text-gray-500">本月(MWh)</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">-12.5%</div>
+                                <div class="text-xs text-gray-500">同比降幅</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">0.85</div>
+                                <div class="text-xs text-gray-500">能耗强度</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-cloud text-purple-600 mr-2"></i>
+                    碳排放分析
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-pie text-6xl mb-4 text-purple-400"></i>
+                        <p class="text-lg font-medium">碳排放构成</p>
+                        <p class="text-sm">各类排放源占比分析</p>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">2,856</div>
+                                <div class="text-xs text-gray-500">总排放(吨)</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">-8.3%</div>
+                                <div class="text-xs text-gray-500">同比减少</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">65%</div>
+                                <div class="text-xs text-gray-500">电力排放</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-yellow-600">35%</div>
+                                <div class="text-xs text-gray-500">其他排放</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 环保设备运行状态 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-cogs text-green-600 mr-2"></i>
+                环保设备运行状态
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">废气处理设备</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>脱硫设备</span>
+                                <span class="text-green-600">正常</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>除尘设备</span>
+                                <span class="text-green-600">正常</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 98%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>脱硝设备</span>
+                                <span class="text-green-600">正常</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 92%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">污水处理设备</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>生化处理</span>
+                                <span class="text-blue-600">正常</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 96%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>深度处理</span>
+                                <span class="text-blue-600">正常</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 94%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>污泥处理</span>
+                                <span class="text-blue-600">正常</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">固废处理设备</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>分拣设备</span>
+                                <span class="text-yellow-600">正常</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>压缩设备</span>
+                                <span class="text-yellow-600">正常</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 93%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>焚烧设备</span>
+                                <span class="text-green-600">正常</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 97%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-green-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-bolt text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">能耗监控</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-industry text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">排放监测</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-cogs text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">设备管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-chart-bar text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">环保报告</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 绿色环保概览功能
+        function initEnvironmentalOverview() {
+            console.log('初始化绿色环保概览功能');
+            
+            // 快速操作按钮事件
+            const quickButtons = document.querySelectorAll('button');
+            quickButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('能耗监控')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开能耗监控');
+                        alert('正在打开能耗监控管理...');
+                    });
+                } else if (text.includes('排放监测')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开排放监测');
+                        alert('正在打开排放监测管理...');
+                    });
+                } else if (text.includes('设备管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开环保设备管理');
+                        alert('正在打开环保设备管理...');
+                    });
+                } else if (text.includes('环保报告')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开环保报告');
+                        alert('正在打开环保报告分析...');
+                    });
+                }
+            });
+            
+            // 实时数据更新
+            function updateEnvironmentalData() {
+                console.log('更新环保数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateEnvironmentalData, 30000); // 每30秒更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initEnvironmentalOverview();
+            console.log('绿色环保概览页面加载完成');
+        });
+    </script>
+</body>
+</html>

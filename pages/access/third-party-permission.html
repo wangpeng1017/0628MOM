@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第三方临时权限 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-user-clock text-primary mr-3"></i>
+                第三方临时权限管理
+            </h1>
+            <p class="text-gray-600 mt-2">管理第三方人员临时访问权限，确保安全可控</p>
+        </div>
+
+        <!-- 临时权限统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">活跃权限</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">15</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-user-shield text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>维修人员:</span>
+                        <span class="text-blue-600 font-medium">8人</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>其他人员:</span>
+                        <span class="text-purple-600 font-medium">7人</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">即将过期</h3>
+                        <p class="text-3xl font-bold text-orange-600 mt-2">3</p>
+                    </div>
+                    <div class="bg-orange-100 p-3 rounded-full">
+                        <i class="fas fa-clock text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>24小时内:</span>
+                        <span class="text-red-600 font-medium">2个</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>48小时内:</span>
+                        <span class="text-orange-600 font-medium">1个</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">本月新增</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">28</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-user-plus text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">+12.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>平均时长:</span>
+                        <span class="text-blue-600 font-medium">4.2天</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">安全评级</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">A</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-shield-alt text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>合规率:</span>
+                        <span class="text-green-600 font-medium">98.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>异常事件:</span>
+                        <span class="text-red-600 font-medium">0个</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 第三方人员分类管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-users-cog text-blue-600 mr-2"></i>
+                第三方人员分类管理
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">设备维修</h4>
+                        <i class="fas fa-tools text-blue-600"></i>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>当前人数:</span>
+                            <span class="font-medium text-blue-600">8人</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>平均时长:</span>
+                            <span class="font-medium">3.5天</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>权限区域:</span>
+                            <span class="font-medium">设备机房</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                        管理权限
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">清洁服务</h4>
+                        <i class="fas fa-broom text-green-600"></i>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>当前人数:</span>
+                            <span class="font-medium text-green-600">4人</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>平均时长:</span>
+                            <span class="font-medium">1天</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>权限区域:</span>
+                            <span class="font-medium">办公区域</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-3 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                        管理权限
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">设备安装</h4>
+                        <i class="fas fa-wrench text-purple-600"></i>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>当前人数:</span>
+                            <span class="font-medium text-purple-600">3人</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>平均时长:</span>
+                            <span class="font-medium">7天</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>权限区域:</span>
+                            <span class="font-medium">生产车间</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-3 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                        管理权限
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 活跃权限列表 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-list text-green-600 mr-2"></i>
+                活跃权限列表
+            </h3>
+            <div class="space-y-4">
+                <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">即将过期</span>
+                            <h4 class="font-semibold text-gray-800">王师傅 - 华信维修公司</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">剩余: 8小时</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">服务类型:</span>
+                            <p class="font-medium">空调维修</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">权限区域:</span>
+                            <p class="font-medium">设备机房A</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">有效期:</span>
+                            <p class="font-medium">2025-01-15 ~ 2025-01-18</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">联系电话:</span>
+                            <p class="font-medium">135****7890</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>入园时间: 2025-01-17 08:30</span>
+                            <span class="ml-4">当前位置: 设备机房A</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                                <i class="fas fa-plus mr-1"></i>延期
+                            </button>
+                            <button class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                                <i class="fas fa-ban mr-1"></i>撤销
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                <i class="fas fa-map-marker-alt mr-1"></i>定位
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                            <h4 class="font-semibold text-gray-800">李阿姨 - 洁净清洁公司</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">剩余: 2天</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">服务类型:</span>
+                            <p class="font-medium">日常清洁</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">权限区域:</span>
+                            <p class="font-medium">办公楼1-3层</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">有效期:</span>
+                            <p class="font-medium">2025-01-17 ~ 2025-01-19</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">联系电话:</span>
+                            <p class="font-medium">138****5678</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>入园时间: 2025-01-17 07:00</span>
+                            <span class="ml-4">当前位置: 办公楼2层</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                                <i class="fas fa-plus mr-1"></i>延期
+                            </button>
+                            <button class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                                <i class="fas fa-ban mr-1"></i>撤销
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                <i class="fas fa-map-marker-alt mr-1"></i>定位
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 权限时间控制 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-clock text-orange-600 mr-2"></i>
+                    权限时间控制
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">即将过期提醒</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 24小时内过期: 2个权限</div>
+                            <div>• 48小时内过期: 1个权限</div>
+                            <div>• 自动提醒已发送</div>
+                        </div>
+                        <button class="mt-3 px-4 py-2 bg-orange-600 text-white text-sm rounded hover:bg-orange-700">
+                            批量延期
+                        </button>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">权限时长统计</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 平均权限时长: 4.2天</div>
+                            <div>• 最长权限: 14天</div>
+                            <div>• 最短权限: 4小时</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-route text-purple-600 mr-2"></i>
+                    活动轨迹跟踪
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">实时位置监控</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 在线人员: 15人</div>
+                            <div>• 异常轨迹: 0个</div>
+                            <div>• 区域违规: 0次</div>
+                        </div>
+                        <button class="mt-3 px-4 py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700">
+                            查看地图
+                        </button>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">轨迹记录</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 今日记录: 156条</div>
+                            <div>• 完整轨迹: 100%</div>
+                            <div>• 数据完整性: 99.8%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-user-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">新增权限</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-clock text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">批量延期</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors">
+                    <i class="fas fa-ban text-red-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">批量撤销</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-download text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">导出记录</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 第三方临时权限管理功能
+        function initThirdPartyPermissionManagement() {
+            console.log('初始化第三方临时权限管理功能');
+            
+            // 权限操作按钮事件
+            const permissionButtons = document.querySelectorAll('button');
+            permissionButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('延期')) {
+                    button.addEventListener('click', function() {
+                        const personName = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('延期权限:', personName);
+                        alert(`正在为 ${personName} 延期权限...`);
+                    });
+                } else if (text.includes('撤销')) {
+                    button.addEventListener('click', function() {
+                        const personName = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('撤销权限:', personName);
+                        alert(`确认撤销 ${personName} 的权限吗？`);
+                    });
+                } else if (text.includes('定位')) {
+                    button.addEventListener('click', function() {
+                        const personName = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('定位人员:', personName);
+                        alert(`正在定位 ${personName} 的当前位置...`);
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initThirdPartyPermissionManagement();
+            console.log('第三方临时权限管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

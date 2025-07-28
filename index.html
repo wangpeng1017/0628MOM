@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">数字工厂一体化平台</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AI助手样式 -->
+    <link rel="stylesheet" href="assets/css/ai-assistant.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/custom.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* 隐藏滚动条但保持滚动功能 */
+        .scrollbar-hide {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;  /* Chrome, Safari and Opera */
+        }
+
+        /* 导航滚动按钮样式 */
+        #nav-scroll-left, #nav-scroll-right {
+            transition: opacity 0.3s ease;
+        }
+
+        /* 导航容器样式 */
+        #nav-container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* 当显示滚动按钮时调整导航容器的padding */
+        .nav-with-scroll-left #nav-container {
+            padding-left: 32px;
+        }
+
+        .nav-with-scroll-right #nav-container {
+            padding-right: 32px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 主容器 -->
+    <div class="flex flex-col h-screen">
+        <!-- 顶部导航栏 -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <!-- Logo和系统标题 -->
+            <div class="px-6 py-4 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-industry text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h1 id="platformTitle" class="text-xl font-bold text-gray-800">数字工厂一体化平台</h1>
+                            <p id="platformDescription" class="text-xs text-gray-500 mt-1">Digital Factory Platform</p>
+                        </div>
+                    </div>
+
+                    <!-- 用户界面 -->
+                    <div class="flex items-center space-x-4">
+                        <!-- 系统状态和时间 -->
+                        <div class="hidden lg:flex items-center space-x-4 text-sm text-gray-500">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-success rounded-full"></div>
+                                <span>系统正常</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-clock"></i>
+                                <span id="current-time"></span>
+                            </div>
+                        </div>
+
+
+
+                        <!-- 用户头像和下拉菜单 -->
+                        <div class="relative">
+                            <button id="userMenuButton" class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-lg transition-colors">
+                                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user text-white text-sm"></i>
+                                </div>
+                                <span id="currentUser" class="text-sm font-medium text-gray-700 hidden sm:block">admin</span>
+                                <i class="fas fa-chevron-down text-gray-500 text-xs"></i>
+                            </button>
+
+                            <!-- 下拉菜单 -->
+                            <div id="userDropdown" class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden">
+                                <div class="p-4 border-b border-gray-100">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                            <i class="fas fa-user text-white"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-gray-800">管理员</p>
+                                            <p class="text-sm text-gray-500">admin</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-2">
+                                    <div class="px-3 py-2 text-sm text-gray-600">
+                                        <i class="fas fa-cogs mr-2 text-gray-400"></i>
+                                        <span>当前版本：</span>
+                                        <span id="currentVersion" class="font-medium text-primary">通用行业</span>
+                                    </div>
+                                    <div class="px-3 py-2 text-sm text-gray-600">
+                                        <i class="fas fa-clock mr-2 text-gray-400"></i>
+                                        <span>登录时间：</span>
+                                        <span id="loginTime" class="text-gray-500">--</span>
+                                    </div>
+                                    <hr class="my-2">
+                                    <button id="logoutButton" class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded transition-colors">
+                                        <i class="fas fa-sign-out-alt mr-2"></i>
+                                        退出登录
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 一级模块导航 -->
+            <nav class="px-6 relative">
+                <!-- 左滚动按钮 -->
+                <button id="nav-scroll-left" class="absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-white to-transparent z-10 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors" onclick="scrollNavigation('left')" style="display: none;">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <!-- 右滚动按钮 -->
+                <button id="nav-scroll-right" class="absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent z-10 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors" onclick="scrollNavigation('right')" style="display: none;">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+
+                <!-- 导航容器 -->
+                <div id="nav-container" class="overflow-x-auto scrollbar-hide" style="scroll-behavior: smooth;">
+                    <div id="nav-content" class="flex space-x-8 min-w-max">
+                    <button onclick="switchModule('dashboard')"
+                            class="module-nav-item active flex items-center space-x-2 px-4 py-3 border-b-2 border-primary text-primary font-medium">
+                        <i class="fas fa-home"></i>
+                        <span>首页</span>
+                    </button>
+                    <button onclick="switchModule('planning')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>计划管理</span>
+                    </button>
+                    <button onclick="switchModule('production')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-cogs"></i>
+                        <span>生产管理</span>
+                    </button>
+                    <button onclick="switchModule('inventory')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-boxes"></i>
+                        <span>仓储管理</span>
+                    </button>
+                    <button onclick="switchModule('logistics')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-truck"></i>
+                        <span>厂内物流</span>
+                    </button>
+                    <button onclick="switchModule('quality')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-check-circle"></i>
+                        <span>质量管理</span>
+                    </button>
+                    <button onclick="switchModule('equipment')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-tools"></i>
+                        <span>设备管理</span>
+                    </button>
+                    <button onclick="switchModule('ioc')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-desktop"></i>
+                        <span>IOC中心</span>
+                    </button>
+                    <button onclick="switchModule('security')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>智慧安防</span>
+                    </button>
+                    <button onclick="switchModule('access')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-key"></i>
+                        <span>便捷通行</span>
+                    </button>
+                    <button onclick="switchModule('energy-park')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-bolt"></i>
+                        <span>高效能源</span>
+                    </button>
+                    <button onclick="switchModule('space')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-map"></i>
+                        <span>空间资产</span>
+                    </button>
+                    <button onclick="switchModule('environment')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-leaf"></i>
+                        <span>绿色环保</span>
+                    </button>
+                    <button onclick="switchModule('service')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-concierge-bell"></i>
+                        <span>综合服务</span>
+                    </button>
+                    <button onclick="switchModule('logistics-park')"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-truck"></i>
+                        <span>物流调度</span>
+                    </button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主内容区域 -->
+        <div class="flex flex-1 overflow-hidden">
+            <!-- 左侧二级导航 -->
+            <nav id="sidebar-nav" class="w-64 bg-white shadow-sm border-r border-gray-200 flex flex-col" style="display: none;">
+                <div class="p-4 border-b border-gray-100">
+                    <h3 id="module-title" class="text-lg font-semibold text-gray-800">首页</h3>
+                </div>
+
+                <div class="flex-1 py-4">
+                    <ul id="sub-menu" class="space-y-1 px-4">
+                        <!-- 二级菜单将通过JavaScript动态加载 -->
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- 右侧内容区域 -->
+            <main class="flex-1 flex flex-col">
+                <!-- 内容标题栏 (仅在非首页时显示) -->
+                <div id="page-title-bar" class="bg-white border-b border-gray-200 px-6 py-4" style="display: none;">
+                    <h2 id="page-title" class="text-xl font-semibold text-gray-800">首页</h2>
+                </div>
+
+                <!-- 内容iframe -->
+                <div class="flex-1 p-6">
+                    <iframe id="content-frame"
+                            src="pages/dashboard.html"
+                            class="w-full h-full border-0 rounded-lg shadow-sm bg-white"
+                            frameborder="0">
+                    </iframe>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // 全局函数，用于从iframe中调用
+        window.navigateToModule = function(moduleId) {
+            console.log('navigateToModule called with:', moduleId);
+            switchModule(moduleId);
+        };
+
+        // 全局函数，用于AI助手导航到具体页面
+        window.navigateToDocumentPage = function(moduleId, url, title) {
+            console.log('navigateToDocumentPage called with:', { moduleId, url, title });
+
+            // 首先切换到对应模块
+            switchModule(moduleId);
+
+            // 延迟加载具体页面，确保模块切换完成
+            setTimeout(() => {
+                loadSubPage(url, title);
+            }, 150);
+        };
+
+        // 暴露switchModule和loadSubPage函数给AI助手使用
+        window.switchModule = switchModule;
+        window.loadSubPage = loadSubPage;
+
+        // 模块配置
+        const moduleConfig = {
+            dashboard: {
+                title: '首页',
+                url: 'pages/dashboard.html',
+                subMenus: []
+            },
+            planning: {
+                title: '计划管理',
+                url: 'pages/planning.html',
+                subMenus: [
+                    { id: 'demand-management', name: '需求管理', icon: 'fas fa-clipboard-list', url: 'pages/planning/demand-management.html' },
+                    { id: 'capacity-management', name: '产能管理', icon: 'fas fa-chart-bar', url: 'pages/planning/capacity-management.html' },
+                    { id: 'mps-management', name: '主生产计划(MPS)', icon: 'fas fa-calendar-alt', url: 'pages/planning/mps-management.html' },
+                    { id: 'mrp-management', name: '物料需求计划(MRP)', icon: 'fas fa-boxes', url: 'pages/planning/mrp-management.html' },
+                    { id: 'work-order-management', name: '工单管理', icon: 'fas fa-tasks', url: 'pages/planning/work-order-management.html' },
+                    { id: 'aps-scheduling', name: '日排程(APS)', icon: 'fas fa-clock', url: 'pages/planning/aps-scheduling.html' }
+                ]
+            },
+            production: {
+                title: '生产管理',
+                url: 'pages/production/index.html',
+                subMenus: [
+                    { id: 'process-planning', name: '产线工艺管理', icon: 'fas fa-cogs', url: 'pages/production/process-planning.html' },
+                    { id: 'material-delivery', name: '物料配送管理', icon: 'fas fa-truck', url: 'pages/production/material-delivery.html' },
+                    { id: 'exception-management', name: '生产异常管理', icon: 'fas fa-exclamation-triangle', url: 'pages/production/exception-management.html' },
+                    { id: 'quality-detection', name: '质量检测管理', icon: 'fas fa-search', url: 'pages/production/quality-detection.html' },
+                    { id: 'changeover-management', name: '清换线管理', icon: 'fas fa-exchange-alt', url: 'pages/production/changeover-management.html' },
+                    { id: 'error-traceability', name: '防错追溯管理', icon: 'fas fa-shield-alt', url: 'pages/production/error-traceability.html' },
+                    { id: 'work-instruction', name: '作业指导管理', icon: 'fas fa-book', url: 'pages/production/work-instruction.html' },
+                    { id: 'smart-equipment', name: '智能设备管理', icon: 'fas fa-robot', url: 'pages/production/smart-equipment.html' },
+                    { id: 'production-monitoring', name: '生产监控管理', icon: 'fas fa-chart-line', url: 'pages/production/production-monitoring.html' },
+                    { id: 'personnel-management', name: '人员管理', icon: 'fas fa-users', url: 'pages/production/personnel-management.html' }
+                ]
+            },
+            quality: {
+                title: '质量管理',
+                url: 'pages/quality/index.html',
+                subMenus: [
+                    { id: 'quality-indicators', name: '质量指标管理', icon: 'fas fa-chart-bar', url: 'pages/quality/quality-indicators.html' },
+                    { id: 'risk-control', name: '风险控制管理', icon: 'fas fa-shield-alt', url: 'pages/quality/risk-control.html' },
+                    { id: 'design-development', name: '设计开发管理', icon: 'fas fa-drafting-compass', url: 'pages/quality/design-development.html' },
+                    { id: 'incoming-quality', name: '来料质量管理', icon: 'fas fa-truck-loading', url: 'pages/quality/incoming-quality.html' },
+                    { id: 'production-quality', name: '生产质量管理', icon: 'fas fa-cogs', url: 'pages/quality/production-quality.html' },
+                    { id: 'product-quality', name: '成品质量管理', icon: 'fas fa-box-check', url: 'pages/quality/product-quality.html' },
+                    { id: 'change-management', name: '变更管理', icon: 'fas fa-edit', url: 'pages/quality/change-management.html' },
+                    { id: 'outsourcing-management', name: '外协管理', icon: 'fas fa-handshake', url: 'pages/quality/outsourcing-management.html' },
+                    { id: 'audit-management', name: '审核管理', icon: 'fas fa-search-plus', url: 'pages/quality/audit-management.html' },
+                    { id: 'business-integration', name: '业务集成管理', icon: 'fas fa-link', url: 'pages/quality/business-integration.html' }
+                ]
+            },
+            equipment: {
+                title: '设备管理',
+                subMenus: [
+                    {
+                        id: 'overview',
+                        name: '设备管理总览',
+                        icon: 'fas fa-tachometer-alt',
+                        subItems: [
+                            { id: 'equipment-management', name: '设备管理模块', url: 'pages/equipment/equipment-management.html' }
+                        ]
+                    },
+                    {
+                        id: 'standards',
+                        name: '标准规范管理',
+                        icon: 'fas fa-file-alt',
+                        subItems: [
+                            { id: 'technical-standards', name: '技术标准规范管理', url: 'pages/equipment/technical-standards.html' },
+                            { id: 'master-data', name: '主数据管理', url: 'pages/equipment/master-data.html' }
+                        ]
+                    },
+                    {
+                        id: 'arrival-installation',
+                        name: '设备到货安装',
+                        icon: 'fas fa-truck',
+                        subItems: [
+                            { id: 'equipment-arrival', name: '设备到货确认', url: 'pages/equipment/equipment-arrival.html' },
+                            { id: 'equipment-installation', name: '设备安装验收', url: 'pages/equipment/equipment-installation.html' }
+                        ]
+                    },
+                    {
+                        id: 'monitoring',
+                        name: '运行状态监控',
+                        icon: 'fas fa-tv',
+                        subItems: [
+                            { id: 'equipment-monitoring', name: '设备运行监控', url: 'pages/equipment/equipment-monitoring.html' },
+                            { id: 'energy-management', name: '能源管理', url: 'pages/equipment/energy-management.html' },
+                            { id: 'equipment-ledger', name: '设备台账管理', url: 'pages/equipment/equipment-ledger.html' }
+                        ]
+                    },
+                    {
+                        id: 'maintenance',
+                        name: '设备维修与保养',
+                        icon: 'fas fa-tools',
+                        subItems: [
+                            { id: 'equipment-inspection', name: '设备点巡检', url: 'pages/equipment/equipment-inspection.html' },
+                            { id: 'equipment-maintenance', name: '设备保养', url: 'pages/equipment/equipment-maintenance.html' },
+                            { id: 'equipment-repair', name: '设备故障维修', url: 'pages/equipment/equipment-repair.html' }
+                        ]
+                    },
+                    {
+                        id: 'upgrade-budget',
+                        name: '技改与预算管理',
+                        icon: 'fas fa-cogs',
+                        subItems: [
+                            { id: 'equipment-upgrade', name: '技改管理', url: 'pages/equipment/equipment-upgrade.html' },
+                            { id: 'budget-management', name: '预算执行管理', url: 'pages/equipment/budget-management.html' },
+                            { id: 'spare-parts', name: '备品备件管理', url: 'pages/equipment/spare-parts.html' }
+                        ]
+                    },
+                    {
+                        id: 'idle-disposal',
+                        name: '闲置设备处置',
+                        icon: 'fas fa-recycle',
+                        subItems: [
+                            { id: 'idle-equipment-assessment', name: '闲置设备评估', url: 'pages/equipment/idle-equipment-assessment.html' },
+                            { id: 'idle-equipment-disposal', name: '闲置设备处置', url: 'pages/equipment/idle-equipment-disposal.html' }
+                        ]
+                    },
+                    {
+                        id: 'inspection',
+                        name: '点巡检管理',
+                        icon: 'fas fa-search',
+                        subItems: [
+                            { id: 'route-management', name: '巡检路线管理', url: 'pages/equipment/inspection/route-management.html' },
+                            { id: 'task-execution', name: '巡检任务执行', url: 'pages/equipment/inspection/task-execution.html' },
+                            { id: 'standard-library', name: '检查标准库', url: 'pages/equipment/inspection/standard-library.html' },
+                            { id: 'exception-handling', name: '异常处理记录', url: 'pages/equipment/inspection/exception-handling.html' }
+                        ]
+                    },
+                    {
+                        id: 'spare-parts',
+                        name: '备品备件管理',
+                        icon: 'fas fa-boxes',
+                        subItems: [
+                            { id: 'inventory-management', name: '备件台账管理', url: 'pages/equipment/spare-parts/inventory-management.html' },
+                            { id: 'stock-alert', name: '库存预警管理', url: 'pages/equipment/spare-parts/stock-alert.html' },
+                            { id: 'purchase-request', name: '采购申请管理', url: 'pages/equipment/spare-parts/purchase-request.html' },
+                            { id: 'warehouse-operations', name: '出入库管理', url: 'pages/equipment/spare-parts/warehouse-operations.html' }
+                        ]
+                    },
+                    {
+                        id: 'analytics',
+                        name: '统计分析',
+                        icon: 'fas fa-chart-bar',
+                        subItems: [
+                            { id: 'oee-analysis', name: 'OEE分析', url: 'pages/equipment/analytics/oee-analysis.html' },
+                            { id: 'fault-statistics', name: '故障统计分析', url: 'pages/equipment/analytics/fault-statistics.html' },
+                            { id: 'cost-benefit-analysis', name: '成本效益分析', url: 'pages/equipment/analytics/cost-benefit-analysis.html' }
+                        ]
+                    },
+                    {
+                        id: 'renovation',
+                        name: '技术改造管理',
+                        icon: 'fas fa-cogs',
+                        subItems: [
+                            { id: 'project-initiation', name: '项目立项管理', url: 'pages/equipment/renovation/project-initiation.html' },
+                            { id: 'project-tracking', name: '项目执行跟踪', url: 'pages/equipment/renovation/project-tracking.html' },
+                            { id: 'project-acceptance', name: '项目验收管理', url: 'pages/equipment/renovation/project-acceptance.html' }
+                        ]
+                    },
+                    {
+                        id: 'documents',
+                        name: '技术资料管理',
+                        icon: 'fas fa-folder-open',
+                        subItems: [
+                            { id: 'document-classification', name: '文档分类管理', url: 'pages/equipment/documents/document-classification.html' },
+                            { id: 'version-control', name: '版本控制管理', url: 'pages/equipment/documents/version-control.html' },
+                            { id: 'permission-audit', name: '权限审核管理', url: 'pages/equipment/documents/permission-audit.html' }
+                        ]
+                    }
+                ]
+            },
+            ioc: {
+                title: 'IOC中心',
+                url: 'pages/ioc.html',
+                subMenus: [
+                    { id: 'operations-overview', name: '运营中心概览', icon: 'fas fa-chart-line', url: 'pages/ioc-center/operations-overview.html' },
+                    { id: 'monitoring-dashboard', name: '实时监控大屏', icon: 'fas fa-tv', url: 'pages/ioc-center/monitoring-dashboard.html' },
+                    { id: 'data-analytics', name: '数据分析报表', icon: 'fas fa-chart-bar', url: 'pages/ioc-center/data-analytics.html' },
+                    { id: 'emergency-command', name: '应急指挥调度', icon: 'fas fa-exclamation-triangle', url: 'pages/ioc-center/emergency-command.html' },
+                    { id: 'system-maintenance', name: '系统运维管理', icon: 'fas fa-cogs', url: 'pages/ioc-center/system-maintenance.html' }
+                ]
+            },
+            security: {
+                title: '智慧安防',
+                url: 'pages/security.html',
+                subMenus: [
+                    { id: 'security-overview', name: '安防概览与统计', icon: 'fas fa-shield-alt', url: 'pages/smart-security/security-overview.html' },
+                    { id: 'video-surveillance', name: '视频监控管理', icon: 'fas fa-video', url: 'pages/smart-security/video-surveillance.html' },
+                    { id: 'access-control', name: '门禁系统管理', icon: 'fas fa-door-open', url: 'pages/smart-security/access-control.html' },
+                    { id: 'alarm-handling', name: '报警事件处理', icon: 'fas fa-bell', url: 'pages/smart-security/alarm-handling.html' },
+                    { id: 'equipment-maintenance', name: '安防设备维护', icon: 'fas fa-tools', url: 'pages/smart-security/equipment-maintenance.html' }
+                ]
+            },
+            access: {
+                title: '便捷通行',
+                url: 'pages/access.html',
+                subMenus: [
+                    { id: 'overview', name: '通行概览与统计', icon: 'fas fa-chart-bar', url: 'pages/access/overview.html' },
+                    { id: 'employee-permission', name: '员工权限管理', icon: 'fas fa-users-cog', url: 'pages/access/employee-permission.html' },
+                    { id: 'visitor-reservation', name: '访客预约审批', icon: 'fas fa-user-check', url: 'pages/access/visitor-reservation.html' },
+                    { id: 'third-party-permission', name: '第三方临时权限', icon: 'fas fa-user-clock', url: 'pages/access/third-party-permission.html' },
+                    { id: 'vehicle-management', name: '车辆出入管理', icon: 'fas fa-car', url: 'pages/access/vehicle-management.html' }
+                ]
+            },
+            'energy-park': {
+                title: '高效能源',
+                url: 'pages/energy-park.html',
+                subMenus: [
+                    { id: 'energy-overview', name: '能源监控概览', icon: 'fas fa-tachometer-alt', url: 'pages/energy-park/energy-overview.html' },
+                    { id: 'ai-prediction', name: 'AI预测与调度', icon: 'fas fa-brain', url: 'pages/energy-park/ai-prediction.html' },
+                    { id: 'carbon-management', name: '双碳管理', icon: 'fas fa-leaf', url: 'pages/energy-park/carbon-management.html' },
+                    { id: 'renewable-energy', name: '新能源管理', icon: 'fas fa-solar-panel', url: 'pages/energy-park/renewable-energy.html' },
+                    { id: 'device-control', name: '设备能耗控制', icon: 'fas fa-sliders-h', url: 'pages/energy-park/device-control.html' }
+                ]
+            },
+            space: {
+                title: '空间资产',
+                url: 'pages/space.html',
+                subMenus: [
+                    { id: 'space-overview', name: '空间概览与地图', icon: 'fas fa-map', url: 'pages/space/space-overview.html' },
+                    { id: 'equipment-lifecycle', name: '设备生命周期', icon: 'fas fa-cogs', url: 'pages/space/equipment-lifecycle.html' },
+                    { id: 'asset-inventory', name: '资产盘点管理', icon: 'fas fa-clipboard-list', url: 'pages/space/asset-inventory.html' },
+                    { id: 'space-reservation', name: '空间预约管理', icon: 'fas fa-calendar-check', url: 'pages/space/space-reservation.html' },
+                    { id: 'rental-management', name: '租赁运营管理', icon: 'fas fa-handshake', url: 'pages/space/rental-management.html' }
+                ]
+            },
+            environment: {
+                title: '绿色环保',
+                url: 'pages/environment.html',
+                subMenus: [
+                    { id: 'environmental-overview', name: '环保概览统计', icon: 'fas fa-leaf', url: 'pages/green-environmental/environmental-overview.html' },
+                    { id: 'energy-monitoring', name: '能耗监控管理', icon: 'fas fa-bolt', url: 'pages/green-environmental/energy-monitoring.html' },
+                    { id: 'emission-monitoring', name: '排放监测', icon: 'fas fa-industry', url: 'pages/green-environmental/emission-monitoring.html' },
+                    { id: 'equipment-management', name: '环保设备管理', icon: 'fas fa-cogs', url: 'pages/green-environmental/equipment-management.html' },
+                    { id: 'report-analysis', name: '环保报告分析', icon: 'fas fa-chart-bar', url: 'pages/green-environmental/report-analysis.html' }
+                ]
+            },
+            service: {
+                title: '综合服务',
+                url: 'pages/service.html',
+                subMenus: [
+                    { id: 'service-overview', name: '服务概览', icon: 'fas fa-concierge-bell', url: 'pages/comprehensive-services/service-overview.html' },
+                    { id: 'facility-management', name: '设施管理', icon: 'fas fa-building', url: 'pages/comprehensive-services/facility-management.html' },
+                    { id: 'logistics-service', name: '后勤服务', icon: 'fas fa-truck', url: 'pages/comprehensive-services/logistics-service.html' },
+                    { id: 'employee-service', name: '员工服务', icon: 'fas fa-users', url: 'pages/comprehensive-services/employee-service.html' },
+                    { id: 'service-analytics', name: '服务统计分析', icon: 'fas fa-chart-bar', url: 'pages/comprehensive-services/service-analytics.html' }
+                ]
+            },
+            'logistics-park': {
+                title: '物流调度',
+                url: 'pages/logistics-park.html',
+                subMenus: [
+                    { id: 'logistics-overview', name: '调度概览与统计', icon: 'fas fa-chart-line', url: 'pages/logistics-park/logistics-overview.html' },
+                    { id: 'vehicle-reservation', name: '车辆预约管理', icon: 'fas fa-calendar-alt', url: 'pages/logistics-park/vehicle-reservation.html' },
+                    { id: 'intelligent-dispatch', name: '智能调度优化', icon: 'fas fa-robot', url: 'pages/logistics-park/intelligent-dispatch.html' },
+                    { id: 'cost-analysis', name: '成本分析报表', icon: 'fas fa-calculator', url: 'pages/logistics-park/cost-analysis.html' }
+                ]
+            },
+            inventory: {
+                title: '仓储管理',
+                url: 'pages/inventory/index.html',
+                subMenus: [
+                    { id: 'receiving-inbound', name: '收货入库管理', icon: 'fas fa-truck-loading', url: 'pages/inventory/receiving-inbound.html' },
+                    { id: 'picking-outbound', name: '拣货出库管理', icon: 'fas fa-hand-paper', url: 'pages/inventory/picking-outbound.html' },
+                    { id: 'product-inbound', name: '成品入库管理', icon: 'fas fa-box', url: 'pages/inventory/product-inbound.html' },
+                    { id: 'product-outbound', name: '成品出库管理', icon: 'fas fa-shipping-fast', url: 'pages/inventory/product-outbound.html' },
+                    { id: 'warehouse-internal', name: '仓内管理', icon: 'fas fa-warehouse', url: 'pages/inventory/warehouse-internal.html' }
+                ]
+            },
+            logistics: {
+                title: '厂内物流执行系统(LES)',
+                url: 'pages/logistics/index.html',
+                subMenus: [
+                    { id: 'basic-data', name: '基础数据管理', icon: 'fas fa-database', url: 'pages/logistics/basic-data.html' },
+                    { id: 'task-optimization', name: '任务优化配置', icon: 'fas fa-cogs', url: 'pages/logistics/task-optimization.html' },
+                    { id: 'storage-area', name: '存放区管理', icon: 'fas fa-warehouse', url: 'pages/logistics/storage-area.html' },
+                    { id: 'logistics-tracking', name: '物流追溯', icon: 'fas fa-route', url: 'pages/logistics/logistics-tracking.html' },
+                    { id: 'dynamic-monitoring', name: '动态监控', icon: 'fas fa-tv', url: 'pages/logistics/dynamic-monitoring.html' },
+                    { id: 'personnel-management', name: '人员管理', icon: 'fas fa-users', url: 'pages/logistics/personnel-management.html' },
+                    { id: 'information-query', name: '信息查询', icon: 'fas fa-search', url: 'pages/logistics/information-query.html' },
+                    { id: 'analysis-statistics', name: '分析统计', icon: 'fas fa-chart-bar', url: 'pages/logistics/analysis-statistics.html' }
+                ]
+            },
+            energy: {
+                title: '能源管理',
+                subMenus: [
+                    { id: 'monitoring', name: '能耗监控', icon: 'fas fa-bolt', url: 'pages/coming-soon.html' },
+                    { id: 'analysis', name: '节能分析', icon: 'fas fa-chart-line', url: 'pages/coming-soon.html' },
+                    { id: 'management', name: '电力管理', icon: 'fas fa-plug', url: 'pages/coming-soon.html' }
+                ]
+            },
+            iot: {
+                title: 'IOT平台',
+                subMenus: [
+                    { id: 'device-connection', name: '设备连接', icon: 'fas fa-wifi', url: 'pages/iot/device-management.html' },
+                    { id: 'data-collection', name: '数据采集', icon: 'fas fa-database', url: 'pages/coming-soon.html' },
+                    { id: 'remote-monitoring', name: '远程监控', icon: 'fas fa-desktop', url: 'pages/coming-soon.html' }
+                ]
+            },
+            lowcode: {
+                title: '低代码平台',
+                subMenus: [
+                    { id: 'visual-development', name: '可视化开发', icon: 'fas fa-code', url: 'pages/coming-soon.html' },
+                    { id: 'process-design', name: '流程设计', icon: 'fas fa-project-diagram', url: 'pages/coming-soon.html' },
+                    { id: 'app-building', name: '应用构建', icon: 'fas fa-cubes', url: 'pages/coming-soon.html' }
+                ]
+            },
+            masterdata: {
+                title: '主数据平台',
+                url: 'pages/master-data/index.html',
+                subMenus: [
+                    { id: 'material-master', name: '物料主数据管理', icon: 'fas fa-cube', url: 'pages/master-data/material-master.html' },
+                    { id: 'equipment-master', name: '设备主数据管理', icon: 'fas fa-cogs', url: 'pages/master-data/equipment-master.html' },
+                    { id: 'personnel-master', name: '人员主数据管理', icon: 'fas fa-users', url: 'pages/master-data/personnel-master.html' },
+                    { id: 'supplier-master', name: '供应商主数据管理', icon: 'fas fa-truck', url: 'pages/master-data/supplier-master.html' },
+                    { id: 'customer-master', name: '客户主数据管理', icon: 'fas fa-handshake', url: 'pages/master-data/customer-master.html' },
+                    { id: 'organization-master', name: '组织架构管理', icon: 'fas fa-sitemap', url: 'pages/master-data/organization-master.html' },
+                    { id: 'data-standards', name: '数据标准管理', icon: 'fas fa-ruler', url: 'pages/master-data/data-standards.html' },
+                    { id: 'data-quality', name: '数据质量监控', icon: 'fas fa-chart-line', url: 'pages/master-data/data-quality.html' }
+                ]
+            },
+            operations: {
+                title: '运营中心',
+                subMenus: [
+                    { id: 'data-screen', name: '数据大屏', icon: 'fas fa-tv', url: 'pages/coming-soon.html' },
+                    { id: 'operations-analysis', name: '运营分析', icon: 'fas fa-chart-pie', url: 'pages/coming-soon.html' },
+                    { id: 'decision-support', name: '决策支持', icon: 'fas fa-lightbulb', url: 'pages/coming-soon.html' }
+                ]
+            }
+        };
+
+        let currentModule = 'dashboard';
+        let currentSubMenu = '';
+
+        // 切换模块
+        function switchModule(moduleId) {
+            currentModule = moduleId;
+            const config = moduleConfig[moduleId];
+
+            if (!config) {
+                console.error('Module config not found for:', moduleId);
+                return;
+            }
+
+            // 更新模块标题
+            document.getElementById('module-title').textContent = config.title;
+
+            // 更新顶部导航激活状态
+            document.querySelectorAll('.module-nav-item').forEach(item => {
+                item.classList.remove('active', 'border-primary', 'text-primary');
+                item.classList.add('border-transparent', 'text-gray-600');
+            });
+
+            // 根据模块ID找到对应的导航按钮并激活
+            const targetButton = document.querySelector(`button[onclick="switchModule('${moduleId}')"]`);
+            if (targetButton) {
+                targetButton.classList.add('active', 'border-primary', 'text-primary');
+                targetButton.classList.remove('border-transparent', 'text-gray-600');
+            }
+
+            // 控制左侧导航栏和页面标题栏的显示/隐藏
+            const sidebarNav = document.getElementById('sidebar-nav');
+            const pageTitleBar = document.getElementById('page-title-bar');
+
+            if (moduleId === 'dashboard') {
+                // 首页模块：隐藏左侧导航栏和页面标题栏
+                sidebarNav.style.display = 'none';
+                pageTitleBar.style.display = 'none';
+                // 直接加载首页
+                loadSubPage(config.url, config.title);
+                document.getElementById('page-title').textContent = config.title;
+            } else {
+                // 其他模块：显示左侧导航栏和页面标题栏
+                sidebarNav.style.display = 'flex';
+                pageTitleBar.style.display = 'block';
+                // 更新左侧二级菜单
+                updateSubMenu(config.subMenus);
+
+                if (config.subMenus.length > 0) {
+                    // 默认加载第一个子菜单
+                    const firstMenu = config.subMenus[0];
+                    if (firstMenu.subItems && firstMenu.subItems.length > 0) {
+                        // 如果有三级菜单，加载第一个三级菜单项
+                        loadSubPage(firstMenu.subItems[0].url, firstMenu.subItems[0].name);
+                        document.getElementById('page-title').textContent = firstMenu.subItems[0].name;
+                    } else if (firstMenu.url) {
+                        // 如果没有三级菜单但有URL，直接加载二级菜单
+                        loadSubPage(firstMenu.url, firstMenu.name);
+                        document.getElementById('page-title').textContent = firstMenu.name;
+                    } else {
+                        // 如果没有URL，显示模块标题
+                        document.getElementById('page-title').textContent = config.title;
+                    }
+                } else {
+                    // 如果没有子菜单，直接加载模块主页面
+                    if (config.url) {
+                        loadSubPage(config.url, config.title);
+                        document.getElementById('page-title').textContent = config.title;
+                    } else {
+                        // 如果没有URL，显示模块标题
+                        document.getElementById('page-title').textContent = config.title;
+                    }
+                }
+            }
+        }
+
+        // 更新二级菜单
+        function updateSubMenu(subMenus) {
+            const subMenuContainer = document.getElementById('sub-menu');
+            subMenuContainer.innerHTML = '';
+
+            subMenus.forEach((menu, index) => {
+                const li = document.createElement('li');
+
+                if (menu.subItems && menu.subItems.length > 0) {
+                    // 有三级菜单的情况
+                    li.innerHTML = `
+                        <div class="sub-menu-group">
+                            <a href="#" onclick="toggleSubItems('${menu.id}')"
+                               class="sub-nav-item flex items-center justify-between px-4 py-3 rounded-lg transition-colors hover:bg-gray-50">
+                                <div class="flex items-center space-x-3">
+                                    <i class="${menu.icon} w-5"></i>
+                                    <span>${menu.name}</span>
+                                </div>
+                                <i class="fas fa-chevron-down transition-transform duration-200" id="chevron-${menu.id}"></i>
+                            </a>
+                            <ul class="sub-items ml-8 mt-1 space-y-1 hidden" id="subitems-${menu.id}">
+                                ${menu.subItems.map((subItem, subIndex) => `
+                                    <li>
+                                        <a href="#" onclick="loadSubPage('${subItem.url}', '${subItem.name}')"
+                                           class="sub-item-link ${index === 0 && subIndex === 0 ? 'active' : ''} block px-4 py-2 text-sm rounded-lg transition-colors hover:bg-blue-50 hover:text-blue-600">
+                                            ${subItem.name}
+                                        </a>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `;
+                } else {
+                    // 没有三级菜单的情况（保持兼容性）
+                    li.innerHTML = `
+                        <a href="#" onclick="loadSubPage('${menu.url}', '${menu.name}')"
+                           class="sub-nav-item ${index === 0 ? 'active bg-blue-50 text-blue-600' : ''} flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors hover:bg-blue-50 hover:text-blue-600">
+                            <i class="${menu.icon} w-5"></i>
+                            <span>${menu.name}</span>
+                        </a>
+                    `;
+                }
+                subMenuContainer.appendChild(li);
+            });
+
+            // 默认展开第一个有子项的菜单
+            const firstMenuWithSubItems = subMenus.find(menu => menu.subItems && menu.subItems.length > 0);
+            if (firstMenuWithSubItems) {
+                setTimeout(() => toggleSubItems(firstMenuWithSubItems.id), 100);
+            }
+        }
+
+        // 切换三级菜单显示/隐藏
+        function toggleSubItems(menuId) {
+            const subItems = document.getElementById(`subitems-${menuId}`);
+            const chevron = document.getElementById(`chevron-${menuId}`);
+
+            if (subItems.classList.contains('hidden')) {
+                // 展开
+                subItems.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                // 收起
+                subItems.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // 加载子页面
+        function loadSubPage(url, name) {
+            const iframe = document.getElementById('content-frame');
+            if (!iframe) {
+                console.error('Content iframe not found!');
+                return;
+            }
+
+            const title = document.getElementById('page-title');
+
+            // 更新iframe源
+            iframe.src = url;
+
+            // 更新页面标题
+            if (title) {
+                title.textContent = name;
+            }
+
+            // 更新二级导航激活状态
+            document.querySelectorAll('.sub-nav-item').forEach(item => {
+                item.classList.remove('active', 'bg-blue-50', 'text-blue-600');
+            });
+
+            // 更新三级导航激活状态
+            document.querySelectorAll('.sub-item-link').forEach(item => {
+                item.classList.remove('active', 'bg-blue-50', 'text-blue-600');
+            });
+
+            if (event && event.target) {
+                // 如果是点击事件触发的
+                if (event.target.closest('.sub-item-link')) {
+                    // 如果点击的是三级菜单项
+                    event.target.closest('.sub-item-link').classList.add('active', 'bg-blue-50', 'text-blue-600');
+                    // 同时激活其父级二级菜单
+                    const parentSubNav = event.target.closest('.sub-menu-group').querySelector('.sub-nav-item');
+                    if (parentSubNav) {
+                        parentSubNav.classList.add('active', 'bg-blue-50', 'text-blue-600');
+                    }
+                } else if (event.target.closest('.sub-nav-item')) {
+                    // 如果点击的是二级菜单项
+                    event.target.closest('.sub-nav-item').classList.add('active', 'bg-blue-50', 'text-blue-600');
+                }
+            }
+        }
+
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('current-time').textContent = timeString;
+        }
+
+        // 行业版本配置
+        const industryVersions = {
+            general: {
+                id: 'general',
+                name: '通用行业',
+                title: '数字工厂一体化平台',
+                description: '基于变频器生产制造场景的智能制造执行系统'
+            },
+            automotive: {
+                id: 'automotive',
+                name: '汽车零部件行业',
+                title: '汽车零部件智能制造平台',
+                description: '专注汽车零部件制造的智能工厂管理系统'
+            },
+            optoelectronics: {
+                id: 'optoelectronics',
+                name: '光电行业',
+                title: '光电制造智能管理平台',
+                description: '面向光电器件制造的数字化工厂解决方案'
+            },
+            inverter: {
+                id: 'inverter',
+                name: '逆变器行业',
+                title: '逆变器智能制造平台',
+                description: '专业的逆变器生产制造管理系统'
+            }
+        };
+
+        // 检查登录状态
+        function checkLoginStatus() {
+            const loginData = localStorage.getItem('loginData') || sessionStorage.getItem('loginData');
+
+            if (!loginData) {
+                // 未登录，跳转到登录页面
+                window.location.href = 'login.html';
+                return false;
+            }
+
+            const data = JSON.parse(loginData);
+            if (!data.isLoggedIn) {
+                // 登录状态无效，跳转到登录页面
+                window.location.href = 'login.html';
+                return false;
+            }
+
+            // 更新界面显示
+            updateUserInterface(data);
+            return true;
+        }
+
+        // 更新用户界面
+        function updateUserInterface(loginData) {
+            const versionInfo = loginData.versionInfo || industryVersions.general;
+
+            // 更新页面标题（仅更新浏览器标题栏）
+            document.getElementById('pageTitle').textContent = versionInfo.title;
+
+            // 左上角系统名称保持固定显示"数字工厂一体化平台"
+            document.getElementById('platformTitle').textContent = '数字工厂一体化平台';
+            document.getElementById('platformDescription').textContent = 'Digital Factory Platform';
+
+            // 更新版本标识（仅更新用户菜单中的版本信息）
+            document.getElementById('currentVersion').textContent = versionInfo.name;
+
+            // 更新用户信息
+            document.getElementById('currentUser').textContent = loginData.username;
+
+            // 更新登录时间
+            if (loginData.loginTime) {
+                const loginTime = new Date(loginData.loginTime);
+                document.getElementById('loginTime').textContent = loginTime.toLocaleString('zh-CN');
+            }
+
+            // 根据行业版本控制智慧园区功能的显示/隐藏
+            updateSmartParkVisibility(versionInfo.id);
+        }
+
+        // 控制智慧园区功能的显示/隐藏
+        function updateSmartParkVisibility(versionId) {
+            console.log('updateSmartParkVisibility called with versionId:', versionId);
+            const isGeneralVersion = versionId === 'general';
+            console.log('isGeneralVersion:', isGeneralVersion);
+
+            // 智慧园区导航项ID列表
+            const smartParkNavIds = ['ioc', 'security', 'access', 'energy-park', 'space', 'environment', 'service', 'logistics-park'];
+
+            // 延迟执行以确保DOM元素已加载
+            setTimeout(() => {
+                // 控制顶部导航栏中智慧园区项的显示/隐藏
+                smartParkNavIds.forEach(navId => {
+                    const navButton = document.querySelector(`button[onclick="switchModule('${navId}')"]`);
+                    console.log(`Navigation button for ${navId}:`, navButton);
+                    if (navButton) {
+                        if (isGeneralVersion) {
+                            navButton.style.display = 'flex';
+                            console.log(`Showing navigation button for ${navId}`);
+                        } else {
+                            navButton.style.display = 'none';
+                            console.log(`Hiding navigation button for ${navId}`);
+                        }
+                    } else {
+                        console.warn(`Navigation button not found for ${navId}`);
+                    }
+                });
+            }, 100);
+        }
+
+        // 用户菜单切换
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // 退出登录
+        function logout() {
+            // 清除登录数据
+            localStorage.removeItem('loginData');
+            sessionStorage.removeItem('loginData');
+
+            // 跳转到登录页面
+            window.location.href = 'login.html';
+        }
+
+        // 点击外部关闭下拉菜单
+        document.addEventListener('click', function(event) {
+            const userMenuButton = document.getElementById('userMenuButton');
+            const userDropdown = document.getElementById('userDropdown');
+
+            if (!userMenuButton.contains(event.target) && !userDropdown.contains(event.target)) {
+                userDropdown.classList.add('hidden');
+            }
+        });
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态
+            if (!checkLoginStatus()) {
+                return;
+            }
+
+            // 绑定用户菜单事件
+            document.getElementById('userMenuButton').addEventListener('click', toggleUserMenu);
+            document.getElementById('logoutButton').addEventListener('click', logout);
+
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            // 初始化首页模块
+            switchModule('dashboard');
+
+            // 初始化导航栏滚动功能
+            initNavigationScroll();
+
+            // 延迟执行智慧园区可见性控制，确保所有DOM元素都已加载
+            setTimeout(() => {
+                const loginData = localStorage.getItem('loginData') || sessionStorage.getItem('loginData');
+                if (loginData) {
+                    try {
+                        const data = JSON.parse(loginData);
+                        const versionId = data.versionInfo ? data.versionInfo.id : 'general';
+                        console.log('Initializing smart park visibility for version:', versionId);
+                        updateSmartParkVisibility(versionId);
+                    } catch (error) {
+                        console.error('Error parsing login data:', error);
+                    }
+                }
+            }, 500);
+        });
+
+        // 导航栏滚动功能
+        function scrollNavigation(direction) {
+            const container = document.getElementById('nav-container');
+            const scrollAmount = 200; // 每次滚动的像素数
+
+            if (direction === 'left') {
+                container.scrollLeft -= scrollAmount;
+            } else {
+                container.scrollLeft += scrollAmount;
+            }
+
+            // 延迟更新滚动按钮状态
+            setTimeout(updateScrollButtons, 100);
+        }
+
+        // 更新滚动按钮的显示状态
+        function updateScrollButtons() {
+            const container = document.getElementById('nav-container');
+            const leftButton = document.getElementById('nav-scroll-left');
+            const rightButton = document.getElementById('nav-scroll-right');
+            const nav = container.closest('nav');
+
+            if (!container || !leftButton || !rightButton) return;
+
+            const canScrollLeft = container.scrollLeft > 0;
+            const canScrollRight = container.scrollLeft < (container.scrollWidth - container.clientWidth);
+            const needsScroll = container.scrollWidth > container.clientWidth;
+
+            if (needsScroll) {
+                // 显示/隐藏左滚动按钮
+                if (canScrollLeft) {
+                    leftButton.style.display = 'flex';
+                    nav.classList.add('nav-with-scroll-left');
+                } else {
+                    leftButton.style.display = 'none';
+                    nav.classList.remove('nav-with-scroll-left');
+                }
+
+                // 显示/隐藏右滚动按钮
+                if (canScrollRight) {
+                    rightButton.style.display = 'flex';
+                    nav.classList.add('nav-with-scroll-right');
+                } else {
+                    rightButton.style.display = 'none';
+                    nav.classList.remove('nav-with-scroll-right');
+                }
+            } else {
+                // 不需要滚动时隐藏所有按钮
+                leftButton.style.display = 'none';
+                rightButton.style.display = 'none';
+                nav.classList.remove('nav-with-scroll-left', 'nav-with-scroll-right');
+            }
+        }
+
+        // 初始化导航栏滚动功能
+        function initNavigationScroll() {
+            const container = document.getElementById('nav-container');
+            if (container) {
+                // 监听滚动事件
+                container.addEventListener('scroll', updateScrollButtons);
+
+                // 监听窗口大小变化
+                window.addEventListener('resize', updateScrollButtons);
+
+                // 初始化滚动按钮状态
+                setTimeout(updateScrollButtons, 100);
+
+                // 添加触摸滑动支持（移动端）
+                let startX = 0;
+                let scrollLeft = 0;
+
+                container.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].pageX - container.offsetLeft;
+                    scrollLeft = container.scrollLeft;
+                });
+
+                container.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    const x = e.touches[0].pageX - container.offsetLeft;
+                    const walk = (x - startX) * 2; // 滚动速度
+                    container.scrollLeft = scrollLeft - walk;
+                });
+            }
+        }
+    </script>
+
+    <!-- AI助手脚本 -->
+    <script src="assets/js/ai-assistant.js"></script>
+</body>
+</html>

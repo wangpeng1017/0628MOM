@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主生产计划(MPS) - 计划管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">主生产计划(MPS)管理</h1>
+            <p class="text-gray-600">基于Process.md 2.1.11-2.1.12流程：MPS制定(6个控制点)→MPS变更(4个控制点)，实现"一单到底"的计划管控</p>
+        </div>
+
+        <!-- MPS流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">MPS制定流程</h3>
+                    <span class="text-sm text-gray-600">基于锁定需求自动/手动生成</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-6">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">需求汇总</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">多算法试算</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 80%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">销售评审</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-gray-300" style="width: 60%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">MPS发布</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="generateMPSBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                生成MPS
+            </button>
+            <button id="algorithmTrialBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-calculator mr-2"></i>
+                多算法试算
+            </button>
+            <button id="salesReviewBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-user-check mr-2"></i>
+                销售评审
+            </button>
+            <button id="publishMPSBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-paper-plane mr-2"></i>
+                发布计划
+            </button>
+            <button id="changeMPSBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-edit mr-2"></i>
+                MPS变更
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出计划
+            </button>
+        </div>
+
+        <!-- MPS统计卡片 - 基于Process.md定义的MPS状态 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">94</div>
+                        <div class="text-sm text-gray-600">已发布MPS</div>
+                        <div class="text-xs text-gray-500">可执行状态</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-check text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">18</div>
+                        <div class="text-sm text-gray-600">待销售评审</div>
+                        <div class="text-xs text-gray-500">承诺交期确认</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-check text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">12</div>
+                        <div class="text-sm text-gray-600">算法试算中</div>
+                        <div class="text-xs text-gray-500">多算法对比</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calculator text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">8</div>
+                        <div class="text-sm text-gray-600">变更中</div>
+                        <div class="text-xs text-gray-500">需求/ECN变更</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-edit text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">92%</div>
+                        <div class="text-sm text-gray-600">计划达成率</div>
+                        <div class="text-xs text-gray-500">本月统计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">3</div>
+                        <div class="text-sm text-gray-600">逾期风险</div>
+                        <div class="text-xs text-gray-500">需要关注</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MPS计划列表 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">MPS计划列表 - 基于"一单到底"原则管理</h3>
+                <!-- 6列响应式筛选区域 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-4">
+                    <select id="statusFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部状态</option>
+                        <option value="draft">草稿</option>
+                        <option value="trial">算法试算</option>
+                        <option value="review">待销售评审</option>
+                        <option value="published">已发布</option>
+                        <option value="changing">变更中</option>
+                        <option value="completed">已完成</option>
+                    </select>
+                    <select id="productFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部产品</option>
+                        <option value="inv-5kw">5KW逆变器</option>
+                        <option value="inv-10kw">10KW逆变器</option>
+                        <option value="inv-20kw">20KW逆变器</option>
+                        <option value="ctrl-basic">基础控制器</option>
+                        <option value="ctrl-advanced">高级控制器</option>
+                        <option value="ess">储能系统</option>
+                    </select>
+                    <select id="algorithmFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部算法</option>
+                        <option value="fifo">FIFO算法</option>
+                        <option value="priority">优先级算法</option>
+                        <option value="capacity">产能平衡算法</option>
+                        <option value="cost">成本优化算法</option>
+                    </select>
+                    <select id="riskFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">全部风险</option>
+                        <option value="normal">正常</option>
+                        <option value="warning">预警</option>
+                        <option value="risk">风险</option>
+                        <option value="overdue">逾期</option>
+                    </select>
+                    <input type="date" id="dateFilter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="承诺交期">
+                    <div class="flex gap-2">
+                        <input type="text" id="searchInput" placeholder="搜索MPS编号、需求..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <button onclick="searchMPS()" class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- 快速操作按钮 -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="showReviewOnly()" class="px-3 py-1 text-xs bg-orange-100 text-orange-800 rounded-full hover:bg-orange-200 transition-colors">
+                        <i class="fas fa-user-check mr-1"></i>仅显示待评审
+                    </button>
+                    <button onclick="showPublishedOnly()" class="px-3 py-1 text-xs bg-blue-100 text-blue-800 rounded-full hover:bg-blue-200 transition-colors">
+                        <i class="fas fa-calendar-check mr-1"></i>仅显示已发布
+                    </button>
+                    <button onclick="showRiskOnly()" class="px-3 py-1 text-xs bg-red-100 text-red-800 rounded-full hover:bg-red-200 transition-colors">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>仅显示风险
+                    </button>
+                    <button onclick="clearFilters()" class="px-3 py-1 text-xs bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition-colors">
+                        <i class="fas fa-times mr-1"></i>清除筛选
+                    </button>
+                </div>
+            </div>
+
+            <!-- MPS计划表格 - 12列数据表格 -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <input type="checkbox" id="selectAll" class="rounded">
+                            </th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">MPS编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">关联需求</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划数量</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">承诺交期</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划开始</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">算法类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">风险等级</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">负责人</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="mpsTableBody">
+                        <!-- MPS计划数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.1.11-2.1.12的MPS数据模型
+        const mpsData = [
+            {
+                id: 'MPS202501001',
+                demandId: 'DM202501001',
+                product: '5KW逆变器',
+                productCode: 'INV-5KW-001',
+                quantity: 100,
+                commitDate: '2025-02-15',
+                planStartDate: '2025-01-20',
+                algorithm: 'priority',
+                algorithmName: '优先级算法',
+                status: 'published',
+                riskLevel: 'normal',
+                progress: 65,
+                responsible: '张计划',
+                createTime: '2025-01-15 10:00',
+                salesReviewed: true,
+                changeHistory: []
+            },
+            {
+                id: 'MPS202501002',
+                demandId: 'DM202501002',
+                product: '储能逆变器',
+                productCode: 'ESS-10KW-002',
+                quantity: 50,
+                commitDate: '2025-02-20',
+                planStartDate: '2025-01-25',
+                algorithm: 'capacity',
+                algorithmName: '产能平衡算法',
+                status: 'review',
+                riskLevel: 'warning',
+                progress: 20,
+                responsible: '李计划',
+                createTime: '2025-01-14 14:30',
+                salesReviewed: false,
+                changeHistory: []
+            },
+            {
+                id: 'MPS202501003',
+                demandId: 'DM202501003',
+                product: '高级控制器',
+                productCode: 'CTRL-ADV-003',
+                quantity: 20,
+                commitDate: '2025-03-01',
+                planStartDate: '2025-02-10',
+                algorithm: 'cost',
+                algorithmName: '成本优化算法',
+                status: 'changing',
+                riskLevel: 'normal',
+                progress: 30,
+                responsible: '王计划',
+                createTime: '2025-01-13 09:15',
+                salesReviewed: true,
+                changeHistory: [
+                    { date: '2025-01-16', action: '数量调整', from: '15', to: '20', reason: '需求变更', operator: '王计划' }
+                ]
+            },
+            {
+                id: 'MPS202501004',
+                demandId: 'DM202501004',
+                product: '3KW逆变器',
+                productCode: 'INV-3KW-004',
+                quantity: 5,
+                commitDate: '2025-01-25',
+                planStartDate: '2025-01-18',
+                algorithm: 'fifo',
+                algorithmName: 'FIFO算法',
+                status: 'trial',
+                riskLevel: 'risk',
+                progress: 10,
+                responsible: '赵计划',
+                createTime: '2025-01-12 16:45',
+                salesReviewed: false,
+                changeHistory: []
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            draft: { text: '草稿', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-file' },
+            trial: { text: '算法试算', class: 'bg-indigo-100 text-indigo-800', icon: 'fas fa-calculator' },
+            review: { text: '待销售评审', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-user-check' },
+            published: { text: '已发布', class: 'bg-green-100 text-green-800', icon: 'fas fa-calendar-check' },
+            changing: { text: '变更中', class: 'bg-purple-100 text-purple-800', icon: 'fas fa-edit' },
+            completed: { text: '已完成', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-check-circle' }
+        };
+
+        // 风险等级映射
+        const riskMap = {
+            normal: { text: '正常', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            warning: { text: '预警', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-exclamation-triangle' },
+            risk: { text: '风险', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-exclamation' },
+            overdue: { text: '逾期', class: 'bg-red-100 text-red-800', icon: 'fas fa-times-circle' }
+        };
+
+        // 算法映射
+        const algorithmMap = {
+            fifo: { text: 'FIFO算法', desc: '先进先出' },
+            priority: { text: '优先级算法', desc: '按优先级排序' },
+            capacity: { text: '产能平衡算法', desc: '平衡产能负载' },
+            cost: { text: '成本优化算法', desc: '最小化成本' }
+        };
+
+        let filteredData = [...mpsData];
+
+        // 渲染MPS表格
+        function renderMPSTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('mpsTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(mps => {
+                const status = statusMap[mps.status];
+                const risk = riskMap[mps.riskLevel];
+                const algorithm = algorithmMap[mps.algorithm];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+                row.setAttribute('data-mps-id', mps.id);
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <input type="checkbox" class="rounded mps-checkbox" data-id="${mps.id}">
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewMPSDetail('${mps.id}')">
+                            ${mps.id}
+                        </div>
+                        <div class="text-xs text-gray-500">${mps.createTime}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-blue-600 cursor-pointer hover:underline" onclick="viewDemandDetail('${mps.demandId}')">
+                            ${mps.demandId}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${mps.product}</div>
+                        <div class="text-xs text-gray-500">${mps.productCode}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-center">
+                        <span class="text-sm font-medium text-gray-900">${mps.quantity}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${mps.commitDate}</span>
+                        ${isDateUrgent(mps.commitDate) ? '<div class="text-xs text-red-600"><i class="fas fa-exclamation-triangle mr-1"></i>临期</div>' : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${mps.planStartDate}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${algorithm.text}</div>
+                        <div class="text-xs text-gray-500">${algorithm.desc}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${mps.salesReviewed ? '<div class="text-xs text-green-600 mt-1"><i class="fas fa-check mr-1"></i>已评审</div>' : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${risk.class}">
+                            <i class="${risk.icon} mr-1"></i>
+                            ${risk.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${mps.progress}%"></div>
+                            </div>
+                            <span class="text-xs text-gray-600">${mps.progress}%</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="text-sm text-gray-900">${mps.responsible}</span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewMPSDetail('${mps.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${mps.status === 'trial' ? `
+                                <button onclick="algorithmTrial('${mps.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="算法试算">
+                                    <i class="fas fa-calculator"></i>
+                                </button>
+                            ` : ''}
+                            ${mps.status === 'review' ? `
+                                <button onclick="salesReview('${mps.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="销售评审">
+                                    <i class="fas fa-user-check"></i>
+                                </button>
+                            ` : ''}
+                            ${mps.status === 'published' ? `
+                                <button onclick="changeMPS('${mps.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="发起变更">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            ` : ''}
+                            ${mps.changeHistory.length > 0 ? `
+                                <button onclick="viewChangeHistory('${mps.id}')" class="text-gray-600 hover:text-gray-900 p-1" title="变更历史">
+                                    <i class="fas fa-history"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${mpsData.length} 条记录`;
+        }
+
+        // 判断日期是否紧急（7天内）
+        function isDateUrgent(dateStr) {
+            const targetDate = new Date(dateStr);
+            const today = new Date();
+            const diffTime = targetDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays <= 7 && diffDays >= 0;
+        }
+
+        // 搜索MPS
+        function searchMPS() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const productFilter = document.getElementById('productFilter').value;
+            const algorithmFilter = document.getElementById('algorithmFilter').value;
+            const riskFilter = document.getElementById('riskFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+
+            filteredData = mpsData.filter(mps => {
+                const matchesSearch = !searchTerm ||
+                    mps.id.toLowerCase().includes(searchTerm) ||
+                    mps.demandId.toLowerCase().includes(searchTerm) ||
+                    mps.product.toLowerCase().includes(searchTerm);
+
+                const matchesStatus = !statusFilter || mps.status === statusFilter;
+                const matchesProduct = !productFilter || mps.productCode.includes(productFilter.toUpperCase());
+                const matchesAlgorithm = !algorithmFilter || mps.algorithm === algorithmFilter;
+                const matchesRisk = !riskFilter || mps.riskLevel === riskFilter;
+                const matchesDate = !dateFilter || mps.commitDate === dateFilter;
+
+                return matchesSearch && matchesStatus && matchesProduct && matchesAlgorithm && matchesRisk && matchesDate;
+            });
+
+            renderMPSTable();
+        }
+
+        // 快速筛选函数
+        function showReviewOnly() {
+            document.getElementById('statusFilter').value = 'review';
+            searchMPS();
+        }
+
+        function showPublishedOnly() {
+            document.getElementById('statusFilter').value = 'published';
+            searchMPS();
+        }
+
+        function showRiskOnly() {
+            document.getElementById('riskFilter').value = 'risk';
+            searchMPS();
+        }
+
+        function clearFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('productFilter').value = '';
+            document.getElementById('algorithmFilter').value = '';
+            document.getElementById('riskFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            document.getElementById('searchInput').value = '';
+            filteredData = [...mpsData];
+            renderMPSTable();
+        }
+
+        // MPS操作函数 - 基于Process.md的关键控制点
+        function viewMPSDetail(mpsId) {
+            const mps = mpsData.find(m => m.id === mpsId);
+            if (mps) {
+                alert(`MPS详情：\n编号：${mps.id}\n关联需求：${mps.demandId}\n产品：${mps.product}\n数量：${mps.quantity}\n承诺交期：${mps.commitDate}\n算法：${algorithmMap[mps.algorithm].text}\n销售评审：${mps.salesReviewed ? '已完成' : '待评审'}`);
+            }
+        }
+
+        function algorithmTrial(mpsId) {
+            if (confirm('确认进行多算法试算？将对比FIFO、优先级、产能平衡、成本优化等算法结果。')) {
+                const mps = mpsData.find(m => m.id === mpsId);
+                if (mps) {
+                    mps.status = 'review';
+                    mps.progress = 40;
+                    renderMPSTable();
+                    alert('多算法试算完成！已提交销售部门评审承诺交期。');
+                }
+            }
+        }
+
+        function salesReview(mpsId) {
+            if (confirm('确认销售评审通过？评审通过后将发布MPS计划。')) {
+                const mps = mpsData.find(m => m.id === mpsId);
+                if (mps) {
+                    mps.status = 'published';
+                    mps.progress = 60;
+                    mps.salesReviewed = true;
+                    renderMPSTable();
+                    alert('销售评审通过！MPS计划已发布，可生成工单。');
+                }
+            }
+        }
+
+        function changeMPS(mpsId) {
+            if (confirm('确认发起MPS变更？变更将触发工单和物料计划的联动调整。')) {
+                const mps = mpsData.find(m => m.id === mpsId);
+                if (mps) {
+                    mps.status = 'changing';
+                    mps.progress = 30;
+                    renderMPSTable();
+                    alert('MPS变更已发起！将触发工单管理和物料计划的联动变更。');
+                }
+            }
+        }
+
+        function viewChangeHistory(mpsId) {
+            const mps = mpsData.find(m => m.id === mpsId);
+            if (mps && mps.changeHistory.length > 0) {
+                let historyText = 'MPS变更历史：\n';
+                mps.changeHistory.forEach(change => {
+                    historyText += `${change.date} - ${change.action}: ${change.from} → ${change.to}\n原因: ${change.reason} (操作人: ${change.operator})\n`;
+                });
+                alert(historyText);
+            }
+        }
+
+        // URL参数处理 - 支持从AI助手跳转时高亮显示对应单据
+        function handleURLParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const docNumber = urlParams.get('doc');
+
+            if (docNumber) {
+                // 在搜索框中填入单据编号
+                const searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    searchInput.value = docNumber;
+                    searchMPS();
+                }
+
+                // 高亮显示对应的行
+                setTimeout(() => {
+                    const targetRow = document.querySelector(`tr[data-mps-id="${docNumber}"]`);
+                    if (targetRow) {
+                        targetRow.classList.add('bg-blue-50', 'border-2', 'border-blue-300');
+                        targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                        // 3秒后移除高亮
+                        setTimeout(() => {
+                            targetRow.classList.remove('bg-blue-50', 'border-2', 'border-blue-300');
+                        }, 3000);
+                    }
+                }, 500);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMPSTable();
+            handleURLParams();
+
+            // 生成MPS
+            document.getElementById('generateMPSBtn').addEventListener('click', function() {
+                alert('MPS生成功能：\n- 基于锁定需求自动生成\n- 支持手动创建MPS\n- 1对1关联需求单\n- 自动计算计划开始时间');
+            });
+
+            // 多算法试算
+            document.getElementById('algorithmTrialBtn').addEventListener('click', function() {
+                alert('多算法试算功能：\n- FIFO算法：先进先出\n- 优先级算法：按需求优先级\n- 产能平衡算法：平衡产线负载\n- 成本优化算法：最小化总成本\n- 对比分析选择最优方案');
+            });
+
+            // 销售评审
+            document.getElementById('salesReviewBtn').addEventListener('click', function() {
+                alert('销售评审功能：\n- 销售部门确认承诺交期\n- 评估客户期望与产能匹配\n- 确认后锁定交期承诺\n- 触发MPS正式发布');
+            });
+
+            // 发布MPS
+            document.getElementById('publishMPSBtn').addEventListener('click', function() {
+                const checkedBoxes = document.querySelectorAll('.mps-checkbox:checked');
+                if (checkedBoxes.length === 0) {
+                    alert('请选择要发布的MPS计划！');
+                    return;
+                }
+
+                if (confirm(`确认发布选中的 ${checkedBoxes.length} 个MPS计划？发布后将作为工单生成的依据。`)) {
+                    checkedBoxes.forEach(checkbox => {
+                        const mpsId = checkbox.dataset.id;
+                        const mps = mpsData.find(m => m.id === mpsId);
+                        if (mps && mps.status === 'review' && mps.salesReviewed) {
+                            mps.status = 'published';
+                            mps.progress = 60;
+                        }
+                    });
+                    renderMPSTable();
+                    alert('MPS计划发布完成！');
+                }
+            });
+
+            // MPS变更
+            document.getElementById('changeMPSBtn').addEventListener('click', function() {
+                alert('MPS变更功能：\n- 需求变更触发MPS变更\n- ECN变更触发MPS变更\n- 紧急插单触发MPS变更\n- 自动联动工单和物料计划变更');
+            });
+
+            // 全选功能
+            document.getElementById('selectAll').addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.mps-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

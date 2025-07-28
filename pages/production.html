@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>制造执行系统(MES) - 数字工厂一体化平台</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">制造执行系统(MES)</h1>
+            <p class="text-gray-600">实现生产全过程的透明化、自动化和可追溯，通过实时监控与防错机制，提升生产效率和产品质量</p>
+        </div>
+
+        <!-- MES统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">24</div>
+                        <div class="text-sm text-gray-600">在线工单</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tasks text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">85%</div>
+                        <div class="text-sm text-gray-600">设备OEE</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">3</div>
+                        <div class="text-sm text-gray-600">异常告警</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">98.5%</div>
+                        <div class="text-sm text-gray-600">直通率</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MES功能模块卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 生产准备管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('production-preparation')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-list text-blue-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-blue-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">生产准备管理</h3>
+                <p class="text-gray-600 text-sm mb-4">工单上线、产品识别、SOP管理</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">待上线工单</span>
+                        <span class="text-blue-600 font-medium">8</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">SOP版本</span>
+                        <span class="text-green-600 font-medium">最新</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 生产执行管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('production-execution')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-play text-green-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-green-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">生产执行管理</h3>
+                <p class="text-gray-600 text-sm mb-4">过程跟踪、物料配送、生产报工</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">执行中</span>
+                        <span class="text-green-600 font-medium">24</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">完成率</span>
+                        <span class="text-blue-600 font-medium">75%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 过程控制管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('process-control')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-purple-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-purple-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">过程控制管理</h3>
+                <p class="text-gray-600 text-sm mb-4">防错管理、工艺参数、全流程追溯</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">防错检查</span>
+                        <span class="text-green-600 font-medium">正常</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">追溯记录</span>
+                        <span class="text-purple-600 font-medium">完整</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 异常管理(Andon) -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('andon-management')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bell text-red-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-red-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">异常管理(Andon)</h3>
+                <p class="text-gray-600 text-sm mb-4">异常呼叫、响应处理、升级管理</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">待处理</span>
+                        <span class="text-red-600 font-medium">3</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">响应时间</span>
+                        <span class="text-green-600 font-medium">2.5分钟</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设备集成管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('equipment-integration')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cogs text-indigo-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-indigo-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">设备集成管理</h3>
+                <p class="text-gray-600 text-sm mb-4">智能工装、工具、耗材柜管理</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">在线设备</span>
+                        <span class="text-indigo-600 font-medium">45</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">连接率</span>
+                        <span class="text-green-600 font-medium">98%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 人员资质管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="navigateToSubModule('personnel-management')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-orange-600 text-xl"></i>
+                    </div>
+                    <i class="fas fa-arrow-right text-orange-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">人员资质管理</h3>
+                <p class="text-gray-600 text-sm mb-4">资质校验、考勤管理、培训记录</p>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">在岗人员</span>
+                        <span class="text-orange-600 font-medium">156</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">资质合规</span>
+                        <span class="text-green-600 font-medium">100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navigateToSubModule(subModuleId) {
+            // 通知父窗口切换到对应的子模块
+            if (parent && parent.switchSubMenu) {
+                parent.switchSubMenu('production', subModuleId);
+            }
+        }
+    </script>
+</body>
+</html>
+
+</body>
+</html>

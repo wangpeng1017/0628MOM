@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备故障维修 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">设备故障维修</h1>
+            <p class="text-gray-600">基于Process.md 2.4.10流程：维修申请→初步评估→分类维修→结果确认，实现设备故障的快速响应和专业维修</p>
+        </div>
+
+        <!-- 设备维修流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">设备故障维修流程</h3>
+                    <span class="text-sm text-gray-600">三种维修类型管理</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">维修申请</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">初步评估</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">分类维修</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">结果确认</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="repairRequestBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                维修申请
+            </button>
+            <button id="evaluationBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-search mr-2"></i>
+                初步评估
+            </button>
+            <button id="repairExecutionBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-wrench mr-2"></i>
+                维修执行
+            </button>
+            <button id="resultConfirmBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                结果确认
+            </button>
+            <button id="knowledgeBaseBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-book mr-2"></i>
+                知识库
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 设备维修统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">45</div>
+                        <div class="text-sm text-gray-600">维修工单</div>
+                        <div class="text-xs text-gray-500">本月新增</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-list text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">38</div>
+                        <div class="text-sm text-gray-600">已完成</div>
+                        <div class="text-xs text-gray-500">维修工单</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">7</div>
+                        <div class="text-sm text-gray-600">进行中</div>
+                        <div class="text-xs text-gray-500">维修工单</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tools text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">4.2h</div>
+                        <div class="text-sm text-gray-600">平均维修</div>
+                        <div class="text-xs text-gray-500">响应时间</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">¥28,560</div>
+                        <div class="text-sm text-gray-600">维修成本</div>
+                        <div class="text-xs text-gray-500">本月累计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-coins text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">3</div>
+                        <div class="text-sm text-gray-600">紧急维修</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-fire text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 维修类型和紧急工单面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 三种维修类型 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">维修类型管理</h3>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-microchip text-blue-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">关键元器件更换</div>
+                                    <div class="text-xs text-gray-500">供应商维修为主，设备部为辅</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-blue-600">12个</div>
+                                <div class="text-xs text-gray-500">本月工单</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-green-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-cogs text-green-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">备品备件更换</div>
+                                    <div class="text-xs text-gray-500">设备部自行更换</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-green-600">25个</div>
+                                <div class="text-xs text-gray-500">本月工单</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-purple-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-hammer text-purple-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">工器具维修</div>
+                                    <div class="text-xs text-gray-500">供应商集中维修</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-purple-600">8个</div>
+                                <div class="text-xs text-gray-500">本月工单</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 紧急维修工单 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">紧急维修工单</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">自动老化房温控故障</div>
+                                <div class="text-xs text-gray-600">故障码: E001 | 申请人: 张操作员</div>
+                                <div class="text-xs text-gray-500">申请时间: 14:25:30</div>
+                            </div>
+                            <button onclick="handleUrgentRepair('REPAIR001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                立即处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">伺服压力机振动异常</div>
+                                <div class="text-xs text-gray-600">故障码: E002 | 申请人: 李技术员</div>
+                                <div class="text-xs text-gray-500">申请时间: 15:10:15</div>
+                            </div>
+                            <button onclick="handleUrgentRepair('REPAIR002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                                安排维修
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">PCBA测试设备校准偏差</div>
+                                <div class="text-xs text-gray-600">故障码: E003 | 申请人: 王工程师</div>
+                                <div class="text-xs text-gray-500">申请时间: 15:35:45</div>
+                            </div>
+                            <button onclick="handleUrgentRepair('REPAIR003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                评估中
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备维修记录表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备维修记录</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部维修类型</option>
+                        <option>关键元器件更换</option>
+                        <option>备品备件更换</option>
+                        <option>工器具维修</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>待评估</option>
+                        <option>维修中</option>
+                        <option>已完成</option>
+                        <option>已取消</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部优先级</option>
+                        <option>紧急</option>
+                        <option>高</option>
+                        <option>中</option>
+                        <option>低</option>
+                    </select>
+                    <input type="text" placeholder="搜索设备名称、故障描述..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">维修工单</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">故障描述</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">维修类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">执行人员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">维修状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">成本分析</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="repairTableBody">
+                        <!-- 维修数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.10的设备故障维修数据模型
+        const repairData = [
+            {
+                id: 'REPAIR202501001',
+                repairCode: 'WO-REPAIR-001',
+                equipmentId: 'EQP004',
+                equipmentCode: 'AGING-ROOM-001',
+                equipmentName: '自动老化房',
+                workshop: '包装车间',
+                faultCode: 'E001',
+                faultDescription: '温控系统故障，温度无法控制',
+                faultType: 'electrical',
+                repairType: 'component_replacement',
+                repairTypeName: '关键元器件更换',
+                priority: 'urgent',
+                priorityName: '紧急',
+                status: 'in_progress',
+                statusName: '维修中',
+                applicant: '张操作员',
+                applicantId: 'OP001',
+                applyTime: '2025-01-16 14:25:30',
+                evaluator: '赵工程师',
+                evaluatorId: 'ENG001',
+                evaluationTime: '2025-01-16 14:45:00',
+                executor: '供应商维修工程师',
+                executorId: 'VENDOR001',
+                startTime: '2025-01-16 15:30:00',
+                estimatedDuration: 6,
+                actualDuration: null,
+                completionTime: null,
+                spareParts: [
+                    { partName: '温度传感器', partCode: 'TEMP-001', quantity: 2, unitPrice: 280.00, totalPrice: 560.00 },
+                    { partName: '控制模块', partCode: 'CTRL-002', quantity: 1, unitPrice: 1200.00, totalPrice: 1200.00 }
+                ],
+                laborCost: 800.00,
+                totalCost: 2560.00,
+                qualityCheck: null,
+                notes: '供应商现场维修中，预计今晚完成',
+                knowledgeBase: ['温控系统故障排查手册', '传感器更换SOP']
+            },
+            {
+                id: 'REPAIR202501002',
+                repairCode: 'WO-REPAIR-002',
+                equipmentId: 'EQP003',
+                equipmentCode: 'ROBOT-6AXIS-001',
+                equipmentName: '6轴机器人',
+                workshop: '逆变器车间',
+                faultCode: 'E002',
+                faultDescription: '伺服电机振动异常，精度下降',
+                faultType: 'mechanical',
+                repairType: 'spare_parts',
+                repairTypeName: '备品备件更换',
+                priority: 'high',
+                priorityName: '高',
+                status: 'evaluation',
+                statusName: '待评估',
+                applicant: '李技术员',
+                applicantId: 'TECH001',
+                applyTime: '2025-01-16 15:10:15',
+                evaluator: '钱工程师',
+                evaluatorId: 'ENG002',
+                evaluationTime: null,
+                executor: null,
+                executorId: null,
+                startTime: null,
+                estimatedDuration: 4,
+                actualDuration: null,
+                completionTime: null,
+                spareParts: [
+                    { partName: '伺服电机轴承', partCode: 'BEAR-003', quantity: 4, unitPrice: 150.00, totalPrice: 600.00 }
+                ],
+                laborCost: 400.00,
+                totalCost: 1000.00,
+                qualityCheck: null,
+                notes: '等待工程师评估，确定维修方案',
+                knowledgeBase: ['机器人维修手册', '伺服系统故障诊断']
+            },
+            {
+                id: 'REPAIR202501003',
+                repairCode: 'WO-REPAIR-003',
+                equipmentId: 'EQP002',
+                equipmentCode: 'PCBA-TEST-001',
+                equipmentName: 'PCBA测试设备',
+                workshop: 'PCBA车间',
+                faultCode: 'E003',
+                faultDescription: '测试精度偏差，校准失效',
+                faultType: 'calibration',
+                repairType: 'tool_repair',
+                repairTypeName: '工器具维修',
+                priority: 'medium',
+                priorityName: '中',
+                status: 'completed',
+                statusName: '已完成',
+                applicant: '王工程师',
+                applicantId: 'ENG003',
+                applyTime: '2025-01-15 09:30:00',
+                evaluator: '孙工程师',
+                evaluatorId: 'ENG004',
+                evaluationTime: '2025-01-15 10:00:00',
+                executor: '设备维修工',
+                executorId: 'MAINT001',
+                startTime: '2025-01-15 14:00:00',
+                estimatedDuration: 3,
+                actualDuration: 2.5,
+                completionTime: '2025-01-15 16:30:00',
+                spareParts: [
+                    { partName: '校准工具', partCode: 'CALIB-001', quantity: 1, unitPrice: 0, totalPrice: 0 }
+                ],
+                laborCost: 300.00,
+                totalCost: 300.00,
+                qualityCheck: {
+                    checker: '质量工程师',
+                    checkTime: '2025-01-15 17:00:00',
+                    result: 'passed',
+                    notes: '设备精度恢复正常，测试通过'
+                },
+                notes: '校准完成，设备恢复正常使用',
+                knowledgeBase: ['测试设备校准规程', '精度检测标准']
+            },
+            {
+                id: 'REPAIR202501004',
+                repairCode: 'WO-REPAIR-004',
+                equipmentId: 'EQP001',
+                equipmentCode: 'PACK-ASM-001',
+                equipmentName: 'PACK产线装配线1',
+                workshop: 'PACK产线',
+                faultCode: 'E004',
+                faultDescription: '传送带异响，运行不稳定',
+                faultType: 'mechanical',
+                repairType: 'spare_parts',
+                repairTypeName: '备品备件更换',
+                priority: 'low',
+                priorityName: '低',
+                status: 'planned',
+                statusName: '计划中',
+                applicant: '周操作员',
+                applicantId: 'OP002',
+                applyTime: '2025-01-16 16:20:00',
+                evaluator: '吴工程师',
+                evaluatorId: 'ENG005',
+                evaluationTime: '2025-01-16 16:45:00',
+                executor: '设备维修工',
+                executorId: 'MAINT002',
+                startTime: null,
+                estimatedDuration: 2,
+                actualDuration: null,
+                completionTime: null,
+                spareParts: [
+                    { partName: '传送带', partCode: 'BELT-001', quantity: 1, unitPrice: 450.00, totalPrice: 450.00 },
+                    { partName: '滚轮', partCode: 'ROLLER-001', quantity: 2, unitPrice: 80.00, totalPrice: 160.00 }
+                ],
+                laborCost: 200.00,
+                totalCost: 810.00,
+                qualityCheck: null,
+                notes: '计划明天上午进行维修',
+                knowledgeBase: ['传送带维修指南', '机械故障排查']
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            evaluation: { text: '待评估', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-search' },
+            planned: { text: '计划中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-calendar' },
+            in_progress: { text: '维修中', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-wrench' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            cancelled: { text: '已取消', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-ban' }
+        };
+
+        // 优先级映射
+        const priorityMap = {
+            urgent: { text: '紧急', class: 'bg-red-100 text-red-800', icon: 'fas fa-fire' },
+            high: { text: '高', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-exclamation-triangle' },
+            medium: { text: '中', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-minus' },
+            low: { text: '低', class: 'bg-green-100 text-green-800', icon: 'fas fa-arrow-down' }
+        };
+
+        // 维修类型映射
+        const repairTypeMap = {
+            component_replacement: { text: '关键元器件更换', icon: 'fas fa-microchip', color: 'text-blue-600', description: '供应商维修为主' },
+            spare_parts: { text: '备品备件更换', icon: 'fas fa-cogs', color: 'text-green-600', description: '设备部自行更换' },
+            tool_repair: { text: '工器具维修', icon: 'fas fa-hammer', color: 'text-purple-600', description: '供应商集中维修' }
+        };
+
+        // 故障类型映射
+        const faultTypeMap = {
+            electrical: { text: '电气故障', icon: 'fas fa-bolt', color: 'text-yellow-600' },
+            mechanical: { text: '机械故障', icon: 'fas fa-cogs', color: 'text-blue-600' },
+            calibration: { text: '校准问题', icon: 'fas fa-ruler', color: 'text-purple-600' },
+            software: { text: '软件故障', icon: 'fas fa-code', color: 'text-green-600' }
+        };
+
+        let filteredData = [...repairData];
+
+        // 渲染设备维修表格
+        function renderRepairTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('repairTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(repair => {
+                const status = statusMap[repair.status];
+                const priority = priorityMap[repair.priority];
+                const repairType = repairTypeMap[repair.repairType];
+                const faultType = faultTypeMap[repair.faultType];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewRepairDetail('${repair.id}')">
+                            ${repair.repairCode}
+                        </div>
+                        <div class="text-xs text-gray-500">${repair.applyTime.split(' ')[0]}</div>
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${priority.class} mt-1">
+                            <i class="${priority.icon} mr-1"></i>
+                            ${priority.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewEquipmentDetail('${repair.equipmentId}')">
+                            ${repair.equipmentCode}
+                        </div>
+                        <div class="text-sm text-gray-900">${repair.equipmentName}</div>
+                        <div class="text-xs text-gray-500">${repair.workshop}</div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="flex items-center mb-1">
+                            <i class="${faultType.icon} ${faultType.color} mr-2"></i>
+                            <span class="text-sm font-medium text-gray-900">${repair.faultCode}</span>
+                        </div>
+                        <div class="text-sm text-gray-900">${repair.faultDescription}</div>
+                        <div class="text-xs text-gray-500 mt-1">${faultType.text}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${repairType.icon} ${repairType.color} mr-2"></i>
+                            <div>
+                                <div class="text-sm text-gray-900">${repairType.text}</div>
+                                <div class="text-xs text-gray-500">${repairType.description}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">申请: ${repair.applicant}</div>
+                        <div class="text-xs text-gray-500">${repair.applicantId}</div>
+                        ${repair.evaluator ? `
+                            <div class="text-xs text-blue-600 mt-1">评估: ${repair.evaluator}</div>
+                        ` : ''}
+                        ${repair.executor ? `
+                            <div class="text-xs text-green-600 mt-1">执行: ${repair.executor}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">申请: ${repair.applyTime.split(' ')[1]}</div>
+                        ${repair.evaluationTime ? `
+                            <div class="text-xs text-gray-500">评估: ${repair.evaluationTime.split(' ')[1]}</div>
+                        ` : ''}
+                        ${repair.startTime ? `
+                            <div class="text-xs text-gray-500">开始: ${repair.startTime.split(' ')[1]}</div>
+                        ` : ''}
+                        ${repair.completionTime ? `
+                            <div class="text-xs text-green-600">完成: ${repair.completionTime.split(' ')[1]}</div>
+                        ` : repair.estimatedDuration ? `
+                            <div class="text-xs text-orange-600">预计: ${repair.estimatedDuration}小时</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${repair.qualityCheck ? `
+                            <div class="text-xs text-green-600 mt-1">
+                                质检: ${repair.qualityCheck.result === 'passed' ? '通过' : '不通过'}
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">¥${repair.totalCost.toFixed(2)}</div>
+                        <div class="text-xs text-gray-500 mt-1">
+                            备件: ¥${repair.spareParts.reduce((sum, part) => sum + part.totalPrice, 0).toFixed(2)}
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            人工: ¥${repair.laborCost.toFixed(2)}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewRepairDetail('${repair.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${repair.status === 'evaluation' ? `
+                                <button onclick="evaluateRepair('${repair.id}')" class="text-green-600 hover:text-green-900 p-1" title="评估维修">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            ` : ''}
+                            ${repair.status === 'planned' ? `
+                                <button onclick="startRepair('${repair.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="开始维修">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            ` : ''}
+                            ${repair.status === 'in_progress' ? `
+                                <button onclick="completeRepair('${repair.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="完成维修">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewSparePartsList('${repair.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="备件清单">
+                                <i class="fas fa-boxes"></i>
+                            </button>
+                            <button onclick="viewKnowledgeBase('${repair.id}')" class="text-yellow-600 hover:text-yellow-900 p-1" title="知识库">
+                                <i class="fas fa-book"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${repairData.length} 条记录`;
+        }
+
+        // 设备维修操作函数
+        function viewRepairDetail(repairId) {
+            const repair = repairData.find(r => r.id === repairId);
+            if (repair) {
+                let detailText = `维修工单详情：\n工单编号: ${repair.repairCode}\n设备: ${repair.equipmentName}\n故障代码: ${repair.faultCode}\n故障描述: ${repair.faultDescription}\n维修类型: ${repairTypeMap[repair.repairType].text}\n优先级: ${priorityMap[repair.priority].text}\n状态: ${statusMap[repair.status].text}`;
+
+                detailText += `\n\n人员信息:\n申请人: ${repair.applicant} (${repair.applicantId})\n申请时间: ${repair.applyTime}`;
+
+                if (repair.evaluator) {
+                    detailText += `\n评估人: ${repair.evaluator} (${repair.evaluatorId})`;
+                    if (repair.evaluationTime) {
+                        detailText += `\n评估时间: ${repair.evaluationTime}`;
+                    }
+                }
+
+                if (repair.executor) {
+                    detailText += `\n执行人: ${repair.executor} (${repair.executorId})`;
+                    if (repair.startTime) {
+                        detailText += `\n开始时间: ${repair.startTime}`;
+                    }
+                    if (repair.completionTime) {
+                        detailText += `\n完成时间: ${repair.completionTime}\n实际用时: ${repair.actualDuration}小时`;
+                    } else if (repair.estimatedDuration) {
+                        detailText += `\n预计用时: ${repair.estimatedDuration}小时`;
+                    }
+                }
+
+                if (repair.spareParts.length > 0) {
+                    detailText += `\n\n备件清单:`;
+                    repair.spareParts.forEach(part => {
+                        detailText += `\n• ${part.partName} (${part.partCode}): ${part.quantity}个 × ¥${part.unitPrice} = ¥${part.totalPrice}`;
+                    });
+                }
+
+                detailText += `\n\n成本分析:\n备件成本: ¥${repair.spareParts.reduce((sum, part) => sum + part.totalPrice, 0)}\n人工成本: ¥${repair.laborCost}\n总成本: ¥${repair.totalCost}`;
+
+                if (repair.qualityCheck) {
+                    detailText += `\n\n质量检查:\n检查人: ${repair.qualityCheck.checker}\n检查时间: ${repair.qualityCheck.checkTime}\n检查结果: ${repair.qualityCheck.result === 'passed' ? '通过' : '不通过'}\n检查备注: ${repair.qualityCheck.notes}`;
+                }
+
+                if (repair.notes) {
+                    detailText += `\n\n备注: ${repair.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function handleUrgentRepair(repairId) {
+            if (confirm(`确认处理紧急维修？\n工单ID: ${repairId}\n\n处理措施：\n- 立即安排维修人员\n- 准备必要备件\n- 制定应急方案`)) {
+                alert('紧急维修已安排！\n- 维修人员已通知\n- 备件正在准备\n- 预计2小时内开始维修');
+            }
+        }
+
+        function evaluateRepair(repairId) {
+            const repair = repairData.find(r => r.id === repairId);
+            if (repair) {
+                if (confirm(`确认评估维修工单？\n设备: ${repair.equipmentName}\n故障: ${repair.faultDescription}\n\n评估内容：\n- 故障原因分析\n- 维修方案制定\n- 成本预估\n- 人员安排`)) {
+                    repair.status = 'planned';
+                    repair.evaluationTime = new Date().toLocaleString('zh-CN');
+                    repair.executor = '设备维修工';
+                    repair.executorId = 'MAINT001';
+                    renderRepairTable();
+                    alert('维修评估完成！\n- 维修方案已确定\n- 成本预估已完成\n- 维修人员已安排\n- 工单状态更新为计划中');
+                }
+            }
+        }
+
+        function startRepair(repairId) {
+            const repair = repairData.find(r => r.id === repairId);
+            if (repair) {
+                if (confirm(`确认开始维修？\n设备: ${repair.equipmentName}\n执行人: ${repair.executor}\n预计用时: ${repair.estimatedDuration}小时`)) {
+                    repair.status = 'in_progress';
+                    repair.startTime = new Date().toLocaleString('zh-CN');
+                    renderRepairTable();
+                    alert('维修已开始！\n- 维修人员已到位\n- 备件已准备就绪\n- 开始执行维修作业');
+                }
+            }
+        }
+
+        function completeRepair(repairId) {
+            const repair = repairData.find(r => r.id === repairId);
+            if (repair) {
+                if (confirm(`确认完成维修？\n设备: ${repair.equipmentName}\n\n完成检查：\n- 故障已排除\n- 设备功能正常\n- 质量检查通过`)) {
+                    repair.status = 'completed';
+                    repair.completionTime = new Date().toLocaleString('zh-CN');
+                    repair.actualDuration = repair.estimatedDuration * (0.8 + Math.random() * 0.4); // 模拟实际用时
+                    repair.qualityCheck = {
+                        checker: '质量工程师',
+                        checkTime: new Date().toLocaleString('zh-CN'),
+                        result: 'passed',
+                        notes: '设备功能恢复正常，测试通过'
+                    };
+                    renderRepairTable();
+                    alert('维修完成！\n- 设备功能已恢复\n- 质量检查通过\n- 维修记录已更新\n- 知识库已补充');
+                }
+            }
+        }
+
+        function viewSparePartsList(repairId) {
+            const repair = repairData.find(r => r.id === repairId);
+            if (repair) {
+                let partsText = `${repair.equipmentName} - 备件清单：\n\n`;
+                if (repair.spareParts.length > 0) {
+                    repair.spareParts.forEach((part, index) => {
+                        partsText += `${index + 1}. ${part.partName}\n   编号: ${part.partCode}\n   数量: ${part.quantity}个\n   单价: ¥${part.unitPrice}\n   小计: ¥${part.totalPrice}\n\n`;
+                    });
+                    const totalPartsCost = repair.spareParts.reduce((sum, part) => sum + part.totalPrice, 0);
+                    partsText += `备件总成本: ¥${totalPartsCost}\n人工成本: ¥${repair.laborCost}\n维修总成本: ¥${repair.totalCost}`;
+                } else {
+                    partsText += '本次维修无备件消耗';
+                }
+                alert(partsText);
+            }
+        }
+
+        function viewKnowledgeBase(repairId) {
+            const repair = repairData.find(r => r.id === repairId);
+            if (repair) {
+                let knowledgeText = `${repair.equipmentName} - 相关知识库：\n\n`;
+                if (repair.knowledgeBase.length > 0) {
+                    repair.knowledgeBase.forEach((doc, index) => {
+                        knowledgeText += `${index + 1}. ${doc}\n`;
+                    });
+                    knowledgeText += `\n故障类型: ${faultTypeMap[repair.faultType].text}\n维修类型: ${repairTypeMap[repair.repairType].text}\n\n建议参考相关文档进行维修作业`;
+                } else {
+                    knowledgeText += '暂无相关知识库文档';
+                }
+                alert(knowledgeText);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderRepairTable();
+
+            // 维修申请
+            document.getElementById('repairRequestBtn').addEventListener('click', function() {
+                alert('维修申请功能：\n- 故障报告提交\n- 设备信息录入\n- 故障描述填写\n- 优先级设定\n- 申请流程启动');
+            });
+
+            // 初步评估
+            document.getElementById('evaluationBtn').addEventListener('click', function() {
+                alert('初步评估功能：\n- 故障原因分析\n- 维修方案制定\n- 成本预估计算\n- 人员技能匹配\n- 维修计划安排');
+            });
+
+            // 维修执行
+            document.getElementById('repairExecutionBtn').addEventListener('click', function() {
+                alert('维修执行功能：\n- 维修作业指导\n- 进度跟踪管理\n- 备件消耗记录\n- 质量检查确认\n- 完成状态更新');
+            });
+
+            // 结果确认
+            document.getElementById('resultConfirmBtn').addEventListener('click', function() {
+                alert('结果确认功能：\n- 维修效果验证\n- 质量检查确认\n- 成本核算统计\n- 知识库更新\n- 档案信息维护');
+            });
+
+            // 知识库
+            document.getElementById('knowledgeBaseBtn').addEventListener('click', function() {
+                alert('知识库功能：\n- 故障诊断手册\n- 维修作业指导\n- 历史案例查询\n- 技术文档管理\n- 经验知识积累');
+            });
+        });
+    </script>
+</body>
+</html>

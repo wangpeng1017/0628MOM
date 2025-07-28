@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能调度优化 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-brain text-primary mr-3"></i>
+                智能调度优化
+            </h1>
+            <p class="text-gray-600 mt-2">AI驱动的智能调度系统，优化物流效率</p>
+        </div>
+
+        <!-- 调度优化统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">优化效率</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">25%</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>时间节省:</span>
+                        <span class="text-green-600 font-medium">2.5小时</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>成本降低:</span>
+                        <span class="text-blue-600 font-medium">¥1,250</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">AI建议采纳率</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">88%</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-robot text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>今日建议:</span>
+                        <span class="text-blue-600 font-medium">32条</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>已采纳:</span>
+                        <span class="text-green-600 font-medium">28条</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">路径优化</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">15%</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-route text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>距离缩短:</span>
+                        <span class="text-purple-600 font-medium">12.5km</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>燃油节省:</span>
+                        <span class="text-green-600 font-medium">8.5L</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">预测准确率</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">92%</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-crystal-ball text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>时间预测:</span>
+                        <span class="text-yellow-600 font-medium">95%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>流量预测:</span>
+                        <span class="text-blue-600 font-medium">89%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI调度建议 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-lightbulb text-yellow-600 mr-2"></i>
+                AI调度建议
+            </h3>
+            <div class="space-y-4">
+                <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">高优先级</span>
+                            <h4 class="font-semibold text-gray-800">路径优化建议</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">置信度: 95%</span>
+                    </div>
+                    <div class="text-sm text-gray-700 mb-3">
+                        <p>建议将苏A12345和沪B67890的路径进行合并优化，可减少总行驶距离8.5km，节省时间25分钟。</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">预计节省时间:</span>
+                            <p class="font-medium text-green-600">25分钟</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">预计节省成本:</span>
+                            <p class="font-medium text-green-600">¥85</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">影响车辆:</span>
+                            <p class="font-medium">2台</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>建议执行时间: 立即 | 预计完成: 16:30</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                                <i class="fas fa-check mr-1"></i>采纳建议
+                            </button>
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-eye mr-1"></i>查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">中优先级</span>
+                            <h4 class="font-semibold text-gray-800">时段调整建议</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">置信度: 87%</span>
+                    </div>
+                    <div class="text-sm text-gray-700 mb-3">
+                        <p>建议将京C11111的预约时间从18:00调整至15:30，避开晚间高峰期，可减少等待时间。</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">预计减少等待:</span>
+                            <p class="font-medium text-blue-600">35分钟</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">时段利用率:</span>
+                            <p class="font-medium text-blue-600">从100%降至91%</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">客户满意度:</span>
+                            <p class="font-medium text-green-600">预计提升</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>需要客户确认 | 联系电话: 137****7777</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-phone mr-1"></i>联系客户
+                            </button>
+                            <button class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors">
+                                <i class="fas fa-clock mr-1"></i>稍后处理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">低优先级</span>
+                            <h4 class="font-semibold text-gray-800">资源配置建议</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">置信度: 78%</span>
+                    </div>
+                    <div class="text-sm text-gray-700 mb-3">
+                        <p>建议在装卸区B增加1台叉车，可提高作业效率15%，减少车辆等待时间。</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">效率提升:</span>
+                            <p class="font-medium text-yellow-600">15%</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">投资成本:</span>
+                            <p class="font-medium text-red-600">¥8,000/月</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">回收期:</span>
+                            <p class="font-medium text-green-600">6个月</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>需要管理层审批 | 预计ROI: 180%</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition-colors">
+                                <i class="fas fa-file-alt mr-1"></i>生成报告
+                            </button>
+                            <button class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-times mr-1"></i>忽略建议
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 智能优化算法 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-cogs text-purple-600 mr-2"></i>
+                    智能优化算法
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">遗传算法优化</h4>
+                            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">运行中</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 优化目标: 最短路径 + 最少等待</div>
+                            <div>• 当前代数: 第156代</div>
+                            <div>• 适应度: 0.92</div>
+                            <div class="text-purple-600">• 预计完成: 2分钟</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">机器学习预测</h4>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">已完成</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 模型类型: 随机森林</div>
+                            <div>• 训练数据: 30天历史</div>
+                            <div>• 准确率: 92.5%</div>
+                            <div class="text-blue-600">• 下次更新: 明日 06:00</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">实时调度引擎</h4>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 响应时间: < 100ms</div>
+                            <div>• 处理能力: 1000次/秒</div>
+                            <div>• 系统负载: 65%</div>
+                            <div class="text-green-600">• 运行状态: 稳定</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-bar text-green-600 mr-2"></i>
+                    优化效果分析
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">时间效率</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 平均等待时间: 12分钟 (-20%)</div>
+                            <div>• 作业完成时间: 35分钟 (-15%)</div>
+                            <div>• 总周转时间: 47分钟 (-18%)</div>
+                            <div class="text-green-600">• 整体提升: 18%</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">成本效益</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 燃油成本: ¥1,250 (-12%)</div>
+                            <div>• 人工成本: ¥850 (-8%)</div>
+                            <div>• 设备损耗: ¥320 (-15%)</div>
+                            <div class="text-blue-600">• 总节省: ¥2,420/日</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">环保效益</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• CO₂减排: 125kg/日</div>
+                            <div>• 燃油节省: 85L/日</div>
+                            <div>• 里程减少: 125km/日</div>
+                            <div class="text-yellow-600">• 环保贡献: 显著</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 调度策略配置 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-sliders-h text-blue-600 mr-2"></i>
+                调度策略配置
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">优化目标权重</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>时间效率</span>
+                                <span>40%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 40%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>成本控制</span>
+                                <span>35%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 35%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>客户满意度</span>
+                                <span>25%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 25%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                        调整权重
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">算法参数</h4>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>种群大小:</span>
+                            <span class="font-medium">100</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>变异率:</span>
+                            <span class="font-medium">0.1</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>交叉率:</span>
+                            <span class="font-medium">0.8</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>最大代数:</span>
+                            <span class="font-medium">200</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                        参数调优
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">约束条件</h4>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex items-center">
+                            <input type="checkbox" checked class="mr-2">
+                            <span>车辆载重限制</span>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" checked class="mr-2">
+                            <span>时间窗口约束</span>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" class="mr-2">
+                            <span>司机工时限制</span>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" checked class="mr-2">
+                            <span>道路限行规则</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                        更新约束
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-play text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">启动优化</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-cog text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">策略配置</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-chart-line text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">效果分析</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">优化报告</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 智能调度优化功能
+        function initIntelligentDispatch() {
+            console.log('初始化智能调度优化功能');
+            
+            // AI建议处理按钮事件
+            const suggestionButtons = document.querySelectorAll('button');
+            suggestionButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('采纳建议')) {
+                    button.addEventListener('click', function() {
+                        const suggestionTitle = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('采纳AI建议:', suggestionTitle);
+                        alert(`已采纳AI建议: ${suggestionTitle}`);
+                    });
+                } else if (text.includes('联系客户')) {
+                    button.addEventListener('click', function() {
+                        console.log('联系客户确认调整');
+                        alert('正在联系客户确认时间调整...');
+                    });
+                } else if (text.includes('启动优化')) {
+                    button.addEventListener('click', function() {
+                        console.log('启动智能优化');
+                        alert('正在启动智能调度优化算法...');
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initIntelligentDispatch();
+            console.log('智能调度优化页面加载完成');
+        });
+    </script>
+</body>
+</html>

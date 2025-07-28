@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统运维管理 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-cogs text-primary mr-3"></i>
+                系统运维管理中心
+            </h1>
+            <p class="text-gray-600 mt-2">全面系统运维，保障平台稳定运行</p>
+        </div>
+
+        <!-- 系统健康状态 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">系统健康度</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">98.5%</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-heartbeat text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>正常系统:</span>
+                        <span class="text-green-600 font-medium">127/128</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>异常系统:</span>
+                        <span class="text-red-600 font-medium">1个</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">服务可用性</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">99.8%</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-server text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>运行时间:</span>
+                        <span class="text-blue-600 font-medium">365天</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>故障次数:</span>
+                        <span class="text-green-600 font-medium">2次</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">性能指标</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">优秀</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-tachometer-alt text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>响应时间:</span>
+                        <span class="text-purple-600 font-medium">145ms</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>吞吐量:</span>
+                        <span class="text-green-600 font-medium">2.5M/h</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">安全状态</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">安全</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-shield-alt text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>安全扫描:</span>
+                        <span class="text-green-600 font-medium">通过</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>漏洞数量:</span>
+                        <span class="text-green-600 font-medium">0个</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 系统监控详情 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-desktop text-blue-600 mr-2"></i>
+                系统监控详情
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">生产管理系统</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• CPU: 65% | 内存: 72%</div>
+                        <div>• 响应时间: 120ms</div>
+                        <div>• 在线用户: 156人</div>
+                        <div>• 最后检查: 2分钟前</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 95%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">健康度: 95%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">质量管理系统</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• CPU: 58% | 内存: 68%</div>
+                        <div>• 响应时间: 95ms</div>
+                        <div>• 在线用户: 89人</div>
+                        <div>• 最后检查: 1分钟前</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 98%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">健康度: 98%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">设备管理系统</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">警告</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• CPU: 85% | 内存: 88%</div>
+                        <div>• 响应时间: 280ms</div>
+                        <div>• 在线用户: 234人</div>
+                        <div>• 最后检查: 30秒前</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 75%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">健康度: 75%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">仓储管理系统</h4>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• CPU: 45% | 内存: 52%</div>
+                        <div>• 响应时间: 85ms</div>
+                        <div>• 在线用户: 67人</div>
+                        <div>• 最后检查: 1分钟前</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-500 h-2 rounded-full" style="width: 92%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">健康度: 92%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 运维任务管理 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-tasks text-green-600 mr-2"></i>
+                    运维任务管理
+                </h3>
+                <div class="space-y-4">
+                    <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">设备管理系统优化</h4>
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">紧急</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 任务类型: 性能优化</div>
+                            <div>• 负责人: 张运维工程师</div>
+                            <div>• 计划时间: 今日 18:00-20:00</div>
+                            <div>• 影响范围: 设备管理模块</div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                                立即执行
+                            </button>
+                            <button class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                    <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">数据库备份</h4>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">计划中</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 任务类型: 定期备份</div>
+                            <div>• 负责人: 李数据库管理员</div>
+                            <div>• 计划时间: 明日 02:00-04:00</div>
+                            <div>• 影响范围: 全系统(只读)</div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                确认计划
+                            </button>
+                            <button class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                    <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">安全补丁更新</h4>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 任务类型: 安全更新</div>
+                            <div>• 负责人: 王安全工程师</div>
+                            <div>• 完成时间: 昨日 23:30</div>
+                            <div>• 影响范围: 全系统</div>
+                        </div>
+                        <div class="mt-3 flex space-x-2">
+                            <button class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                                查看报告
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-purple-600 mr-2"></i>
+                    性能监控分析
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">CPU使用率趋势</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 平均使用率: 68%</div>
+                            <div>• 峰值使用率: 85%</div>
+                            <div>• 较上周: +5%</div>
+                            <div class="text-blue-600">• 建议: 关注设备管理系统</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">内存使用分析</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 平均使用率: 72%</div>
+                            <div>• 峰值使用率: 88%</div>
+                            <div>• 较上周: +3%</div>
+                            <div class="text-green-600">• 状态: 正常范围</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">网络流量监控</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 平均流量: 1.2GB/s</div>
+                            <div>• 峰值流量: 2.8GB/s</div>
+                            <div>• 较上周: +8%</div>
+                            <div class="text-yellow-600">• 建议: 优化数据传输</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">存储空间状态</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 总容量: 50TB</div>
+                            <div>• 已使用: 32TB (64%)</div>
+                            <div>• 增长率: 2%/月</div>
+                            <div class="text-purple-600">• 预计: 18个月后需扩容</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 系统维护计划 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-calendar-alt text-blue-600 mr-2"></i>
+                系统维护计划
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">维护项目</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划时间</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">负责人</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">影响范围</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">设备管理系统优化</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">今日 18:00-20:00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">张运维工程师</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">设备管理模块</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">待执行</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">执行维护</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">数据库备份</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">明日 02:00-04:00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">李数据库管理员</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">全系统(只读)</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">计划中</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看计划</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">系统安全扫描</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">本周六 01:00-03:00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">王安全工程师</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">全系统</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">准备中</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-play text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">启动监控</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-database text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">数据备份</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors">
+                    <i class="fas fa-exclamation-triangle text-red-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">故障处理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-chart-line text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">性能分析</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 系统运维管理功能
+        function initSystemMaintenance() {
+            console.log('初始化系统运维管理功能');
+            
+            // 运维任务按钮事件
+            const taskButtons = document.querySelectorAll('button');
+            taskButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('立即执行')) {
+                    button.addEventListener('click', function() {
+                        console.log('立即执行运维任务');
+                        if (confirm('确认立即执行设备管理系统优化任务？')) {
+                            alert('运维任务已启动，预计2小时完成');
+                        }
+                    });
+                } else if (text.includes('确认计划')) {
+                    button.addEventListener('click', function() {
+                        console.log('确认维护计划');
+                        alert('数据库备份计划已确认');
+                    });
+                } else if (text.includes('查看报告')) {
+                    button.addEventListener('click', function() {
+                        console.log('查看维护报告');
+                        alert('正在查看安全补丁更新报告...');
+                    });
+                } else if (text.includes('启动监控')) {
+                    button.addEventListener('click', function() {
+                        console.log('启动系统监控');
+                        alert('系统监控已启动');
+                    });
+                }
+            });
+            
+            // 维护计划表格操作
+            const tableLinks = document.querySelectorAll('.cursor-pointer');
+            tableLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const action = this.textContent.trim();
+                    const taskName = this.closest('tr').querySelector('td').textContent;
+                    console.log('维护操作:', action, taskName);
+                    alert(`正在${action}: ${taskName}`);
+                });
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initSystemMaintenance();
+            console.log('系统运维管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

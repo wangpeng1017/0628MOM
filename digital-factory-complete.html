@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字工厂一体化平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 主容器 -->
+    <div class="flex flex-col h-screen">
+        <!-- 顶部导航栏 -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <!-- Logo和系统标题 -->
+            <div class="px-6 py-4 border-b border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-industry text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-800">数字工厂一体化平台</h1>
+                            <p class="text-sm text-gray-500">Digital Factory Platform</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-success rounded-full"></div>
+                                <span>系统正常</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-clock"></i>
+                                <span id="current-time"></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button class="relative p-2 text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-bell"></i>
+                                <span class="absolute -top-1 -right-1 w-4 h-4 bg-danger text-white text-xs rounded-full flex items-center justify-center">3</span>
+                            </button>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user text-white text-sm"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800">张经理</p>
+                                    <p class="text-xs text-gray-500">生产主管</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 一级模块导航 -->
+            <nav class="px-6">
+                <div class="flex space-x-8">
+                    <button onclick="switchModule('dashboard')" id="nav-dashboard"
+                            class="module-nav-item active flex items-center space-x-2 px-4 py-3 border-b-2 border-primary text-primary font-medium">
+                        <i class="fas fa-home"></i>
+                        <span>首页</span>
+                    </button>
+                    <button onclick="switchModule('production')" id="nav-production"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-cogs"></i>
+                        <span>生产管理</span>
+                    </button>
+                    <button onclick="switchModule('quality')" id="nav-quality"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-check-circle"></i>
+                        <span>质量管理</span>
+                    </button>
+                    <button onclick="switchModule('equipment')" id="nav-equipment"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-tools"></i>
+                        <span>设备管理</span>
+                    </button>
+                    <button onclick="switchModule('inventory')" id="nav-inventory"
+                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
+                        <i class="fas fa-boxes"></i>
+                        <span>库存管理</span>
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主内容区域 -->
+        <div class="flex flex-1 overflow-hidden">
+            <!-- 左侧二级导航 -->
+            <nav id="sidebar-nav" class="w-64 bg-white shadow-sm border-r border-gray-200 flex flex-col" style="display: none;">
+                <div class="p-4 border-b border-gray-100">
+                    <h3 id="module-title" class="text-lg font-semibold text-gray-800">首页</h3>
+                </div>
+                <div class="flex-1 py-4 overflow-y-auto">
+                    <ul id="sub-menu" class="space-y-1 px-4">
+                        <!-- 二级菜单将通过JavaScript动态加载 -->
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- 右侧内容区域 -->
+            <main class="flex-1 flex flex-col">
+                <!-- 内容标题栏 (仅在非首页时显示) -->
+                <div id="page-title-bar" class="bg-white border-b border-gray-200 px-6 py-4" style="display: none;">
+                    <h2 id="page-title" class="text-xl font-semibold text-gray-800">首页</h2>
+                </div>
+
+                <!-- 内容区域 -->
+                <div class="flex-1 p-6 overflow-y-auto">
+                    <div id="content-area">
+                        <!-- 内容将通过JavaScript动态加载 -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // 模块配置
+        const moduleConfig = {
+            dashboard: {
+                title: '首页',
+                subMenus: []
+            },
+            production: {
+                title: '生产管理',
+                subMenus: [
+                    { id: 'work-orders', name: '工单管理', icon: 'fas fa-clipboard-list' },
+                    { id: 'dispatch', name: '派工管理', icon: 'fas fa-user-cog' },
+                    { id: 'planning', name: '生产计划', icon: 'fas fa-calendar-alt' },
+                    { id: 'progress', name: '进度跟踪', icon: 'fas fa-chart-line' },
+                    { id: 'capacity', name: '产能分析', icon: 'fas fa-chart-bar' }
+                ]
+            },
+            quality: {
+                title: '质量管理',
+                subMenus: [
+                    { id: 'inspection', name: '质量检验', icon: 'fas fa-search' },
+                    { id: 'defects', name: '不良品管理', icon: 'fas fa-exclamation-triangle' },
+                    { id: 'analysis', name: '质量分析', icon: 'fas fa-chart-pie' },
+                    { id: 'standards', name: '检验标准', icon: 'fas fa-clipboard-check' }
+                ]
+            },
+            equipment: {
+                title: '设备管理',
+                subMenus: [
+                    { id: 'assets', name: '设备资产管理', icon: 'fas fa-database' },
+                    { id: 'maintenance', name: '维护维修管理', icon: 'fas fa-wrench' },
+                    { id: 'preventive', name: '预防性维护管理', icon: 'fas fa-shield-alt' },
+                    { id: 'inspection', name: '点巡检管理', icon: 'fas fa-search' },
+                    { id: 'spare-parts', name: '备品备件管理', icon: 'fas fa-boxes' },
+                    { id: 'analytics', name: '统计分析', icon: 'fas fa-chart-bar' }
+                ]
+            },
+            inventory: {
+                title: '库存管理',
+                subMenus: [
+                    { id: 'materials', name: '原料管理', icon: 'fas fa-cubes' },
+                    { id: 'products', name: '成品管理', icon: 'fas fa-box' },
+                    { id: 'alerts', name: '库存预警', icon: 'fas fa-bell' },
+                    { id: 'transactions', name: '出入库管理', icon: 'fas fa-exchange-alt' }
+                ]
+            }
+        };
+
+        let currentModule = 'dashboard';
+        let currentSubMenu = '';
+
+        // 切换模块
+        function switchModule(moduleId) {
+            currentModule = moduleId;
+            const config = moduleConfig[moduleId];
+
+            // 更新模块标题
+            document.getElementById('module-title').textContent = config.title;
+            document.getElementById('page-title').textContent = config.title;
+
+            // 更新顶部导航激活状态
+            document.querySelectorAll('.module-nav-item').forEach(item => {
+                item.classList.remove('active', 'border-primary', 'text-primary');
+                item.classList.add('border-transparent', 'text-gray-600');
+            });
+            document.getElementById(`nav-${moduleId}`).classList.add('active', 'border-primary', 'text-primary');
+            document.getElementById(`nav-${moduleId}`).classList.remove('border-transparent', 'text-gray-600');
+
+            // 控制左侧导航栏和页面标题栏的显示/隐藏
+            const sidebarNav = document.getElementById('sidebar-nav');
+            const pageTitleBar = document.getElementById('page-title-bar');
+
+            if (moduleId === 'dashboard') {
+                // 首页：隐藏左侧导航栏和页面标题栏
+                sidebarNav.style.display = 'none';
+                pageTitleBar.style.display = 'none';
+                loadDashboardContent();
+            } else {
+                // 其他模块：显示左侧导航栏和页面标题栏
+                sidebarNav.style.display = 'flex';
+                pageTitleBar.style.display = 'block';
+                updateSubMenu(config.subMenus);
+                if (config.subMenus.length > 0) {
+                    loadSubPage(config.subMenus[0].id, config.subMenus[0].name);
+                }
+            }
+        }
+
+        // 更新二级菜单
+        function updateSubMenu(subMenus) {
+            const subMenuContainer = document.getElementById('sub-menu');
+            subMenuContainer.innerHTML = '';
+
+            subMenus.forEach((menu, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <a href="#" onclick="loadSubPage('${menu.id}', '${menu.name}')"
+                       class="sub-nav-item ${index === 0 ? 'active' : ''} flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors hover:bg-blue-50 hover:text-blue-600">
+                        <i class="${menu.icon} w-5"></i>
+                        <span>${menu.name}</span>
+                    </a>
+                `;
+                subMenuContainer.appendChild(li);
+            });
+        }
+
+        // 加载子页面
+        function loadSubPage(pageId, pageName) {
+            document.getElementById('page-title').textContent = pageName;
+            
+            // 更新二级导航激活状态
+            document.querySelectorAll('.sub-nav-item').forEach(item => {
+                item.classList.remove('active', 'bg-blue-50', 'text-blue-600');
+            });
+            event.target.closest('.sub-nav-item').classList.add('active', 'bg-blue-50', 'text-blue-600');
+
+            // 加载对应的页面内容
+            loadPageContent(currentModule, pageId);
+        }
+
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            document.getElementById('current-time').textContent = timeString;
+        }
+
+        // 加载页面内容
+        function loadPageContent(module, pageId) {
+            const contentArea = document.getElementById('content-area');
+
+            if (module === 'production') {
+                if (pageId === 'work-orders') {
+                    contentArea.innerHTML = getWorkOrdersContent();
+                } else if (pageId === 'dispatch') {
+                    contentArea.innerHTML = getDispatchContent();
+                } else {
+                    contentArea.innerHTML = getGenericModuleContent(pageId);
+                }
+            } else if (module === 'quality') {
+                contentArea.innerHTML = getQualityContent(pageId);
+            } else if (module === 'equipment') {
+                contentArea.innerHTML = getEquipmentContent(pageId);
+            } else if (module === 'inventory') {
+                contentArea.innerHTML = getInventoryContent(pageId);
+            }
+        }
+
+        // 加载首页内容
+        function loadDashboardContent() {
+            const contentArea = document.getElementById('content-area');
+            contentArea.innerHTML = getDashboardContent();
+        }
+
+
+
+        // 显示功能开发中提示
+        function showComingSoon(moduleName) {
+            alert(`${moduleName}功能正在开发中，敬请期待！\n\n${moduleName} module is under development, coming soon!`);
+        }
+
+        // 获取首页内容
+        function getDashboardContent() {
+            return `
+                <!-- 业务平台模块 -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-rocket text-primary mr-2"></i>
+                            业务平台
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- 生产管理卡片 -->
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-4 border border-blue-200 hover:shadow-md transition-shadow cursor-pointer" onclick="switchModule('production')">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-cogs text-white text-xl"></i>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-primary"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800 mb-1">生产管理</h3>
+                                <p class="text-sm text-gray-600 mb-3">工单管理、派工管理、生产计划</p>
+                                <button class="w-full bg-primary text-white py-2 px-4 rounded-md text-sm hover:bg-blue-700 transition-colors">
+                                    进入模块
+                                </button>
+                            </div>
+
+                            <!-- 质量管理卡片 -->
+                            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-4 border border-green-200 hover:shadow-md transition-shadow cursor-pointer" onclick="switchModule('quality')">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="w-12 h-12 bg-success rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-check-circle text-white text-xl"></i>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-success"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800 mb-1">质量管理</h3>
+                                <p class="text-sm text-gray-600 mb-3">质量检验、不良品管理、质量分析</p>
+                                <button class="w-full bg-success text-white py-2 px-4 rounded-md text-sm hover:bg-green-700 transition-colors">
+                                    进入模块
+                                </button>
+                            </div>
+
+                            <!-- 设备管理卡片 -->
+                            <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-4 border border-orange-200 hover:shadow-md transition-shadow cursor-pointer" onclick="switchModule('equipment')">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="w-12 h-12 bg-warning rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-tools text-white text-xl"></i>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-warning"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800 mb-1">设备管理</h3>
+                                <p class="text-sm text-gray-600 mb-3">设备资产、维护维修、预防性维护</p>
+                                <button class="w-full bg-warning text-white py-2 px-4 rounded-md text-sm hover:bg-yellow-600 transition-colors">
+                                    进入模块
+                                </button>
+                            </div>
+
+                            <!-- 库存管理卡片 -->
+                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-4 border border-purple-200 hover:shadow-md transition-shadow cursor-pointer" onclick="switchModule('inventory')">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-boxes text-white text-xl"></i>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-purple-600"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800 mb-1">库存管理</h3>
+                                <p class="text-sm text-gray-600 mb-3">原料管理、成品管理、库存预警</p>
+                                <button class="w-full bg-purple-600 text-white py-2 px-4 rounded-md text-sm hover:bg-purple-700 transition-colors">
+                                    进入模块
+                                </button>
+                            </div>
+
+                            <!-- 能源管理卡片 -->
+                            <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg p-4 border border-yellow-200 hover:shadow-md transition-shadow cursor-pointer" onclick="showComingSoon('能源管理')">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-bolt text-white text-xl"></i>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-yellow-500"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800 mb-1">能源管理</h3>
+                                <p class="text-sm text-gray-600 mb-3">能耗监控、节能分析、电力管理</p>
+                                <button class="w-full bg-yellow-500 text-white py-2 px-4 rounded-md text-sm hover:bg-yellow-600 transition-colors">
+                                    进入模块
+                                </button>
+                            </div>
+
+                            <!-- 运营中心卡片 -->
+                            <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-4 border border-red-200 hover:shadow-md transition-shadow cursor-pointer" onclick="showComingSoon('运营中心')">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-chart-line text-white text-xl"></i>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-red-500"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800 mb-1">运营中心</h3>
+                                <p class="text-sm text-gray-600 mb-3">数据大屏、运营分析、决策支持</p>
+                                <button class="w-full bg-red-500 text-white py-2 px-4 rounded-md text-sm hover:bg-red-600 transition-colors">
+                                    进入模块
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 基础平台模块 -->
+                    <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-layer-group text-primary mr-2"></i>
+                            基础平台
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- IOT平台卡片 -->
+                            <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-lg p-4 border border-cyan-200 hover:shadow-md transition-shadow cursor-pointer" onclick="showComingSoon('IOT平台')">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="w-12 h-12 bg-cyan-500 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-wifi text-white text-xl"></i>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-cyan-500"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800 mb-1">IOT平台</h3>
+                                <p class="text-sm text-gray-600 mb-3">设备连接、数据采集、远程监控</p>
+                                <button class="w-full bg-cyan-500 text-white py-2 px-4 rounded-md text-sm hover:bg-cyan-600 transition-colors">
+                                    进入模块
+                                </button>
+                            </div>
+
+                            <!-- 低代码平台卡片 -->
+                            <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-4 border border-indigo-200 hover:shadow-md transition-shadow cursor-pointer" onclick="showComingSoon('低代码平台')">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-code text-white text-xl"></i>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-indigo-500"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800 mb-1">低代码平台</h3>
+                                <p class="text-sm text-gray-600 mb-3">可视化开发、流程设计、应用构建</p>
+                                <button class="w-full bg-indigo-500 text-white py-2 px-4 rounded-md text-sm hover:bg-indigo-600 transition-colors">
+                                    进入模块
+                                </button>
+                            </div>
+
+                            <!-- 主数据平台卡片 -->
+                            <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-4 border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onclick="showComingSoon('主数据平台')">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center">
+                                        <i class="fas fa-database text-white text-xl"></i>
+                                    </div>
+                                    <i class="fas fa-arrow-right text-gray-600"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800 mb-1">主数据平台</h3>
+                                <p class="text-sm text-gray-600 mb-3">数据管理、数据标准、数据治理</p>
+                                <button class="w-full bg-gray-600 text-white py-2 px-4 rounded-md text-sm hover:bg-gray-700 transition-colors">
+                                    进入模块
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 下半部分：待办事项和消息通知 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+                        <!-- 待办事项模块 -->
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center justify-between">
+                                <span class="flex items-center">
+                                    <i class="fas fa-tasks text-primary mr-2"></i>
+                                    待办事项
+                                </span>
+                                <span class="text-sm font-normal text-gray-500">共 5 项</span>
+                            </h2>
+                            <div class="space-y-3">
+                                <!-- 待办事项列表 -->
+                                <div class="flex items-center p-3 bg-red-50 border border-red-200 rounded-lg">
+                                    <div class="flex-shrink-0 w-3 h-3 bg-danger rounded-full mr-3"></div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="font-medium text-gray-800">设备故障报修处理</h4>
+                                            <span class="text-xs text-danger font-medium">紧急</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">变频器生产线3号设备异常，需立即处理</p>
+                                        <p class="text-xs text-gray-500 mt-1">截止时间：今天 18:00</p>
+                                    </div>
+                                    <button class="ml-3 text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </div>
+
+                                <div class="flex items-center p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                    <div class="flex-shrink-0 w-3 h-3 bg-warning rounded-full mr-3"></div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="font-medium text-gray-800">生产计划审核</h4>
+                                            <span class="text-xs text-warning font-medium">重要</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">下周生产计划需要您的审核确认</p>
+                                        <p class="text-xs text-gray-500 mt-1">截止时间：明天 12:00</p>
+                                    </div>
+                                    <button class="ml-3 text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </div>
+
+                                <div class="flex items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <div class="flex-shrink-0 w-3 h-3 bg-primary rounded-full mr-3"></div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="font-medium text-gray-800">质量检验报告确认</h4>
+                                            <span class="text-xs text-primary font-medium">普通</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">本月质量检验报告等待确认</p>
+                                        <p class="text-xs text-gray-500 mt-1">截止时间：本周五</p>
+                                    </div>
+                                    <button class="ml-3 text-gray-400 hover:text-gray-600">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <button class="text-primary hover:text-blue-700 text-sm font-medium">
+                                    查看全部待办事项 <i class="fas fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 消息通知模块 -->
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center justify-between">
+                                <span class="flex items-center">
+                                    <i class="fas fa-bell text-primary mr-2"></i>
+                                    消息通知
+                                </span>
+                                <span class="text-sm font-normal text-gray-500">3 条未读</span>
+                            </h2>
+                            <div class="space-y-3">
+                                <!-- 消息列表 -->
+                                <div class="flex items-start p-3 bg-blue-50 border-l-4 border-primary rounded-r-lg">
+                                    <div class="flex-shrink-0 w-8 h-8 bg-primary rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-exclamation text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="font-medium text-gray-800">设备报警</h4>
+                                            <span class="text-xs text-gray-500">5分钟前</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">变频器生产线温度异常，请及时检查</p>
+                                    </div>
+                                    <div class="w-2 h-2 bg-primary rounded-full ml-2"></div>
+                                </div>
+
+                                <div class="flex items-start p-3 bg-green-50 border-l-4 border-success rounded-r-lg">
+                                    <div class="flex-shrink-0 w-8 h-8 bg-success rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-check text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="font-medium text-gray-800">工单完成</h4>
+                                            <span class="text-xs text-gray-500">1小时前</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">工单 WO-2024-001 已完成，等待质检</p>
+                                    </div>
+                                    <div class="w-2 h-2 bg-success rounded-full ml-2"></div>
+                                </div>
+
+                                <div class="flex items-start p-3 bg-gray-50 border-l-4 border-gray-300 rounded-r-lg">
+                                    <div class="flex-shrink-0 w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-info text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="font-medium text-gray-800">系统维护通知</h4>
+                                            <span class="text-xs text-gray-500">2小时前</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">系统将于今晚22:00-24:00进行维护</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start p-3 bg-gray-50 border-l-4 border-gray-300 rounded-r-lg">
+                                    <div class="flex-shrink-0 w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center mr-3">
+                                        <i class="fas fa-calendar text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="font-medium text-gray-800">会议提醒</h4>
+                                            <span class="text-xs text-gray-500">昨天</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">明天上午10:00生产例会，请准时参加</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <button class="text-primary hover:text-blue-700 text-sm font-medium">
+                                    查看全部消息 <i class="fas fa-arrow-right ml-1"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 获取工单管理内容
+        function getWorkOrdersContent() {
+            return `
+                <div class="space-y-6">
+                    <!-- 页面操作栏 -->
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-800">工单管理</h1>
+                            <p class="text-gray-600">管理生产工单的创建、分配和执行</p>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-plus mr-2"></i>新建工单
+                            </button>
+                            <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                                <i class="fas fa-download mr-2"></i>导出工单
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 工单统计卡片 -->
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <div class="bg-white rounded-lg p-4 shadow-sm text-center">
+                            <div class="text-2xl font-bold text-blue-600 mb-1">24</div>
+                            <div class="text-sm text-gray-600">进行中</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 shadow-sm text-center">
+                            <div class="text-2xl font-bold text-green-600 mb-1">156</div>
+                            <div class="text-sm text-gray-600">已完成</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 shadow-sm text-center">
+                            <div class="text-2xl font-bold text-yellow-600 mb-1">8</div>
+                            <div class="text-sm text-gray-600">待开始</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 shadow-sm text-center">
+                            <div class="text-2xl font-bold text-red-600 mb-1">3</div>
+                            <div class="text-sm text-gray-600">已延期</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 shadow-sm text-center">
+                            <div class="text-2xl font-bold text-gray-600 mb-1">191</div>
+                            <div class="text-sm text-gray-600">总计</div>
+                        </div>
+                    </div>
+
+                    <!-- 工单列表 -->
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="p-6 border-b border-gray-200">
+                            <h3 class="text-lg font-semibold text-gray-800">工单列表</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工单号</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品名称</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数量</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">进度</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WO-2024-001</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">变频器-VFD-500</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">100</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">进行中</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                                <div class="bg-blue-600 h-2 rounded-full" style="width: 65%"></div>
+                                            </div>
+                                            <span class="text-xs text-gray-500 mt-1">65%</span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <button class="text-blue-600 hover:text-blue-900 mr-3">查看</button>
+                                            <button class="text-green-600 hover:text-green-900">编辑</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 获取通用模块内容
+        function getGenericModuleContent(pageId) {
+            return `
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="text-center py-12">
+                        <i class="fas fa-cogs text-6xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">${pageId} 模块</h3>
+                        <p class="text-gray-600">该功能模块正在开发中，敬请期待！</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 获取派工管理内容
+        function getDispatchContent() {
+            return getGenericModuleContent('派工管理');
+        }
+
+        // 获取质量管理内容
+        function getQualityContent(pageId) {
+            return getGenericModuleContent(`质量管理-${pageId}`);
+        }
+
+        // 获取设备管理内容
+        function getEquipmentContent(pageId) {
+            return getGenericModuleContent(`设备管理-${pageId}`);
+        }
+
+        // 获取库存管理内容
+        function getInventoryContent(pageId) {
+            return getGenericModuleContent(`库存管理-${pageId}`);
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 1000);
+            switchModule('dashboard');
+        });
+    </script>
+</body>
+</html>

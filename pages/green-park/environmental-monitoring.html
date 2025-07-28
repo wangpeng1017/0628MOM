@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>环境监测概览 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-leaf text-primary mr-3"></i>
+                环境监测概览
+            </h1>
+            <p class="text-gray-600 mt-2">实时环境监测，守护绿色园区</p>
+        </div>
+
+        <!-- 环境质量指标 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">空气质量</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">优</p>
+                        <p class="text-sm text-gray-500">AQI: 45</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-wind text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>PM2.5:</span>
+                        <span class="text-green-600 font-medium">15 μg/m³</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>PM10:</span>
+                        <span class="text-green-600 font-medium">28 μg/m³</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">噪音水平</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">52</p>
+                        <p class="text-sm text-gray-500">dB</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-volume-down text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>标准限值:</span>
+                        <span class="text-blue-600 font-medium">≤60 dB</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>达标率:</span>
+                        <span class="text-green-600 font-medium">100%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">水质状况</h3>
+                        <p class="text-3xl font-bold text-cyan-600 mt-2">良好</p>
+                        <p class="text-sm text-gray-500">pH: 7.2</p>
+                    </div>
+                    <div class="bg-cyan-100 p-3 rounded-full">
+                        <i class="fas fa-tint text-cyan-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>COD:</span>
+                        <span class="text-cyan-600 font-medium">25 mg/L</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>BOD:</span>
+                        <span class="text-green-600 font-medium">8 mg/L</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">土壤质量</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">正常</p>
+                        <p class="text-sm text-gray-500">pH: 6.8</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-seedling text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>重金属:</span>
+                        <span class="text-green-600 font-medium">达标</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>有机物:</span>
+                        <span class="text-green-600 font-medium">正常</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时监测数据 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                实时监测数据
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">监测点A</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 位置: 生产区东侧</div>
+                        <div>• PM2.5: 12 μg/m³</div>
+                        <div>• 噪音: 48 dB</div>
+                        <div>• 更新: 2分钟前</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">监测点B</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 位置: 办公区中心</div>
+                        <div>• PM2.5: 18 μg/m³</div>
+                        <div>• 噪音: 45 dB</div>
+                        <div>• 更新: 1分钟前</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">监测点C</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">注意</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 位置: 仓储区北侧</div>
+                        <div>• PM2.5: 35 μg/m³</div>
+                        <div>• 噪音: 58 dB</div>
+                        <div>• 更新: 30秒前</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg p-4 border border-cyan-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">水质监测</h4>
+                        <span class="px-2 py-1 bg-cyan-100 text-cyan-800 text-xs rounded-full">良好</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 位置: 污水处理站</div>
+                        <div>• pH值: 7.2</div>
+                        <div>• COD: 25 mg/L</div>
+                        <div>• 更新: 5分钟前</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 环境预警系统 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-exclamation-triangle text-yellow-600 mr-2"></i>
+                    环境预警系统
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">PM2.5浓度预警</h4>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">轻度</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 监测点C PM2.5浓度偏高</div>
+                            <div>• 当前值: 35 μg/m³</div>
+                            <div>• 建议: 加强通风，减少作业</div>
+                            <div class="text-yellow-600">• 预计持续: 2小时</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">系统运行状态</h4>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 监测设备: 12台在线</div>
+                            <div>• 数据传输: 正常</div>
+                            <div>• 预警功能: 正常</div>
+                            <div class="text-green-600">• 系统稳定运行</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-bar text-purple-600 mr-2"></i>
+                    环境质量趋势
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">空气质量</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 本周平均AQI: 42 (优)</div>
+                            <div>• 较上周: 改善8%</div>
+                            <div>• 达标天数: 7/7天</div>
+                            <div class="text-green-600">• 持续优良</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">水质状况</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 出水水质: 一级A标准</div>
+                            <div>• 处理效率: 98.5%</div>
+                            <div>• 达标率: 100%</div>
+                            <div class="text-blue-600">• 稳定达标</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">噪音控制</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 平均噪音: 52 dB</div>
+                            <div>• 达标率: 100%</div>
+                            <div>• 投诉次数: 0次</div>
+                            <div class="text-purple-600">• 控制良好</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 环保设施状态 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-cogs text-green-600 mr-2"></i>
+                环保设施状态
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">污水处理站</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常运行</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>处理能力:</span>
+                            <span class="font-medium">500 m³/日</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>当前负荷:</span>
+                            <span class="font-medium text-green-600">85%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>出水水质:</span>
+                            <span class="font-medium text-green-600">一级A</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>运行状态:</span>
+                            <span class="font-medium text-green-600">稳定</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                        查看详情
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">废气处理系统</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">正常运行</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>处理风量:</span>
+                            <span class="font-medium">10,000 m³/h</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>去除效率:</span>
+                            <span class="font-medium text-blue-600">95%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>排放浓度:</span>
+                            <span class="font-medium text-green-600">达标</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>设备状态:</span>
+                            <span class="font-medium text-blue-600">良好</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                        查看详情
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">噪音控制设施</h4>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">正常运行</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>隔音墙:</span>
+                            <span class="font-medium">12段</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>降噪效果:</span>
+                            <span class="font-medium text-purple-600">15-20 dB</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>覆盖率:</span>
+                            <span class="font-medium text-green-600">100%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>维护状态:</span>
+                            <span class="font-medium text-purple-600">良好</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors">
+                        查看详情
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 环境数据统计 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-area text-blue-600 mr-2"></i>
+                环境数据统计
+            </h3>
+            <div class="h-64 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg flex items-center justify-center">
+                <div class="text-center text-gray-500">
+                    <i class="fas fa-chart-line text-6xl mb-4 text-blue-400"></i>
+                    <p class="text-lg font-medium">环境监测数据图表</p>
+                    <p class="text-sm">实时数据可视化展示</p>
+                    <div class="mt-4 flex justify-center space-x-4">
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                            <i class="fas fa-chart-bar mr-1"></i>查看趋势
+                        </button>
+                        <button class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                            <i class="fas fa-download mr-1"></i>导出数据
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">新增监测点</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-bell text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">预警设置</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-chart-line text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">数据分析</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">监测报告</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 环境监测概览功能
+        function initEnvironmentalMonitoring() {
+            console.log('初始化环境监测概览功能');
+            
+            // 设施详情按钮事件
+            const facilityButtons = document.querySelectorAll('button');
+            facilityButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('查看详情')) {
+                    button.addEventListener('click', function() {
+                        const facilityName = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('查看设施详情:', facilityName);
+                        alert(`正在查看 ${facilityName} 的详细信息...`);
+                    });
+                } else if (text.includes('查看趋势')) {
+                    button.addEventListener('click', function() {
+                        console.log('查看环境数据趋势');
+                        alert('正在加载环境数据趋势图表...');
+                    });
+                } else if (text.includes('导出数据')) {
+                    button.addEventListener('click', function() {
+                        console.log('导出环境监测数据');
+                        alert('正在导出环境监测数据...');
+                    });
+                }
+            });
+            
+            // 实时数据更新
+            function updateEnvironmentalData() {
+                console.log('更新环境监测数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateEnvironmentalData, 60000); // 每分钟更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initEnvironmentalMonitoring();
+            console.log('环境监测概览页面加载完成');
+        });
+    </script>
+</body>
+</html>

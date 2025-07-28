@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>试产管理 - 质量管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">试产管理</h1>
+            <p class="text-gray-600">基于Process.md 2.5.4流程：试产计划→试产执行→质量验证→PPAP提交，确保新产品质量稳定性和工艺可行性</p>
+        </div>
+
+        <!-- 试产管理流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">试产管理流程</h3>
+                    <span class="text-sm text-gray-600">新产品导入质量控制</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">试产计划</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">试产执行</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">质量验证</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">PPAP提交</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="trialPlanBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-calendar-alt mr-2"></i>
+                试产计划
+            </button>
+            <button id="trialExecutionBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-play mr-2"></i>
+                试产执行
+            </button>
+            <button id="qualityVerificationBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-check-double mr-2"></i>
+                质量验证
+            </button>
+            <button id="ppapSubmissionBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-file-contract mr-2"></i>
+                PPAP提交
+            </button>
+            <button id="processOptimizationBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-cogs mr-2"></i>
+                工艺优化
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 试产管理统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">8</div>
+                        <div class="text-sm text-gray-600">试产项目</div>
+                        <div class="text-xs text-gray-500">进行中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-flask text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">92.5%</div>
+                        <div class="text-sm text-gray-600">试产成功率</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">3</div>
+                        <div class="text-sm text-gray-600">待验证</div>
+                        <div class="text-xs text-gray-500">质量验证</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">5</div>
+                        <div class="text-sm text-gray-600">PPAP文件</div>
+                        <div class="text-xs text-gray-500">待提交</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-file-contract text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">15.8天</div>
+                        <div class="text-sm text-gray-600">平均周期</div>
+                        <div class="text-xs text-gray-500">试产时间</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-stopwatch text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">2</div>
+                        <div class="text-sm text-gray-600">工艺问题</div>
+                        <div class="text-xs text-gray-500">需要优化</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 试产进度和工艺监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 试产进度跟踪 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">试产进度跟踪</h3>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar-alt text-blue-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">试产计划</div>
+                                    <div class="text-xs text-gray-500">计划制定、资源准备</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-blue-600">100%</div>
+                                <div class="text-xs text-gray-500">已完成</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-green-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-play text-green-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">试产执行</div>
+                                    <div class="text-xs text-gray-500">工艺验证、产品制作</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-green-600">85%</div>
+                                <div class="text-xs text-gray-500">进行中</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-purple-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-check-double text-purple-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">质量验证</div>
+                                    <div class="text-xs text-gray-500">质量检验、性能测试</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-purple-600">30%</div>
+                                <div class="text-xs text-gray-500">准备中</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-600 h-2 rounded-full" style="width: 30%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工艺监控面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">工艺监控</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">新型PACK工艺异常</div>
+                                <div class="text-xs text-gray-600">焊接参数需要调整</div>
+                                <div class="text-xs text-gray-500">项目: PACK-V3.0试产</div>
+                            </div>
+                            <button onclick="handleTrialAlert('ALERT001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                立即处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">逆变器测试异常</div>
+                                <div class="text-xs text-gray-600">效率测试不稳定</div>
+                                <div class="text-xs text-gray-500">项目: INV-10KW试产</div>
+                            </div>
+                            <button onclick="handleTrialAlert('ALERT002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                                分析中
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">PCBA工艺优化</div>
+                                <div class="text-xs text-gray-600">SMT参数需要微调</div>
+                                <div class="text-xs text-gray-500">项目: PCBA-V2.0试产</div>
+                            </div>
+                            <button onclick="handleTrialAlert('ALERT003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                待处理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">工艺稳定性</span>
+                        <span class="font-medium text-green-600">本月提升: +3.2%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 试产项目记录表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">试产项目记录</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部产品类型</option>
+                        <option>PACK产品</option>
+                        <option>PCBA产品</option>
+                        <option>逆变器产品</option>
+                        <option>新产品</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部试产状态</option>
+                        <option>计划中</option>
+                        <option>执行中</option>
+                        <option>验证中</option>
+                        <option>已完成</option>
+                        <option>暂停</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部优先级</option>
+                        <option>高优先级</option>
+                        <option>中优先级</option>
+                        <option>低优先级</option>
+                    </select>
+                    <input type="date" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                    <input type="text" placeholder="搜索项目编号、产品名称..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">项目信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">试产计划</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">质量目标</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">项目团队</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">试产状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">验证结果</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="trialProductionTableBody">
+                        <!-- 试产数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.5.4的试产管理数据模型
+        const trialProductionData = [
+            {
+                id: 'TRIAL202501001',
+                projectCode: 'TRIAL-PACK-V3.0',
+                projectName: 'PACK V3.0新产品试产',
+                productCode: 'PACK-CELL-V3.0',
+                productName: 'PACK电芯模块V3.0',
+                productType: 'PACK产品',
+                version: 'V3.0',
+                priority: 'high',
+                priorityName: '高优先级',
+                customer: '新能源客户A',
+                projectManager: '张项目经理',
+                projectManagerId: 'PM001',
+                qualityEngineer: '李质量工程师',
+                qualityEngineerId: 'QE001',
+                processEngineer: '王工艺工程师',
+                processEngineerId: 'PE001',
+                startDate: '2025-01-10',
+                plannedEndDate: '2025-01-25',
+                actualEndDate: null,
+                status: 'execution',
+                statusName: '执行中',
+                trialPlan: {
+                    plannedQuantity: 100,
+                    actualQuantity: 65,
+                    completionRate: 65,
+                    phases: [
+                        { phase: '工艺验证', status: 'completed', progress: 100 },
+                        { phase: '小批试产', status: 'in_progress', progress: 65 },
+                        { phase: '质量验证', status: 'pending', progress: 0 },
+                        { phase: 'PPAP准备', status: 'pending', progress: 0 }
+                    ]
+                },
+                qualityTargets: [
+                    { target: '首件合格率', standard: '≥95%', actual: '96.2%', status: 'pass' },
+                    { target: '过程直通率', standard: '≥90%', actual: '88.5%', status: 'warning' },
+                    { target: '成品合格率', standard: '≥98%', actual: '97.8%', status: 'warning' },
+                    { target: 'Cpk值', standard: '≥1.33', actual: '1.28', status: 'warning' }
+                ],
+                processIssues: [
+                    { issue: '焊接参数不稳定', severity: 'high', status: 'open', assignee: '王工艺工程师' },
+                    { issue: '测试夹具精度不足', severity: 'medium', status: 'in_progress', assignee: '设备工程师' }
+                ],
+                verificationResults: {
+                    designVerification: { status: 'completed', result: 'pass', date: '2025-01-12' },
+                    processVerification: { status: 'in_progress', result: 'pending', date: null },
+                    productVerification: { status: 'pending', result: 'pending', date: null },
+                    ppapStatus: 'not_started'
+                },
+                documents: ['试产计划', '工艺文件', '检验标准', '试产报告'],
+                photos: ['工艺验证.jpg', '产品样品.jpg'],
+                notes: '工艺参数需要进一步优化，质量指标基本达标'
+            },
+            {
+                id: 'TRIAL202501002',
+                projectCode: 'TRIAL-INV-10KW',
+                projectName: '10KW逆变器试产项目',
+                productCode: 'INV-POWER-10KW',
+                productName: '10KW逆变器',
+                productType: '逆变器产品',
+                version: 'V1.0',
+                priority: 'high',
+                priorityName: '高优先级',
+                customer: '光伏客户B',
+                projectManager: '陈项目经理',
+                projectManagerId: 'PM002',
+                qualityEngineer: '赵质量工程师',
+                qualityEngineerId: 'QE002',
+                processEngineer: '刘工艺工程师',
+                processEngineerId: 'PE002',
+                startDate: '2025-01-05',
+                plannedEndDate: '2025-01-20',
+                actualEndDate: null,
+                status: 'verification',
+                statusName: '验证中',
+                trialPlan: {
+                    plannedQuantity: 50,
+                    actualQuantity: 50,
+                    completionRate: 100,
+                    phases: [
+                        { phase: '工艺验证', status: 'completed', progress: 100 },
+                        { phase: '小批试产', status: 'completed', progress: 100 },
+                        { phase: '质量验证', status: 'in_progress', progress: 75 },
+                        { phase: 'PPAP准备', status: 'pending', progress: 0 }
+                    ]
+                },
+                qualityTargets: [
+                    { target: '功率输出', standard: '10000±100W', actual: '9980W', status: 'pass' },
+                    { target: '转换效率', standard: '≥96%', actual: '96.5%', status: 'pass' },
+                    { target: '谐波失真', standard: '≤3%', actual: '2.8%', status: 'pass' },
+                    { target: '可靠性测试', standard: '1000小时', actual: '750小时', status: 'in_progress' }
+                ],
+                processIssues: [
+                    { issue: '散热设计需要优化', severity: 'medium', status: 'resolved', assignee: '设计工程师' }
+                ],
+                verificationResults: {
+                    designVerification: { status: 'completed', result: 'pass', date: '2025-01-08' },
+                    processVerification: { status: 'completed', result: 'pass', date: '2025-01-15' },
+                    productVerification: { status: 'in_progress', result: 'pending', date: null },
+                    ppapStatus: 'preparing'
+                },
+                documents: ['试产计划', '工艺文件', '检验标准', '试产报告', '可靠性测试报告'],
+                photos: ['产品测试.jpg', '性能验证.jpg'],
+                notes: '产品性能达标，可靠性测试进行中，预计按期完成'
+            },
+            {
+                id: 'TRIAL202501003',
+                projectCode: 'TRIAL-PCBA-V2.0',
+                projectName: 'PCBA控制板V2.0试产',
+                productCode: 'PCBA-CTRL-V2.0',
+                productName: 'PCBA控制板V2.0',
+                productType: 'PCBA产品',
+                version: 'V2.0',
+                priority: 'medium',
+                priorityName: '中优先级',
+                customer: '内部项目',
+                projectManager: '孙项目经理',
+                projectManagerId: 'PM003',
+                qualityEngineer: '周质量工程师',
+                qualityEngineerId: 'QE003',
+                processEngineer: '吴工艺工程师',
+                processEngineerId: 'PE003',
+                startDate: '2025-01-12',
+                plannedEndDate: '2025-01-27',
+                actualEndDate: null,
+                status: 'planning',
+                statusName: '计划中',
+                trialPlan: {
+                    plannedQuantity: 200,
+                    actualQuantity: 0,
+                    completionRate: 0,
+                    phases: [
+                        { phase: '工艺验证', status: 'pending', progress: 0 },
+                        { phase: '小批试产', status: 'pending', progress: 0 },
+                        { phase: '质量验证', status: 'pending', progress: 0 },
+                        { phase: 'PPAP准备', status: 'pending', progress: 0 }
+                    ]
+                },
+                qualityTargets: [
+                    { target: 'SMT直通率', standard: '≥98%', actual: '', status: 'pending' },
+                    { target: '电气测试', standard: '100%通过', actual: '', status: 'pending' },
+                    { target: '外观质量', standard: '无缺陷', actual: '', status: 'pending' },
+                    { target: '功能测试', standard: '100%通过', actual: '', status: 'pending' }
+                ],
+                processIssues: [],
+                verificationResults: {
+                    designVerification: { status: 'pending', result: 'pending', date: null },
+                    processVerification: { status: 'pending', result: 'pending', date: null },
+                    productVerification: { status: 'pending', result: 'pending', date: null },
+                    ppapStatus: 'not_started'
+                },
+                documents: ['试产计划草案'],
+                photos: [],
+                notes: '试产计划制定中，等待设计文件确认'
+            },
+            {
+                id: 'TRIAL202501004',
+                projectCode: 'TRIAL-PACK-MINI',
+                projectName: 'PACK Mini版本试产',
+                productCode: 'PACK-MINI-V1.0',
+                productName: 'PACK Mini模块',
+                productType: 'PACK产品',
+                version: 'V1.0',
+                priority: 'low',
+                priorityName: '低优先级',
+                customer: '小型设备客户',
+                projectManager: '马项目经理',
+                projectManagerId: 'PM004',
+                qualityEngineer: '胡质量工程师',
+                qualityEngineerId: 'QE004',
+                processEngineer: '徐工艺工程师',
+                processEngineerId: 'PE004',
+                startDate: '2024-12-20',
+                plannedEndDate: '2025-01-15',
+                actualEndDate: '2025-01-14',
+                status: 'completed',
+                statusName: '已完成',
+                trialPlan: {
+                    plannedQuantity: 80,
+                    actualQuantity: 80,
+                    completionRate: 100,
+                    phases: [
+                        { phase: '工艺验证', status: 'completed', progress: 100 },
+                        { phase: '小批试产', status: 'completed', progress: 100 },
+                        { phase: '质量验证', status: 'completed', progress: 100 },
+                        { phase: 'PPAP准备', status: 'completed', progress: 100 }
+                    ]
+                },
+                qualityTargets: [
+                    { target: '首件合格率', standard: '≥95%', actual: '98.5%', status: 'pass' },
+                    { target: '过程直通率', standard: '≥90%', actual: '94.2%', status: 'pass' },
+                    { target: '成品合格率', standard: '≥98%', actual: '99.1%', status: 'pass' },
+                    { target: 'Cpk值', standard: '≥1.33', actual: '1.45', status: 'pass' }
+                ],
+                processIssues: [],
+                verificationResults: {
+                    designVerification: { status: 'completed', result: 'pass', date: '2024-12-25' },
+                    processVerification: { status: 'completed', result: 'pass', date: '2025-01-05' },
+                    productVerification: { status: 'completed', result: 'pass', date: '2025-01-12' },
+                    ppapStatus: 'submitted'
+                },
+                documents: ['试产计划', '工艺文件', '检验标准', '试产报告', 'PPAP文件包', '客户批准书'],
+                photos: ['最终产品.jpg', 'PPAP样品.jpg'],
+                notes: '试产成功完成，所有质量目标达成，PPAP已获客户批准'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            planning: { text: '计划中', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-calendar-alt' },
+            execution: { text: '执行中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-play' },
+            verification: { text: '验证中', class: 'bg-orange-100 text-orange-800', icon: 'fas fa-check-double' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            paused: { text: '暂停', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-pause' }
+        };
+
+        // 优先级映射
+        const priorityMap = {
+            high: { text: '高优先级', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation' },
+            medium: { text: '中优先级', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-minus' },
+            low: { text: '低优先级', class: 'bg-green-100 text-green-800', icon: 'fas fa-arrow-down' }
+        };
+
+        // 质量目标状态映射
+        const targetStatusMap = {
+            pass: { text: '达标', class: 'text-green-600', icon: 'fas fa-check' },
+            warning: { text: '警告', class: 'text-yellow-600', icon: 'fas fa-exclamation-triangle' },
+            fail: { text: '不达标', class: 'text-red-600', icon: 'fas fa-times' },
+            pending: { text: '待测试', class: 'text-gray-600', icon: 'fas fa-clock' },
+            in_progress: { text: '测试中', class: 'text-blue-600', icon: 'fas fa-spinner' }
+        };
+
+        // 阶段状态映射
+        const phaseStatusMap = {
+            pending: { text: '待开始', class: 'text-gray-600', icon: 'fas fa-clock' },
+            in_progress: { text: '进行中', class: 'text-blue-600', icon: 'fas fa-spinner' },
+            completed: { text: '已完成', class: 'text-green-600', icon: 'fas fa-check' }
+        };
+
+        // PPAP状态映射
+        const ppapStatusMap = {
+            not_started: { text: '未开始', class: 'text-gray-600' },
+            preparing: { text: '准备中', class: 'text-blue-600' },
+            submitted: { text: '已提交', class: 'text-green-600' },
+            approved: { text: '已批准', class: 'text-green-600' }
+        };
+
+        let filteredData = [...trialProductionData];
+
+        // 渲染试产管理表格
+        function renderTrialProductionTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('trialProductionTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(trial => {
+                const status = statusMap[trial.status];
+                const priority = priorityMap[trial.priority];
+                const ppapStatus = ppapStatusMap[trial.verificationResults.ppapStatus];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewTrialDetail('${trial.id}')">
+                            ${trial.projectCode}
+                        </div>
+                        <div class="text-sm text-gray-900">${trial.projectName}</div>
+                        <div class="text-xs text-gray-500">客户: ${trial.customer}</div>
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${priority.class} mt-1">
+                            <i class="${priority.icon} mr-1"></i>
+                            ${priority.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${trial.productName}</div>
+                        <div class="text-xs text-gray-500">${trial.productCode}</div>
+                        <div class="text-xs text-gray-500">${trial.productType}</div>
+                        <div class="text-xs text-blue-600">版本: ${trial.version}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">计划: ${trial.trialPlan.plannedQuantity}件</div>
+                        <div class="text-xs text-gray-500">实际: ${trial.trialPlan.actualQuantity}件</div>
+                        <div class="mt-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: ${trial.trialPlan.completionRate}%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">完成率: ${trial.trialPlan.completionRate}%</div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="space-y-1">
+                            ${trial.qualityTargets.slice(0, 3).map(target => `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-600">${target.target}</span>
+                                    <span class="text-xs ${targetStatusMap[target.status].class}">
+                                        <i class="${targetStatusMap[target.status].icon}"></i> ${targetStatusMap[target.status].text}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${trial.qualityTargets.length > 3 ? `
+                            <button onclick="viewQualityTargets('${trial.id}')" class="text-xs text-blue-600 hover:underline mt-1">
+                                查看全部 (${trial.qualityTargets.length})
+                            </button>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${trial.projectManager}</div>
+                        <div class="text-xs text-gray-500">${trial.projectManagerId}</div>
+                        <div class="text-xs text-gray-500">质量: ${trial.qualityEngineer}</div>
+                        <div class="text-xs text-gray-500">工艺: ${trial.processEngineer}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">开始: ${trial.startDate}</div>
+                        <div class="text-xs text-gray-500">计划: ${trial.plannedEndDate}</div>
+                        ${trial.actualEndDate ? `
+                            <div class="text-xs text-green-600">完成: ${trial.actualEndDate}</div>
+                        ` : `
+                            <div class="text-xs text-gray-500">进行中</div>
+                        `}
+                        <div class="text-xs text-blue-600">周期: ${calculateDuration(trial.startDate, trial.actualEndDate || trial.plannedEndDate)}天</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${trial.processIssues.length > 0 ? `
+                            <div class="text-xs text-red-600 mt-1">
+                                问题: ${trial.processIssues.length}项
+                            </div>
+                        ` : ''}
+                        <div class="text-xs ${ppapStatus.class} mt-1">
+                            PPAP: ${ppapStatus.text}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="space-y-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-gray-600">设计验证</span>
+                                <span class="text-xs ${trial.verificationResults.designVerification.result === 'pass' ? 'text-green-600' : trial.verificationResults.designVerification.result === 'pending' ? 'text-gray-600' : 'text-red-600'}">
+                                    ${trial.verificationResults.designVerification.result === 'pass' ? '通过' : trial.verificationResults.designVerification.result === 'pending' ? '待验证' : '不通过'}
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-gray-600">工艺验证</span>
+                                <span class="text-xs ${trial.verificationResults.processVerification.result === 'pass' ? 'text-green-600' : trial.verificationResults.processVerification.result === 'pending' ? 'text-gray-600' : 'text-red-600'}">
+                                    ${trial.verificationResults.processVerification.result === 'pass' ? '通过' : trial.verificationResults.processVerification.result === 'pending' ? '待验证' : '不通过'}
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-gray-600">产品验证</span>
+                                <span class="text-xs ${trial.verificationResults.productVerification.result === 'pass' ? 'text-green-600' : trial.verificationResults.productVerification.result === 'pending' ? 'text-gray-600' : 'text-red-600'}">
+                                    ${trial.verificationResults.productVerification.result === 'pass' ? '通过' : trial.verificationResults.productVerification.result === 'pending' ? '待验证' : '不通过'}
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewTrialDetail('${trial.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${trial.status === 'planning' ? `
+                                <button onclick="startTrial('${trial.id}')" class="text-green-600 hover:text-green-900 p-1" title="开始试产">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            ` : ''}
+                            ${trial.status === 'execution' ? `
+                                <button onclick="updateProgress('${trial.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="更新进度">
+                                    <i class="fas fa-sync"></i>
+                                </button>
+                            ` : ''}
+                            ${trial.status === 'verification' ? `
+                                <button onclick="verifyQuality('${trial.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="质量验证">
+                                    <i class="fas fa-check-double"></i>
+                                </button>
+                            ` : ''}
+                            ${trial.processIssues.length > 0 ? `
+                                <button onclick="viewIssues('${trial.id}')" class="text-red-600 hover:text-red-900 p-1" title="查看问题">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </button>
+                            ` : ''}
+                            ${trial.photos.length > 0 ? `
+                                <button onclick="viewPhotos('${trial.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="查看照片">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewDocuments('${trial.id}')" class="text-yellow-600 hover:text-yellow-900 p-1" title="查看文档">
+                                <i class="fas fa-file-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${trialProductionData.length} 条记录`;
+        }
+
+        // 计算持续时间
+        function calculateDuration(startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        // 试产管理操作函数
+        function viewTrialDetail(trialId) {
+            const trial = trialProductionData.find(t => t.id === trialId);
+            if (trial) {
+                let detailText = `试产项目详情：\n项目编号: ${trial.projectCode}\n项目名称: ${trial.projectName}\n产品名称: ${trial.productName}\n产品编号: ${trial.productCode}\n产品版本: ${trial.version}\n客户: ${trial.customer}`;
+
+                detailText += `\n\n项目团队:\n项目经理: ${trial.projectManager} (${trial.projectManagerId})\n质量工程师: ${trial.qualityEngineer} (${trial.qualityEngineerId})\n工艺工程师: ${trial.processEngineer} (${trial.processEngineerId})`;
+
+                detailText += `\n\n试产计划:\n计划数量: ${trial.trialPlan.plannedQuantity}件\n实际数量: ${trial.trialPlan.actualQuantity}件\n完成率: ${trial.trialPlan.completionRate}%`;
+
+                detailText += `\n\n试产阶段:`;
+                trial.trialPlan.phases.forEach((phase, index) => {
+                    const phaseStatus = phaseStatusMap[phase.status];
+                    detailText += `\n${index + 1}. ${phase.phase}\n   状态: ${phaseStatus.text}\n   进度: ${phase.progress}%`;
+                });
+
+                detailText += `\n\n质量目标:`;
+                trial.qualityTargets.forEach((target, index) => {
+                    const targetStatus = targetStatusMap[target.status];
+                    detailText += `\n${index + 1}. ${target.target}\n   标准: ${target.standard}\n   实际: ${target.actual || '待测试'}\n   状态: ${targetStatus.text}`;
+                });
+
+                if (trial.processIssues.length > 0) {
+                    detailText += `\n\n工艺问题:`;
+                    trial.processIssues.forEach((issue, index) => {
+                        detailText += `\n${index + 1}. ${issue.issue}\n   严重程度: ${issue.severity}\n   状态: ${issue.status}\n   负责人: ${issue.assignee}`;
+                    });
+                }
+
+                detailText += `\n\n验证结果:\n设计验证: ${trial.verificationResults.designVerification.result === 'pass' ? '通过' : trial.verificationResults.designVerification.result === 'pending' ? '待验证' : '不通过'}`;
+                if (trial.verificationResults.designVerification.date) {
+                    detailText += ` (${trial.verificationResults.designVerification.date})`;
+                }
+                detailText += `\n工艺验证: ${trial.verificationResults.processVerification.result === 'pass' ? '通过' : trial.verificationResults.processVerification.result === 'pending' ? '待验证' : '不通过'}`;
+                if (trial.verificationResults.processVerification.date) {
+                    detailText += ` (${trial.verificationResults.processVerification.date})`;
+                }
+                detailText += `\n产品验证: ${trial.verificationResults.productVerification.result === 'pass' ? '通过' : trial.verificationResults.productVerification.result === 'pending' ? '待验证' : '不通过'}`;
+                if (trial.verificationResults.productVerification.date) {
+                    detailText += ` (${trial.verificationResults.productVerification.date})`;
+                }
+                detailText += `\nPPAP状态: ${ppapStatusMap[trial.verificationResults.ppapStatus].text}`;
+
+                detailText += `\n\n时间计划:\n开始日期: ${trial.startDate}\n计划结束: ${trial.plannedEndDate}`;
+                if (trial.actualEndDate) {
+                    detailText += `\n实际结束: ${trial.actualEndDate}`;
+                }
+                detailText += `\n项目状态: ${statusMap[trial.status].text}`;
+
+                if (trial.notes) {
+                    detailText += `\n\n备注: ${trial.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function handleTrialAlert(alertId) {
+            if (confirm(`确认处理试产异常？\n异常ID: ${alertId}\n\n处理措施：\n- 暂停当前试产\n- 分析问题原因\n- 调整工艺参数\n- 重新验证工艺`)) {
+                alert('试产异常处理完成！\n- 试产已暂停\n- 问题原因已分析\n- 工艺参数已调整');
+            }
+        }
+
+        function startTrial(trialId) {
+            const trial = trialProductionData.find(t => t.id === trialId);
+            if (trial) {
+                if (confirm(`开始试产？\n项目: ${trial.projectName}\n产品: ${trial.productName}\n\n开始内容：\n- 工艺验证\n- 小批试产\n- 质量监控`)) {
+                    trial.status = 'execution';
+                    trial.trialPlan.phases[0].status = 'in_progress';
+                    trial.trialPlan.phases[0].progress = 50;
+                    renderTrialProductionTable();
+                    alert('试产已开始！\n- 工艺验证启动\n- 生产计划已下达\n- 质量监控已开启');
+                }
+            }
+        }
+
+        function updateProgress(trialId) {
+            const trial = trialProductionData.find(t => t.id === trialId);
+            if (trial) {
+                if (confirm(`更新试产进度？\n项目: ${trial.projectName}\n\n更新内容：\n- 生产数量更新\n- 阶段进度更新\n- 质量数据更新`)) {
+                    // 模拟进度更新
+                    trial.trialPlan.actualQuantity = Math.min(trial.trialPlan.plannedQuantity, trial.trialPlan.actualQuantity + 10);
+                    trial.trialPlan.completionRate = Math.round((trial.trialPlan.actualQuantity / trial.trialPlan.plannedQuantity) * 100);
+
+                    // 更新阶段进度
+                    if (trial.trialPlan.completionRate >= 100) {
+                        trial.trialPlan.phases[1].status = 'completed';
+                        trial.trialPlan.phases[1].progress = 100;
+                        trial.status = 'verification';
+                        trial.trialPlan.phases[2].status = 'in_progress';
+                        trial.trialPlan.phases[2].progress = 25;
+                    }
+
+                    renderTrialProductionTable();
+                    alert('试产进度已更新！\n- 生产数量已更新\n- 阶段状态已更新\n- 质量数据已记录');
+                }
+            }
+        }
+
+        function verifyQuality(trialId) {
+            const trial = trialProductionData.find(t => t.id === trialId);
+            if (trial) {
+                if (confirm(`执行质量验证？\n项目: ${trial.projectName}\n\n验证内容：\n- 产品性能测试\n- 可靠性验证\n- 质量体系确认\n- PPAP文件准备`)) {
+                    // 模拟质量验证
+                    trial.verificationResults.productVerification.status = 'completed';
+                    trial.verificationResults.productVerification.result = 'pass';
+                    trial.verificationResults.productVerification.date = new Date().toISOString().split('T')[0];
+                    trial.verificationResults.ppapStatus = 'preparing';
+
+                    // 更新质量目标
+                    trial.qualityTargets.forEach(target => {
+                        if (target.status === 'pending') {
+                            target.status = Math.random() > 0.2 ? 'pass' : 'warning';
+                            if (target.status === 'pass') {
+                                target.actual = '达标';
+                            } else {
+                                target.actual = '接近达标';
+                            }
+                        }
+                    });
+
+                    renderTrialProductionTable();
+                    alert('质量验证完成！\n- 产品性能验证通过\n- 质量目标基本达成\n- PPAP文件准备中');
+                }
+            }
+        }
+
+        function viewQualityTargets(trialId) {
+            const trial = trialProductionData.find(t => t.id === trialId);
+            if (trial) {
+                let targetsText = `${trial.projectName} - 质量目标：\n\n`;
+                trial.qualityTargets.forEach((target, index) => {
+                    const targetStatus = targetStatusMap[target.status];
+                    targetsText += `${index + 1}. ${target.target}\n   标准: ${target.standard}\n   实际: ${target.actual || '待测试'}\n   状态: ${targetStatus.text}\n\n`;
+                });
+                alert(targetsText);
+            }
+        }
+
+        function viewIssues(trialId) {
+            const trial = trialProductionData.find(t => t.id === trialId);
+            if (trial) {
+                let issuesText = `${trial.projectName} - 工艺问题：\n\n`;
+                if (trial.processIssues.length > 0) {
+                    trial.processIssues.forEach((issue, index) => {
+                        issuesText += `${index + 1}. ${issue.issue}\n   严重程度: ${issue.severity}\n   状态: ${issue.status}\n   负责人: ${issue.assignee}\n\n`;
+                    });
+                } else {
+                    issuesText += '暂无工艺问题';
+                }
+                alert(issuesText);
+            }
+        }
+
+        function viewPhotos(trialId) {
+            const trial = trialProductionData.find(t => t.id === trialId);
+            if (trial) {
+                let photosText = `${trial.projectName} - 试产照片：\n\n`;
+                if (trial.photos.length > 0) {
+                    trial.photos.forEach((photo, index) => {
+                        photosText += `${index + 1}. ${photo}\n`;
+                    });
+                    photosText += `\n总计: ${trial.photos.length}张照片`;
+                } else {
+                    photosText += '暂无试产照片';
+                }
+                alert(photosText);
+            }
+        }
+
+        function viewDocuments(trialId) {
+            const trial = trialProductionData.find(t => t.id === trialId);
+            if (trial) {
+                let documentsText = `${trial.projectName} - 相关文档：\n\n`;
+                if (trial.documents.length > 0) {
+                    trial.documents.forEach((doc, index) => {
+                        documentsText += `${index + 1}. ${doc}\n`;
+                    });
+                    documentsText += `\n总计: ${trial.documents.length}份文档`;
+                } else {
+                    documentsText += '暂无相关文档';
+                }
+                alert(documentsText);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTrialProductionTable();
+
+            // 试产计划
+            document.getElementById('trialPlanBtn').addEventListener('click', function() {
+                alert('试产计划功能：\n- 试产需求分析\n- 资源配置计划\n- 时间进度安排\n- 质量目标设定\n- 风险评估分析');
+            });
+
+            // 试产执行
+            document.getElementById('trialExecutionBtn').addEventListener('click', function() {
+                alert('试产执行功能：\n- 工艺验证执行\n- 小批量生产\n- 过程质量监控\n- 问题记录跟踪\n- 数据收集分析');
+            });
+
+            // 质量验证
+            document.getElementById('qualityVerificationBtn').addEventListener('click', function() {
+                alert('质量验证功能：\n- 产品性能测试\n- 可靠性验证\n- 质量体系确认\n- 客户样品确认\n- 验证报告生成');
+            });
+
+            // PPAP提交
+            document.getElementById('ppapSubmissionBtn').addEventListener('click', function() {
+                alert('PPAP提交功能：\n- PPAP文件准备\n- 样品制作确认\n- 文件包整理\n- 客户提交流程\n- 批准状态跟踪');
+            });
+
+            // 工艺优化
+            document.getElementById('processOptimizationBtn').addEventListener('click', function() {
+                alert('工艺优化功能：\n- 工艺参数优化\n- 质量问题改进\n- 效率提升分析\n- 成本控制优化\n- 最佳实践总结');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作业管理系统 - 生产管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">作业管理系统</h1>
+            <p class="text-gray-600">基于Process.md 2.3.10-2.3.12流程：作业指导书→标签打印→测试程序，实现标准化作业管理</p>
+        </div>
+
+        <!-- 作业管理流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">作业管理执行流程</h3>
+                    <span class="text-sm text-gray-600">数字化作业指导系统</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">作业指导</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">标签打印</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">测试程序</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">作业完成</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="workInstructionBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-book mr-2"></i>
+                作业指导书
+            </button>
+            <button id="labelPrintBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-print mr-2"></i>
+                标签打印
+            </button>
+            <button id="testProgramBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-code mr-2"></i>
+                测试程序
+            </button>
+            <button id="workStandardBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-clipboard-check mr-2"></i>
+                作业标准
+            </button>
+            <button id="skillTrainingBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-graduation-cap mr-2"></i>
+                技能培训
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 作业管理统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-600">作业指导书</div>
+                        <div class="text-xs text-gray-500">已发布</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-book text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">2,456</div>
+                        <div class="text-sm text-gray-600">标签打印</div>
+                        <div class="text-xs text-gray-500">今日完成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-print text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">89</div>
+                        <div class="text-sm text-gray-600">测试程序</div>
+                        <div class="text-xs text-gray-500">在线运行</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-code text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">98.5%</div>
+                        <div class="text-sm text-gray-600">作业合规率</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-check text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">245</div>
+                        <div class="text-sm text-gray-600">培训记录</div>
+                        <div class="text-xs text-gray-500">本月完成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">12</div>
+                        <div class="text-sm text-gray-600">作业异常</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 作业指导和标签打印面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 作业指导书面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">数字化作业指导书</h3>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer" onclick="viewWorkInstruction('WI001')">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-book text-blue-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">5KW逆变器装配指导书</div>
+                                    <div class="text-xs text-gray-500">版本: V2.1 | 工位: 主装配线</div>
+                                </div>
+                            </div>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">已发布</span>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer" onclick="viewWorkInstruction('WI002')">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-wrench text-purple-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">螺钉拧紧作业指导</div>
+                                    <div class="text-xs text-gray-500">版本: V1.5 | 工位: 拧紧工位</div>
+                                </div>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">使用中</span>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer" onclick="viewWorkInstruction('WI003')">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-search text-orange-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">质量检验作业指导</div>
+                                    <div class="text-xs text-gray-500">版本: V3.0 | 工位: 检验工位</div>
+                                </div>
+                            </div>
+                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">待审核</span>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="createWorkInstruction()" class="w-full mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>创建新指导书
+                </button>
+            </div>
+
+            <!-- 标签打印面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">智能标签打印</h3>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">标签类型</label>
+                            <select id="labelType" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="product">产品标签</option>
+                                <option value="material">物料标签</option>
+                                <option value="batch">批次标签</option>
+                                <option value="qr">二维码标签</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">打印数量</label>
+                            <input type="number" id="printQuantity" value="1" min="1" max="100" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">产品SN</label>
+                        <input type="text" id="productSN" placeholder="输入产品序列号" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                        <i class="fas fa-qrcode text-4xl text-gray-400 mb-2"></i>
+                        <div class="text-sm text-gray-600">标签预览区域</div>
+                        <div class="text-xs text-gray-500">选择标签类型后显示预览</div>
+                    </div>
+                    <button onclick="printLabel()" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors">
+                        <i class="fas fa-print mr-2"></i>打印标签
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 作业记录管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">作业记录管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部类型</option>
+                        <option>作业指导</option>
+                        <option>标签打印</option>
+                        <option>测试程序</option>
+                        <option>技能培训</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>进行中</option>
+                        <option>已完成</option>
+                        <option>异常</option>
+                    </select>
+                    <input type="text" placeholder="搜索产品SN、操作员..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">作业编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">作业类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工位/设备</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">指导书版本</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="workTableBody">
+                        <!-- 作业数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.3.10-2.3.12的作业管理数据模型
+        const workInstructionData = [
+            {
+                id: 'WORK202501001',
+                productSN: '2025011601001',
+                productCode: 'INV-5KW-001',
+                productName: '5KW逆变器',
+                workType: 'instruction',
+                workTypeName: '作业指导',
+                workstation: '主装配线-工位1',
+                equipmentId: 'ASM001',
+                instructionId: 'WI001',
+                instructionVersion: 'V2.1',
+                instructionTitle: '5KW逆变器装配指导书',
+                operator: '张师傅',
+                operatorId: 'OP001',
+                status: 'completed',
+                startTime: '2025-01-16 14:20:00',
+                endTime: '2025-01-16 14:35:00',
+                duration: 15,
+                qualityCheck: true,
+                complianceRate: 98.5,
+                labelsPrinted: ['产品标签', 'QR码标签'],
+                testPrograms: ['功能测试', '性能测试'],
+                notes: '按标准流程完成，质量良好'
+            },
+            {
+                id: 'WORK202501002',
+                productSN: '2025011601002',
+                productCode: 'ESS-10KW-002',
+                productName: '储能逆变器',
+                workType: 'label',
+                workTypeName: '标签打印',
+                workstation: '标签打印站',
+                equipmentId: 'PRINT001',
+                instructionId: null,
+                instructionVersion: null,
+                instructionTitle: null,
+                operator: '李操作员',
+                operatorId: 'OP002',
+                status: 'processing',
+                startTime: '2025-01-16 14:30:00',
+                endTime: null,
+                duration: null,
+                qualityCheck: false,
+                complianceRate: null,
+                labelsPrinted: ['产品标签'],
+                testPrograms: [],
+                labelType: 'product',
+                printQuantity: 2,
+                notes: '正在打印产品标签'
+            },
+            {
+                id: 'WORK202501003',
+                productSN: '2025011601003',
+                productCode: 'CTRL-ADV-003',
+                productName: '高级控制器',
+                workType: 'test',
+                workTypeName: '测试程序',
+                workstation: '测试工位',
+                equipmentId: 'TEST001',
+                instructionId: 'WI003',
+                instructionVersion: 'V1.8',
+                instructionTitle: '控制器测试程序指导',
+                operator: '王测试员',
+                operatorId: 'OP003',
+                status: 'exception',
+                startTime: '2025-01-16 14:25:00',
+                endTime: null,
+                duration: null,
+                qualityCheck: false,
+                complianceRate: 85.2,
+                labelsPrinted: [],
+                testPrograms: ['通信测试', '功能测试'],
+                exceptionReason: '通信测试失败，需要重新配置',
+                notes: '测试程序执行异常'
+            },
+            {
+                id: 'WORK202501004',
+                productSN: '2025011601004',
+                productCode: 'INV-3KW-004',
+                productName: '3KW逆变器',
+                workType: 'training',
+                workTypeName: '技能培训',
+                workstation: '培训室',
+                equipmentId: 'TRAIN001',
+                instructionId: 'TR001',
+                instructionVersion: 'V1.0',
+                instructionTitle: '新员工安全培训',
+                operator: '新员工小刘',
+                operatorId: 'OP004',
+                status: 'completed',
+                startTime: '2025-01-16 13:00:00',
+                endTime: '2025-01-16 14:00:00',
+                duration: 60,
+                qualityCheck: true,
+                complianceRate: 92.0,
+                labelsPrinted: [],
+                testPrograms: [],
+                trainingScore: 85,
+                certificationStatus: 'passed',
+                notes: '培训合格，可上岗操作'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            processing: { text: '进行中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-play' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            exception: { text: '异常', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            paused: { text: '暂停', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-pause' },
+            cancelled: { text: '取消', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-times-circle' }
+        };
+
+        // 作业类型映射
+        const workTypeMap = {
+            instruction: { text: '作业指导', icon: 'fas fa-book', color: 'text-blue-600' },
+            label: { text: '标签打印', icon: 'fas fa-print', color: 'text-indigo-600' },
+            test: { text: '测试程序', icon: 'fas fa-code', color: 'text-purple-600' },
+            training: { text: '技能培训', icon: 'fas fa-graduation-cap', color: 'text-orange-600' },
+            standard: { text: '作业标准', icon: 'fas fa-clipboard-check', color: 'text-green-600' }
+        };
+
+        let filteredData = [...workInstructionData];
+
+        // 渲染作业记录表格
+        function renderWorkTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('workTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(work => {
+                const status = statusMap[work.status];
+                const workType = workTypeMap[work.workType];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewWorkDetail('${work.id}')">
+                            ${work.id}
+                        </div>
+                        <div class="text-xs text-gray-500">${work.startTime}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewProductDetail('${work.productSN}')">
+                            ${work.productSN}
+                        </div>
+                        <div class="text-sm text-gray-900">${work.productName}</div>
+                        <div class="text-xs text-gray-500">${work.productCode}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${workType.icon} ${workType.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${workType.text}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${work.workstation}</div>
+                        <div class="text-xs text-gray-500">${work.equipmentId}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${work.instructionId ? `
+                            <div class="text-sm text-gray-900">${work.instructionId}</div>
+                            <div class="text-xs text-gray-500">${work.instructionVersion}</div>
+                        ` : `
+                            <span class="text-xs text-gray-500">无需指导书</span>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${work.operator}</div>
+                        <div class="text-xs text-gray-500">${work.operatorId}</div>
+                        ${work.trainingScore ? `<div class="text-xs text-green-600">培训分数: ${work.trainingScore}</div>` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${work.complianceRate ? `
+                            <div class="text-xs ${work.complianceRate >= 95 ? 'text-green-600' : work.complianceRate >= 85 ? 'text-yellow-600' : 'text-red-600'} mt-1">
+                                合规率: ${work.complianceRate}%
+                            </div>
+                        ` : ''}
+                        ${work.exceptionReason ? `
+                            <div class="text-xs text-red-600 mt-1">${work.exceptionReason}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">
+                            ${work.endTime ? `完成: ${work.endTime.split(' ')[1]}` : `开始: ${work.startTime.split(' ')[1]}`}
+                        </div>
+                        ${work.duration ? `
+                            <div class="text-xs text-gray-500">用时: ${work.duration}分钟</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewWorkDetail('${work.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${work.instructionId ? `
+                                <button onclick="viewInstruction('${work.instructionId}')" class="text-green-600 hover:text-green-900 p-1" title="查看指导书">
+                                    <i class="fas fa-book"></i>
+                                </button>
+                            ` : ''}
+                            ${work.labelsPrinted.length > 0 ? `
+                                <button onclick="reprintLabel('${work.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="重新打印">
+                                    <i class="fas fa-print"></i>
+                                </button>
+                            ` : ''}
+                            ${work.status === 'exception' ? `
+                                <button onclick="handleException('${work.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="处理异常">
+                                    <i class="fas fa-tools"></i>
+                                </button>
+                            ` : ''}
+                            ${work.workType === 'training' && work.certificationStatus ? `
+                                <button onclick="viewCertificate('${work.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="查看证书">
+                                    <i class="fas fa-certificate"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${workInstructionData.length} 条记录`;
+        }
+
+        // 作业操作函数
+        function viewWorkDetail(workId) {
+            const work = workInstructionData.find(w => w.id === workId);
+            if (work) {
+                let detailText = `作业详情：\n编号: ${work.id}\n产品SN: ${work.productSN}\n产品名称: ${work.productName}\n作业类型: ${workTypeMap[work.workType].text}\n工位: ${work.workstation}\n操作员: ${work.operator}\n状态: ${statusMap[work.status].text}\n开始时间: ${work.startTime}`;
+
+                if (work.endTime) {
+                    detailText += `\n结束时间: ${work.endTime}\n用时: ${work.duration}分钟`;
+                }
+
+                if (work.instructionId) {
+                    detailText += `\n指导书: ${work.instructionId} ${work.instructionVersion}\n标题: ${work.instructionTitle}`;
+                }
+
+                if (work.complianceRate) {
+                    detailText += `\n合规率: ${work.complianceRate}%`;
+                }
+
+                if (work.labelsPrinted.length > 0) {
+                    detailText += `\n已打印标签: ${work.labelsPrinted.join(', ')}`;
+                }
+
+                if (work.testPrograms.length > 0) {
+                    detailText += `\n测试程序: ${work.testPrograms.join(', ')}`;
+                }
+
+                if (work.trainingScore) {
+                    detailText += `\n培训分数: ${work.trainingScore}\n认证状态: ${work.certificationStatus === 'passed' ? '通过' : '未通过'}`;
+                }
+
+                if (work.notes) {
+                    detailText += `\n备注: ${work.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function viewWorkInstruction(instructionId) {
+            alert(`作业指导书详情：\n编号: ${instructionId}\n标题: ${instructionId === 'WI001' ? '5KW逆变器装配指导书' : instructionId === 'WI002' ? '螺钉拧紧作业指导' : '质量检验作业指导'}\n版本: ${instructionId === 'WI001' ? 'V2.1' : instructionId === 'WI002' ? 'V1.5' : 'V3.0'}\n状态: ${instructionId === 'WI003' ? '待审核' : '已发布'}\n\n内容包括：\n- 作业步骤详细说明\n- 安全注意事项\n- 质量检查要点\n- 异常处理流程\n- 图片和视频指导`);
+        }
+
+        function createWorkInstruction() {
+            const title = prompt('请输入作业指导书标题：');
+            if (title) {
+                alert(`创建作业指导书：\n标题: ${title}\n编号: 系统自动生成\n版本: V1.0\n状态: 草稿\n\n下一步：\n1. 编辑作业步骤\n2. 添加图片视频\n3. 设置安全要点\n4. 提交审核发布`);
+            }
+        }
+
+        function printLabel() {
+            const labelType = document.getElementById('labelType').value;
+            const quantity = document.getElementById('printQuantity').value;
+            const productSN = document.getElementById('productSN').value;
+
+            if (!productSN) {
+                alert('请输入产品序列号！');
+                return;
+            }
+
+            alert(`标签打印任务：\n类型: ${labelType === 'product' ? '产品标签' : labelType === 'material' ? '物料标签' : labelType === 'batch' ? '批次标签' : '二维码标签'}\n数量: ${quantity}\n产品SN: ${productSN}\n\n打印内容：\n- 产品信息\n- 二维码/条码\n- 生产日期\n- 质量状态\n\n正在发送到打印机...`);
+        }
+
+        function viewInstruction(instructionId) {
+            viewWorkInstruction(instructionId);
+        }
+
+        function reprintLabel(workId) {
+            const work = workInstructionData.find(w => w.id === workId);
+            if (work) {
+                if (confirm(`确认重新打印标签？\n产品SN: ${work.productSN}\n标签类型: ${work.labelsPrinted.join(', ')}`)) {
+                    alert('标签重新打印完成！');
+                }
+            }
+        }
+
+        function handleException(workId) {
+            const work = workInstructionData.find(w => w.id === workId);
+            if (work) {
+                const solution = prompt(`异常处理：\n异常原因: ${work.exceptionReason}\n\n请输入解决方案：`);
+                if (solution) {
+                    work.status = 'processing';
+                    work.exceptionReason = null;
+                    work.notes = `异常已处理: ${solution}`;
+                    renderWorkTable();
+                    alert('异常处理完成！作业继续进行。');
+                }
+            }
+        }
+
+        function viewCertificate(workId) {
+            const work = workInstructionData.find(w => w.id === workId);
+            if (work && work.workType === 'training') {
+                alert(`培训证书：\n学员: ${work.operator}\n课程: ${work.instructionTitle}\n分数: ${work.trainingScore}\n状态: ${work.certificationStatus === 'passed' ? '通过' : '未通过'}\n颁发日期: ${work.endTime}\n有效期: 1年\n证书编号: CERT${work.id}`);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderWorkTable();
+
+            // 作业指导书
+            document.getElementById('workInstructionBtn').addEventListener('click', function() {
+                alert('作业指导书功能：\n- 数字化指导书管理\n- 版本控制和审核\n- 多媒体内容支持\n- 实时更新推送\n- 操作步骤引导');
+            });
+
+            // 标签打印
+            document.getElementById('labelPrintBtn').addEventListener('click', function() {
+                alert('标签打印功能：\n- 多种标签模板\n- 自动数据填充\n- 二维码生成\n- 批量打印支持\n- 打印质量检查');
+            });
+
+            // 测试程序
+            document.getElementById('testProgramBtn').addEventListener('click', function() {
+                alert('测试程序功能：\n- 自动化测试脚本\n- 测试参数配置\n- 结果自动记录\n- 异常自动处理\n- 测试报告生成');
+            });
+
+            // 作业标准
+            document.getElementById('workStandardBtn').addEventListener('click', function() {
+                alert('作业标准功能：\n- 标准作业程序\n- 质量控制要点\n- 安全操作规范\n- 效率优化建议\n- 持续改进机制');
+            });
+
+            // 技能培训
+            document.getElementById('skillTrainingBtn').addEventListener('click', function() {
+                alert('技能培训功能：\n- 在线培训课程\n- 技能考核测试\n- 证书管理系统\n- 培训记录追踪\n- 能力评估分析');
+            });
+        });
+    </script>
+</body>
+</html>

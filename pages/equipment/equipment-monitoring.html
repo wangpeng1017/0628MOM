@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备运行监控 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">设备运行监控</h1>
+            <p class="text-gray-600">基于Process.md 2.4.5流程：指标维护→数据采集→实时监控→告警处理，实现设备运行状态的全面监控</p>
+        </div>
+
+        <!-- 设备监控流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">设备运行监控流程</h3>
+                    <span class="text-sm text-gray-600">实时监控与预警系统</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">指标维护</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">数据采集</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">实时监控</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">告警处理</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="indicatorManageBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-cogs mr-2"></i>
+                指标维护
+            </button>
+            <button id="dataCollectionBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-database mr-2"></i>
+                数据采集
+            </button>
+            <button id="realTimeMonitorBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-tv mr-2"></i>
+                实时监控
+            </button>
+            <button id="alarmManageBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-bell mr-2"></i>
+                告警管理
+            </button>
+            <button id="oeeAnalysisBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-chart-line mr-2"></i>
+                OEE分析
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 设备监控统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">1,156</div>
+                        <div class="text-sm text-gray-600">在线设备</div>
+                        <div class="text-xs text-gray-500">正常运行</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-play-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">2,456</div>
+                        <div class="text-sm text-gray-600">监控指标</div>
+                        <div class="text-xs text-gray-500">实时采集</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-bar text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">23</div>
+                        <div class="text-sm text-gray-600">活跃告警</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">92.8%</div>
+                        <div class="text-sm text-gray-600">平均OEE</div>
+                        <div class="text-xs text-gray-500">综合效率</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tachometer-alt text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">98.5%</div>
+                        <div class="text-sm text-gray-600">数据完整性</div>
+                        <div class="text-xs text-gray-500">采集率</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-database text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">5</div>
+                        <div class="text-sm text-gray-600">离线设备</div>
+                        <div class="text-xs text-gray-500">通信异常</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wifi text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 设备状态实时监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备状态实时监控</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-industry text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">PACK产线-装配线1</div>
+                                <div class="text-xs text-gray-500">运行时间: 8.5小时 | OEE: 94.2%</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-green-600">运行中</div>
+                            <div class="text-xs text-gray-500">温度: 25°C</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-microchip text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">PCBA测试设备</div>
+                                <div class="text-xs text-gray-500">运行时间: 7.2小时 | OEE: 91.8%</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-blue-600">运行中</div>
+                            <div class="text-xs text-gray-500">负载: 85%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-robot text-yellow-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">6轴机器人</div>
+                                <div class="text-xs text-gray-500">运行时间: 6.8小时 | OEE: 88.5%</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-yellow-600">保养中</div>
+                            <div class="text-xs text-gray-500">预计: 30分钟</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-red-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">自动老化房</div>
+                                <div class="text-xs text-gray-500">停机时间: 2.3小时 | 故障代码: E001</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-red-600">故障</div>
+                            <div class="text-xs text-gray-500">维修中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 告警信息面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">告警信息管理</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">高温告警</div>
+                                <div class="text-xs text-gray-600">设备: 自动老化房 | 温度: 85°C</div>
+                                <div class="text-xs text-gray-500">时间: 14:25:30</div>
+                            </div>
+                            <button onclick="handleAlarm('ALARM001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">振动异常</div>
+                                <div class="text-xs text-gray-600">设备: 伺服压力机 | 振动: 15.2mm/s</div>
+                                <div class="text-xs text-gray-500">时间: 14:30:15</div>
+                            </div>
+                            <button onclick="handleAlarm('ALARM002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                                处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">效率下降</div>
+                                <div class="text-xs text-gray-600">设备: 装配线2 | OEE: 78.5%</div>
+                                <div class="text-xs text-gray-500">时间: 14:35:45</div>
+                            </div>
+                            <button onclick="handleAlarm('ALARM003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                处理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">今日告警统计</span>
+                        <span class="font-medium">高: 5 | 中: 12 | 低: 18</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备监控数据表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备监控数据</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部车间</option>
+                        <option>PACK产线</option>
+                        <option>PCBA车间</option>
+                        <option>逆变器车间</option>
+                        <option>包装车间</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>运行中</option>
+                        <option>停机</option>
+                        <option>保养中</option>
+                        <option>故障</option>
+                    </select>
+                    <input type="text" placeholder="搜索设备名称、编号..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">运行状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">关键指标</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">OEE分析</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">告警状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数据采集</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最后更新</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="monitoringTableBody">
+                        <!-- 监控数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.5的设备运行监控数据模型
+        const equipmentMonitoringData = [
+            {
+                id: 'EQP001',
+                equipmentCode: 'PACK-ASM-001',
+                equipmentName: 'PACK产线装配线1',
+                workshop: 'PACK产线',
+                equipmentType: '装配设备',
+                status: 'running',
+                statusName: '运行中',
+                runningTime: 8.5,
+                stopTime: 0.3,
+                maintenanceTime: 0.2,
+                oee: {
+                    overall: 94.2,
+                    availability: 96.8,
+                    performance: 98.5,
+                    quality: 98.9
+                },
+                indicators: {
+                    temperature: { value: 25.2, unit: '°C', status: 'normal', threshold: { min: 15, max: 35 } },
+                    pressure: { value: 0.6, unit: 'MPa', status: 'normal', threshold: { min: 0.4, max: 0.8 } },
+                    vibration: { value: 2.1, unit: 'mm/s', status: 'normal', threshold: { min: 0, max: 10 } },
+                    power: { value: 15.8, unit: 'kW', status: 'normal', threshold: { min: 10, max: 25 } }
+                },
+                alarms: [],
+                dataCollection: {
+                    status: 'online',
+                    completeness: 99.2,
+                    lastUpdate: '2025-01-16 14:35:30',
+                    frequency: '1秒'
+                },
+                productionData: {
+                    plannedOutput: 120,
+                    actualOutput: 118,
+                    defectCount: 1,
+                    efficiency: 98.3
+                }
+            },
+            {
+                id: 'EQP002',
+                equipmentCode: 'PCBA-TEST-001',
+                equipmentName: 'PCBA测试设备',
+                workshop: 'PCBA车间',
+                equipmentType: '测试设备',
+                status: 'running',
+                statusName: '运行中',
+                runningTime: 7.2,
+                stopTime: 0.5,
+                maintenanceTime: 0.3,
+                oee: {
+                    overall: 91.8,
+                    availability: 93.5,
+                    performance: 96.8,
+                    quality: 98.5
+                },
+                indicators: {
+                    temperature: { value: 28.5, unit: '°C', status: 'normal', threshold: { min: 20, max: 40 } },
+                    voltage: { value: 220.5, unit: 'V', status: 'normal', threshold: { min: 200, max: 240 } },
+                    current: { value: 12.3, unit: 'A', status: 'normal', threshold: { min: 8, max: 20 } },
+                    load: { value: 85.2, unit: '%', status: 'normal', threshold: { min: 0, max: 95 } }
+                },
+                alarms: [],
+                dataCollection: {
+                    status: 'online',
+                    completeness: 98.8,
+                    lastUpdate: '2025-01-16 14:35:25',
+                    frequency: '2秒'
+                },
+                productionData: {
+                    plannedOutput: 200,
+                    actualOutput: 194,
+                    defectCount: 3,
+                    efficiency: 97.0
+                }
+            },
+            {
+                id: 'EQP003',
+                equipmentCode: 'ROBOT-6AXIS-001',
+                equipmentName: '6轴机器人',
+                workshop: '逆变器车间',
+                equipmentType: '机器人',
+                status: 'maintenance',
+                statusName: '保养中',
+                runningTime: 6.8,
+                stopTime: 0.2,
+                maintenanceTime: 1.0,
+                oee: {
+                    overall: 88.5,
+                    availability: 89.2,
+                    performance: 95.8,
+                    quality: 99.5
+                },
+                indicators: {
+                    temperature: { value: 32.1, unit: '°C', status: 'warning', threshold: { min: 15, max: 45 } },
+                    position: { value: 0.02, unit: 'mm', status: 'normal', threshold: { min: 0, max: 0.1 } },
+                    torque: { value: 85.6, unit: 'Nm', status: 'normal', threshold: { min: 50, max: 120 } },
+                    speed: { value: 0, unit: 'rpm', status: 'normal', threshold: { min: 0, max: 3000 } }
+                },
+                alarms: [
+                    { level: 'warning', message: '温度偏高', time: '14:20:15' }
+                ],
+                dataCollection: {
+                    status: 'online',
+                    completeness: 97.5,
+                    lastUpdate: '2025-01-16 14:35:20',
+                    frequency: '500ms'
+                },
+                productionData: {
+                    plannedOutput: 80,
+                    actualOutput: 75,
+                    defectCount: 0,
+                    efficiency: 93.8
+                }
+            },
+            {
+                id: 'EQP004',
+                equipmentCode: 'AGING-ROOM-001',
+                equipmentName: '自动老化房',
+                workshop: '包装车间',
+                equipmentType: '老化设备',
+                status: 'fault',
+                statusName: '故障',
+                runningTime: 5.7,
+                stopTime: 2.3,
+                maintenanceTime: 0,
+                oee: {
+                    overall: 65.2,
+                    availability: 71.3,
+                    performance: 88.5,
+                    quality: 95.2
+                },
+                indicators: {
+                    temperature: { value: 85.2, unit: '°C', status: 'alarm', threshold: { min: 60, max: 80 } },
+                    humidity: { value: 45.8, unit: '%', status: 'normal', threshold: { min: 40, max: 60 } },
+                    pressure: { value: 0.95, unit: 'atm', status: 'normal', threshold: { min: 0.9, max: 1.1 } },
+                    power: { value: 0, unit: 'kW', status: 'alarm', threshold: { min: 20, max: 50 } }
+                },
+                alarms: [
+                    { level: 'critical', message: '高温告警', time: '14:25:30' },
+                    { level: 'critical', message: '设备停机', time: '14:25:35' }
+                ],
+                dataCollection: {
+                    status: 'offline',
+                    completeness: 85.2,
+                    lastUpdate: '2025-01-16 14:25:35',
+                    frequency: '5秒'
+                },
+                productionData: {
+                    plannedOutput: 50,
+                    actualOutput: 32,
+                    defectCount: 2,
+                    efficiency: 64.0
+                },
+                faultCode: 'E001',
+                faultDescription: '温度传感器故障'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            running: { text: '运行中', class: 'bg-green-100 text-green-800', icon: 'fas fa-play-circle' },
+            stopped: { text: '停机', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-stop-circle' },
+            maintenance: { text: '保养中', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-wrench' },
+            fault: { text: '故障', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            offline: { text: '离线', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-wifi' }
+        };
+
+        // 指标状态映射
+        const indicatorStatusMap = {
+            normal: { text: '正常', class: 'text-green-600', icon: 'fas fa-check-circle' },
+            warning: { text: '警告', class: 'text-yellow-600', icon: 'fas fa-exclamation-triangle' },
+            alarm: { text: '告警', class: 'text-red-600', icon: 'fas fa-times-circle' }
+        };
+
+        // 告警级别映射
+        const alarmLevelMap = {
+            info: { text: '信息', class: 'bg-blue-100 text-blue-800' },
+            warning: { text: '警告', class: 'bg-yellow-100 text-yellow-800' },
+            critical: { text: '严重', class: 'bg-red-100 text-red-800' }
+        };
+
+        let filteredData = [...equipmentMonitoringData];
+
+        // 渲染设备监控表格
+        function renderMonitoringTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('monitoringTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(equipment => {
+                const status = statusMap[equipment.status];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-industry text-blue-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewEquipmentDetail('${equipment.id}')">
+                                    ${equipment.equipmentCode}
+                                </div>
+                                <div class="text-sm text-gray-900">${equipment.equipmentName}</div>
+                                <div class="text-xs text-gray-500">${equipment.workshop}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        <div class="text-xs text-gray-500 mt-1">
+                            运行: ${equipment.runningTime}h | 停机: ${equipment.stopTime}h
+                        </div>
+                        ${equipment.faultCode ? `
+                            <div class="text-xs text-red-600 mt-1">故障码: ${equipment.faultCode}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="space-y-1">
+                            ${Object.entries(equipment.indicators).slice(0, 2).map(([key, indicator]) => `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-600">${key === 'temperature' ? '温度' : key === 'pressure' ? '压力' : key === 'vibration' ? '振动' : key === 'power' ? '功率' : key === 'voltage' ? '电压' : key === 'current' ? '电流' : key === 'load' ? '负载' : key}:</span>
+                                    <span class="text-xs ${indicatorStatusMap[indicator.status].class}">
+                                        ${indicator.value}${indicator.unit}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button onclick="viewAllIndicators('${equipment.id}')" class="text-xs text-blue-600 hover:underline mt-1">
+                            查看全部指标
+                        </button>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">OEE: ${equipment.oee.overall}%</div>
+                        <div class="space-y-1 mt-1">
+                            <div class="flex items-center">
+                                <span class="text-xs text-gray-600 w-12">可用:</span>
+                                <div class="w-16 bg-gray-200 rounded-full h-1 mr-1">
+                                    <div class="bg-green-600 h-1 rounded-full" style="width: ${equipment.oee.availability}%"></div>
+                                </div>
+                                <span class="text-xs text-gray-600">${equipment.oee.availability}%</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-xs text-gray-600 w-12">性能:</span>
+                                <div class="w-16 bg-gray-200 rounded-full h-1 mr-1">
+                                    <div class="bg-blue-600 h-1 rounded-full" style="width: ${equipment.oee.performance}%"></div>
+                                </div>
+                                <span class="text-xs text-gray-600">${equipment.oee.performance}%</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span class="text-xs text-gray-600 w-12">质量:</span>
+                                <div class="w-16 bg-gray-200 rounded-full h-1 mr-1">
+                                    <div class="bg-purple-600 h-1 rounded-full" style="width: ${equipment.oee.quality}%"></div>
+                                </div>
+                                <span class="text-xs text-gray-600">${equipment.oee.quality}%</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${equipment.alarms.length > 0 ? `
+                            <div class="space-y-1">
+                                ${equipment.alarms.slice(0, 2).map(alarm => `
+                                    <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${alarmLevelMap[alarm.level].class}">
+                                        <i class="fas fa-bell mr-1"></i>
+                                        ${alarm.message}
+                                    </span>
+                                `).join('')}
+                            </div>
+                            ${equipment.alarms.length > 2 ? `
+                                <button onclick="viewAllAlarms('${equipment.id}')" class="text-xs text-red-600 hover:underline mt-1">
+                                    查看全部告警 (${equipment.alarms.length})
+                                </button>
+                            ` : ''}
+                        ` : `
+                            <span class="text-xs text-gray-500">无告警</span>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 ${equipment.dataCollection.status === 'online' ? 'bg-green-500' : 'bg-red-500'} rounded-full mr-2"></div>
+                            <span class="text-sm text-gray-900">${equipment.dataCollection.status === 'online' ? '在线' : '离线'}</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">
+                            完整性: ${equipment.dataCollection.completeness}%
+                        </div>
+                        <div class="text-xs text-gray-500">
+                            频率: ${equipment.dataCollection.frequency}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${equipment.dataCollection.lastUpdate.split(' ')[1]}</div>
+                        <div class="text-xs text-gray-500">${equipment.dataCollection.lastUpdate.split(' ')[0]}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewEquipmentDetail('${equipment.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="viewRealTimeChart('${equipment.id}')" class="text-green-600 hover:text-green-900 p-1" title="实时图表">
+                                <i class="fas fa-chart-line"></i>
+                            </button>
+                            ${equipment.alarms.length > 0 ? `
+                                <button onclick="handleAlarms('${equipment.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="处理告警">
+                                    <i class="fas fa-bell"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="configureIndicators('${equipment.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="指标配置">
+                                <i class="fas fa-cogs"></i>
+                            </button>
+                            <button onclick="exportData('${equipment.id}')" class="text-gray-600 hover:text-gray-900 p-1" title="导出数据">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${equipmentMonitoringData.length} 条记录`;
+        }
+
+        // 设备监控操作函数
+        function viewEquipmentDetail(equipmentId) {
+            const equipment = equipmentMonitoringData.find(e => e.id === equipmentId);
+            if (equipment) {
+                let detailText = `设备详情：\n设备编号: ${equipment.equipmentCode}\n设备名称: ${equipment.equipmentName}\n车间: ${equipment.workshop}\n设备类型: ${equipment.equipmentType}\n运行状态: ${statusMap[equipment.status].text}`;
+
+                detailText += `\n\n运行统计:\n运行时间: ${equipment.runningTime}小时\n停机时间: ${equipment.stopTime}小时\n保养时间: ${equipment.maintenanceTime}小时`;
+
+                detailText += `\n\nOEE分析:\n综合效率: ${equipment.oee.overall}%\n可用率: ${equipment.oee.availability}%\n性能率: ${equipment.oee.performance}%\n质量率: ${equipment.oee.quality}%`;
+
+                detailText += `\n\n生产数据:\n计划产量: ${equipment.productionData.plannedOutput}\n实际产量: ${equipment.productionData.actualOutput}\n不良品数: ${equipment.productionData.defectCount}\n生产效率: ${equipment.productionData.efficiency}%`;
+
+                detailText += `\n\n关键指标:`;
+                Object.entries(equipment.indicators).forEach(([key, indicator]) => {
+                    detailText += `\n${key}: ${indicator.value}${indicator.unit} (${indicatorStatusMap[indicator.status].text})`;
+                });
+
+                detailText += `\n\n数据采集:\n状态: ${equipment.dataCollection.status === 'online' ? '在线' : '离线'}\n完整性: ${equipment.dataCollection.completeness}%\n采集频率: ${equipment.dataCollection.frequency}\n最后更新: ${equipment.dataCollection.lastUpdate}`;
+
+                if (equipment.alarms.length > 0) {
+                    detailText += `\n\n活跃告警:`;
+                    equipment.alarms.forEach(alarm => {
+                        detailText += `\n• ${alarm.message} (${alarm.time})`;
+                    });
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function viewAllIndicators(equipmentId) {
+            const equipment = equipmentMonitoringData.find(e => e.id === equipmentId);
+            if (equipment) {
+                let indicatorText = `${equipment.equipmentName} - 全部指标：\n\n`;
+                Object.entries(equipment.indicators).forEach(([key, indicator]) => {
+                    const statusText = indicatorStatusMap[indicator.status].text;
+                    const thresholdText = `阈值: ${indicator.threshold.min}-${indicator.threshold.max}${indicator.unit}`;
+                    indicatorText += `${key}:\n  当前值: ${indicator.value}${indicator.unit}\n  状态: ${statusText}\n  ${thresholdText}\n\n`;
+                });
+                alert(indicatorText);
+            }
+        }
+
+        function viewAllAlarms(equipmentId) {
+            const equipment = equipmentMonitoringData.find(e => e.id === equipmentId);
+            if (equipment) {
+                let alarmText = `${equipment.equipmentName} - 全部告警：\n\n`;
+                equipment.alarms.forEach((alarm, index) => {
+                    alarmText += `${index + 1}. ${alarm.message}\n   级别: ${alarmLevelMap[alarm.level].text}\n   时间: ${alarm.time}\n\n`;
+                });
+                alert(alarmText);
+            }
+        }
+
+        function viewRealTimeChart(equipmentId) {
+            const equipment = equipmentMonitoringData.find(e => e.id === equipmentId);
+            if (equipment) {
+                alert(`实时图表：\n设备: ${equipment.equipmentName}\n\n图表类型：\n- 关键指标趋势图\n- OEE实时分析\n- 告警统计图\n- 生产效率曲线\n\n数据更新频率: ${equipment.dataCollection.frequency}\n历史数据: 24小时`);
+            }
+        }
+
+        function handleAlarms(equipmentId) {
+            const equipment = equipmentMonitoringData.find(e => e.id === equipmentId);
+            if (equipment && equipment.alarms.length > 0) {
+                if (confirm(`处理告警：\n设备: ${equipment.equipmentName}\n告警数量: ${equipment.alarms.length}\n\n确认处理所有告警？`)) {
+                    equipment.alarms = [];
+                    renderMonitoringTable();
+                    alert('告警处理完成！\n- 已确认所有告警\n- 通知相关人员\n- 记录处理日志');
+                }
+            }
+        }
+
+        function handleAlarm(alarmId) {
+            if (confirm(`确认处理此告警？\n告警ID: ${alarmId}`)) {
+                alert('告警处理完成！\n- 已确认告警\n- 通知维护人员\n- 记录处理过程');
+            }
+        }
+
+        function configureIndicators(equipmentId) {
+            const equipment = equipmentMonitoringData.find(e => e.id === equipmentId);
+            if (equipment) {
+                alert(`指标配置：\n设备: ${equipment.equipmentName}\n\n可配置项：\n- 监控指标选择\n- 阈值设置\n- 采集频率\n- 告警规则\n- 数据存储策略\n\n当前指标数: ${Object.keys(equipment.indicators).length}`);
+            }
+        }
+
+        function exportData(equipmentId) {
+            const equipment = equipmentMonitoringData.find(e => e.id === equipmentId);
+            if (equipment) {
+                alert(`导出数据：\n设备: ${equipment.equipmentName}\n\n导出内容：\n- 历史监控数据\n- OEE分析报告\n- 告警记录\n- 生产统计\n\n格式: Excel/CSV\n时间范围: 可选择`);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderMonitoringTable();
+
+            // 模拟实时数据更新
+            setInterval(updateMonitoringData, 5000);
+
+            // 指标维护
+            document.getElementById('indicatorManageBtn').addEventListener('click', function() {
+                alert('指标维护功能：\n- 监控指标定义\n- 阈值设置管理\n- 采集频率配置\n- 告警规则设置\n- 指标分组管理');
+            });
+
+            // 数据采集
+            document.getElementById('dataCollectionBtn').addEventListener('click', function() {
+                alert('数据采集功能：\n- IoT设备接入\n- 数据采集配置\n- 通信协议管理\n- 数据质量监控\n- 采集状态监控');
+            });
+
+            // 实时监控
+            document.getElementById('realTimeMonitorBtn').addEventListener('click', function() {
+                alert('实时监控功能：\n- 设备状态监控\n- 关键指标展示\n- 实时图表分析\n- 异常状态预警\n- 监控大屏展示');
+            });
+
+            // 告警管理
+            document.getElementById('alarmManageBtn').addEventListener('click', function() {
+                alert('告警管理功能：\n- 告警规则配置\n- 告警级别设置\n- 告警通知机制\n- 告警处理流程\n- 告警统计分析');
+            });
+
+            // OEE分析
+            document.getElementById('oeeAnalysisBtn').addEventListener('click', function() {
+                alert('OEE分析功能：\n- 设备综合效率分析\n- 可用率统计\n- 性能率分析\n- 质量率监控\n- 损失分析报告');
+            });
+        });
+
+        // 模拟实时数据更新
+        function updateMonitoringData() {
+            equipmentMonitoringData.forEach(equipment => {
+                // 模拟指标数据变化
+                Object.keys(equipment.indicators).forEach(key => {
+                    const indicator = equipment.indicators[key];
+                    const variation = (Math.random() - 0.5) * 0.1;
+                    indicator.value = Math.max(0, indicator.value + variation);
+
+                    // 更新状态
+                    if (indicator.value > indicator.threshold.max || indicator.value < indicator.threshold.min) {
+                        indicator.status = 'alarm';
+                    } else if (indicator.value > indicator.threshold.max * 0.9 || indicator.value < indicator.threshold.min * 1.1) {
+                        indicator.status = 'warning';
+                    } else {
+                        indicator.status = 'normal';
+                    }
+                });
+
+                // 更新最后更新时间
+                equipment.dataCollection.lastUpdate = new Date().toLocaleString('zh-CN');
+            });
+
+            // 重新渲染表格
+            renderMonitoringTable();
+        }
+    </script>
+</body>
+</html>

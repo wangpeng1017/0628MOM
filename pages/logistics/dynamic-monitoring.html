@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态监控 - 厂内物流执行系统(LES) - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">动态监控</h1>
+            <p class="text-gray-600">大屏显示、物流实时监控、物流设备监控等实时监控功能</p>
+        </div>
+
+        <!-- 实时状态概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">25</div>
+                        <div class="text-sm text-gray-600">监控设备</div>
+                        <div class="text-xs text-gray-500">在线监控</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tv text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">96%</div>
+                        <div class="text-sm text-gray-600">设备在线率</div>
+                        <div class="text-xs text-gray-500">实时状态</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">12</div>
+                        <div class="text-sm text-gray-600">AGV运行</div>
+                        <div class="text-xs text-gray-500">自动导引</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-robot text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">156</div>
+                        <div class="text-sm text-gray-600">配送任务</div>
+                        <div class="text-xs text-gray-500">执行中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tasks text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">3</div>
+                        <div class="text-sm text-gray-600">异常报警</div>
+                        <div class="text-xs text-gray-500">待处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">98.5%</div>
+                        <div class="text-sm text-gray-600">送达率</div>
+                        <div class="text-xs text-gray-500">按时送达</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shipping-fast text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 监控视图选择 -->
+        <div class="mb-6">
+            <div class="flex space-x-4">
+                <button onclick="showView('overview')" class="view-button bg-primary text-white px-4 py-2 rounded-lg" id="overview-btn">
+                    <i class="fas fa-th-large mr-2"></i>总览视图
+                </button>
+                <button onclick="showView('equipment')" class="view-button bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400" id="equipment-btn">
+                    <i class="fas fa-cogs mr-2"></i>设备监控
+                </button>
+                <button onclick="showView('logistics')" class="view-button bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400" id="logistics-btn">
+                    <i class="fas fa-route mr-2"></i>物流监控
+                </button>
+                <button onclick="showView('dashboard')" class="view-button bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400" id="dashboard-btn">
+                    <i class="fas fa-tv mr-2"></i>大屏显示
+                </button>
+            </div>
+        </div>
+
+        <!-- 总览视图 -->
+        <div id="overview-view" class="view-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <!-- 实时任务状态 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">实时任务状态</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">待执行任务</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-gray-600 h-2 rounded-full" style="width: 25%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-gray-600">38</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">执行中任务</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-blue-600">156</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">已完成任务</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 90%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-green-600">1,245</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">异常任务</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-red-600 h-2 rounded-full" style="width: 5%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-red-600">3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 设备运行状态 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">设备运行状态</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <div class="text-2xl font-bold text-green-600">12</div>
+                            <div class="text-sm text-gray-600">AGV在线</div>
+                            <div class="text-xs text-green-600">正常运行</div>
+                        </div>
+                        <div class="text-center p-4 bg-blue-50 rounded-lg">
+                            <div class="text-2xl font-bold text-blue-600">8</div>
+                            <div class="text-sm text-gray-600">叉车设备</div>
+                            <div class="text-xs text-blue-600">全部在线</div>
+                        </div>
+                        <div class="text-center p-4 bg-purple-50 rounded-lg">
+                            <div class="text-2xl font-bold text-purple-600">19</div>
+                            <div class="text-sm text-gray-600">输送带</div>
+                            <div class="text-xs text-purple-600">运行中</div>
+                        </div>
+                        <div class="text-center p-4 bg-orange-50 rounded-lg">
+                            <div class="text-2xl font-bold text-orange-600">156</div>
+                            <div class="text-sm text-gray-600">料车料箱</div>
+                            <div class="text-xs text-orange-600">可用</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 实时报警信息 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">实时报警信息</h3>
+                <div class="space-y-3" id="alertList">
+                    <!-- 报警信息将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备监控视图 -->
+        <div id="equipment-view" class="view-content hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备监控详情</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备编号</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备类型</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">当前位置</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">运行状态</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">电量/负载</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">当前任务</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="equipmentTableBody">
+                            <!-- 设备数据将通过JavaScript动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 物流监控视图 -->
+        <div id="logistics-view" class="view-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 配送路径监控 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">配送路径监控</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-blue-800">路径A → 工位W-01</div>
+                                    <div class="text-xs text-gray-600">AGV-001 配送电容器</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm font-semibold text-blue-600">进行中</div>
+                                    <div class="text-xs text-gray-500">预计2分钟</div>
+                                </div>
+                            </div>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-green-50 rounded-lg border border-green-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm font-medium text-green-800">路径B → 工位W-05</div>
+                                    <div class="text-xs text-gray-600">AGV-003 配送PCB板</div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-sm font-semibold text-green-600">进行中</div>
+                                    <div class="text-xs text-gray-500">预计5分钟</div>
+                                </div>
+                            </div>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: 30%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 库存区域监控 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">库存区域监控</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <div class="text-sm font-medium text-gray-800">A区原料仓</div>
+                            <div class="text-xs text-gray-600">利用率: 85%</div>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <div class="text-sm font-medium text-gray-800">B区半成品</div>
+                            <div class="text-xs text-gray-600">利用率: 72%</div>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: 72%"></div>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <div class="text-sm font-medium text-gray-800">C区成品仓</div>
+                            <div class="text-xs text-gray-600">利用率: 68%</div>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-600 h-2 rounded-full" style="width: 68%"></div>
+                            </div>
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded-lg">
+                            <div class="text-sm font-medium text-gray-800">D区包装材料</div>
+                            <div class="text-xs text-gray-600">利用率: 45%</div>
+                            <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-orange-600 h-2 rounded-full" style="width: 45%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 大屏显示视图 -->
+        <div id="dashboard-view" class="view-content hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-lg font-semibold text-gray-800">大屏显示配置</h3>
+                    <button onclick="openFullScreen()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-expand mr-2"></i>全屏显示
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer" onclick="selectDashboard('overview')">
+                        <div class="text-center">
+                            <i class="fas fa-th-large text-3xl text-blue-600 mb-3"></i>
+                            <h4 class="font-semibold text-gray-800">总览大屏</h4>
+                            <p class="text-sm text-gray-600 mt-2">显示整体运营状态和关键指标</p>
+                        </div>
+                    </div>
+                    <div class="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer" onclick="selectDashboard('equipment')">
+                        <div class="text-center">
+                            <i class="fas fa-cogs text-3xl text-green-600 mb-3"></i>
+                            <h4 class="font-semibold text-gray-800">设备监控大屏</h4>
+                            <p class="text-sm text-gray-600 mt-2">实时显示设备运行状态</p>
+                        </div>
+                    </div>
+                    <div class="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow cursor-pointer" onclick="selectDashboard('logistics')">
+                        <div class="text-center">
+                            <i class="fas fa-route text-3xl text-purple-600 mb-3"></i>
+                            <h4 class="font-semibold text-gray-800">物流监控大屏</h4>
+                            <p class="text-sm text-gray-600 mt-2">显示配送路径和任务状态</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 设备监控数据
+        const equipmentData = [
+            {
+                id: 'AGV-001',
+                type: 'AGV自动导引车',
+                location: 'A区-通道1',
+                status: 'running',
+                statusName: '运行中',
+                battery: 85,
+                task: '配送电容器到W-01'
+            },
+            {
+                id: 'AGV-002',
+                type: 'AGV自动导引车',
+                location: '充电桩-02',
+                status: 'charging',
+                statusName: '充电中',
+                battery: 45,
+                task: '待机'
+            },
+            {
+                id: 'FORK-001',
+                type: '叉车',
+                location: 'B区-货架3',
+                status: 'running',
+                statusName: '运行中',
+                load: 75,
+                task: '搬运PCB板'
+            },
+            {
+                id: 'CONV-001',
+                type: '输送带',
+                location: 'C区-产线1',
+                status: 'running',
+                statusName: '运行中',
+                load: 60,
+                task: '输送成品'
+            }
+        ];
+
+        // 报警数据
+        const alertData = [
+            {
+                id: 'ALERT001',
+                type: 'error',
+                title: 'AGV-003运行异常',
+                message: '导航系统故障，已停止运行',
+                time: '2分钟前',
+                status: 'active'
+            },
+            {
+                id: 'ALERT002',
+                type: 'warning',
+                title: '料箱库存不足',
+                message: 'A区料箱数量低于安全库存',
+                time: '5分钟前',
+                status: 'active'
+            },
+            {
+                id: 'ALERT003',
+                type: 'info',
+                title: '配送任务延迟',
+                message: '工位W-05物料配送超时',
+                time: '8分钟前',
+                status: 'active'
+            }
+        ];
+
+        // 显示不同视图
+        function showView(viewName) {
+            // 隐藏所有视图
+            document.querySelectorAll('.view-content').forEach(view => {
+                view.classList.add('hidden');
+            });
+            
+            // 重置所有按钮样式
+            document.querySelectorAll('.view-button').forEach(button => {
+                button.classList.remove('bg-primary', 'text-white');
+                button.classList.add('bg-gray-300', 'text-gray-700');
+            });
+            
+            // 显示选中的视图
+            document.getElementById(viewName + '-view').classList.remove('hidden');
+            
+            // 设置选中的按钮样式
+            const activeBtn = document.getElementById(viewName + '-btn');
+            activeBtn.classList.remove('bg-gray-300', 'text-gray-700');
+            activeBtn.classList.add('bg-primary', 'text-white');
+
+            // 根据视图类型渲染相应数据
+            if (viewName === 'equipment') {
+                renderEquipmentTable();
+            }
+        }
+
+        // 渲染设备监控表格
+        function renderEquipmentTable() {
+            const tbody = document.getElementById('equipmentTableBody');
+            tbody.innerHTML = '';
+
+            equipmentData.forEach(equipment => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+                
+                const statusClass = equipment.status === 'running' ? 'bg-green-100 text-green-800' : 
+                                  equipment.status === 'charging' ? 'bg-blue-100 text-blue-800' : 
+                                  'bg-gray-100 text-gray-800';
+                
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600">${equipment.id}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${equipment.type}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${equipment.location}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${statusClass}">
+                            ${equipment.statusName}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: ${equipment.battery || equipment.load}%"></div>
+                            </div>
+                            <span class="text-sm text-gray-900">${equipment.battery || equipment.load}%</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="text-sm text-gray-900">${equipment.task}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <button onclick="controlEquipment('${equipment.id}')" class="text-blue-600 hover:text-blue-900">控制</button>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        // 渲染报警列表
+        function renderAlertList() {
+            const alertList = document.getElementById('alertList');
+            alertList.innerHTML = '';
+
+            alertData.forEach(alert => {
+                const alertDiv = document.createElement('div');
+                const alertClass = alert.type === 'error' ? 'bg-red-50 border-red-500' : 
+                                 alert.type === 'warning' ? 'bg-orange-50 border-orange-500' : 
+                                 'bg-blue-50 border-blue-500';
+                const iconClass = alert.type === 'error' ? 'text-red-600' : 
+                                alert.type === 'warning' ? 'text-orange-600' : 
+                                'text-blue-600';
+                
+                alertDiv.className = `p-3 rounded-lg border-l-4 ${alertClass}`;
+                alertDiv.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle ${iconClass} mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-800">${alert.title}</div>
+                                <div class="text-xs text-gray-600">${alert.message}</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-gray-500">${alert.time}</div>
+                            <button onclick="handleAlert('${alert.id}')" class="text-xs text-blue-600 hover:text-blue-800">处理</button>
+                        </div>
+                    </div>
+                `;
+                
+                alertList.appendChild(alertDiv);
+            });
+        }
+
+        // 操作函数
+        function controlEquipment(equipmentId) {
+            alert(`控制设备: ${equipmentId}\n可执行操作：\n- 启动/停止\n- 返回充电桩\n- 紧急停止\n- 重置状态`);
+        }
+
+        function handleAlert(alertId) {
+            if (confirm(`确认处理报警: ${alertId}？`)) {
+                alert('报警已处理');
+                // 从数组中移除已处理的报警
+                const index = alertData.findIndex(alert => alert.id === alertId);
+                if (index > -1) {
+                    alertData.splice(index, 1);
+                    renderAlertList();
+                }
+            }
+        }
+
+        function selectDashboard(type) {
+            alert(`选择${type}大屏显示\n将在新窗口中打开全屏监控界面`);
+        }
+
+        function openFullScreen() {
+            alert('全屏显示功能\n将打开专用的大屏监控界面');
+        }
+
+        // 模拟实时数据更新
+        function updateRealTimeData() {
+            // 更新设备状态
+            equipmentData.forEach(equipment => {
+                if (equipment.battery !== undefined) {
+                    equipment.battery = Math.max(20, equipment.battery + (Math.random() - 0.5) * 2);
+                }
+                if (equipment.load !== undefined) {
+                    equipment.load = Math.max(0, Math.min(100, equipment.load + (Math.random() - 0.5) * 5));
+                }
+            });
+
+            // 如果当前显示设备监控视图，更新表格
+            if (!document.getElementById('equipment-view').classList.contains('hidden')) {
+                renderEquipmentTable();
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            renderAlertList();
+            
+            // 每30秒更新一次实时数据
+            setInterval(updateRealTimeData, 30000);
+        });
+    </script>
+</body>
+</html>

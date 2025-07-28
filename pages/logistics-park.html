@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物流调度 - 慧新全智厂园一体平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+                <i class="fas fa-truck text-teal-600 mr-3"></i>
+                物流调度
+            </h1>
+            <p class="text-gray-600">车辆预约、月台管理、运输调度 - 智能化物流管理系统</p>
+        </div>
+
+        <!-- 物流概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-truck text-teal-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-teal-600">23</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">在园车辆</h3>
+                <p class="text-sm text-gray-600">当前在园</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-check text-blue-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-blue-600">45</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">今日预约</h3>
+                <p class="text-sm text-gray-600">车辆预约</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-warehouse text-green-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-green-600">8/12</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">月台使用</h3>
+                <p class="text-sm text-gray-600">使用中/总数</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-yellow-600">45</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">平均停留</h3>
+                <p class="text-sm text-gray-600">分钟</p>
+            </div>
+        </div>
+
+        <!-- 车辆预约管理系统 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-calendar-alt text-primary mr-2"></i>
+                    车辆预约管理系统
+                </h2>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">预约管理</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">时段分配</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">冲突处理</button>
+                </div>
+            </div>
+
+            <!-- 预约统计 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">今日预约</span>
+                        <i class="fas fa-truck text-blue-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-blue-600">28</div>
+                    <div class="text-xs text-gray-500">已到达: 23</div>
+                    <div class="text-xs text-green-600 mt-1">到达率: 82.1%</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">月台利用</span>
+                        <i class="fas fa-warehouse text-green-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-green-600">8/12</div>
+                    <div class="text-xs text-gray-500">使用中</div>
+                    <div class="text-xs text-blue-600 mt-1">利用率: 66.7%</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">等待时间</span>
+                        <i class="fas fa-clock text-yellow-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-yellow-600">15分钟</div>
+                    <div class="text-xs text-gray-500">平均等待</div>
+                    <div class="text-xs text-orange-600 mt-1">较昨日: ↓5分钟</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">预约冲突</span>
+                        <i class="fas fa-exclamation-triangle text-purple-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-purple-600">3</div>
+                    <div class="text-xs text-gray-500">需要协调</div>
+                    <div class="text-xs text-red-600 mt-1">紧急: 1个</div>
+                </div>
+            </div>
+
+            <!-- 预约管理 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 预约时段分配 -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-calendar-check text-blue-600 mr-2"></i>
+                        预约时段分配
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-lg p-3 border border-blue-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">08:00-10:00</span>
+                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">已满</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 预约车辆: 6辆</div>
+                                <div>• 月台占用: 6/6</div>
+                                <div>• 预计完成: 09:45</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-yellow-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">10:00-12:00</span>
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">紧张</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 预约车辆: 5辆</div>
+                                <div>• 月台占用: 5/6</div>
+                                <div>• 剩余容量: 1个</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-green-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">14:00-16:00</span>
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">充足</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 预约车辆: 3辆</div>
+                                <div>• 月台占用: 3/6</div>
+                                <div>• 剩余容量: 3个</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 智能调度建议 -->
+                <div class="bg-gradient-to-br from-green-50 to-teal-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-robot text-green-600 mr-2"></i>
+                        智能调度建议
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-lg p-3 border border-orange-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-exclamation-circle text-orange-600 mr-2"></i>
+                                <span class="text-sm font-medium text-gray-700">冲突预警</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 10:30时段有3辆车同时到达</div>
+                                <div>• 建议调整到10:00和11:00</div>
+                                <div>• 可减少等待时间20分钟</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-blue-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-lightbulb text-blue-600 mr-2"></i>
+                                <span class="text-sm font-medium text-gray-700">优化建议</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 14:00-16:00时段利用率低</div>
+                                <div>• 建议引导部分车辆错峰</div>
+                                <div>• 可提升整体效率15%</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-green-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-chart-line text-green-600 mr-2"></i>
+                                <span class="text-sm font-medium text-gray-700">效率提升</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 采用智能调度算法</div>
+                                <div>• 预计减少等待时间30%</div>
+                                <div>• 月台利用率可提升至85%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要功能区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 车辆调度 -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-route text-primary mr-2"></i>
+                        车辆调度
+                    </h2>
+                    <button class="bg-primary text-white px-4 py-2 rounded text-sm hover:bg-primary-light transition-colors">
+                        <i class="fas fa-plus mr-2"></i>新增预约
+                    </button>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">车牌号</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">司机</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">预约时间</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">业务类型</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">月台</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">状态</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-700">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 text-gray-800">苏A12345</td>
+                                <td class="py-3 px-4 text-gray-600">张师傅</td>
+                                <td class="py-3 px-4 text-gray-600">14:00-16:00</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">送货</span>
+                                </td>
+                                <td class="py-3 px-4 text-gray-600">A01</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">装卸中</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-blue-600 hover:text-blue-700 text-xs mr-2">查看</button>
+                                    <button class="text-green-600 hover:text-green-700 text-xs">完成</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 text-gray-800">苏B67890</td>
+                                <td class="py-3 px-4 text-gray-600">李师傅</td>
+                                <td class="py-3 px-4 text-gray-600">15:30-17:00</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">提货</span>
+                                </td>
+                                <td class="py-3 px-4 text-gray-600">B02</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">等待中</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-blue-600 hover:text-blue-700 text-xs mr-2">查看</button>
+                                    <button class="text-orange-600 hover:text-orange-700 text-xs">引导</button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100">
+                                <td class="py-3 px-4 text-gray-800">苏C11111</td>
+                                <td class="py-3 px-4 text-gray-600">王师傅</td>
+                                <td class="py-3 px-4 text-gray-600">16:00-18:00</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">配送</span>
+                                </td>
+                                <td class="py-3 px-4 text-gray-600">C03</td>
+                                <td class="py-3 px-4">
+                                    <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">已预约</span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <button class="text-blue-600 hover:text-blue-700 text-xs mr-2">查看</button>
+                                    <button class="text-gray-600 hover:text-gray-700 text-xs">修改</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 月台管理 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-warehouse text-primary mr-2"></i>
+                    月台状态
+                </h2>
+                <div class="space-y-4">
+                    <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">月台A01</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">使用中</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mb-2">车辆: 苏A12345 | 14:00开始</div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 65%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">预计剩余: 42分钟</div>
+                    </div>
+
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">月台B02</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">空闲</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mb-2">下次预约: 15:30</div>
+                        <button class="w-full bg-blue-600 text-white py-1 px-3 rounded text-xs hover:bg-blue-700 transition-colors">
+                            立即分配
+                        </button>
+                    </div>
+
+                    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">月台C03</span>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">预约中</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mb-2">车辆: 苏C11111 | 16:00开始</div>
+                        <button class="w-full bg-yellow-600 text-white py-1 px-3 rounded text-xs hover:bg-yellow-700 transition-colors">
+                            查看详情
+                        </button>
+                    </div>
+
+                    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">月台D04</span>
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">维护中</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mb-2">设备检修 | 预计明日恢复</div>
+                        <button class="w-full bg-gray-400 text-white py-1 px-3 rounded text-xs cursor-not-allowed" disabled>
+                            暂不可用
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 物流统计 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-bar text-primary mr-2"></i>
+                物流统计分析
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                    <div class="flex items-center mb-3">
+                        <div class="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-truck text-white text-sm"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">车辆效率</h3>
+                    </div>
+                    <div class="text-2xl font-bold text-teal-600 mb-1">92%</div>
+                    <p class="text-sm text-gray-600 mb-3">平均装卸效率</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-teal-500 h-2 rounded-full" style="width: 92%"></div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">较上月提升8%</div>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div class="flex items-center mb-3">
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-clock text-white text-sm"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">时间管理</h3>
+                    </div>
+                    <div class="text-2xl font-bold text-blue-600 mb-1">45分钟</div>
+                    <p class="text-sm text-gray-600 mb-3">平均停留时间</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 75%"></div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">较目标减少15分钟</div>
+                </div>
+
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div class="flex items-center mb-3">
+                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-warehouse text-white text-sm"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">月台利用</h3>
+                    </div>
+                    <div class="text-2xl font-bold text-green-600 mb-1">78%</div>
+                    <p class="text-sm text-gray-600 mb-3">月台利用率</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-500 h-2 rounded-full" style="width: 78%"></div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">较上月提升12%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据分析与成本核算 -->
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 物流数据分析 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-chart-bar text-primary mr-2"></i>
+                        物流数据分析
+                    </h2>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">实时分析</button>
+                        <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">趋势分析</button>
+                    </div>
+                </div>
+
+                <!-- 效率分析 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">运营效率分析</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-3">
+                            <div class="text-lg font-bold text-blue-600">87.5%</div>
+                            <div class="text-xs text-gray-600">整体效率</div>
+                            <div class="text-xs text-green-600 mt-1">较上月: ↑5.2%</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-3">
+                            <div class="text-lg font-bold text-green-600">92.3%</div>
+                            <div class="text-xs text-gray-600">准时率</div>
+                            <div class="text-xs text-blue-600 mt-1">目标: 90%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 流量分析 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">车辆流量分析</h3>
+                    <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-3">
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 高峰时段: 08:00-10:00 (28辆)</div>
+                            <div>• 平峰时段: 14:00-16:00 (15辆)</div>
+                            <div>• 低峰时段: 18:00-20:00 (8辆)</div>
+                            <div class="text-indigo-600">• 建议: 引导错峰运输</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 瓶颈分析 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">瓶颈分析</h3>
+                    <div class="space-y-2">
+                        <div class="bg-red-50 border border-red-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700">月台A区</span>
+                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">瓶颈</span>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">平均等待: 25分钟</div>
+                        </div>
+                        <div class="bg-yellow-50 border border-yellow-200 rounded p-2">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-700">入口道闸</span>
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">关注</span>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">高峰期拥堵</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 优化建议 -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">AI优化建议</h3>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-3">
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 增加月台A区作业人员</div>
+                            <div>• 优化入口道闸识别速度</div>
+                            <div>• 实施动态时段定价</div>
+                            <div class="text-green-600">• 预计效率提升: 15%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 成本核算系统 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-calculator text-primary mr-2"></i>
+                        成本核算系统
+                    </h2>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">成本分析</button>
+                        <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">收益分析</button>
+                    </div>
+                </div>
+
+                <!-- 成本构成 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">月度成本构成</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-3">
+                            <div class="text-lg font-bold text-red-600">¥45.2万</div>
+                            <div class="text-xs text-gray-600">总运营成本</div>
+                            <div class="text-xs text-orange-600 mt-1">较上月: ↑3.2%</div>
+                        </div>
+                        <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-3">
+                            <div class="text-lg font-bold text-green-600">¥58.6万</div>
+                            <div class="text-xs text-gray-600">服务收入</div>
+                            <div class="text-xs text-blue-600 mt-1">较上月: ↑8.5%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 成本明细 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">成本明细分析</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between p-2 bg-blue-50 border border-blue-200 rounded">
+                            <span class="text-sm text-gray-700">人工成本</span>
+                            <span class="text-sm font-medium text-blue-600">¥18.5万 (41%)</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-green-50 border border-green-200 rounded">
+                            <span class="text-sm text-gray-700">设备折旧</span>
+                            <span class="text-sm font-medium text-green-600">¥12.3万 (27%)</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-yellow-50 border border-yellow-200 rounded">
+                            <span class="text-sm text-gray-700">能源消耗</span>
+                            <span class="text-sm font-medium text-yellow-600">¥8.7万 (19%)</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-purple-50 border border-purple-200 rounded">
+                            <span class="text-sm text-gray-700">维护费用</span>
+                            <span class="text-sm font-medium text-purple-600">¥5.7万 (13%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 收益分析 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">收益分析</h3>
+                    <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-3">
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 净利润: ¥13.4万</div>
+                            <div>• 利润率: 22.9%</div>
+                            <div>• ROI: 15.8%</div>
+                            <div class="text-green-600">• 较上月提升: +2.3%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 成本优化建议 -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">成本优化建议</h3>
+                    <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-lg p-3">
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 优化人员排班，减少闲置时间</div>
+                            <div>• 实施设备预防性维护</div>
+                            <div>• 采用节能设备和技术</div>
+                            <div class="text-orange-600">• 预计节省成本: 8.5%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时监控 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-video text-primary mr-2"></i>
+                实时监控
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-gray-900 rounded-lg p-3 aspect-video">
+                    <div class="text-white text-xs mb-2">月台A01</div>
+                    <div class="bg-gray-800 rounded h-20 flex items-center justify-center">
+                        <i class="fas fa-play text-gray-400 text-lg"></i>
+                    </div>
+                    <div class="text-xs text-gray-400 mt-1">装卸中</div>
+                </div>
+                <div class="bg-gray-900 rounded-lg p-3 aspect-video">
+                    <div class="text-white text-xs mb-2">月台B02</div>
+                    <div class="bg-gray-800 rounded h-20 flex items-center justify-center">
+                        <i class="fas fa-play text-gray-400 text-lg"></i>
+                    </div>
+                    <div class="text-xs text-gray-400 mt-1">空闲</div>
+                </div>
+                <div class="bg-gray-900 rounded-lg p-3 aspect-video">
+                    <div class="text-white text-xs mb-2">入口道闸</div>
+                    <div class="bg-gray-800 rounded h-20 flex items-center justify-center">
+                        <i class="fas fa-play text-gray-400 text-lg"></i>
+                    </div>
+                    <div class="text-xs text-gray-400 mt-1">正常</div>
+                </div>
+                <div class="bg-gray-900 rounded-lg p-3 aspect-video">
+                    <div class="text-white text-xs mb-2">停车场</div>
+                    <div class="bg-gray-800 rounded h-20 flex items-center justify-center">
+                        <i class="fas fa-play text-gray-400 text-lg"></i>
+                    </div>
+                    <div class="text-xs text-gray-400 mt-1">23辆车</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟实时物流数据更新
+        function updateLogisticsData() {
+            console.log('物流调度数据更新');
+
+            // 更新车辆预约数据
+            updateVehicleReservation();
+
+            // 更新调度统计
+            updateDispatchStats();
+
+            // 更新数据分析
+            updateDataAnalysis();
+
+            // 更新成本核算
+            updateCostAccounting();
+        }
+
+        // 更新车辆预约数据
+        function updateVehicleReservation() {
+            const reservationData = {
+                todayReservations: Math.floor(25 + Math.random() * 8),
+                arrivedVehicles: Math.floor(20 + Math.random() * 5),
+                platformUtilization: Math.floor(6 + Math.random() * 4) + '/12',
+                averageWaitTime: Math.floor(12 + Math.random() * 8) + '分钟',
+                conflicts: Math.floor(2 + Math.random() * 3)
+            };
+
+            console.log('车辆预约数据更新:', reservationData);
+        }
+
+        // 更新调度统计
+        function updateDispatchStats() {
+            const dispatchData = {
+                vehiclesInPark: Math.floor(20 + Math.random() * 10),
+                averageStayTime: Math.floor(40 + Math.random() * 20) + '分钟',
+                platformUtilization: Math.floor(70 + Math.random() * 15) + '%',
+                efficiency: (85 + Math.random() * 10).toFixed(1) + '%'
+            };
+
+            console.log('调度统计数据更新:', dispatchData);
+        }
+
+        // 更新数据分析
+        function updateDataAnalysis() {
+            const analysisData = {
+                overallEfficiency: (85 + Math.random() * 8).toFixed(1) + '%',
+                onTimeRate: (90 + Math.random() * 5).toFixed(1) + '%',
+                peakHours: '08:00-10:00',
+                bottleneckArea: '月台A区',
+                optimizationPotential: Math.floor(12 + Math.random() * 8) + '%'
+            };
+
+            console.log('数据分析更新:', analysisData);
+        }
+
+        // 更新成本核算
+        function updateCostAccounting() {
+            const costData = {
+                totalCost: (44 + Math.random() * 3).toFixed(1) + '万',
+                serviceRevenue: (57 + Math.random() * 4).toFixed(1) + '万',
+                netProfit: (12 + Math.random() * 3).toFixed(1) + '万',
+                profitMargin: (20 + Math.random() * 6).toFixed(1) + '%',
+                costSavingPotential: (7 + Math.random() * 3).toFixed(1) + '%'
+            };
+
+            console.log('成本核算数据更新:', costData);
+        }
+
+        // 初始化车辆预约管理
+        function initVehicleReservationManagement() {
+            console.log('初始化车辆预约管理');
+
+            // 预约管理按钮事件
+            const reservationButtons = document.querySelectorAll('button');
+            reservationButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('预约管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('车辆预约管理');
+                        alert('车辆预约管理:\n今日预约: 28辆\n已到达: 23辆\n到达率: 82.1%\n冲突处理: 3个');
+                    });
+                } else if (text.includes('时段分配')) {
+                    button.addEventListener('click', function() {
+                        console.log('时段分配管理');
+                        alert('时段分配管理:\n08:00-10:00: 已满\n10:00-12:00: 紧张\n14:00-16:00: 充足\n建议错峰调度');
+                    });
+                } else if (text.includes('冲突处理')) {
+                    button.addEventListener('click', function() {
+                        console.log('冲突处理');
+                        alert('冲突处理:\n当前冲突: 3个\n紧急冲突: 1个\n处理建议: 调整时段\n预计解决时间: 15分钟');
+                    });
+                }
+            });
+        }
+
+        // 初始化智能调度系统
+        function initIntelligentDispatchSystem() {
+            console.log('初始化智能调度系统');
+
+            // 调度操作按钮事件
+            const dispatchButtons = document.querySelectorAll('button');
+            dispatchButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('智能调度')) {
+                    button.addEventListener('click', function() {
+                        console.log('启动智能调度');
+                        alert('智能调度系统:\n算法优化: 启用\n自动分配: 开启\n冲突检测: 实时\n效率提升: 15%');
+                    });
+                } else if (text.includes('手动调度')) {
+                    button.addEventListener('click', function() {
+                        console.log('手动调度模式');
+                        alert('手动调度模式:\n人工分配月台\n手动解决冲突\n实时监控状态\n灵活调整方案');
+                    });
+                }
+            });
+        }
+
+        // 初始化数据分析功能
+        function initDataAnalysis() {
+            console.log('初始化数据分析功能');
+
+            // 数据分析按钮事件
+            const analysisButtons = document.querySelectorAll('button');
+            analysisButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('实时分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('实时数据分析');
+                        alert('实时数据分析:\n整体效率: 87.5%\n准时率: 92.3%\n瓶颈识别: 月台A区\nAI建议: 增加作业人员');
+                    });
+                } else if (text.includes('趋势分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('趋势分析');
+                        alert('趋势分析:\n月度趋势: 效率提升5.2%\n季度预测: 持续改善\n年度目标: 90%效率\n改进空间: 12.5%');
+                    });
+                }
+            });
+        }
+
+        // 初始化成本核算系统
+        function initCostAccountingSystem() {
+            console.log('初始化成本核算系统');
+
+            // 成本核算按钮事件
+            const costButtons = document.querySelectorAll('button');
+            costButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('成本分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('成本分析');
+                        alert('成本分析:\n总成本: ¥45.2万\n人工成本: 41%\n设备折旧: 27%\n优化潜力: 8.5%');
+                    });
+                } else if (text.includes('收益分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('收益分析');
+                        alert('收益分析:\n服务收入: ¥58.6万\n净利润: ¥13.4万\n利润率: 22.9%\nROI: 15.8%');
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后启动实时更新
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化实时数据更新
+            updateLogisticsData();
+            setInterval(updateLogisticsData, 30000); // 每30秒更新一次
+
+            // 初始化各功能模块
+            initVehicleReservationManagement();
+            initIntelligentDispatchSystem();
+            initDataAnalysis();
+            initCostAccountingSystem();
+
+            console.log('物流调度深度功能初始化完成');
+        });
+    </script>
+</body>
+</html>

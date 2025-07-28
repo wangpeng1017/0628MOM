@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通行概览与统计 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-chart-bar text-primary mr-3"></i>
+                通行概览与统计
+            </h1>
+            <p class="text-gray-600 mt-2">实时监控园区通行状况，掌握通行数据趋势</p>
+        </div>
+
+        <!-- 通行状态概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">门禁点位</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">24</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-door-open text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>正常运行:</span>
+                        <span class="text-green-600 font-medium">22个</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>维护中:</span>
+                        <span class="text-yellow-600 font-medium">2个</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">今日通行</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">2,456</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-walking text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>员工通行:</span>
+                        <span class="text-blue-600 font-medium">2,180次</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>访客通行:</span>
+                        <span class="text-purple-600 font-medium">276次</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">访客预约</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">45</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-user-check text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>待审批:</span>
+                        <span class="text-orange-600 font-medium">12个</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>已到达:</span>
+                        <span class="text-green-600 font-medium">33个</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">异常事件</h3>
+                        <p class="text-3xl font-bold text-red-600 mt-2">3</p>
+                    </div>
+                    <div class="bg-red-100 p-3 rounded-full">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>权限异常:</span>
+                        <span class="text-red-600 font-medium">2个</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>设备故障:</span>
+                        <span class="text-yellow-600 font-medium">1个</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时通行数据 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- 通行趋势图表 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-area text-blue-600 mr-2"></i>
+                    今日通行趋势
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-line text-4xl mb-4"></i>
+                        <p>通行趋势图表</p>
+                        <p class="text-sm">显示24小时通行数据变化</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 门禁点位状态 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-door-open text-green-600 mr-2"></i>
+                    门禁点位状态
+                </h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div>
+                            <span class="font-medium text-gray-800">主入口A</span>
+                            <div class="text-sm text-gray-600">今日通行: 856次</div>
+                        </div>
+                        <span class="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">正常</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg">
+                        <div>
+                            <span class="font-medium text-gray-800">主入口B</span>
+                            <div class="text-sm text-gray-600">今日通行: 742次</div>
+                        </div>
+                        <span class="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">正常</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div>
+                            <span class="font-medium text-gray-800">员工通道C</span>
+                            <div class="text-sm text-gray-600">今日通行: 523次</div>
+                        </div>
+                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full">维护中</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div>
+                            <span class="font-medium text-gray-800">访客通道D</span>
+                            <div class="text-sm text-gray-600">今日通行: 276次</div>
+                        </div>
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">正常</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 异常事件处理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                异常事件处理
+            </h3>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div class="flex items-center space-x-4">
+                        <i class="fas fa-user-times text-red-600"></i>
+                        <div>
+                            <span class="font-medium text-gray-800">权限异常 - 张三</span>
+                            <div class="text-sm text-gray-600">尝试进入未授权区域 | 时间: 14:25</div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                            处理
+                        </button>
+                        <button class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">
+                            详情
+                        </button>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div class="flex items-center space-x-4">
+                        <i class="fas fa-tools text-yellow-600"></i>
+                        <div>
+                            <span class="font-medium text-gray-800">设备故障 - 门禁C</span>
+                            <div class="text-sm text-gray-600">读卡器无响应 | 时间: 13:45</div>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700">
+                            维修
+                        </button>
+                        <button class="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700">
+                            详情
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-user-plus text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">新增访客</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-key text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">权限管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-car text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">车辆管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-chart-bar text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">统计报表</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 实时数据更新
+        function updateOverviewData() {
+            console.log('更新通行概览数据');
+            // 这里可以添加实时数据更新逻辑
+        }
+
+        // 页面加载完成后启动实时更新
+        document.addEventListener('DOMContentLoaded', function() {
+            updateOverviewData();
+            setInterval(updateOverviewData, 30000); // 每30秒更新一次
+            
+            console.log('通行概览与统计页面加载完成');
+        });
+    </script>
+</body>
+</html>

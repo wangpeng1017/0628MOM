@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IOC中心 - 慧新全智厂园一体平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+                <i class="fas fa-desktop text-primary mr-3"></i>
+                IOC中心
+            </h1>
+            <p class="text-gray-600">智能运营中心 - 统一监控、数据大屏、智能决策</p>
+        </div>
+
+        <!-- 功能概览卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tv text-blue-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-blue-600">12</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">监控大屏</h3>
+                <p class="text-sm text-gray-600">实时数据展示</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-green-600">98.5%</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">系统运行率</h3>
+                <p class="text-sm text-gray-600">设备正常运行</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-yellow-600">3</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">待处理告警</h3>
+                <p class="text-sm text-gray-600">需要关注事项</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-purple-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-purple-600">156</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">在线用户</h3>
+                <p class="text-sm text-gray-600">当前活跃人数</p>
+            </div>
+        </div>
+
+        <!-- 主要功能区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 实时监控 -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-monitor-heart-rate text-primary mr-2"></i>
+                    实时监控大屏
+                </h2>
+                <div class="bg-gray-900 rounded-lg p-6 text-white min-h-96">
+                    <div class="grid grid-cols-2 gap-4 h-full">
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <h3 class="text-sm font-medium mb-2">园区能耗监控</h3>
+                            <div class="text-2xl font-bold text-green-400">2,456 kWh</div>
+                            <div class="text-xs text-gray-400 mt-1">今日累计</div>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <h3 class="text-sm font-medium mb-2">设备运行状态</h3>
+                            <div class="text-2xl font-bold text-blue-400">127/130</div>
+                            <div class="text-xs text-gray-400 mt-1">正常运行</div>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <h3 class="text-sm font-medium mb-2">安全事件</h3>
+                            <div class="text-2xl font-bold text-yellow-400">0</div>
+                            <div class="text-xs text-gray-400 mt-1">今日发生</div>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-4">
+                            <h3 class="text-sm font-medium mb-2">访客流量</h3>
+                            <div class="text-2xl font-bold text-purple-400">89</div>
+                            <div class="text-xs text-gray-400 mt-1">今日访问</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 控制面板 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-sliders-h text-primary mr-2"></i>
+                    控制面板
+                </h2>
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">照明系统</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                        <div class="text-xs text-gray-500">自动调节亮度</div>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">空调系统</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                        <div class="text-xs text-gray-500">温度: 24°C</div>
+                    </div>
+
+                    <div class="p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">安防系统</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                        <div class="text-xs text-gray-500">全天候监控</div>
+                    </div>
+
+                    <button class="w-full bg-primary text-white py-2 px-4 rounded-lg text-sm hover:bg-primary-light transition-colors">
+                        <i class="fas fa-cog mr-2"></i>
+                        系统设置
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 告警信息 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-bell text-primary mr-2"></i>
+                    实时告警
+                </h2>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-red-100 text-red-800 text-xs rounded-full">
+                        紧急: 1
+                    </button>
+                    <button class="px-3 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">
+                        警告: 2
+                    </button>
+                    <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                        信息: 3
+                    </button>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="flex items-center p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-exclamation-triangle text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-800">消防报警 - C区烟感触发</div>
+                        <div class="text-xs text-gray-500">1分钟前 - 紧急处理中</div>
+                        <div class="text-xs text-red-600 mt-1">位置: C栋3楼东侧走廊</div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-red-600 hover:text-red-700 text-xs bg-red-100 px-2 py-1 rounded">
+                            查看视频
+                        </button>
+                        <button class="text-red-600 hover:text-red-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-exclamation text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-800">A区空调系统温度异常</div>
+                        <div class="text-xs text-gray-500">2分钟前 - 需要检查</div>
+                        <div class="text-xs text-yellow-600 mt-1">当前温度: 32°C (超出设定值)</div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-yellow-600 hover:text-yellow-700 text-xs bg-yellow-100 px-2 py-1 rounded">
+                            远程调节
+                        </button>
+                        <button class="text-yellow-600 hover:text-yellow-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-battery-quarter text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-800">UPS电源电量不足</div>
+                        <div class="text-xs text-gray-500">5分钟前 - 需要关注</div>
+                        <div class="text-xs text-yellow-600 mt-1">剩余电量: 15% (低于20%阈值)</div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-yellow-600 hover:text-yellow-700 text-xs bg-yellow-100 px-2 py-1 rounded">
+                            查看详情
+                        </button>
+                        <button class="text-yellow-600 hover:text-yellow-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-info text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-800">系统维护计划提醒</div>
+                        <div class="text-xs text-gray-500">5分钟前 - 明日凌晨2:00</div>
+                        <div class="text-xs text-blue-600 mt-1">预计维护时长: 2小时</div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-600 hover:text-blue-700 text-xs bg-blue-100 px-2 py-1 rounded">
+                            查看计划
+                        </button>
+                        <button class="text-blue-600 hover:text-blue-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-user-plus text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-800">新访客预约通知</div>
+                        <div class="text-xs text-gray-500">8分钟前 - 待审核</div>
+                        <div class="text-xs text-blue-600 mt-1">访客: 张三 | 预约时间: 今日14:00</div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-600 hover:text-blue-700 text-xs bg-blue-100 px-2 py-1 rounded">
+                            审核
+                        </button>
+                        <button class="text-blue-600 hover:text-blue-700">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center p-3 bg-green-50 border border-green-200 rounded-lg">
+                    <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-check text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-800">B区照明系统已恢复正常</div>
+                        <div class="text-xs text-gray-500">10分钟前 - 已处理</div>
+                        <div class="text-xs text-green-600 mt-1">处理人: 李维修 | 耗时: 15分钟</div>
+                    </div>
+                    <button class="text-green-600 hover:text-green-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 告警统计 -->
+            <div class="mt-4 pt-4 border-t border-gray-200">
+                <div class="grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <div class="text-lg font-bold text-gray-800">6</div>
+                        <div class="text-xs text-gray-500">今日告警</div>
+                    </div>
+                    <div>
+                        <div class="text-lg font-bold text-green-600">4</div>
+                        <div class="text-xs text-gray-500">已处理</div>
+                    </div>
+                    <div>
+                        <div class="text-lg font-bold text-yellow-600">95.2%</div>
+                        <div class="text-xs text-gray-500">处理及时率</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 运营指标监控 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-chart-line text-primary mr-2"></i>
+                    运营指标监控
+                </h2>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">实时</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">小时</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">日</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">周</button>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">人员通行效率</span>
+                        <i class="fas fa-users text-blue-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-blue-600">2.3秒</div>
+                    <div class="text-xs text-gray-500">平均通行时长</div>
+                    <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+                        <div class="bg-blue-500 h-1 rounded-full" style="width: 85%"></div>
+                    </div>
+                    <div class="text-xs text-green-600 mt-1">SLA达标率: 85%</div>
+                    <div class="text-xs text-gray-400 mt-1">较昨日: ↑0.2秒</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">车辆通行指标</span>
+                        <i class="fas fa-car text-green-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-green-600">78%</div>
+                    <div class="text-xs text-gray-500">车位占用率</div>
+                    <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+                        <div class="bg-green-500 h-1 rounded-full" style="width: 78%"></div>
+                    </div>
+                    <div class="text-xs text-blue-600 mt-1">平均驻留: 4.2小时</div>
+                    <div class="text-xs text-gray-400 mt-1">较昨日: ↓5%</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">告警处理效率</span>
+                        <i class="fas fa-bell text-yellow-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-yellow-600">95.2%</div>
+                    <div class="text-xs text-gray-500">告警关闭率</div>
+                    <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+                        <div class="bg-yellow-500 h-1 rounded-full" style="width: 95%"></div>
+                    </div>
+                    <div class="text-xs text-red-600 mt-1">超期未处理: 1个</div>
+                    <div class="text-xs text-gray-400 mt-1">较昨日: ↑2.1%</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">工单处理指标</span>
+                        <i class="fas fa-clipboard-list text-purple-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-purple-600">12</div>
+                    <div class="text-xs text-gray-500">待处理工单</div>
+                    <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+                        <div class="bg-purple-500 h-1 rounded-full" style="width: 60%"></div>
+                    </div>
+                    <div class="text-xs text-green-600 mt-1">今日完成: 8个</div>
+                    <div class="text-xs text-gray-400 mt-1">较昨日: ↓3个</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 能源与环境态势 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-leaf text-primary mr-2"></i>
+                能源与环境态势
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 能源监控 -->
+                <div class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-bolt text-yellow-600 mr-2"></i>
+                        实时能源监控
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-yellow-600">2,456</div>
+                            <div class="text-xs text-gray-600">今日用电 (kWh)</div>
+                            <div class="text-xs text-green-600">较昨日: ↓8.5%</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-green-600">1,234</div>
+                            <div class="text-xs text-gray-600">光伏发电 (kWh)</div>
+                            <div class="text-xs text-blue-600">较昨日: ↑12.3%</div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-600">用电负荷</span>
+                            <span class="text-xs font-medium">1,856 kW</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 74%"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-600">碳排放</span>
+                            <span class="text-xs font-medium text-green-600">12.5 吨CO₂</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 62%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 环境监控 -->
+                <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-wind text-green-600 mr-2"></i>
+                        环境质量监控
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-green-600">优</div>
+                            <div class="text-xs text-gray-600">空气质量 (AQI: 45)</div>
+                            <div class="text-xs text-green-600">PM2.5: 15 μg/m³</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-blue-600">良好</div>
+                            <div class="text-xs text-gray-600">水质状况</div>
+                            <div class="text-xs text-blue-600">达标率: 98%</div>
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-600">噪音水平</span>
+                            <span class="text-xs font-medium">42 dB</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 58%"></div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-600">废料回收率</span>
+                            <span class="text-xs font-medium text-green-600">85%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 物流与生产态势 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-truck text-primary mr-2"></i>
+                物流与生产态势
+            </h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 物流监控 -->
+                <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-shipping-fast text-teal-600 mr-2"></i>
+                        物流运输
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">在园车辆</span>
+                            <span class="text-lg font-bold text-teal-600">23辆</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">月台占用</span>
+                            <span class="text-lg font-bold text-blue-600">8/12</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">平均停留</span>
+                            <span class="text-lg font-bold text-yellow-600">45分钟</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-teal-500 h-2 rounded-full" style="width: 67%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500">物流效率: 67%</div>
+                    </div>
+                </div>
+
+                <!-- 生产监控 -->
+                <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-industry text-indigo-600 mr-2"></i>
+                        生产运行
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">设备OEE</span>
+                            <span class="text-lg font-bold text-indigo-600">87.5%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">产量达成</span>
+                            <span class="text-lg font-bold text-green-600">102.3%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">质量合格率</span>
+                            <span class="text-lg font-bold text-blue-600">99.2%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-indigo-500 h-2 rounded-full" style="width: 87%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500">综合效率: 87%</div>
+                    </div>
+                </div>
+
+                <!-- 协同指标 -->
+                <div class="bg-gradient-to-br from-pink-50 to-rose-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-sync text-pink-600 mr-2"></i>
+                        产园协同
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">订单交付</span>
+                            <span class="text-lg font-bold text-pink-600">96.8%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">库存周转</span>
+                            <span class="text-lg font-bold text-purple-600">12.5天</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">供应链效率</span>
+                            <span class="text-lg font-bold text-green-600">94.2%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-pink-500 h-2 rounded-full" style="width: 94%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500">协同效率: 94%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 三维可视化与指挥调度 -->
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 三维园区可视化 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-cube text-primary mr-2"></i>
+                        三维园区可视化
+                    </h2>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">3D视图</button>
+                        <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">平面图</button>
+                        <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">热力图</button>
+                    </div>
+                </div>
+
+                <!-- 3D场景容器 -->
+                <div class="relative bg-gradient-to-br from-blue-900 to-indigo-900 rounded-lg h-64 overflow-hidden">
+                    <!-- 模拟3D园区场景 -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-white text-center">
+                            <i class="fas fa-building text-6xl mb-4 opacity-80"></i>
+                            <div class="text-lg font-semibold">智慧园区3D场景</div>
+                            <div class="text-sm opacity-80">实时数据可视化</div>
+                        </div>
+                    </div>
+
+                    <!-- 数据标签 -->
+                    <div class="absolute top-4 left-4 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                        <i class="fas fa-users mr-1"></i>
+                        A区: 156人
+                    </div>
+                    <div class="absolute top-4 right-4 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                        <i class="fas fa-car mr-1"></i>
+                        停车场: 78%
+                    </div>
+                    <div class="absolute bottom-4 left-4 bg-red-500 bg-opacity-80 text-white px-2 py-1 rounded text-xs animate-pulse">
+                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                        C区告警
+                    </div>
+                    <div class="absolute bottom-4 right-4 bg-green-500 bg-opacity-80 text-white px-2 py-1 rounded text-xs">
+                        <i class="fas fa-leaf mr-1"></i>
+                        空气质量: 优
+                    </div>
+                </div>
+
+                <!-- 控制面板 -->
+                <div class="mt-4 flex justify-between items-center">
+                    <div class="flex space-x-2">
+                        <button class="p-2 bg-gray-100 hover:bg-gray-200 rounded text-gray-600">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button class="p-2 bg-gray-100 hover:bg-gray-200 rounded text-gray-600">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button class="p-2 bg-gray-100 hover:bg-gray-200 rounded text-gray-600">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        视角: 鸟瞰图 | 缩放: 100%
+                    </div>
+                </div>
+            </div>
+
+            <!-- 指挥调度中心 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-headset text-primary mr-2"></i>
+                    指挥调度中心
+                </h2>
+
+                <!-- 当前事件 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">当前处理事件</h3>
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-red-800">消防报警 - C区烟感触发</span>
+                            <span class="text-xs text-red-600">紧急</span>
+                        </div>
+                        <div class="text-xs text-gray-600 mb-2">
+                            位置: C栋3楼东侧走廊 | 时间: 2分钟前
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">
+                                查看现场视频
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                                调度消防队
+                            </button>
+                            <button class="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+                                启动应急预案
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 调度资源 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">可调度资源</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-green-50 border border-green-200 rounded p-2">
+                            <div class="text-xs font-medium text-green-800">安保人员</div>
+                            <div class="text-sm font-bold text-green-600">8人在岗</div>
+                            <div class="text-xs text-gray-500">平均响应: 3分钟</div>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 rounded p-2">
+                            <div class="text-xs font-medium text-blue-800">消防设备</div>
+                            <div class="text-sm font-bold text-blue-600">12套就绪</div>
+                            <div class="text-xs text-gray-500">最近距离: 50米</div>
+                        </div>
+                        <div class="bg-yellow-50 border border-yellow-200 rounded p-2">
+                            <div class="text-xs font-medium text-yellow-800">医疗救护</div>
+                            <div class="text-sm font-bold text-yellow-600">1队待命</div>
+                            <div class="text-xs text-gray-500">预计到达: 5分钟</div>
+                        </div>
+                        <div class="bg-purple-50 border border-purple-200 rounded p-2">
+                            <div class="text-xs font-medium text-purple-800">应急车辆</div>
+                            <div class="text-sm font-bold text-purple-600">3辆可用</div>
+                            <div class="text-xs text-gray-500">最快调度: 2分钟</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 通讯中心 -->
+                <div>
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">通讯中心</h3>
+                    <div class="flex space-x-2">
+                        <button class="flex-1 px-3 py-2 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+                            <i class="fas fa-phone mr-1"></i>
+                            呼叫现场
+                        </button>
+                        <button class="flex-1 px-3 py-2 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                            <i class="fas fa-broadcast-tower mr-1"></i>
+                            园区广播
+                        </button>
+                        <button class="flex-1 px-3 py-2 bg-orange-600 text-white text-xs rounded hover:bg-orange-700">
+                            <i class="fas fa-sms mr-1"></i>
+                            群发短信
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据分析与决策支持 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-chart-bar text-primary mr-2"></i>
+                    数据分析与决策支持
+                </h2>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">实时分析</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">趋势预测</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">报表导出</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 告警分析 -->
+                <div class="bg-gradient-to-br from-red-50 to-pink-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                        告警趋势分析
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">今日新增</span>
+                            <span class="text-lg font-bold text-red-600">15个</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">已处理</span>
+                            <span class="text-lg font-bold text-green-600">12个</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">平均处理时长</span>
+                            <span class="text-lg font-bold text-blue-600">18分钟</span>
+                        </div>
+                        <div class="text-xs text-gray-500 bg-white p-2 rounded">
+                            <strong>AI建议:</strong> 消防告警频发，建议检查C区烟感设备
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 能耗分析 -->
+                <div class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-bolt text-yellow-600 mr-2"></i>
+                        能耗优化分析
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">节能潜力</span>
+                            <span class="text-lg font-bold text-green-600">15.2%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">预计节省</span>
+                            <span class="text-lg font-bold text-blue-600">¥2.8万</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">碳减排</span>
+                            <span class="text-lg font-bold text-green-600">3.2吨</span>
+                        </div>
+                        <div class="text-xs text-gray-500 bg-white p-2 rounded">
+                            <strong>AI建议:</strong> 夜间照明可降低30%，空调温度可调高2°C
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 运营分析 -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                        运营效率分析
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">整体效率</span>
+                            <span class="text-lg font-bold text-blue-600">87.5%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">改进空间</span>
+                            <span class="text-lg font-bold text-orange-600">12.5%</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">预期提升</span>
+                            <span class="text-lg font-bold text-green-600">8.3%</span>
+                        </div>
+                        <div class="text-xs text-gray-500 bg-white p-2 rounded">
+                            <strong>AI建议:</strong> 优化物流调度可提升5%效率，减少车辆等待
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 决策建议 -->
+            <div class="mt-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-4">
+                <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                    <i class="fas fa-lightbulb text-indigo-600 mr-2"></i>
+                    智能决策建议
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white rounded-lg p-3 border border-indigo-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-clock text-orange-600 mr-2"></i>
+                            <span class="text-sm font-medium">短期建议 (本周)</span>
+                        </div>
+                        <ul class="text-xs text-gray-600 space-y-1">
+                            <li>• 增加C区消防巡检频次</li>
+                            <li>• 调整空调运行时间表</li>
+                            <li>• 优化停车场引导系统</li>
+                            <li>• 加强夜间安防巡逻</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-lg p-3 border border-purple-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-calendar text-purple-600 mr-2"></i>
+                            <span class="text-sm font-medium">中期规划 (本月)</span>
+                        </div>
+                        <ul class="text-xs text-gray-600 space-y-1">
+                            <li>• 升级老旧消防设备</li>
+                            <li>• 安装智能照明系统</li>
+                            <li>• 扩建员工停车区域</li>
+                            <li>• 建设微型消防站</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟实时数据更新
+        function updateRealTimeData() {
+            // 这里可以添加实时数据更新逻辑
+            console.log('IOC中心实时数据更新');
+
+            // 更新运营指标
+            updateOperationalMetrics();
+
+            // 更新能源环境数据
+            updateEnergyEnvironmentData();
+
+            // 更新物流生产数据
+            updateLogisticsProductionData();
+        }
+
+        // 更新运营指标
+        function updateOperationalMetrics() {
+            // 模拟数据变化
+            const metrics = [
+                { id: 'personnel-efficiency', value: (2.0 + Math.random() * 0.6).toFixed(1) + '秒' },
+                { id: 'vehicle-occupancy', value: Math.floor(75 + Math.random() * 10) + '%' },
+                { id: 'alarm-closure-rate', value: (94 + Math.random() * 4).toFixed(1) + '%' },
+                { id: 'work-order-pending', value: Math.floor(10 + Math.random() * 8) + '个' }
+            ];
+
+            // 这里可以更新DOM元素
+            console.log('运营指标更新:', metrics);
+        }
+
+        // 更新能源环境数据
+        function updateEnergyEnvironmentData() {
+            const energyData = {
+                powerConsumption: Math.floor(2400 + Math.random() * 200),
+                solarGeneration: Math.floor(1200 + Math.random() * 100),
+                carbonEmission: (12 + Math.random() * 2).toFixed(1),
+                airQuality: ['优', '良', '轻度污染'][Math.floor(Math.random() * 3)]
+            };
+
+            console.log('能源环境数据更新:', energyData);
+        }
+
+        // 更新物流生产数据
+        function updateLogisticsProductionData() {
+            const logisticsData = {
+                vehiclesInPark: Math.floor(20 + Math.random() * 10),
+                platformOccupancy: Math.floor(6 + Math.random() * 4) + '/12',
+                averageStayTime: Math.floor(40 + Math.random() * 20) + '分钟',
+                oeeRate: (85 + Math.random() * 5).toFixed(1) + '%'
+            };
+
+            console.log('物流生产数据更新:', logisticsData);
+        }
+
+        // 初始化3D场景交互
+        function init3DScene() {
+            console.log('初始化3D场景交互');
+
+            // 添加3D场景控制事件
+            const zoomInBtn = document.querySelector('.fa-search-plus').parentElement;
+            const zoomOutBtn = document.querySelector('.fa-search-minus').parentElement;
+            const resetBtn = document.querySelector('.fa-redo').parentElement;
+
+            if (zoomInBtn) {
+                zoomInBtn.addEventListener('click', function() {
+                    console.log('3D场景放大');
+                    // 这里可以添加3D场景放大逻辑
+                });
+            }
+
+            if (zoomOutBtn) {
+                zoomOutBtn.addEventListener('click', function() {
+                    console.log('3D场景缩小');
+                    // 这里可以添加3D场景缩小逻辑
+                });
+            }
+
+            if (resetBtn) {
+                resetBtn.addEventListener('click', function() {
+                    console.log('3D场景重置');
+                    // 这里可以添加3D场景重置逻辑
+                });
+            }
+        }
+
+        // 初始化指挥调度功能
+        function initCommandCenter() {
+            console.log('初始化指挥调度功能');
+
+            // 添加应急处理按钮事件
+            const emergencyButtons = document.querySelectorAll('.bg-red-600, .bg-blue-600, .bg-green-600');
+            emergencyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const action = this.textContent.trim();
+                    console.log('执行应急操作:', action);
+
+                    // 模拟应急响应
+                    if (action.includes('视频')) {
+                        alert('正在调取C区3楼东侧走廊监控视频...');
+                    } else if (action.includes('消防队')) {
+                        alert('正在调度园区消防队前往现场...');
+                    } else if (action.includes('应急预案')) {
+                        alert('正在启动消防应急预案...');
+                    }
+                });
+            });
+
+            // 添加通讯中心按钮事件
+            const commButtons = document.querySelectorAll('.bg-green-600, .bg-blue-600, .bg-orange-600');
+            commButtons.forEach(button => {
+                if (button.textContent.includes('呼叫') || button.textContent.includes('广播') || button.textContent.includes('短信')) {
+                    button.addEventListener('click', function() {
+                        const action = this.textContent.trim();
+                        console.log('执行通讯操作:', action);
+
+                        if (action.includes('呼叫')) {
+                            alert('正在呼叫现场安保人员...');
+                        } else if (action.includes('广播')) {
+                            alert('正在启动园区应急广播...');
+                        } else if (action.includes('短信')) {
+                            alert('正在群发应急短信通知...');
+                        }
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后启动实时更新
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化实时数据更新
+            updateRealTimeData();
+            setInterval(updateRealTimeData, 30000); // 每30秒更新一次
+
+            // 初始化3D场景交互
+            init3DScene();
+
+            // 初始化指挥调度功能
+            initCommandCenter();
+
+            console.log('IOC中心深度功能初始化完成');
+        });
+    </script>
+</body>
+</html>

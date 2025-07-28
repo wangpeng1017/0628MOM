@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预算管理 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">预算管理</h1>
+            <p class="text-gray-600">基于Process.md 2.4.12流程：预算编制→预算审批→预算执行→预算控制，实现设备相关费用的全面预算管理</p>
+        </div>
+
+        <!-- 预算管理流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">预算管理流程</h3>
+                    <span class="text-sm text-gray-600">设备费用全面预算管理</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">预算编制</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">预算审批</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">预算执行</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">预算控制</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="budgetPlanningBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-edit mr-2"></i>
+                预算编制
+            </button>
+            <button id="budgetApprovalBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-check mr-2"></i>
+                预算审批
+            </button>
+            <button id="budgetExecutionBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-play mr-2"></i>
+                预算执行
+            </button>
+            <button id="budgetControlBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-chart-line mr-2"></i>
+                预算控制
+            </button>
+            <button id="costAnalysisBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-calculator mr-2"></i>
+                成本分析
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 预算统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">¥8.5M</div>
+                        <div class="text-sm text-gray-600">年度预算</div>
+                        <div class="text-xs text-gray-500">2025年度</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wallet text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">¥6.2M</div>
+                        <div class="text-sm text-gray-600">已执行</div>
+                        <div class="text-xs text-gray-500">72.9%</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">¥2.3M</div>
+                        <div class="text-sm text-gray-600">剩余预算</div>
+                        <div class="text-xs text-gray-500">27.1%</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-piggy-bank text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">¥3.2M</div>
+                        <div class="text-sm text-gray-600">维护费用</div>
+                        <div class="text-xs text-gray-500">最大支出</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wrench text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">95.2%</div>
+                        <div class="text-sm text-gray-600">预算准确率</div>
+                        <div class="text-xs text-gray-500">执行偏差</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bullseye text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">3</div>
+                        <div class="text-sm text-gray-600">超预算项目</div>
+                        <div class="text-xs text-gray-500">需要关注</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预算分类和执行监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 预算分类分析 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">预算分类分析</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-wrench text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">维护保养费用</div>
+                                <div class="text-xs text-gray-500">设备维护、保养、修理</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-blue-600">¥3.2M</div>
+                            <div class="text-xs text-gray-500">37.6%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-shopping-cart text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">设备采购费用</div>
+                                <div class="text-xs text-gray-500">新设备采购、更新</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-green-600">¥2.8M</div>
+                            <div class="text-xs text-gray-500">32.9%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-cogs text-purple-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">技改升级费用</div>
+                                <div class="text-xs text-gray-500">设备改造、升级</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-purple-600">¥1.5M</div>
+                            <div class="text-xs text-gray-500">17.6%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-boxes text-orange-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">备件库存费用</div>
+                                <div class="text-xs text-gray-500">备件采购、库存</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-orange-600">¥1.0M</div>
+                            <div class="text-xs text-gray-500">11.8%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 预算执行监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">预算执行监控</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">超预算警告</div>
+                                <div class="text-xs text-gray-600">PACK产线维护 - 超支15%</div>
+                                <div class="text-xs text-gray-500">预算: ¥50,000 | 实际: ¥57,500</div>
+                            </div>
+                            <button onclick="handleBudgetAlert('ALERT001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                立即处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">预算紧张</div>
+                                <div class="text-xs text-gray-600">机器人维护 - 剩余预算不足</div>
+                                <div class="text-xs text-gray-500">剩余: ¥8,500 | 计划: ¥12,000</div>
+                            </div>
+                            <button onclick="handleBudgetAlert('ALERT002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                                预算调整
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">执行偏差</div>
+                                <div class="text-xs text-gray-600">测试设备采购 - 进度延迟</div>
+                                <div class="text-xs text-gray-500">计划执行: 80% | 实际执行: 65%</div>
+                            </div>
+                            <button onclick="handleBudgetAlert('ALERT003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                进度调整
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">预算执行率</span>
+                        <span class="font-medium text-green-600">本月: 72.9%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预算管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">预算管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部预算类型</option>
+                        <option>维护保养费用</option>
+                        <option>设备采购费用</option>
+                        <option>技改升级费用</option>
+                        <option>备件库存费用</option>
+                        <option>培训费用</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>编制中</option>
+                        <option>待审批</option>
+                        <option>已批准</option>
+                        <option>执行中</option>
+                        <option>已完成</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部部门</option>
+                        <option>PACK产线</option>
+                        <option>PCBA车间</option>
+                        <option>逆变器车间</option>
+                        <option>包装车间</option>
+                    </select>
+                    <input type="text" placeholder="搜索预算项目、负责人..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">预算项目</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">预算类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">预算金额</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">执行情况</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">负责部门</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间周期</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">预算状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">执行偏差</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="budgetTableBody">
+                        <!-- 预算数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.12的预算管理数据模型
+        const budgetItems = [
+            {
+                id: 'BUD202501001',
+                budgetCode: 'BUD-PACK-MAINT-001',
+                budgetName: 'PACK产线维护保养预算',
+                budgetType: 'maintenance',
+                budgetTypeName: '维护保养费用',
+                department: 'PACK产线',
+                departmentId: 'DEPT001',
+                manager: '张工程师',
+                managerId: 'ENG001',
+                budgetPeriod: {
+                    type: 'quarterly',
+                    year: 2025,
+                    quarter: 1,
+                    startDate: '2025-01-01',
+                    endDate: '2025-03-31'
+                },
+                budgetAmount: {
+                    planned: 150000,
+                    approved: 150000,
+                    spent: 127500,
+                    committed: 15000,
+                    remaining: 7500
+                },
+                executionRate: 85.0,
+                status: 'executing',
+                statusName: '执行中',
+                approvalStatus: 'approved',
+                approvalStatusName: '已批准',
+                budgetItems: [
+                    { item: '日常维护', planned: 60000, spent: 52000, remaining: 8000 },
+                    { item: '预防性维护', planned: 50000, spent: 45000, remaining: 5000 },
+                    { item: '故障维修', planned: 40000, spent: 30500, remaining: 9500 }
+                ],
+                variance: {
+                    amount: -7500,
+                    percentage: -5.0,
+                    reason: '故障维修费用低于预期'
+                },
+                alerts: [],
+                documents: ['预算申请表', '审批文件', '执行报告'],
+                notes: '执行情况良好，故障率低于预期'
+            },
+            {
+                id: 'BUD202501002',
+                budgetCode: 'BUD-ROBOT-UPGRADE-002',
+                budgetName: '机器人升级改造预算',
+                budgetType: 'upgrade',
+                budgetTypeName: '技改升级费用',
+                department: '逆变器车间',
+                departmentId: 'DEPT003',
+                manager: '孙技师',
+                managerId: 'TECH002',
+                budgetPeriod: {
+                    type: 'annual',
+                    year: 2025,
+                    quarter: null,
+                    startDate: '2025-01-01',
+                    endDate: '2025-12-31'
+                },
+                budgetAmount: {
+                    planned: 320000,
+                    approved: 320000,
+                    spent: 315000,
+                    committed: 0,
+                    remaining: 5000
+                },
+                executionRate: 98.4,
+                status: 'completed',
+                statusName: '已完成',
+                approvalStatus: 'approved',
+                approvalStatusName: '已批准',
+                budgetItems: [
+                    { item: '硬件升级', planned: 200000, spent: 195000, remaining: 5000 },
+                    { item: '软件升级', planned: 80000, spent: 80000, remaining: 0 },
+                    { item: '调试测试', planned: 40000, spent: 40000, remaining: 0 }
+                ],
+                variance: {
+                    amount: 5000,
+                    percentage: 1.6,
+                    reason: '硬件采购成本节约'
+                },
+                alerts: [],
+                documents: ['预算申请表', '审批文件', '验收报告', '结算报告'],
+                notes: '项目已完成，效果良好，成本控制优秀'
+            },
+            {
+                id: 'BUD202501003',
+                budgetCode: 'BUD-TEST-PURCHASE-003',
+                budgetName: '测试设备采购预算',
+                budgetType: 'purchase',
+                budgetTypeName: '设备采购费用',
+                department: 'PCBA车间',
+                departmentId: 'DEPT002',
+                manager: '王技术员',
+                managerId: 'TECH001',
+                budgetPeriod: {
+                    type: 'annual',
+                    year: 2025,
+                    quarter: null,
+                    startDate: '2025-01-01',
+                    endDate: '2025-12-31'
+                },
+                budgetAmount: {
+                    planned: 450000,
+                    approved: 450000,
+                    spent: 180000,
+                    committed: 270000,
+                    remaining: 0
+                },
+                executionRate: 40.0,
+                status: 'executing',
+                statusName: '执行中',
+                approvalStatus: 'approved',
+                approvalStatusName: '已批准',
+                budgetItems: [
+                    { item: '主设备采购', planned: 350000, spent: 150000, remaining: 200000 },
+                    { item: '配套设备', planned: 70000, spent: 30000, remaining: 40000 },
+                    { item: '安装调试', planned: 30000, spent: 0, remaining: 30000 }
+                ],
+                variance: {
+                    amount: 0,
+                    percentage: 0,
+                    reason: '按计划执行中'
+                },
+                alerts: [
+                    { type: 'delay', message: '采购进度延迟', severity: 'medium' }
+                ],
+                documents: ['预算申请表', '审批文件', '采购合同'],
+                notes: '采购进度略有延迟，但在可控范围内'
+            },
+            {
+                id: 'BUD202501004',
+                budgetCode: 'BUD-SPARE-STOCK-004',
+                budgetName: '备件库存补充预算',
+                budgetType: 'spare_parts',
+                budgetTypeName: '备件库存费用',
+                department: '设备管理部',
+                departmentId: 'DEPT004',
+                manager: '李库管',
+                managerId: 'WH001',
+                budgetPeriod: {
+                    type: 'monthly',
+                    year: 2025,
+                    quarter: 1,
+                    startDate: '2025-01-01',
+                    endDate: '2025-01-31'
+                },
+                budgetAmount: {
+                    planned: 80000,
+                    approved: 80000,
+                    spent: 92000,
+                    committed: 0,
+                    remaining: -12000
+                },
+                executionRate: 115.0,
+                status: 'over_budget',
+                statusName: '超预算',
+                approvalStatus: 'approved',
+                approvalStatusName: '已批准',
+                budgetItems: [
+                    { item: '关键备件', planned: 50000, spent: 58000, remaining: -8000 },
+                    { item: '常用备件', planned: 20000, spent: 22000, remaining: -2000 },
+                    { item: '消耗品', planned: 10000, spent: 12000, remaining: -2000 }
+                ],
+                variance: {
+                    amount: -12000,
+                    percentage: -15.0,
+                    reason: '紧急采购关键备件导致超支'
+                },
+                alerts: [
+                    { type: 'over_budget', message: '超预算15%', severity: 'high' },
+                    { type: 'emergency_purchase', message: '紧急采购', severity: 'medium' }
+                ],
+                documents: ['预算申请表', '审批文件', '紧急采购申请'],
+                notes: '因设备故障紧急采购备件导致超支，需要预算调整'
+            },
+            {
+                id: 'BUD202501005',
+                budgetCode: 'BUD-AGING-SAFETY-005',
+                budgetName: '老化房安全改造预算',
+                budgetType: 'safety',
+                budgetTypeName: '安全改造费用',
+                department: '包装车间',
+                departmentId: 'DEPT005',
+                manager: '周操作员',
+                managerId: 'OP002',
+                budgetPeriod: {
+                    type: 'project',
+                    year: 2025,
+                    quarter: null,
+                    startDate: '2025-02-01',
+                    endDate: '2025-03-30'
+                },
+                budgetAmount: {
+                    planned: 180000,
+                    approved: 180000,
+                    spent: 0,
+                    committed: 18000,
+                    remaining: 162000
+                },
+                executionRate: 0,
+                status: 'approved',
+                statusName: '已批准',
+                approvalStatus: 'approved',
+                approvalStatusName: '已批准',
+                budgetItems: [
+                    { item: '安全传感器', planned: 80000, spent: 0, remaining: 80000 },
+                    { item: '报警系统', planned: 60000, spent: 0, remaining: 60000 },
+                    { item: '应急设备', planned: 40000, spent: 0, remaining: 40000 }
+                ],
+                variance: {
+                    amount: 0,
+                    percentage: 0,
+                    reason: '项目尚未开始'
+                },
+                alerts: [],
+                documents: ['预算申请表', '审批文件', '安全评估报告'],
+                notes: '安全改造项目，已获批准，等待项目启动'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            draft: { text: '编制中', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-edit' },
+            pending: { text: '待审批', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-clock' },
+            approved: { text: '已批准', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-check' },
+            executing: { text: '执行中', class: 'bg-green-100 text-green-800', icon: 'fas fa-play' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            over_budget: { text: '超预算', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' }
+        };
+
+        // 预算类型映射
+        const budgetTypeMap = {
+            maintenance: { text: '维护保养费用', icon: 'fas fa-wrench', color: 'text-blue-600' },
+            purchase: { text: '设备采购费用', icon: 'fas fa-shopping-cart', color: 'text-green-600' },
+            upgrade: { text: '技改升级费用', icon: 'fas fa-cogs', color: 'text-purple-600' },
+            spare_parts: { text: '备件库存费用', icon: 'fas fa-boxes', color: 'text-orange-600' },
+            training: { text: '培训费用', icon: 'fas fa-graduation-cap', color: 'text-indigo-600' },
+            safety: { text: '安全改造费用', icon: 'fas fa-shield-alt', color: 'text-red-600' }
+        };
+
+        // 预算周期映射
+        const periodTypeMap = {
+            monthly: { text: '月度', icon: 'fas fa-calendar-day' },
+            quarterly: { text: '季度', icon: 'fas fa-calendar-week' },
+            annual: { text: '年度', icon: 'fas fa-calendar' },
+            project: { text: '项目', icon: 'fas fa-project-diagram' }
+        };
+
+        let filteredData = [...budgetItems];
+
+        // 渲染预算管理表格
+        function renderBudgetTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('budgetTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(budget => {
+                const status = statusMap[budget.status];
+                const budgetType = budgetTypeMap[budget.budgetType];
+                const periodType = periodTypeMap[budget.budgetPeriod.type];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewBudgetDetail('${budget.id}')">
+                            ${budget.budgetCode}
+                        </div>
+                        <div class="text-sm text-gray-900">${budget.budgetName}</div>
+                        <div class="text-xs text-gray-500">${periodType.text} | ${budget.budgetPeriod.year}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${budgetType.icon} ${budgetType.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${budgetType.text}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">¥${budget.budgetAmount.planned.toLocaleString()}</div>
+                        <div class="text-xs text-gray-500">已批准: ¥${budget.budgetAmount.approved.toLocaleString()}</div>
+                        ${budget.budgetAmount.committed > 0 ? `
+                            <div class="text-xs text-blue-600">已承诺: ¥${budget.budgetAmount.committed.toLocaleString()}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">¥${budget.budgetAmount.spent.toLocaleString()}</div>
+                        <div class="text-xs text-gray-500">剩余: ¥${budget.budgetAmount.remaining.toLocaleString()}</div>
+                        <div class="mt-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-${budget.executionRate > 100 ? 'red' : budget.executionRate > 80 ? 'yellow' : 'blue'}-600 h-2 rounded-full" style="width: ${Math.min(100, budget.executionRate)}%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">执行率: ${budget.executionRate}%</div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${budget.department}</div>
+                        <div class="text-xs text-gray-500">${budget.manager}</div>
+                        <div class="text-xs text-blue-600">${budget.managerId}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${budget.budgetPeriod.startDate}</div>
+                        <div class="text-xs text-gray-500">至 ${budget.budgetPeriod.endDate}</div>
+                        <div class="text-xs text-blue-600">${periodType.text}预算</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${budget.alerts.length > 0 ? `
+                            <div class="text-xs text-red-600 mt-1">
+                                警告: ${budget.alerts.length}项
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${budget.variance.amount !== 0 ? `
+                            <div class="text-sm font-medium ${budget.variance.amount > 0 ? 'text-green-600' : 'text-red-600'}">
+                                ${budget.variance.amount > 0 ? '+' : ''}¥${Math.abs(budget.variance.amount).toLocaleString()}
+                            </div>
+                            <div class="text-xs ${budget.variance.percentage > 0 ? 'text-green-600' : 'text-red-600'}">
+                                ${budget.variance.percentage > 0 ? '+' : ''}${budget.variance.percentage}%
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">${budget.variance.reason}</div>
+                        ` : `
+                            <div class="text-sm text-gray-600">无偏差</div>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewBudgetDetail('${budget.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${budget.status === 'draft' ? `
+                                <button onclick="editBudget('${budget.id}')" class="text-green-600 hover:text-green-900 p-1" title="编辑预算">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            ` : ''}
+                            ${budget.status === 'executing' ? `
+                                <button onclick="updateExecution('${budget.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="更新执行">
+                                    <i class="fas fa-sync"></i>
+                                </button>
+                            ` : ''}
+                            ${budget.alerts.length > 0 ? `
+                                <button onclick="viewAlerts('${budget.id}')" class="text-red-600 hover:text-red-900 p-1" title="查看警告">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewBudgetItems('${budget.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="预算明细">
+                                <i class="fas fa-list"></i>
+                            </button>
+                            <button onclick="generateReport('${budget.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="生成报告">
+                                <i class="fas fa-file-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${budgetItems.length} 条记录`;
+        }
+
+        // 预算管理操作函数
+        function viewBudgetDetail(budgetId) {
+            const budget = budgetItems.find(b => b.id === budgetId);
+            if (budget) {
+                let detailText = `预算详情：\n预算编号: ${budget.budgetCode}\n预算名称: ${budget.budgetName}\n预算类型: ${budgetTypeMap[budget.budgetType].text}\n负责部门: ${budget.department}\n负责人: ${budget.manager}\n状态: ${statusMap[budget.status].text}`;
+
+                detailText += `\n\n预算周期:\n类型: ${periodTypeMap[budget.budgetPeriod.type].text}\n年度: ${budget.budgetPeriod.year}`;
+                if (budget.budgetPeriod.quarter) {
+                    detailText += `\n季度: Q${budget.budgetPeriod.quarter}`;
+                }
+                detailText += `\n开始日期: ${budget.budgetPeriod.startDate}\n结束日期: ${budget.budgetPeriod.endDate}`;
+
+                detailText += `\n\n预算金额:\n计划预算: ¥${budget.budgetAmount.planned.toLocaleString()}\n批准预算: ¥${budget.budgetAmount.approved.toLocaleString()}\n已花费: ¥${budget.budgetAmount.spent.toLocaleString()}\n已承诺: ¥${budget.budgetAmount.committed.toLocaleString()}\n剩余预算: ¥${budget.budgetAmount.remaining.toLocaleString()}\n执行率: ${budget.executionRate}%`;
+
+                detailText += `\n\n预算明细:`;
+                budget.budgetItems.forEach((item, index) => {
+                    detailText += `\n${index + 1}. ${item.item}\n   计划: ¥${item.planned.toLocaleString()}\n   已用: ¥${item.spent.toLocaleString()}\n   剩余: ¥${item.remaining.toLocaleString()}`;
+                });
+
+                if (budget.variance.amount !== 0) {
+                    detailText += `\n\n执行偏差:\n偏差金额: ${budget.variance.amount > 0 ? '+' : ''}¥${budget.variance.amount.toLocaleString()}\n偏差比例: ${budget.variance.percentage > 0 ? '+' : ''}${budget.variance.percentage}%\n偏差原因: ${budget.variance.reason}`;
+                }
+
+                if (budget.alerts.length > 0) {
+                    detailText += `\n\n预算警告:`;
+                    budget.alerts.forEach((alert, index) => {
+                        detailText += `\n${index + 1}. ${alert.message} (${alert.severity})`;
+                    });
+                }
+
+                if (budget.notes) {
+                    detailText += `\n\n备注: ${budget.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function handleBudgetAlert(alertId) {
+            if (confirm(`确认处理预算警告？\n警告ID: ${alertId}\n\n处理措施：\n- 分析超支原因\n- 制定控制措施\n- 申请预算调整\n- 优化执行计划`)) {
+                alert('预算警告处理完成！\n- 原因分析已完成\n- 控制措施已制定\n- 预算调整已申请');
+            }
+        }
+
+        function editBudget(budgetId) {
+            const budget = budgetItems.find(b => b.id === budgetId);
+            if (budget) {
+                alert(`编辑预算：\n预算: ${budget.budgetName}\n\n编辑功能：\n- 预算金额调整\n- 预算明细修改\n- 执行计划更新\n- 审批流程管理`);
+            }
+        }
+
+        function updateExecution(budgetId) {
+            const budget = budgetItems.find(b => b.id === budgetId);
+            if (budget) {
+                if (confirm(`更新预算执行？\n预算: ${budget.budgetName}\n\n更新内容：\n- 实际支出更新\n- 执行进度更新\n- 剩余预算计算\n- 偏差分析更新`)) {
+                    // 模拟执行更新
+                    budget.budgetAmount.spent += 5000;
+                    budget.budgetAmount.remaining -= 5000;
+                    budget.executionRate = (budget.budgetAmount.spent / budget.budgetAmount.planned) * 100;
+                    renderBudgetTable();
+                    alert('预算执行已更新！\n- 支出数据已更新\n- 执行率已重新计算\n- 偏差分析已更新');
+                }
+            }
+        }
+
+        function viewAlerts(budgetId) {
+            const budget = budgetItems.find(b => b.id === budgetId);
+            if (budget) {
+                let alertsText = `${budget.budgetName} - 预算警告：\n\n`;
+                if (budget.alerts.length > 0) {
+                    budget.alerts.forEach((alert, index) => {
+                        alertsText += `${index + 1}. ${alert.message}\n   类型: ${alert.type}\n   严重程度: ${alert.severity}\n\n`;
+                    });
+                } else {
+                    alertsText += '暂无预算警告';
+                }
+                alert(alertsText);
+            }
+        }
+
+        function viewBudgetItems(budgetId) {
+            const budget = budgetItems.find(b => b.id === budgetId);
+            if (budget) {
+                let itemsText = `${budget.budgetName} - 预算明细：\n\n`;
+                budget.budgetItems.forEach((item, index) => {
+                    const executionRate = (item.spent / item.planned * 100).toFixed(1);
+                    itemsText += `${index + 1}. ${item.item}\n   计划: ¥${item.planned.toLocaleString()}\n   已用: ¥${item.spent.toLocaleString()}\n   剩余: ¥${item.remaining.toLocaleString()}\n   执行率: ${executionRate}%\n\n`;
+                });
+                alert(itemsText);
+            }
+        }
+
+        function generateReport(budgetId) {
+            const budget = budgetItems.find(b => b.id === budgetId);
+            if (budget) {
+                alert(`生成预算报告：\n预算: ${budget.budgetName}\n\n报告内容：\n- 预算执行情况\n- 偏差分析报告\n- 成本控制分析\n- 改进建议\n- 下期预算建议`);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBudgetTable();
+
+            // 预算编制
+            document.getElementById('budgetPlanningBtn').addEventListener('click', function() {
+                alert('预算编制功能：\n- 预算需求分析\n- 预算方案制定\n- 预算明细编制\n- 预算合理性审核\n- 预算文档准备');
+            });
+
+            // 预算审批
+            document.getElementById('budgetApprovalBtn').addEventListener('click', function() {
+                alert('预算审批功能：\n- 预算审核流程\n- 审批权限管理\n- 审批意见记录\n- 审批结果通知\n- 审批文档归档');
+            });
+
+            // 预算执行
+            document.getElementById('budgetExecutionBtn').addEventListener('click', function() {
+                alert('预算执行功能：\n- 预算执行监控\n- 支出审核确认\n- 执行进度跟踪\n- 执行偏差分析\n- 执行报告生成');
+            });
+
+            // 预算控制
+            document.getElementById('budgetControlBtn').addEventListener('click', function() {
+                alert('预算控制功能：\n- 预算超支预警\n- 执行偏差控制\n- 预算调整管理\n- 成本控制措施\n- 绩效评估分析');
+            });
+
+            // 成本分析
+            document.getElementById('costAnalysisBtn').addEventListener('click', function() {
+                alert('成本分析功能：\n- 成本结构分析\n- 成本趋势分析\n- 成本效益分析\n- 成本对比分析\n- 成本优化建议');
+            });
+        });
+    </script>
+</body>
+</html>

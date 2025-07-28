@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安防概览与统计 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-shield-alt text-primary mr-3"></i>
+                智慧安防概览与统计
+            </h1>
+            <p class="text-gray-600 mt-2">全方位安防监控，保障园区安全</p>
+        </div>
+
+        <!-- 安防核心指标 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">安全等级</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">安全</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-shield-check text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>风险评级:</span>
+                        <span class="text-green-600 font-medium">低风险</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>安全天数:</span>
+                        <span class="text-green-600 font-medium">365天</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">监控覆盖率</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">98.5%</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-video text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>摄像头:</span>
+                        <span class="text-blue-600 font-medium">256/260</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>在线率:</span>
+                        <span class="text-green-600 font-medium">99.2%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">门禁通行</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">2,856</p>
+                        <p class="text-sm text-gray-500">今日</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-door-open text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>正常通行:</span>
+                        <span class="text-green-600 font-medium">2,850次</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>异常记录:</span>
+                        <span class="text-red-600 font-medium">6次</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">报警事件</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">3</p>
+                        <p class="text-sm text-gray-500">今日</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-bell text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>已处理:</span>
+                        <span class="text-green-600 font-medium">3件</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>处理率:</span>
+                        <span class="text-green-600 font-medium">100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 安防设备状态 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-cogs text-blue-600 mr-2"></i>
+                安防设备状态
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">视频监控</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 总数量: 260个</div>
+                        <div>• 在线: 256个</div>
+                        <div>• 离线: 4个</div>
+                        <div>• 在线率: 98.5%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">门禁系统</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 总数量: 45个</div>
+                        <div>• 在线: 45个</div>
+                        <div>• 离线: 0个</div>
+                        <div>• 在线率: 100%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">报警系统</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">注意</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 总数量: 128个</div>
+                        <div>• 在线: 126个</div>
+                        <div>• 离线: 2个</div>
+                        <div>• 在线率: 98.4%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">巡更系统</h4>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 巡更点: 32个</div>
+                        <div>• 巡更人员: 8人</div>
+                        <div>• 今日巡更: 24次</div>
+                        <div>• 完成率: 100%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时监控和事件处理 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-eye text-green-600 mr-2"></i>
+                    实时监控状态
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">监控区域覆盖</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 生产区域: 100%覆盖</div>
+                            <div>• 办公区域: 95%覆盖</div>
+                            <div>• 仓储区域: 100%覆盖</div>
+                            <div>• 周界区域: 100%覆盖</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">AI智能分析</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 人脸识别: 启用</div>
+                            <div>• 行为分析: 启用</div>
+                            <div>• 入侵检测: 启用</div>
+                            <div>• 火灾检测: 启用</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">存储状态</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 存储容量: 50TB</div>
+                            <div>• 已使用: 32TB (64%)</div>
+                            <div>• 保存天数: 30天</div>
+                            <div>• 备份状态: 正常</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-bell text-yellow-600 mr-2"></i>
+                    安防事件处理
+                </h3>
+                <div class="space-y-4">
+                    <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">门禁异常</h4>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">处理中</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 位置: 生产区入口</div>
+                            <div>• 时间: 14:25</div>
+                            <div>• 类型: 刷卡失败</div>
+                            <div>• 处理人: 张安保</div>
+                        </div>
+                    </div>
+                    <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">周界报警</h4>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已处理</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 位置: 东侧围墙</div>
+                            <div>• 时间: 13:15</div>
+                            <div>• 类型: 误报(小动物)</div>
+                            <div>• 处理人: 李安保</div>
+                        </div>
+                    </div>
+                    <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">设备故障</h4>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">已处理</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 位置: 仓库3号摄像头</div>
+                            <div>• 时间: 11:30</div>
+                            <div>• 类型: 网络断开</div>
+                            <div>• 处理人: 王技术</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 安防统计分析 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-bar text-purple-600 mr-2"></i>
+                安防统计分析
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">通行统计</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>员工通行</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>访客通行</span>
+                                <span>12%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 12%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span>车辆通行</span>
+                                <span>3%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 3%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">安全指标</h4>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>事件响应时间:</span>
+                            <span class="font-medium text-green-600">2.5分钟</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>事件处理率:</span>
+                            <span class="font-medium text-green-600">100%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>误报率:</span>
+                            <span class="font-medium text-yellow-600">5.2%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>设备完好率:</span>
+                            <span class="font-medium text-green-600">98.8%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">趋势分析</h4>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>通行量趋势:</span>
+                            <span class="font-medium text-green-600">↗ +8%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>事件数量:</span>
+                            <span class="font-medium text-green-600">↘ -15%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>设备故障:</span>
+                            <span class="font-medium text-green-600">↘ -20%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>安全等级:</span>
+                            <span class="font-medium text-green-600">稳定</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-video text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">视频监控</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-door-open text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">门禁管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors">
+                    <i class="fas fa-bell text-red-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">报警处理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-tools text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">设备维护</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 智慧安防概览功能
+        function initSecurityOverview() {
+            console.log('初始化智慧安防概览功能');
+            
+            // 快速操作按钮事件
+            const quickButtons = document.querySelectorAll('button');
+            quickButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('视频监控')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开视频监控');
+                        alert('正在打开视频监控管理...');
+                    });
+                } else if (text.includes('门禁管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开门禁管理');
+                        alert('正在打开门禁系统管理...');
+                    });
+                } else if (text.includes('报警处理')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开报警处理');
+                        alert('正在打开报警事件处理...');
+                    });
+                } else if (text.includes('设备维护')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开设备维护');
+                        alert('正在打开安防设备维护...');
+                    });
+                }
+            });
+            
+            // 实时数据更新
+            function updateSecurityData() {
+                console.log('更新安防数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateSecurityData, 30000); // 每30秒更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initSecurityOverview();
+            console.log('智慧安防概览页面加载完成');
+        });
+    </script>
+</body>
+</html>

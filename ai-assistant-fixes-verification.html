@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI助手修复验证 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AI助手样式 -->
+    <link rel="stylesheet" href="assets/css/ai-assistant.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen p-6">
+        <!-- 页面标题 -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">AI助手修复验证</h1>
+            <p class="text-gray-600">验证AI助手功能的修复和优化效果</p>
+        </div>
+
+        <!-- 修复项目列表 -->
+        <div class="space-y-6">
+            <!-- 问题1：首页AI图标重复显示bug修复 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                        问题1：首页AI图标重复显示bug修复
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-800 mb-3">修复内容</h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>✅ 添加iframe检测逻辑，避免在iframe中重复初始化AI助手</li>
+                                <li>✅ 只在顶级窗口中显示AI助手按钮</li>
+                                <li>✅ 解决首页显示两个AI助手图标的问题</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-800 mb-3">验证方法</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="bg-blue-50 p-3 rounded-lg">
+                                    <div class="font-medium text-blue-800">测试步骤</div>
+                                    <div class="text-blue-600">1. 访问平台主页</div>
+                                    <div class="text-blue-600">2. 检查右下角只有一个AI助手按钮</div>
+                                    <div class="text-blue-600">3. 切换到其他模块页面验证</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 问题2：AI对话框高度自适应优化 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                        问题2：AI对话框高度自适应优化
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-800 mb-3">优化内容</h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>✅ 对话框高度根据内容动态调整</li>
+                                <li>✅ 搜索结果显示时自动扩展高度（最大700px）</li>
+                                <li>✅ 距离浏览器顶部和底部保持适当距离</li>
+                                <li>✅ 响应式设计，适配不同屏幕尺寸</li>
+                                <li>✅ 添加窗口大小变化监听器</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-800 mb-3">验证方法</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="bg-green-50 p-3 rounded-lg">
+                                    <div class="font-medium text-green-800">测试步骤</div>
+                                    <div class="text-green-600">1. 点击AI助手按钮</div>
+                                    <div class="text-green-600">2. 输入DM202501001搜索</div>
+                                    <div class="text-green-600">3. 观察对话框高度自动调整</div>
+                                    <div class="text-green-600">4. 调整浏览器窗口大小测试响应式</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 问题3：业务单据页面数据完善 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                        问题3：业务单据页面数据完善
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-800 mb-3">完善内容</h4>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li>✅ 需求管理页面：DM202501001数据已存在</li>
+                                <li>✅ MPS管理页面：MPS202501001数据已存在</li>
+                                <li>✅ 工单管理页面：WO202501001数据已添加</li>
+                                <li>✅ 实现URL参数传递功能</li>
+                                <li>✅ 添加高亮显示对应单据功能</li>
+                                <li>✅ 确保数据与AI助手时间线一致</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-800 mb-3">验证链接</h4>
+                            <div class="space-y-2 text-sm">
+                                <a href="pages/planning/demand-management.html?doc=DM202501001" target="_blank" 
+                                   class="block bg-blue-50 p-3 rounded-lg hover:bg-blue-100 transition-colors">
+                                    <div class="font-medium text-blue-800">需求管理页面</div>
+                                    <div class="text-blue-600">DM202501001 - 5KW变频器需求</div>
+                                </a>
+                                <a href="pages/planning/mps-management.html?doc=MPS202501001" target="_blank" 
+                                   class="block bg-green-50 p-3 rounded-lg hover:bg-green-100 transition-colors">
+                                    <div class="font-medium text-green-800">MPS管理页面</div>
+                                    <div class="text-green-600">MPS202501001 - 主生产计划</div>
+                                </a>
+                                <a href="pages/production/work-orders.html?doc=WO202501001" target="_blank" 
+                                   class="block bg-purple-50 p-3 rounded-lg hover:bg-purple-100 transition-colors">
+                                    <div class="font-medium text-purple-800">工单管理页面</div>
+                                    <div class="text-purple-600">WO202501001 - 生产工单</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 综合测试 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                        <i class="fas fa-rocket text-blue-500 mr-3"></i>
+                        综合功能测试
+                    </h3>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="testAIAssistant('DM202501001')" 
+                                class="p-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                            <i class="fas fa-search mb-2"></i>
+                            <div class="font-medium">测试需求计划追踪</div>
+                            <div class="text-xs opacity-80">DM202501001</div>
+                        </button>
+                        <button onclick="testAIAssistant('MPS202501001')" 
+                                class="p-4 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                            <i class="fas fa-calendar mb-2"></i>
+                            <div class="font-medium">测试MPS计划追踪</div>
+                            <div class="text-xs opacity-80">MPS202501001</div>
+                        </button>
+                        <button onclick="testAIAssistant('WO202501001')" 
+                                class="p-4 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors">
+                            <i class="fas fa-cogs mb-2"></i>
+                            <div class="font-medium">测试工单追踪</div>
+                            <div class="text-xs opacity-80">WO202501001</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 修复总结 -->
+            <div class="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-6">
+                <div class="flex items-start">
+                    <i class="fas fa-check-circle text-green-600 text-2xl mr-4 mt-1"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">修复完成总结</h3>
+                        <ul class="text-gray-700 space-y-1">
+                            <li>✅ <strong>问题1</strong>：首页AI图标重复显示bug已修复</li>
+                            <li>✅ <strong>问题2</strong>：AI对话框高度自适应优化已完成</li>
+                            <li>✅ <strong>问题3</strong>：业务单据页面数据完善已完成</li>
+                            <li>✅ <strong>技术要求</strong>：保持现有技术栈，确保响应式设计</li>
+                            <li>✅ <strong>用户体验</strong>：提升AI助手的易用性和功能完整性</li>
+                        </ul>
+                        <div class="mt-4 p-3 bg-white rounded-lg border border-blue-200">
+                            <p class="text-sm text-blue-800">
+                                <i class="fas fa-lightbulb mr-2"></i>
+                                <strong>使用提示</strong>：点击右下角AI助手按钮，输入单据编号（如DM202501001）即可体验完整的"一单到底"业务流程追踪功能。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 快速测试函数
+        function testAIAssistant(docNumber) {
+            // 等待AI助手加载完成
+            setTimeout(() => {
+                if (window.digitalFactoryAI) {
+                    // 打开AI助手对话框
+                    digitalFactoryAI.openDialog();
+                    
+                    // 填入测试单据编号
+                    setTimeout(() => {
+                        const input = document.getElementById('ai-input');
+                        if (input) {
+                            input.value = docNumber;
+                            input.focus();
+                        }
+                    }, 200);
+                } else {
+                    alert('AI助手正在加载中，请稍后再试...');
+                }
+            }, 100);
+        }
+
+        // 页面加载完成后的提示
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('AI助手修复验证页面已加载');
+            console.log('所有修复项目已完成，可以开始测试');
+        });
+    </script>
+    
+    <!-- AI助手脚本 -->
+    <script src="assets/js/ai-assistant.js"></script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时监控大屏 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dashboard-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .data-card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="dashboard-bg min-h-screen">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6 text-center">
+            <h1 class="text-3xl font-bold text-white flex items-center justify-center">
+                <i class="fas fa-tv text-white mr-3"></i>
+                IOC实时监控大屏
+            </h1>
+            <p class="text-white/80 mt-2">全景式智能运营监控中心</p>
+            <div class="text-white/60 text-sm mt-2">
+                <span id="current-time"></span> | 系统运行时间: 365天 | 在线用户: 546人
+            </div>
+        </div>
+
+        <!-- 核心指标大屏 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="data-card rounded-lg p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold">生产效率</h3>
+                        <p class="text-4xl font-bold text-green-400 mt-2">92.5%</p>
+                    </div>
+                    <div class="bg-green-400/20 p-3 rounded-full">
+                        <i class="fas fa-industry text-green-400 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-white/80">
+                    <div class="flex justify-between">
+                        <span>目标:</span>
+                        <span class="text-green-400 font-medium">90%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>趋势:</span>
+                        <span class="text-green-400 font-medium">↗ +2.1%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-card rounded-lg p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold">设备运行率</h3>
+                        <p class="text-4xl font-bold text-blue-400 mt-2">98.7%</p>
+                    </div>
+                    <div class="bg-blue-400/20 p-3 rounded-full">
+                        <i class="fas fa-cogs text-blue-400 text-2xl pulse-animation"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-white/80">
+                    <div class="flex justify-between">
+                        <span>在线设备:</span>
+                        <span class="text-blue-400 font-medium">127/128</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>故障设备:</span>
+                        <span class="text-red-400 font-medium">1台</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-card rounded-lg p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold">质量合格率</h3>
+                        <p class="text-4xl font-bold text-yellow-400 mt-2">99.2%</p>
+                    </div>
+                    <div class="bg-yellow-400/20 p-3 rounded-full">
+                        <i class="fas fa-check-circle text-yellow-400 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-white/80">
+                    <div class="flex justify-between">
+                        <span>检测数量:</span>
+                        <span class="text-yellow-400 font-medium">2,456件</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>不合格:</span>
+                        <span class="text-red-400 font-medium">20件</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-card rounded-lg p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold">能耗指标</h3>
+                        <p class="text-4xl font-bold text-purple-400 mt-2">85.3%</p>
+                    </div>
+                    <div class="bg-purple-400/20 p-3 rounded-full">
+                        <i class="fas fa-bolt text-purple-400 text-2xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-white/80">
+                    <div class="flex justify-between">
+                        <span>当前功率:</span>
+                        <span class="text-purple-400 font-medium">1,250kW</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>节能率:</span>
+                        <span class="text-green-400 font-medium">12.5%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时监控图表区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="data-card rounded-lg p-6 text-white">
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-green-400 mr-2"></i>
+                    生产实时监控
+                </h3>
+                <div class="h-64 bg-black/20 rounded-lg flex items-center justify-center">
+                    <div class="text-center">
+                        <i class="fas fa-chart-area text-6xl mb-4 text-green-400/60"></i>
+                        <p class="text-lg font-medium">生产线实时数据</p>
+                        <p class="text-sm text-white/60">产量、效率、质量趋势图</p>
+                        <div class="mt-4 grid grid-cols-3 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-400">1,256</div>
+                                <div class="text-xs text-white/60">今日产量</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-400">92.5%</div>
+                                <div class="text-xs text-white/60">生产效率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-yellow-400">99.2%</div>
+                                <div class="text-xs text-white/60">合格率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-card rounded-lg p-6 text-white">
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-server text-blue-400 mr-2"></i>
+                    系统性能监控
+                </h3>
+                <div class="h-64 bg-black/20 rounded-lg flex items-center justify-center">
+                    <div class="text-center">
+                        <i class="fas fa-tachometer-alt text-6xl mb-4 text-blue-400/60"></i>
+                        <p class="text-lg font-medium">系统性能指标</p>
+                        <p class="text-sm text-white/60">CPU、内存、网络、存储</p>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-400">68%</div>
+                                <div class="text-xs text-white/60">CPU使用率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-400">72%</div>
+                                <div class="text-xs text-white/60">内存使用率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-400">1.2GB/s</div>
+                                <div class="text-xs text-white/60">网络流量</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-yellow-400">85%</div>
+                                <div class="text-xs text-white/60">存储使用率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 告警和事件监控 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="data-card rounded-lg p-6 text-white">
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-exclamation-triangle text-red-400 mr-2"></i>
+                    实时告警
+                </h3>
+                <div class="space-y-3">
+                    <div class="bg-red-500/20 border border-red-500/30 rounded-lg p-3">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-medium">设备故障</span>
+                            <span class="text-xs text-red-400">14:25</span>
+                        </div>
+                        <div class="text-xs text-white/80">生产线3号设备异常停机</div>
+                    </div>
+                    <div class="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-3">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-medium">系统警告</span>
+                            <span class="text-xs text-yellow-400">13:45</span>
+                        </div>
+                        <div class="text-xs text-white/80">网络延迟异常增高</div>
+                    </div>
+                    <div class="bg-blue-500/20 border border-blue-500/30 rounded-lg p-3">
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="text-sm font-medium">信息提示</span>
+                            <span class="text-xs text-blue-400">12:30</span>
+                        </div>
+                        <div class="text-xs text-white/80">系统备份完成</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-card rounded-lg p-6 text-white">
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-users text-green-400 mr-2"></i>
+                    人员状态
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">在岗人员</span>
+                        <span class="text-lg font-bold text-green-400">234人</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">请假人员</span>
+                        <span class="text-lg font-bold text-yellow-400">12人</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">培训人员</span>
+                        <span class="text-lg font-bold text-blue-400">8人</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">出差人员</span>
+                        <span class="text-lg font-bold text-purple-400">5人</span>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-white/20">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm">出勤率</span>
+                            <span class="text-xl font-bold text-green-400">95.2%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-card rounded-lg p-6 text-white">
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-chart-pie text-purple-400 mr-2"></i>
+                    运营概况
+                </h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>订单完成率</span>
+                            <span>96.8%</span>
+                        </div>
+                        <div class="w-full bg-white/20 rounded-full h-2">
+                            <div class="bg-green-400 h-2 rounded-full" style="width: 96.8%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>库存周转率</span>
+                            <span>85.3%</span>
+                        </div>
+                        <div class="w-full bg-white/20 rounded-full h-2">
+                            <div class="bg-blue-400 h-2 rounded-full" style="width: 85.3%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>客户满意度</span>
+                            <span>92.1%</span>
+                        </div>
+                        <div class="w-full bg-white/20 rounded-full h-2">
+                            <div class="bg-yellow-400 h-2 rounded-full" style="width: 92.1%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>成本控制率</span>
+                            <span>88.7%</span>
+                        </div>
+                        <div class="w-full bg-white/20 rounded-full h-2">
+                            <div class="bg-purple-400 h-2 rounded-full" style="width: 88.7%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部控制面板 -->
+        <div class="data-card rounded-lg p-6 text-white">
+            <h3 class="text-lg font-semibold mb-4 flex items-center">
+                <i class="fas fa-sliders-h text-blue-400 mr-2"></i>
+                监控控制面板
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-500/20 border border-green-500/30 rounded-lg hover:bg-green-500/30 transition-colors">
+                    <i class="fas fa-play text-green-400 text-xl mb-2"></i>
+                    <span class="text-sm font-medium">启动监控</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-red-500/20 border border-red-500/30 rounded-lg hover:bg-red-500/30 transition-colors">
+                    <i class="fas fa-pause text-red-400 text-xl mb-2"></i>
+                    <span class="text-sm font-medium">暂停监控</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-500/20 border border-blue-500/30 rounded-lg hover:bg-blue-500/30 transition-colors">
+                    <i class="fas fa-sync text-blue-400 text-xl mb-2"></i>
+                    <span class="text-sm font-medium">刷新数据</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-yellow-500/20 border border-yellow-500/30 rounded-lg hover:bg-yellow-500/30 transition-colors">
+                    <i class="fas fa-bell text-yellow-400 text-xl mb-2"></i>
+                    <span class="text-sm font-medium">告警设置</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-500/20 border border-purple-500/30 rounded-lg hover:bg-purple-500/30 transition-colors">
+                    <i class="fas fa-download text-purple-400 text-xl mb-2"></i>
+                    <span class="text-sm font-medium">导出报告</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-gray-500/20 border border-gray-500/30 rounded-lg hover:bg-gray-500/30 transition-colors">
+                    <i class="fas fa-expand text-gray-400 text-xl mb-2"></i>
+                    <span class="text-sm font-medium">全屏显示</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 实时监控大屏功能
+        function initMonitoringDashboard() {
+            console.log('初始化实时监控大屏功能');
+            
+            // 更新当前时间
+            function updateCurrentTime() {
+                const now = new Date();
+                const timeString = now.toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                document.getElementById('current-time').textContent = timeString;
+            }
+            
+            // 控制面板按钮事件
+            const controlButtons = document.querySelectorAll('button');
+            controlButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('启动监控')) {
+                    button.addEventListener('click', function() {
+                        console.log('启动监控');
+                        alert('监控系统已启动');
+                    });
+                } else if (text.includes('暂停监控')) {
+                    button.addEventListener('click', function() {
+                        console.log('暂停监控');
+                        alert('监控系统已暂停');
+                    });
+                } else if (text.includes('刷新数据')) {
+                    button.addEventListener('click', function() {
+                        console.log('刷新数据');
+                        alert('正在刷新监控数据...');
+                    });
+                } else if (text.includes('全屏显示')) {
+                    button.addEventListener('click', function() {
+                        console.log('全屏显示');
+                        if (document.documentElement.requestFullscreen) {
+                            document.documentElement.requestFullscreen();
+                        }
+                    });
+                }
+            });
+            
+            // 启动时间更新
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            
+            // 模拟实时数据更新
+            function updateDashboardData() {
+                console.log('更新大屏数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            setInterval(updateDashboardData, 5000); // 每5秒更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initMonitoringDashboard();
+            console.log('实时监控大屏页面加载完成');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI预测与调度 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-brain text-primary mr-3"></i>
+                AI预测与智能调度
+            </h1>
+            <p class="text-gray-600 mt-2">基于AI算法的能源需量预测和智能调度优化</p>
+        </div>
+
+        <!-- 预测统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">预测准确率</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">94.2%</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-bullseye text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>本周平均:</span>
+                        <span class="text-blue-600 font-medium">93.8%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>目标:</span>
+                        <span class="text-green-600 font-medium">≥90%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">明日预测需量</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">2,680kW</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-arrow-up text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较今日:</span>
+                        <span class="text-green-600 font-medium">+8.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>峰值时段:</span>
+                        <span class="text-orange-600 font-medium">14:00-16:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">调度优化率</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">15.8%</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-cogs text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>节能效果:</span>
+                        <span class="text-purple-600 font-medium">12.3%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>成本节省:</span>
+                        <span class="text-green-600 font-medium">¥1,250/日</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">AI建议数</h3>
+                        <p class="text-3xl font-bold text-orange-600 mt-2">8</p>
+                    </div>
+                    <div class="bg-orange-100 p-3 rounded-full">
+                        <i class="fas fa-lightbulb text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>紧急建议:</span>
+                        <span class="text-red-600 font-medium">2个</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>长期建议:</span>
+                        <span class="text-blue-600 font-medium">6个</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 需量预测分析 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                    需量预测分析
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">明日预测需量</span>
+                            <i class="fas fa-arrow-up text-green-600"></i>
+                        </div>
+                        <div class="text-2xl font-bold text-blue-600">2,680 kW</div>
+                        <div class="text-xs text-gray-500">较今日预计增长: +8.5%</div>
+                        <div class="text-xs text-green-600 mt-1">峰值时段: 14:00-16:00</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">本周预测</span>
+                            <i class="fas fa-calendar text-green-600"></i>
+                        </div>
+                        <div class="text-lg font-bold text-green-600">18,450 kWh</div>
+                        <div class="text-xs text-gray-500">平均日需量: 2,635 kW</div>
+                        <div class="text-xs text-blue-600 mt-1">预测准确率: 94.2%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-area text-purple-600 mr-2"></i>
+                    预测趋势图表
+                </h3>
+                <div class="h-48 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-line text-4xl mb-4"></i>
+                        <p>AI预测趋势图</p>
+                        <p class="text-sm">显示未来7天需量预测</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 智能调度策略 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-cogs text-green-600 mr-2"></i>
+                智能调度策略
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">负荷调度</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">执行中</span>
+                        </div>
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 空调系统: 温度调节+2°C</div>
+                            <div>• 照明系统: 亮度降低15%</div>
+                            <div>• 生产设备: 错峰运行</div>
+                            <div class="text-green-600">• 预计节能: 12.3%</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">峰谷调度</span>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">计划中</span>
+                        </div>
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 储能充电: 23:00-06:00</div>
+                            <div>• 储能放电: 14:00-18:00</div>
+                            <div>• 电价优化: 谷电使用率85%</div>
+                            <div class="text-blue-600">• 预计节省: ¥1,250/日</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">设备协调</span>
+                            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">自动</span>
+                        </div>
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 空调与照明联动</div>
+                            <div>• 生产设备优先级调度</div>
+                            <div>• 非关键设备延时启动</div>
+                            <div class="text-purple-600">• 协调效率: 95.2%</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">应急调度</span>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">待机</span>
+                        </div>
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 紧急负荷切除</div>
+                            <div>• 备用电源启动</div>
+                            <div>• 关键设备保护</div>
+                            <div class="text-yellow-600">• 响应时间: <30秒</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI优化建议 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-lightbulb text-yellow-600 mr-2"></i>
+                AI优化建议
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-red-50 to-orange-50 rounded-lg p-4 border border-red-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-exclamation-circle text-red-600 mr-2"></i>
+                            <span class="text-sm font-medium text-gray-700">紧急建议</span>
+                        </div>
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 明日14:00-16:00用电高峰</div>
+                            <div>• 建议提前启动储能放电</div>
+                            <div>• 非关键设备错峰运行</div>
+                            <div class="text-red-600">• 可避免需量电费: ¥2,800</div>
+                        </div>
+                        <button class="mt-3 px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">
+                            立即执行
+                        </button>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                            <span class="text-sm font-medium text-gray-700">优化建议</span>
+                        </div>
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 调整空调运行策略</div>
+                            <div>• 优化照明控制时间</div>
+                            <div>• 生产设备错峰调度</div>
+                            <div class="text-blue-600">• 预计节能: 8.5%</div>
+                        </div>
+                        <button class="mt-3 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                            应用建议
+                        </button>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                            <span class="text-sm font-medium text-gray-700">长期建议</span>
+                        </div>
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 增加屋顶光伏装机容量</div>
+                            <div>• 升级老旧空调系统</div>
+                            <div>• 安装智能照明控制系统</div>
+                            <div class="text-green-600">• 年节能潜力: 15.8%</div>
+                        </div>
+                        <button class="mt-3 px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+                            制定计划
+                        </button>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-chart-line text-purple-600 mr-2"></i>
+                            <span class="text-sm font-medium text-gray-700">效果分析</span>
+                        </div>
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 本周节能效果: 12.3%</div>
+                            <div>• 成本节省: ¥8,750</div>
+                            <div>• 碳减排: 2.1吨CO₂</div>
+                            <div class="text-purple-600">• 目标达成率: 108%</div>
+                        </div>
+                        <button class="mt-3 px-3 py-1 bg-purple-600 text-white text-xs rounded hover:bg-purple-700">
+                            查看详情
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 调度控制面板 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-sliders-h text-blue-600 mr-2"></i>
+                调度控制面板
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-play text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">启动调度</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-cog text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">策略配置</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-chart-bar text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">效果分析</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">导出报告</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // AI预测与调度功能
+        function initAIPredictionAndDispatch() {
+            console.log('初始化AI预测与调度功能');
+            
+            // 建议按钮事件
+            const suggestionButtons = document.querySelectorAll('button');
+            suggestionButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('立即执行')) {
+                    button.addEventListener('click', function() {
+                        console.log('执行紧急建议');
+                        alert('正在执行紧急调度建议...\n预计节省需量电费: ¥2,800');
+                    });
+                } else if (text.includes('应用建议')) {
+                    button.addEventListener('click', function() {
+                        console.log('应用优化建议');
+                        alert('正在应用AI优化建议...\n预计节能效果: 8.5%');
+                    });
+                } else if (text.includes('制定计划')) {
+                    button.addEventListener('click', function() {
+                        console.log('制定长期计划');
+                        alert('正在制定长期节能计划...\n年节能潜力: 15.8%');
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initAIPredictionAndDispatch();
+            console.log('AI预测与调度页面加载完成');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务优化配置 - 厂内物流执行系统(LES) - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">任务优化配置</h1>
+            <p class="text-gray-600">就近调配、任务分配、异常处理、故障规避等智能优化算法配置</p>
+        </div>
+
+        <!-- 优化算法统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">4</div>
+                        <div class="text-sm text-gray-600">优化算法</div>
+                        <div class="text-xs text-gray-500">运行中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-brain text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">95.8%</div>
+                        <div class="text-sm text-gray-600">优化效率</div>
+                        <div class="text-xs text-gray-500">任务分配</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">2.3秒</div>
+                        <div class="text-sm text-gray-600">响应时间</div>
+                        <div class="text-xs text-gray-500">平均计算</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-stopwatch text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">156</div>
+                        <div class="text-sm text-gray-600">优化任务</div>
+                        <div class="text-xs text-gray-500">今日处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tasks text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 优化配置选项卡 -->
+        <div class="mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8">
+                    <button onclick="showTab('proximity')" class="tab-button border-b-2 border-blue-500 text-blue-600 py-2 px-1 text-sm font-medium" id="proximity-tab">
+                        就近调配
+                    </button>
+                    <button onclick="showTab('allocation')" class="tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium" id="allocation-tab">
+                        任务分配
+                    </button>
+                    <button onclick="showTab('exception')" class="tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium" id="exception-tab">
+                        异常处理
+                    </button>
+                    <button onclick="showTab('avoidance')" class="tab-button border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 py-2 px-1 text-sm font-medium" id="avoidance-tab">
+                        故障规避
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- 就近调配配置 -->
+        <div id="proximity-content" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 配置参数 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">就近调配参数</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">距离权重</label>
+                            <input type="range" min="0" max="100" value="70" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" id="distanceWeight">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>0%</span>
+                                <span id="distanceWeightValue">70%</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">时间权重</label>
+                            <input type="range" min="0" max="100" value="20" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" id="timeWeight">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>0%</span>
+                                <span id="timeWeightValue">20%</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">负载权重</label>
+                            <input type="range" min="0" max="100" value="10" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" id="loadWeight">
+                            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>0%</span>
+                                <span id="loadWeightValue">10%</span>
+                                <span>100%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enableProximity" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="enableProximity" class="ml-2 block text-sm text-gray-900">启用就近调配算法</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 算法效果 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">算法效果</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">平均配送距离</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-green-600">减少15%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">配送时间</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 78%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-blue-600">减少22%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">设备利用率</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-purple-600 h-2 rounded-full" style="width: 92%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-purple-600">提升8%</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">能耗降低</span>
+                            <div class="flex items-center">
+                                <div class="w-32 bg-gray-200 rounded-full h-2 mr-3">
+                                    <div class="bg-orange-600 h-2 rounded-full" style="width: 68%"></div>
+                                </div>
+                                <span class="text-sm font-medium text-orange-600">降低12%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 任务分配配置 -->
+        <div id="allocation-content" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 分配策略 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">分配策略</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">分配算法</label>
+                            <select class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                                <option>先进先出(FIFO)</option>
+                                <option>优先级调度</option>
+                                <option>负载均衡</option>
+                                <option>最短路径优先</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">最大并发任务数</label>
+                            <input type="number" value="50" min="1" max="100" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">任务超时时间(分钟)</label>
+                            <input type="number" value="30" min="5" max="120" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enablePriority" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="enablePriority" class="ml-2 block text-sm text-gray-900">启用优先级调度</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 优先级规则 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">优先级规则</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-200">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">紧急任务</div>
+                                <div class="text-xs text-gray-600">生产线停机、安全事故</div>
+                            </div>
+                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">优先级: 1</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg border border-orange-200">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">重要任务</div>
+                                <div class="text-xs text-gray-600">关键物料配送、质量问题</div>
+                            </div>
+                            <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded">优先级: 2</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
+                            <div>
+                                <div class="text-sm font-medium text-blue-800">普通任务</div>
+                                <div class="text-xs text-gray-600">常规物料配送</div>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">优先级: 3</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+                            <div>
+                                <div class="text-sm font-medium text-gray-800">低优先级任务</div>
+                                <div class="text-xs text-gray-600">非关键物料、维护任务</div>
+                            </div>
+                            <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded">优先级: 4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 异常处理配置 -->
+        <div id="exception-content" class="tab-content hidden">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">异常处理规则</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">异常类型</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">触发条件</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">处理策略</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">通知方式</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="exceptionTableBody">
+                            <!-- 异常处理规则数据 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 故障规避配置 -->
+        <div id="avoidance-content" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 故障检测 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">故障检测配置</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">检测间隔(秒)</label>
+                            <input type="number" value="30" min="10" max="300" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">故障阈值</label>
+                            <input type="number" value="3" min="1" max="10" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm">
+                            <div class="text-xs text-gray-500 mt-1">连续失败次数达到阈值时触发故障规避</div>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="enableAvoidance" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="enableAvoidance" class="ml-2 block text-sm text-gray-900">启用自动故障规避</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 规避策略 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">规避策略</h3>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                            <div class="text-sm font-medium text-blue-800">路径重规划</div>
+                            <div class="text-xs text-gray-600">自动计算备用路径，避开故障区域</div>
+                        </div>
+                        <div class="p-3 bg-green-50 rounded-lg border border-green-200">
+                            <div class="text-sm font-medium text-green-800">设备替换</div>
+                            <div class="text-xs text-gray-600">将任务分配给其他可用设备</div>
+                        </div>
+                        <div class="p-3 bg-orange-50 rounded-lg border border-orange-200">
+                            <div class="text-sm font-medium text-orange-800">任务延迟</div>
+                            <div class="text-xs text-gray-600">暂停任务执行，等待故障恢复</div>
+                        </div>
+                        <div class="p-3 bg-purple-50 rounded-lg border border-purple-200">
+                            <div class="text-sm font-medium text-purple-800">人工介入</div>
+                            <div class="text-xs text-gray-600">通知管理员进行人工处理</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 保存按钮 -->
+        <div class="mt-8 flex justify-end space-x-4">
+            <button class="bg-gray-300 text-gray-700 px-6 py-2 rounded-md text-sm hover:bg-gray-400" onclick="resetConfig()">
+                重置配置
+            </button>
+            <button class="bg-primary text-white px-6 py-2 rounded-md text-sm hover:bg-blue-700" onclick="saveConfig()">
+                保存配置
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 异常处理规则数据
+        const exceptionRules = [
+            {
+                type: 'AGV故障',
+                condition: '设备无响应超过60秒',
+                strategy: '自动切换备用AGV',
+                notification: '短信+邮件',
+                status: 'active'
+            },
+            {
+                type: '路径阻塞',
+                condition: '路径占用超过5分钟',
+                strategy: '重新规划路径',
+                notification: '系统通知',
+                status: 'active'
+            },
+            {
+                type: '物料缺失',
+                condition: '扫码无法识别物料',
+                strategy: '人工确认+重新扫码',
+                notification: '现场提醒',
+                status: 'active'
+            },
+            {
+                type: '网络中断',
+                condition: '通信超时超过30秒',
+                strategy: '本地缓存+离线模式',
+                notification: '系统报警',
+                status: 'active'
+            }
+        ];
+
+        // 显示选项卡
+        function showTab(tabName) {
+            // 隐藏所有内容
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // 重置所有选项卡样式
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('border-blue-500', 'text-blue-600');
+                button.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            // 显示选中的内容
+            document.getElementById(tabName + '-content').classList.remove('hidden');
+            
+            // 设置选中的选项卡样式
+            const activeTab = document.getElementById(tabName + '-tab');
+            activeTab.classList.remove('border-transparent', 'text-gray-500');
+            activeTab.classList.add('border-blue-500', 'text-blue-600');
+        }
+
+        // 渲染异常处理规则表格
+        function renderExceptionTable() {
+            const tbody = document.getElementById('exceptionTableBody');
+            tbody.innerHTML = '';
+
+            exceptionRules.forEach((rule, index) => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+                
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${rule.type}</div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="text-sm text-gray-900">${rule.condition}</div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="text-sm text-gray-900">${rule.strategy}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${rule.notification}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                            启用
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-2">
+                            <button onclick="editRule(${index})" class="text-blue-600 hover:text-blue-900">编辑</button>
+                            <button onclick="deleteRule(${index})" class="text-red-600 hover:text-red-900">删除</button>
+                        </div>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        // 更新权重值显示
+        function updateWeightValues() {
+            document.getElementById('distanceWeightValue').textContent = document.getElementById('distanceWeight').value + '%';
+            document.getElementById('timeWeightValue').textContent = document.getElementById('timeWeight').value + '%';
+            document.getElementById('loadWeightValue').textContent = document.getElementById('loadWeight').value + '%';
+        }
+
+        // 操作函数
+        function editRule(index) {
+            alert(`编辑异常处理规则: ${exceptionRules[index].type}`);
+        }
+
+        function deleteRule(index) {
+            if (confirm(`确认删除规则: ${exceptionRules[index].type}？`)) {
+                exceptionRules.splice(index, 1);
+                renderExceptionTable();
+            }
+        }
+
+        function saveConfig() {
+            alert('配置已保存！\n- 就近调配参数已更新\n- 任务分配策略已应用\n- 异常处理规则已生效\n- 故障规避机制已启用');
+        }
+
+        function resetConfig() {
+            if (confirm('确认重置所有配置到默认值？')) {
+                // 重置滑块值
+                document.getElementById('distanceWeight').value = 70;
+                document.getElementById('timeWeight').value = 20;
+                document.getElementById('loadWeight').value = 10;
+                updateWeightValues();
+                
+                alert('配置已重置到默认值');
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            renderExceptionTable();
+            
+            // 添加滑块事件监听
+            document.getElementById('distanceWeight').addEventListener('input', updateWeightValues);
+            document.getElementById('timeWeight').addEventListener('input', updateWeightValues);
+            document.getElementById('loadWeight').addEventListener('input', updateWeightValues);
+            
+            updateWeightValues();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高效能源 - 慧新全智厂园一体平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+                <i class="fas fa-bolt text-yellow-600 mr-3"></i>
+                高效能源
+            </h1>
+            <p class="text-gray-600">能耗监控、智能调度、节能优化 - 绿色智慧能源管理</p>
+        </div>
+
+        <!-- 能源概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-plug text-yellow-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-yellow-600">2,456</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">今日用电量</h3>
+                <p class="text-sm text-gray-600">kWh</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-leaf text-green-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-green-600">15.2%</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">节能率</h3>
+                <p class="text-sm text-gray-600">较上月提升</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-solar-panel text-blue-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-blue-600">1,234</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">光伏发电</h3>
+                <p class="text-sm text-gray-600">kWh</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-red-600">2</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">能耗告警</h3>
+                <p class="text-sm text-gray-600">待处理</p>
+            </div>
+        </div>
+
+        <!-- 能源需量预测与智能调度 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-brain text-primary mr-2"></i>
+                    能源需量预测与智能调度
+                </h2>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">AI预测</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">调度策略</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">优化建议</button>
+                </div>
+            </div>
+
+            <!-- 预测分析 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 需量预测 -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                        需量预测分析
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-lg p-3 border border-blue-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">明日预测需量</span>
+                                <i class="fas fa-arrow-up text-green-600"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-blue-600">2,680 kW</div>
+                            <div class="text-xs text-gray-500">较今日预计增长: +8.5%</div>
+                            <div class="text-xs text-green-600 mt-1">峰值时段: 14:00-16:00</div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-green-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">本周预测</span>
+                                <i class="fas fa-calendar text-green-600"></i>
+                            </div>
+                            <div class="text-lg font-bold text-green-600">18,450 kWh</div>
+                            <div class="text-xs text-gray-500">平均日需量: 2,635 kW</div>
+                            <div class="text-xs text-blue-600 mt-1">预测准确率: 94.2%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 智能调度策略 -->
+                <div class="bg-gradient-to-br from-green-50 to-teal-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-cogs text-green-600 mr-2"></i>
+                        智能调度策略
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-lg p-3 border border-green-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">负荷调度</span>
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">执行中</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 空调系统: 温度调节+2°C</div>
+                                <div>• 照明系统: 亮度降低15%</div>
+                                <div>• 生产设备: 错峰运行</div>
+                                <div class="text-green-600">• 预计节能: 12.3%</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-blue-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">峰谷调度</span>
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">计划中</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 储能充电: 23:00-06:00</div>
+                                <div>• 储能放电: 14:00-18:00</div>
+                                <div>• 电价优化: 谷电使用率85%</div>
+                                <div class="text-blue-600">• 预计节省: ¥1,250/日</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 优化建议 -->
+                <div class="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-lightbulb text-yellow-600 mr-2"></i>
+                        AI优化建议
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-lg p-3 border border-yellow-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-exclamation-circle text-orange-600 mr-2"></i>
+                                <span class="text-sm font-medium text-gray-700">紧急建议</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 明日14:00-16:00用电高峰</div>
+                                <div>• 建议提前启动储能放电</div>
+                                <div>• 非关键设备错峰运行</div>
+                                <div class="text-orange-600">• 可避免需量电费: ¥2,800</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-green-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                                <span class="text-sm font-medium text-gray-700">长期建议</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 增加屋顶光伏装机容量</div>
+                                <div>• 升级老旧空调系统</div>
+                                <div>• 安装智能照明控制系统</div>
+                                <div class="text-green-600">• 年节能潜力: 15.8%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要功能区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 能耗监控 -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-area text-primary mr-2"></i>
+                    实时能耗监控
+                </h2>
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-lg p-4 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm opacity-90">总用电量</div>
+                                <div class="text-2xl font-bold">2,456 kWh</div>
+                            </div>
+                            <i class="fas fa-bolt text-3xl opacity-80"></i>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-400 to-green-600 rounded-lg p-4 text-white">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm opacity-90">光伏发电</div>
+                                <div class="text-2xl font-bold">1,234 kWh</div>
+                            </div>
+                            <i class="fas fa-solar-panel text-3xl opacity-80"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 能耗趋势图 -->
+                <div class="bg-gray-50 rounded-lg p-4 h-64">
+                    <div class="text-sm font-medium text-gray-700 mb-4">24小时能耗趋势</div>
+                    <div class="h-48 flex items-end justify-between space-x-1">
+                        <div class="bg-yellow-400 w-4 h-16 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-20 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-24 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-32 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-28 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-36 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-40 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-44 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-48 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-42 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-38 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-34 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-30 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-26 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-22 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-18 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-20 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-24 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-28 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-32 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-36 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-40 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-38 rounded-t"></div>
+                        <div class="bg-yellow-400 w-4 h-34 rounded-t"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设备控制 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-sliders-h text-primary mr-2"></i>
+                    智能控制
+                </h2>
+                <div class="space-y-4">
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">空调系统</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                        <div class="text-xs text-gray-500">功率: 45.2 kW</div>
+                    </div>
+
+                    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">照明系统</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
+                            </label>
+                        </div>
+                        <div class="text-xs text-gray-500">功率: 12.8 kW</div>
+                    </div>
+
+                    <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">生产设备</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                            </label>
+                        </div>
+                        <div class="text-xs text-gray-500">功率: 156.7 kW</div>
+                    </div>
+
+                    <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">充电桩</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                            </label>
+                        </div>
+                        <div class="text-xs text-gray-500">功率: 0 kW</div>
+                    </div>
+
+                    <button class="w-full bg-primary text-white py-2 px-4 rounded-lg text-sm hover:bg-primary-light transition-colors">
+                        <i class="fas fa-magic mr-2"></i>
+                        智能优化
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 节能分析 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-leaf text-primary mr-2"></i>
+                节能分析与建议
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div class="flex items-center mb-3">
+                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-lightbulb text-white text-sm"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">照明优化</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">建议在非工作时间自动调节照明亮度，预计可节能20%</p>
+                    <button class="text-green-600 hover:text-green-700 text-sm font-medium">
+                        查看详情 <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div class="flex items-center mb-3">
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-snowflake text-white text-sm"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">空调调节</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">根据人员分布智能调节空调温度，预计可节能15%</p>
+                    <button class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                        查看详情 <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <div class="flex items-center mb-3">
+                        <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-cog text-white text-sm"></i>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">设备优化</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">优化生产设备运行时间安排，预计可节能10%</p>
+                    <button class="text-yellow-600 hover:text-yellow-700 text-sm font-medium">
+                        查看详情 <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 双碳管理与新能源接入 -->
+        <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 双碳管理 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-leaf text-primary mr-2"></i>
+                    双碳管理系统
+                </h2>
+
+                <!-- 碳排放统计 -->
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-lg font-bold text-green-600">12.5</div>
+                                <div class="text-xs text-gray-600">今日碳排放(吨CO₂)</div>
+                            </div>
+                            <i class="fas fa-leaf text-green-600"></i>
+                        </div>
+                        <div class="text-xs text-green-600 mt-1">较昨日: ↓8.5%</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-lg font-bold text-blue-600">3.2</div>
+                                <div class="text-xs text-gray-600">碳减排(吨CO₂)</div>
+                            </div>
+                            <i class="fas fa-recycle text-blue-600"></i>
+                        </div>
+                        <div class="text-xs text-blue-600 mt-1">本月累计: 89.6吨</div>
+                    </div>
+                </div>
+
+                <!-- 碳中和进度 -->
+                <div class="mb-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">年度碳中和目标</span>
+                        <span class="text-sm text-green-600">67.8%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-500 h-2 rounded-full" style="width: 67.8%"></div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1">目标: 减排1,200吨CO₂ | 已完成: 813.6吨</div>
+                </div>
+
+                <!-- 碳管理措施 -->
+                <div class="space-y-2">
+                    <div class="bg-green-50 border border-green-200 rounded p-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-700">光伏发电替代</span>
+                            <span class="text-xs text-green-600">-2.1吨CO₂/日</span>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded p-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-700">能效提升</span>
+                            <span class="text-xs text-blue-600">-0.8吨CO₂/日</span>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 rounded p-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-gray-700">绿色采购</span>
+                            <span class="text-xs text-yellow-600">-0.3吨CO₂/日</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 碳管理操作 -->
+                <div class="mt-4 grid grid-cols-2 gap-2">
+                    <button class="px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                        <i class="fas fa-chart-line mr-1"></i>碳足迹分析
+                    </button>
+                    <button class="px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                        <i class="fas fa-file-alt mr-1"></i>碳报告
+                    </button>
+                </div>
+            </div>
+
+            <!-- 新能源接入管理 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-solar-panel text-primary mr-2"></i>
+                    新能源接入管理
+                </h2>
+
+                <!-- 新能源统计 -->
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-lg font-bold text-yellow-600">1,234</div>
+                                <div class="text-xs text-gray-600">光伏发电(kWh)</div>
+                            </div>
+                            <i class="fas fa-sun text-yellow-600"></i>
+                        </div>
+                        <div class="text-xs text-green-600 mt-1">发电效率: 85.2%</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-lg font-bold text-cyan-600">456</div>
+                                <div class="text-xs text-gray-600">储能容量(kWh)</div>
+                            </div>
+                            <i class="fas fa-battery-three-quarters text-cyan-600"></i>
+                        </div>
+                        <div class="text-xs text-blue-600 mt-1">充电状态: 75%</div>
+                    </div>
+                </div>
+
+                <!-- 新能源设备状态 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">设备运行状态</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between p-2 bg-green-50 border border-green-200 rounded">
+                            <div>
+                                <span class="text-sm font-medium text-gray-700">屋顶光伏阵列</span>
+                                <div class="text-xs text-gray-500">装机容量: 500kW</div>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-blue-50 border border-blue-200 rounded">
+                            <div>
+                                <span class="text-sm font-medium text-gray-700">储能系统</span>
+                                <div class="text-xs text-gray-500">容量: 600kWh</div>
+                            </div>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">充电中</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-yellow-50 border border-yellow-200 rounded">
+                            <div>
+                                <span class="text-sm font-medium text-gray-700">逆变器系统</span>
+                                <div class="text-xs text-gray-500">效率: 96.5%</div>
+                            </div>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">优化中</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 能源调度策略 -->
+                <div class="mb-4">
+                    <h3 class="text-sm font-semibold text-gray-700 mb-2">智能调度策略</h3>
+                    <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-3">
+                        <div class="text-xs text-gray-600 space-y-1">
+                            <div>• 光伏优先: 自发自用率 78.5%</div>
+                            <div>• 储能调峰: 峰时放电，谷时充电</div>
+                            <div>• 余电上网: 今日上网 156kWh</div>
+                            <div class="text-indigo-600">• 综合效益: ¥1,850/日</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 新能源管理操作 -->
+                <div class="grid grid-cols-2 gap-2">
+                    <button class="px-3 py-2 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700">
+                        <i class="fas fa-cog mr-1"></i>调度设置
+                    </button>
+                    <button class="px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                        <i class="fas fa-chart-bar mr-1"></i>发电统计
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 能耗告警 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bell text-primary mr-2"></i>
+                能耗告警
+            </h2>
+            <div class="space-y-3">
+                <div class="flex items-center p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-exclamation text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-800">A区空调系统能耗异常</div>
+                        <div class="text-xs text-gray-500">当前功率超出正常范围25% - 5分钟前</div>
+                    </div>
+                    <button class="text-red-600 hover:text-red-700">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div class="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-exclamation-triangle text-white text-sm"></i>
+                    </div>
+                    <div class="flex-1">
+                        <div class="text-sm font-medium text-gray-800">生产线3号设备待机功耗过高</div>
+                        <div class="text-xs text-gray-500">建议检查设备状态 - 15分钟前</div>
+                    </div>
+                    <button class="text-yellow-600 hover:text-yellow-700">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟实时能源数据更新
+        function updateEnergyData() {
+            console.log('高效能源数据更新');
+
+            // 更新需量预测数据
+            updateDemandForecast();
+
+            // 更新能耗监控数据
+            updateEnergyConsumption();
+
+            // 更新双碳管理数据
+            updateCarbonManagement();
+
+            // 更新新能源数据
+            updateRenewableEnergy();
+        }
+
+        // 更新需量预测数据
+        function updateDemandForecast() {
+            const forecastData = {
+                tomorrowDemand: Math.floor(2600 + Math.random() * 200),
+                weeklyDemand: Math.floor(18000 + Math.random() * 1000),
+                peakTime: ['14:00-16:00', '10:00-12:00', '16:00-18:00'][Math.floor(Math.random() * 3)],
+                accuracy: (92 + Math.random() * 6).toFixed(1) + '%'
+            };
+
+            console.log('需量预测数据更新:', forecastData);
+        }
+
+        // 更新能耗监控数据
+        function updateEnergyConsumption() {
+            const consumptionData = {
+                currentPower: Math.floor(2400 + Math.random() * 200),
+                todayConsumption: Math.floor(2400 + Math.random() * 200),
+                solarGeneration: Math.floor(1200 + Math.random() * 100),
+                efficiency: (85 + Math.random() * 10).toFixed(1) + '%'
+            };
+
+            console.log('能耗监控数据更新:', consumptionData);
+        }
+
+        // 更新双碳管理数据
+        function updateCarbonManagement() {
+            const carbonData = {
+                todayEmission: (12 + Math.random() * 2).toFixed(1),
+                carbonReduction: (3 + Math.random() * 1).toFixed(1),
+                neutralProgress: Math.floor(65 + Math.random() * 8),
+                monthlyReduction: (85 + Math.random() * 10).toFixed(1)
+            };
+
+            console.log('双碳管理数据更新:', carbonData);
+        }
+
+        // 更新新能源数据
+        function updateRenewableEnergy() {
+            const renewableData = {
+                solarGeneration: Math.floor(1200 + Math.random() * 100),
+                storageCapacity: Math.floor(450 + Math.random() * 50),
+                solarEfficiency: (83 + Math.random() * 5).toFixed(1) + '%',
+                storageLevel: Math.floor(70 + Math.random() * 20) + '%'
+            };
+
+            console.log('新能源数据更新:', renewableData);
+        }
+
+        // 初始化需量预测功能
+        function initDemandForecast() {
+            console.log('初始化需量预测功能');
+
+            // AI预测按钮事件
+            const forecastButtons = document.querySelectorAll('button');
+            forecastButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('AI预测')) {
+                    button.addEventListener('click', function() {
+                        console.log('AI预测分析');
+                        alert('正在运行AI需量预测模型...\n预测准确率: 94.2%\n明日峰值: 2,680kW\n建议措施: 错峰调度');
+                    });
+                } else if (text.includes('调度策略')) {
+                    button.addEventListener('click', function() {
+                        console.log('查看调度策略');
+                        alert('智能调度策略:\n1. 负荷调度: 执行中\n2. 峰谷调度: 计划中\n3. 储能调度: 自动模式');
+                    });
+                } else if (text.includes('优化建议')) {
+                    button.addEventListener('click', function() {
+                        console.log('查看优化建议');
+                        alert('AI优化建议:\n紧急: 明日用电高峰预警\n长期: 增加光伏装机容量\n节能潜力: 15.8%');
+                    });
+                }
+            });
+        }
+
+        // 初始化智能设备控制
+        function initSmartDeviceControl() {
+            console.log('初始化智能设备控制');
+
+            // 设备控制按钮事件
+            const deviceButtons = document.querySelectorAll('button');
+            deviceButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('空调控制')) {
+                    button.addEventListener('click', function() {
+                        console.log('空调智能控制');
+                        alert('空调系统控制:\n当前温度: 24°C\n目标温度: 26°C\n节能模式: 已启用\n预计节能: 15%');
+                    });
+                } else if (text.includes('照明控制')) {
+                    button.addEventListener('click', function() {
+                        console.log('照明智能控制');
+                        alert('照明系统控制:\n当前亮度: 85%\n自动调节: 已启用\n人员感应: 正常\n预计节能: 20%');
+                    });
+                } else if (text.includes('设备调度')) {
+                    button.addEventListener('click', function() {
+                        console.log('生产设备调度');
+                        alert('生产设备调度:\n错峰运行: 已启用\n设备效率: 87.5%\n调度策略: 智能模式\n预计节能: 10%');
+                    });
+                }
+            });
+        }
+
+        // 初始化双碳管理功能
+        function initCarbonManagement() {
+            console.log('初始化双碳管理功能');
+
+            // 双碳管理按钮事件
+            const carbonButtons = document.querySelectorAll('button');
+            carbonButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('碳足迹分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('碳足迹分析');
+                        alert('碳足迹分析报告:\n今日排放: 12.5吨CO₂\n主要来源: 电力消耗(65%)\n减排措施: 光伏发电\n年度目标: 67.8%完成');
+                    });
+                } else if (text.includes('碳报告')) {
+                    button.addEventListener('click', function() {
+                        console.log('生成碳报告');
+                        alert('正在生成碳排放报告...\n包含内容:\n- 月度碳排放统计\n- 减排措施效果\n- 碳中和进度\n- 改进建议');
+                    });
+                }
+            });
+        }
+
+        // 初始化新能源管理功能
+        function initRenewableEnergyManagement() {
+            console.log('初始化新能源管理功能');
+
+            // 新能源管理按钮事件
+            const renewableButtons = document.querySelectorAll('button');
+            renewableButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('调度设置')) {
+                    button.addEventListener('click', function() {
+                        console.log('新能源调度设置');
+                        alert('新能源调度设置:\n光伏优先级: 最高\n储能策略: 峰谷调节\n余电上网: 自动\n自发自用率: 78.5%');
+                    });
+                } else if (text.includes('发电统计')) {
+                    button.addEventListener('click', function() {
+                        console.log('发电统计分析');
+                        alert('发电统计分析:\n今日发电: 1,234kWh\n发电效率: 85.2%\n上网电量: 156kWh\n经济效益: ¥1,850');
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后启动实时更新
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化实时数据更新
+            updateEnergyData();
+            setInterval(updateEnergyData, 30000); // 每30秒更新一次
+
+            // 初始化各功能模块
+            initDemandForecast();
+            initSmartDeviceControl();
+            initCarbonManagement();
+            initRenewableEnergyManagement();
+
+            console.log('高效能源深度功能初始化完成');
+        });
+    </script>
+</body>
+</html>

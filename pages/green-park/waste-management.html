@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>固废危废管理 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-recycle text-primary mr-3"></i>
+                固废危废管理
+            </h1>
+            <p class="text-gray-600 mt-2">规范固废危废处置，确保环境安全</p>
+        </div>
+
+        <!-- 废物统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">一般固废</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">68.5</p>
+                        <p class="text-sm text-gray-500">吨/月</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-trash-alt text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>回收利用:</span>
+                        <span class="text-green-600 font-medium">58.2吨</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>回收率:</span>
+                        <span class="text-green-600 font-medium">85%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">危险废物</h3>
+                        <p class="text-3xl font-bold text-red-600 mt-2">2.8</p>
+                        <p class="text-sm text-gray-500">吨/月</p>
+                    </div>
+                    <div class="bg-red-100 p-3 rounded-full">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>安全处置:</span>
+                        <span class="text-red-600 font-medium">2.8吨</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>处置率:</span>
+                        <span class="text-green-600 font-medium">100%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">库存量</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">12.5</p>
+                        <p class="text-sm text-gray-500">吨</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-warehouse text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>一般固废:</span>
+                        <span class="text-yellow-600 font-medium">9.8吨</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>危险废物:</span>
+                        <span class="text-red-600 font-medium">2.7吨</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">处置成本</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">¥15,680</p>
+                        <p class="text-sm text-gray-500">本月</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-coins text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">-8.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>单位成本:</span>
+                        <span class="text-purple-600 font-medium">¥220/吨</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 废物分类管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-sort-amount-up text-blue-600 mr-2"></i>
+                废物分类管理
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">可回收物</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 废纸: 15.2吨</div>
+                        <div>• 废塑料: 8.5吨</div>
+                        <div>• 废金属: 12.8吨</div>
+                        <div>• 废玻璃: 3.2吨</div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <div class="flex justify-between">
+                            <span>总量: 39.7吨</span>
+                            <span class="text-green-600">回收率: 95%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">有害垃圾</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">安全</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 废电池: 0.8吨</div>
+                        <div>• 废灯管: 0.3吨</div>
+                        <div>• 废油漆: 1.2吨</div>
+                        <div>• 废溶剂: 0.5吨</div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <div class="flex justify-between">
+                            <span>总量: 2.8吨</span>
+                            <span class="text-blue-600">处置率: 100%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">厨余垃圾</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">处理中</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 食堂厨余: 8.5吨</div>
+                        <div>• 果皮菜叶: 3.2吨</div>
+                        <div>• 过期食品: 1.8吨</div>
+                        <div>• 其他: 0.5吨</div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <div class="flex justify-between">
+                            <span>总量: 14.0吨</span>
+                            <span class="text-yellow-600">堆肥率: 80%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-gray-50 to-slate-50 rounded-lg p-4 border border-gray-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">其他垃圾</h4>
+                        <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">填埋</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 混合垃圾: 6.8吨</div>
+                        <div>• 建筑垃圾: 4.2吨</div>
+                        <div>• 污泥: 2.5吨</div>
+                        <div>• 其他: 1.5吨</div>
+                    </div>
+                    <div class="mt-3 text-xs text-gray-500">
+                        <div class="flex justify-between">
+                            <span>总量: 15.0吨</span>
+                            <span class="text-gray-600">填埋率: 100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 危废管理台账 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-clipboard-list text-red-600 mr-2"></i>
+                危废管理台账
+            </h3>
+            <div class="space-y-4">
+                <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">HW08</span>
+                            <h4 class="font-semibold text-gray-800">废矿物油与含矿物油废物</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">更新时间: 2025-01-17 14:30</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">产生量:</span>
+                            <p class="font-medium text-red-600">1.2吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">库存量:</span>
+                            <p class="font-medium">0.8吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">处置量:</span>
+                            <p class="font-medium text-green-600">0.4吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">处置单位:</span>
+                            <p class="font-medium">环保科技公司</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">下次转移:</span>
+                            <p class="font-medium text-blue-600">2025-01-25</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>存储位置: 危废仓库A区 | 联单编号: JS2025010001</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                                转移联单
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">HW49</span>
+                            <h4 class="font-semibold text-gray-800">含有或沾染毒性危险废物</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">更新时间: 2025-01-17 13:45</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">产生量:</span>
+                            <p class="font-medium text-yellow-600">0.8吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">库存量:</span>
+                            <p class="font-medium">0.6吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">处置量:</span>
+                            <p class="font-medium text-green-600">0.2吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">处置单位:</span>
+                            <p class="font-medium">危废处置中心</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">下次转移:</span>
+                            <p class="font-medium text-blue-600">2025-01-30</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>存储位置: 危废仓库B区 | 联单编号: JS2025010002</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700">
+                                转移联单
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">HW06</span>
+                            <h4 class="font-semibold text-gray-800">废有机溶剂与含有机溶剂废物</h4>
+                        </div>
+                        <span class="text-sm text-gray-500">更新时间: 2025-01-17 12:20</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-3">
+                        <div>
+                            <span class="text-sm text-gray-600">产生量:</span>
+                            <p class="font-medium text-green-600">0.8吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">库存量:</span>
+                            <p class="font-medium">0.0吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">处置量:</span>
+                            <p class="font-medium text-green-600">0.8吨</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">处置单位:</span>
+                            <p class="font-medium">资源回收公司</p>
+                        </div>
+                        <div>
+                            <span class="text-sm text-gray-600">处置状态:</span>
+                            <p class="font-medium text-green-600">已完成</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            <span>处置方式: 资源化利用 | 联单编号: JS2025010003</span>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                                处置完成
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 处置单位管理 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-building text-green-600 mr-2"></i>
+                    处置单位管理
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">江苏环保科技有限公司</h4>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">合作中</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 许可证号: JSEP2023001</div>
+                            <div>• 处置类别: HW08, HW49</div>
+                            <div>• 合作期限: 2023-2026</div>
+                            <div>• 信用等级: AAA</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">苏州危废处置中心</h4>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">备选</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 许可证号: SZEP2023002</div>
+                            <div>• 处置类别: HW06, HW08</div>
+                            <div>• 处置能力: 1000吨/年</div>
+                            <div>• 信用等级: AA</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-pie text-purple-600 mr-2"></i>
+                    处置方式分析
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">资源化利用</span>
+                            <span class="text-lg font-bold text-green-600">45%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 45%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">1.26吨</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">安全填埋</span>
+                            <span class="text-lg font-bold text-blue-600">35%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-blue-500 h-3 rounded-full" style="width: 35%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">0.98吨</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">焚烧处置</span>
+                            <span class="text-lg font-bold text-red-600">20%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-red-500 h-3 rounded-full" style="width: 20%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">0.56吨</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">新增台账</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors">
+                    <i class="fas fa-file-alt text-red-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">转移联单</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-chart-bar text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">统计分析</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">台账报告</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 固废危废管理功能
+        function initWasteManagement() {
+            console.log('初始化固废危废管理功能');
+            
+            // 危废台账按钮事件
+            const wasteButtons = document.querySelectorAll('button');
+            wasteButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('转移联单')) {
+                    button.addEventListener('click', function() {
+                        const wasteType = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('生成转移联单:', wasteType);
+                        alert(`正在生成 ${wasteType} 的转移联单...`);
+                    });
+                } else if (text.includes('查看详情')) {
+                    button.addEventListener('click', function() {
+                        const wasteType = this.closest('.rounded-lg').querySelector('h4').textContent;
+                        console.log('查看危废详情:', wasteType);
+                        alert(`正在查看 ${wasteType} 的详细信息...`);
+                    });
+                } else if (text.includes('新增台账')) {
+                    button.addEventListener('click', function() {
+                        console.log('新增危废台账');
+                        alert('正在打开新增危废台账页面...');
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initWasteManagement();
+            console.log('固废危废管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

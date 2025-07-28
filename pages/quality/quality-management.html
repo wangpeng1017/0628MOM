@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>质量管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">质量管理系统</h1>
+            <p class="text-gray-600">基于Process.md 2.5质量模块：全面质量管理体系，涵盖来料检验、过程质量、成品检验、不合格品处理等完整质量流程</p>
+        </div>
+
+        <!-- 质量管理统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">98.5%</div>
+                        <div class="text-sm text-gray-600">来料合格率</div>
+                        <div class="text-xs text-gray-500">本月统计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-truck text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">99.2%</div>
+                        <div class="text-sm text-gray-600">过程直通率</div>
+                        <div class="text-xs text-gray-500">FPY指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cogs text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">97.8%</div>
+                        <div class="text-sm text-gray-600">成品合格率</div>
+                        <div class="text-xs text-gray-500">出货质量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">15</div>
+                        <div class="text-sm text-gray-600">待处理异常</div>
+                        <div class="text-xs text-gray-500">需要关注</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">8</div>
+                        <div class="text-sm text-gray-600">试产项目</div>
+                        <div class="text-xs text-gray-500">进行中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-flask text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">0</div>
+                        <div class="text-sm text-gray-600">客户投诉</div>
+                        <div class="text-xs text-gray-500">本月零投诉</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-shield text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 质量管理模块导航 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+            <!-- 来料质量管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-truck text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">来料质量管理</h3>
+                        <p class="text-sm text-gray-600">IQC检验、供应商管理</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="incoming-inspection.html" class="block text-sm text-blue-600 hover:text-blue-800 hover:underline">
+                        <i class="fas fa-search mr-2"></i>来料检验管理
+                    </a>
+                    <a href="supplier-quality.html" class="block text-sm text-blue-600 hover:text-blue-800 hover:underline">
+                        <i class="fas fa-handshake mr-2"></i>供应商质量管理
+                    </a>
+                    <a href="incoming-nonconformity.html" class="block text-sm text-blue-600 hover:text-blue-800 hover:underline">
+                        <i class="fas fa-times-circle mr-2"></i>来料不合格品管理
+                    </a>
+                </div>
+            </div>
+
+            <!-- 过程质量管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-cogs text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">过程质量管理</h3>
+                        <p class="text-sm text-gray-600">IPQC检验、过程控制</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="first-article-inspection.html" class="block text-sm text-green-600 hover:text-green-800 hover:underline">
+                        <i class="fas fa-play mr-2"></i>首件检验管理
+                    </a>
+                    <a href="process-quality.html" class="block text-sm text-green-600 hover:text-green-800 hover:underline">
+                        <i class="fas fa-chart-line mr-2"></i>过程质量管理
+                    </a>
+                    <a href="last-article-inspection.html" class="block text-sm text-green-600 hover:text-green-800 hover:underline">
+                        <i class="fas fa-stop mr-2"></i>末件检验管理
+                    </a>
+                    <a href="wip-nonconformity.html" class="block text-sm text-green-600 hover:text-green-800 hover:underline">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>在制不合格品管理
+                    </a>
+                </div>
+            </div>
+
+            <!-- 成品质量管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-check-circle text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">成品质量管理</h3>
+                        <p class="text-sm text-gray-600">FQC/OQC检验</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="final-inspection.html" class="block text-sm text-purple-600 hover:text-purple-800 hover:underline">
+                        <i class="fas fa-clipboard-check mr-2"></i>成品检验管理
+                    </a>
+                    <a href="packaging-inspection.html" class="block text-sm text-purple-600 hover:text-purple-800 hover:underline">
+                        <i class="fas fa-box mr-2"></i>包装检验管理
+                    </a>
+                    <a href="final-nonconformity.html" class="block text-sm text-purple-600 hover:text-purple-800 hover:underline">
+                        <i class="fas fa-ban mr-2"></i>成品不合格品管理
+                    </a>
+                </div>
+            </div>
+
+            <!-- 试产质量管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-flask text-indigo-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">试产质量管理</h3>
+                        <p class="text-sm text-gray-600">试产验证、PPAP管理</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="trial-production.html" class="block text-sm text-indigo-600 hover:text-indigo-800 hover:underline">
+                        <i class="fas fa-vial mr-2"></i>试产管理
+                    </a>
+                    <a href="ppap-management.html" class="block text-sm text-indigo-600 hover:text-indigo-800 hover:underline">
+                        <i class="fas fa-file-contract mr-2"></i>PPAP文件管理
+                    </a>
+                </div>
+            </div>
+
+            <!-- 质量分析与改进 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-chart-bar text-orange-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">质量分析与改进</h3>
+                        <p class="text-sm text-gray-600">数据分析、持续改进</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="quality-analysis.html" class="block text-sm text-orange-600 hover:text-orange-800 hover:underline">
+                        <i class="fas fa-analytics mr-2"></i>质量数据分析
+                    </a>
+                    <a href="quality-improvement.html" class="block text-sm text-orange-600 hover:text-orange-800 hover:underline">
+                        <i class="fas fa-arrow-up mr-2"></i>质量改进管理
+                    </a>
+                </div>
+            </div>
+
+            <!-- 质量体系管理 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-shield-alt text-red-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">质量体系管理</h3>
+                        <p class="text-sm text-gray-600">标准管理、体系维护</p>
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <a href="quality-standards.html" class="block text-sm text-red-600 hover:text-red-800 hover:underline">
+                        <i class="fas fa-book mr-2"></i>质量标准管理
+                    </a>
+                    <a href="quality-system.html" class="block text-sm text-red-600 hover:text-red-800 hover:underline">
+                        <i class="fas fa-cog mr-2"></i>质量体系维护
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 质量实时监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 质量异常监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">质量异常监控</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+                        <div>
+                            <div class="text-sm font-medium text-red-800">PACK产线批量不良</div>
+                            <div class="text-xs text-gray-600">连续3件不合格，已触发停线</div>
+                            <div class="text-xs text-gray-500">发现时间: 14:25:30</div>
+                        </div>
+                        <button onclick="handleQualityAlert('ALERT001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                            立即处理
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg border-l-4 border-orange-500">
+                        <div>
+                            <div class="text-sm font-medium text-orange-800">供应商来料异常</div>
+                            <div class="text-xs text-gray-600">电容器批次C2025001不合格率超标</div>
+                            <div class="text-xs text-gray-500">发现时间: 15:10:15</div>
+                        </div>
+                        <button onclick="handleQualityAlert('ALERT002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                            处理中
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                        <div>
+                            <div class="text-sm font-medium text-yellow-800">成品检验异常</div>
+                            <div class="text-xs text-gray-600">逆变器产品老化测试不通过</div>
+                            <div class="text-xs text-gray-500">发现时间: 15:35:45</div>
+                        </div>
+                        <button onclick="handleQualityAlert('ALERT003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                            分析中
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 质量趋势分析 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">质量趋势分析</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">来料合格率</span>
+                        <div class="flex items-center">
+                            <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: 98.5%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-blue-600">98.5%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">过程直通率</span>
+                        <div class="flex items-center">
+                            <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: 99.2%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-green-600">99.2%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">成品合格率</span>
+                        <div class="flex items-center">
+                            <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-purple-600 h-2 rounded-full" style="width: 97.8%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-purple-600">97.8%</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">客户满意度</span>
+                        <div class="flex items-center">
+                            <div class="w-32 bg-gray-200 rounded-full h-2 mr-2">
+                                <div class="bg-indigo-600 h-2 rounded-full" style="width: 96.8%"></div>
+                            </div>
+                            <span class="text-sm font-medium text-indigo-600">96.8%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">质量改进趋势</span>
+                        <span class="font-medium text-green-600">本月提升: +1.2%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作面板 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">快速操作</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <button onclick="quickAction('incoming_inspection')" class="flex flex-col items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-search text-blue-600 text-xl mb-2"></i>
+                    <span class="text-sm text-blue-800">来料检验</span>
+                </button>
+                <button onclick="quickAction('first_article')" class="flex flex-col items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-play text-green-600 text-xl mb-2"></i>
+                    <span class="text-sm text-green-800">首件检验</span>
+                </button>
+                <button onclick="quickAction('final_inspection')" class="flex flex-col items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-clipboard-check text-purple-600 text-xl mb-2"></i>
+                    <span class="text-sm text-purple-800">成品检验</span>
+                </button>
+                <button onclick="quickAction('nonconformity')" class="flex flex-col items-center p-4 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                    <i class="fas fa-exclamation-triangle text-red-600 text-xl mb-2"></i>
+                    <span class="text-sm text-red-800">不合格处理</span>
+                </button>
+                <button onclick="quickAction('trial_production')" class="flex flex-col items-center p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
+                    <i class="fas fa-flask text-indigo-600 text-xl mb-2"></i>
+                    <span class="text-sm text-indigo-800">试产管理</span>
+                </button>
+                <button onclick="quickAction('quality_report')" class="flex flex-col items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-chart-bar text-orange-600 text-xl mb-2"></i>
+                    <span class="text-sm text-orange-800">质量报告</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 质量异常处理
+        function handleQualityAlert(alertId) {
+            alert(`处理质量异常：${alertId}\n\n处理流程：\n1. 立即隔离不合格品\n2. 分析根本原因\n3. 制定纠正措施\n4. 验证改进效果`);
+        }
+
+        // 快速操作
+        function quickAction(action) {
+            const actions = {
+                'incoming_inspection': '来料检验',
+                'first_article': '首件检验',
+                'final_inspection': '成品检验',
+                'nonconformity': '不合格品处理',
+                'trial_production': '试产管理',
+                'quality_report': '质量报告'
+            };
+            
+            alert(`快速操作：${actions[action]}\n\n功能正在开发中，敬请期待！`);
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('质量管理系统已加载');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首件检验管理 - 质量管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">首件检验管理</h1>
+            <p class="text-gray-600">基于Process.md 2.5.2流程：首件制作→首件检验→结果确认→批量生产，确保生产过程质量稳定性</p>
+        </div>
+
+        <!-- 首件检验流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">首件检验流程</h3>
+                    <span class="text-sm text-gray-600">生产过程质量控制</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">首件制作</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">首件检验</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">结果确认</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">批量生产</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="firstArticleBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-play mr-2"></i>
+                首件制作
+            </button>
+            <button id="inspectionBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-search mr-2"></i>
+                首件检验
+            </button>
+            <button id="confirmationBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-check mr-2"></i>
+                结果确认
+            </button>
+            <button id="productionBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-industry mr-2"></i>
+                批量生产
+            </button>
+            <button id="qualityTrackingBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-chart-line mr-2"></i>
+                质量跟踪
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 首件检验统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">89</div>
+                        <div class="text-sm text-gray-600">首件检验</div>
+                        <div class="text-xs text-gray-500">本月累计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-play text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">96.6%</div>
+                        <div class="text-sm text-gray-600">首件合格率</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">8</div>
+                        <div class="text-sm text-gray-600">待检验</div>
+                        <div class="text-xs text-gray-500">排队中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">3</div>
+                        <div class="text-sm text-gray-600">不合格首件</div>
+                        <div class="text-xs text-gray-500">需要返工</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-times-circle text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">1.8小时</div>
+                        <div class="text-sm text-gray-600">平均周期</div>
+                        <div class="text-xs text-gray-500">检验时间</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-stopwatch text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">2</div>
+                        <div class="text-sm text-gray-600">工艺异常</div>
+                        <div class="text-xs text-gray-500">需要调整</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 检验进度和工艺监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 检验进度跟踪 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">检验进度跟踪</h3>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-play text-blue-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">首件制作</div>
+                                    <div class="text-xs text-gray-500">按工艺要求制作首件</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-blue-600">100%</div>
+                                <div class="text-xs text-gray-500">已完成</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-green-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-search text-green-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">首件检验</div>
+                                    <div class="text-xs text-gray-500">全尺寸检验、功能测试</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-green-600">85%</div>
+                                <div class="text-xs text-gray-500">进行中</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-purple-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-check text-purple-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">结果确认</div>
+                                    <div class="text-xs text-gray-500">质量确认、工艺验证</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-purple-600">30%</div>
+                                <div class="text-xs text-gray-500">准备中</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-600 h-2 rounded-full" style="width: 30%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工艺监控面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">工艺监控</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">PACK装配工艺异常</div>
+                                <div class="text-xs text-gray-600">首件尺寸超差，需调整工装</div>
+                                <div class="text-xs text-gray-500">工单: WO202501001</div>
+                            </div>
+                            <button onclick="handleProcessAlert('ALERT001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                立即处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">焊接参数偏差</div>
+                                <div class="text-xs text-gray-600">焊点质量不稳定</div>
+                                <div class="text-xs text-gray-500">工单: WO202501002</div>
+                            </div>
+                            <button onclick="handleProcessAlert('ALERT002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                                调整中
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">测试程序更新</div>
+                                <div class="text-xs text-gray-600">需要更新测试参数</div>
+                                <div class="text-xs text-gray-500">工单: WO202501003</div>
+                            </div>
+                            <button onclick="handleProcessAlert('ALERT003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                待处理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">工艺稳定性</span>
+                        <span class="font-medium text-green-600">本月提升: +2.1%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 首件检验记录表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">首件检验记录</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部产品类型</option>
+                        <option>PACK产品</option>
+                        <option>PCBA产品</option>
+                        <option>逆变器产品</option>
+                        <option>包装产品</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部检验状态</option>
+                        <option>待制作</option>
+                        <option>制作中</option>
+                        <option>待检验</option>
+                        <option>检验中</option>
+                        <option>已合格</option>
+                        <option>不合格</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部产线</option>
+                        <option>PACK产线</option>
+                        <option>PCBA产线</option>
+                        <option>逆变器产线</option>
+                        <option>包装产线</option>
+                    </select>
+                    <input type="date" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                    <input type="text" placeholder="搜索工单号、产品编号..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">首件信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">生产信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检验项目</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检验人员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检验状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检验结果</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="firstArticleTableBody">
+                        <!-- 首件数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.5.2的首件检验数据模型
+        const firstArticleData = [
+            {
+                id: 'FAI202501001',
+                firstArticleCode: 'FAI-PACK-001',
+                workOrderCode: 'WO202501001',
+                productCode: 'PACK-MAIN-V2.1',
+                productName: 'PACK主控模块',
+                productType: 'PACK产品',
+                productionLine: 'PACK产线',
+                workstation: 'PACK-ASM-01',
+                operator: '张操作员',
+                operatorId: 'OP001',
+                shift: '白班',
+                createDate: '2025-01-16',
+                createTime: '08:30:00',
+                inspectionDate: '2025-01-16',
+                inspectionTime: '09:15:00',
+                inspector: '李检验员',
+                inspectorId: 'IPQC001',
+                status: 'completed',
+                statusName: '已完成',
+                inspectionItems: [
+                    { item: '外观检查', standard: '无划伤、污染', result: 'pass', actualValue: '合格', notes: '外观良好' },
+                    { item: '尺寸测量', standard: '100±0.1mm', result: 'pass', actualValue: '99.95mm', notes: '尺寸合格' },
+                    { item: '焊接质量', standard: '无虚焊、漏焊', result: 'pass', actualValue: '合格', notes: '焊接良好' },
+                    { item: '功能测试', standard: '所有功能正常', result: 'pass', actualValue: '正常', notes: '功能完整' },
+                    { item: '电气性能', standard: '符合规格书', result: 'pass', actualValue: '合格', notes: '性能达标' }
+                ],
+                processParameters: [
+                    { parameter: '焊接温度', standard: '260±10°C', actual: '265°C', status: 'normal' },
+                    { parameter: '焊接时间', standard: '3±0.5s', actual: '3.2s', status: 'normal' },
+                    { parameter: '压力设定', standard: '0.5±0.1MPa', actual: '0.52MPa', status: 'normal' }
+                ],
+                inspectionResult: {
+                    totalItems: 5,
+                    passItems: 5,
+                    failItems: 0,
+                    passRate: 100,
+                    judgment: 'pass',
+                    judgmentName: '合格'
+                },
+                approvalStatus: 'approved',
+                approvalStatusName: '已批准',
+                approver: '质量主管',
+                approvalDate: '2025-01-16',
+                batchProductionStatus: 'started',
+                batchProductionStatusName: '已开始批量生产',
+                documents: ['首件检验报告', '工艺参数确认单', '批准放行单'],
+                photos: ['首件外观.jpg', '尺寸测量.jpg', '功能测试.jpg'],
+                notes: '首件检验合格，工艺参数稳定，可以开始批量生产'
+            },
+            {
+                id: 'FAI202501002',
+                firstArticleCode: 'FAI-PCBA-002',
+                workOrderCode: 'WO202501002',
+                productCode: 'PCBA-CTRL-V1.5',
+                productName: 'PCBA控制板',
+                productType: 'PCBA产品',
+                productionLine: 'PCBA产线',
+                workstation: 'SMT-LINE-01',
+                operator: '王操作员',
+                operatorId: 'OP002',
+                shift: '白班',
+                createDate: '2025-01-17',
+                createTime: '10:00:00',
+                inspectionDate: '2025-01-17',
+                inspectionTime: '11:30:00',
+                inspector: '赵检验员',
+                inspectorId: 'IPQC002',
+                status: 'in_progress',
+                statusName: '检验中',
+                inspectionItems: [
+                    { item: '外观检查', standard: '无缺件、偏移', result: 'pass', actualValue: '合格', notes: '外观良好' },
+                    { item: '焊点检查', standard: '无虚焊、连焊', result: 'fail', actualValue: '发现2个虚焊', notes: '需要返工' },
+                    { item: '元件方向', standard: '方向正确', result: 'pass', actualValue: '正确', notes: '方向无误' },
+                    { item: '电气测试', standard: '导通正常', result: 'pending', actualValue: '', notes: '测试中' },
+                    { item: '功能验证', standard: '功能正常', result: 'pending', actualValue: '', notes: '待测试' }
+                ],
+                processParameters: [
+                    { parameter: '回流温度', standard: '245±5°C', actual: '248°C', status: 'normal' },
+                    { parameter: '传送速度', standard: '100±10cm/min', actual: '95cm/min', status: 'warning' },
+                    { parameter: '氮气浓度', standard: '>99%', actual: '99.2%', status: 'normal' }
+                ],
+                inspectionResult: {
+                    totalItems: 5,
+                    passItems: 2,
+                    failItems: 1,
+                    passRate: 40,
+                    judgment: 'pending',
+                    judgmentName: '检验中'
+                },
+                approvalStatus: 'pending',
+                approvalStatusName: '待批准',
+                approver: null,
+                approvalDate: null,
+                batchProductionStatus: 'waiting',
+                batchProductionStatusName: '等待首件确认',
+                documents: ['首件检验记录'],
+                photos: ['虚焊点.jpg'],
+                notes: '发现焊接质量问题，需要调整工艺参数后重新制作首件'
+            },
+            {
+                id: 'FAI202501003',
+                firstArticleCode: 'FAI-INV-003',
+                workOrderCode: 'WO202501003',
+                productCode: 'INV-POWER-5KW',
+                productName: '5KW逆变器',
+                productType: '逆变器产品',
+                productionLine: '逆变器产线',
+                workstation: 'INV-ASM-02',
+                operator: '陈操作员',
+                operatorId: 'OP003',
+                shift: '夜班',
+                createDate: '2025-01-17',
+                createTime: '20:15:00',
+                inspectionDate: null,
+                inspectionTime: null,
+                inspector: null,
+                inspectorId: null,
+                status: 'pending',
+                statusName: '待检验',
+                inspectionItems: [
+                    { item: '外观检查', standard: '无损伤、污染', result: 'pending', actualValue: '', notes: '' },
+                    { item: '装配检查', standard: '装配到位', result: 'pending', actualValue: '', notes: '' },
+                    { item: '接线检查', standard: '接线正确', result: 'pending', actualValue: '', notes: '' },
+                    { item: '绝缘测试', standard: '>1MΩ', result: 'pending', actualValue: '', notes: '' },
+                    { item: '功率测试', standard: '5000±50W', result: 'pending', actualValue: '', notes: '' },
+                    { item: '效率测试', standard: '>95%', result: 'pending', actualValue: '', notes: '' }
+                ],
+                processParameters: [
+                    { parameter: '装配扭矩', standard: '8±1Nm', actual: '', status: 'pending' },
+                    { parameter: '测试电压', standard: '400±10V', actual: '', status: 'pending' },
+                    { parameter: '环境温度', standard: '25±5°C', actual: '23°C', status: 'normal' }
+                ],
+                inspectionResult: {
+                    totalItems: 6,
+                    passItems: 0,
+                    failItems: 0,
+                    passRate: 0,
+                    judgment: 'pending',
+                    judgmentName: '待检验'
+                },
+                approvalStatus: 'pending',
+                approvalStatusName: '待检验',
+                approver: null,
+                approvalDate: null,
+                batchProductionStatus: 'waiting',
+                batchProductionStatusName: '等待首件确认',
+                documents: ['工单', '工艺卡'],
+                photos: [],
+                notes: '首件已制作完成，等待质检员安排检验'
+            },
+            {
+                id: 'FAI202501004',
+                firstArticleCode: 'FAI-PACK-004',
+                workOrderCode: 'WO202501004',
+                productCode: 'PACK-CELL-V3.0',
+                productName: 'PACK电芯模块',
+                productType: 'PACK产品',
+                productionLine: 'PACK产线',
+                workstation: 'PACK-WELD-01',
+                operator: '刘操作员',
+                operatorId: 'OP004',
+                shift: '白班',
+                createDate: '2025-01-15',
+                createTime: '14:20:00',
+                inspectionDate: '2025-01-15',
+                inspectionTime: '15:45:00',
+                inspector: '孙检验员',
+                inspectorId: 'IPQC003',
+                status: 'rejected',
+                statusName: '不合格',
+                inspectionItems: [
+                    { item: '外观检查', standard: '无变形、损伤', result: 'pass', actualValue: '合格', notes: '外观良好' },
+                    { item: '焊接强度', standard: '>50N', result: 'fail', actualValue: '35N', notes: '焊接强度不足' },
+                    { item: '绝缘测试', standard: '>500V', result: 'pass', actualValue: '650V', notes: '绝缘合格' },
+                    { item: '电压测试', standard: '3.7±0.1V', result: 'fail', actualValue: '3.55V', notes: '电压偏低' },
+                    { item: '容量测试', standard: '50±2Ah', result: 'pass', actualValue: '50.5Ah', notes: '容量合格' }
+                ],
+                processParameters: [
+                    { parameter: '焊接电流', standard: '150±10A', actual: '135A', status: 'warning' },
+                    { parameter: '焊接时间', standard: '2±0.2s', actual: '1.8s', status: 'warning' },
+                    { parameter: '压力设定', standard: '0.8±0.1MPa', actual: '0.75MPa', status: 'warning' }
+                ],
+                inspectionResult: {
+                    totalItems: 5,
+                    passItems: 3,
+                    failItems: 2,
+                    passRate: 60,
+                    judgment: 'fail',
+                    judgmentName: '不合格'
+                },
+                approvalStatus: 'rejected',
+                approvalStatusName: '已拒绝',
+                approver: '质量主管',
+                approvalDate: '2025-01-15',
+                batchProductionStatus: 'stopped',
+                batchProductionStatusName: '停止生产',
+                documents: ['首件检验报告', '不合格通知单', '工艺改进建议'],
+                photos: ['焊接缺陷.jpg', '测试数据.jpg'],
+                notes: '焊接参数需要调整，电压偏低需要检查电芯质量，重新制作首件'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            pending: { text: '待检验', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-clock' },
+            in_progress: { text: '检验中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-spinner' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            rejected: { text: '不合格', class: 'bg-red-100 text-red-800', icon: 'fas fa-times-circle' }
+        };
+
+        // 批准状态映射
+        const approvalStatusMap = {
+            pending: { text: '待批准', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-clock' },
+            approved: { text: '已批准', class: 'bg-green-100 text-green-800', icon: 'fas fa-check' },
+            rejected: { text: '已拒绝', class: 'bg-red-100 text-red-800', icon: 'fas fa-times' }
+        };
+
+        // 检验结果映射
+        const resultMap = {
+            pass: { text: '合格', class: 'text-green-600', icon: 'fas fa-check' },
+            fail: { text: '不合格', class: 'text-red-600', icon: 'fas fa-times' },
+            pending: { text: '待测试', class: 'text-gray-600', icon: 'fas fa-clock' }
+        };
+
+        // 判定结果映射
+        const judgmentMap = {
+            pass: { text: '合格', class: 'text-green-600', icon: 'fas fa-check-circle' },
+            fail: { text: '不合格', class: 'text-red-600', icon: 'fas fa-times-circle' },
+            pending: { text: '检验中', class: 'text-blue-600', icon: 'fas fa-spinner' }
+        };
+
+        // 工艺参数状态映射
+        const parameterStatusMap = {
+            normal: { text: '正常', class: 'text-green-600', icon: 'fas fa-check' },
+            warning: { text: '警告', class: 'text-yellow-600', icon: 'fas fa-exclamation-triangle' },
+            error: { text: '异常', class: 'text-red-600', icon: 'fas fa-times' },
+            pending: { text: '待测', class: 'text-gray-600', icon: 'fas fa-clock' }
+        };
+
+        let filteredData = [...firstArticleData];
+
+        // 渲染首件检验表格
+        function renderFirstArticleTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('firstArticleTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(firstArticle => {
+                const status = statusMap[firstArticle.status];
+                const approval = approvalStatusMap[firstArticle.approvalStatus];
+                const judgment = judgmentMap[firstArticle.inspectionResult.judgment];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewFirstArticleDetail('${firstArticle.id}')">
+                            ${firstArticle.firstArticleCode}
+                        </div>
+                        <div class="text-xs text-gray-500">工单: ${firstArticle.workOrderCode}</div>
+                        <div class="text-xs text-gray-500">制作: ${firstArticle.createDate}</div>
+                        ${firstArticle.inspectionDate ? `
+                            <div class="text-xs text-blue-600">检验: ${firstArticle.inspectionDate}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${firstArticle.productName}</div>
+                        <div class="text-xs text-gray-500">${firstArticle.productCode}</div>
+                        <div class="text-xs text-gray-500">${firstArticle.productType}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${firstArticle.productionLine}</div>
+                        <div class="text-xs text-gray-500">${firstArticle.workstation}</div>
+                        <div class="text-xs text-gray-500">操作员: ${firstArticle.operator}</div>
+                        <div class="text-xs text-blue-600">${firstArticle.shift}</div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="space-y-1">
+                            ${firstArticle.inspectionItems.slice(0, 3).map(item => `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-600">${item.item}</span>
+                                    <span class="text-xs ${resultMap[item.result].class}">
+                                        <i class="${resultMap[item.result].icon}"></i> ${resultMap[item.result].text}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${firstArticle.inspectionItems.length > 3 ? `
+                            <button onclick="viewAllInspectionItems('${firstArticle.id}')" class="text-xs text-blue-600 hover:underline mt-1">
+                                查看全部 (${firstArticle.inspectionItems.length})
+                            </button>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${firstArticle.inspector ? `
+                            <div class="text-sm text-gray-900">${firstArticle.inspector}</div>
+                            <div class="text-xs text-gray-500">${firstArticle.inspectorId}</div>
+                        ` : `
+                            <div class="text-sm text-gray-600">待分配</div>
+                        `}
+                        <div class="text-xs text-blue-600">检验项: ${firstArticle.inspectionItems.length}</div>
+                        <div class="text-xs text-gray-500">工艺参数: ${firstArticle.processParameters.length}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">制作: ${firstArticle.createDate}</div>
+                        <div class="text-xs text-gray-500">${firstArticle.createTime}</div>
+                        ${firstArticle.inspectionDate ? `
+                            <div class="text-xs text-gray-500">检验: ${firstArticle.inspectionDate}</div>
+                            <div class="text-xs text-gray-500">${firstArticle.inspectionTime}</div>
+                        ` : `
+                            <div class="text-xs text-gray-500">未开始检验</div>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${firstArticle.inspectionResult.passRate > 0 && firstArticle.inspectionResult.passRate < 100 ? `
+                            <div class="text-xs text-orange-600 mt-1">
+                                合格率: ${firstArticle.inspectionResult.passRate}%
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <span class="text-sm ${judgment.class}">
+                                <i class="${judgment.icon} mr-1"></i>
+                                ${judgment.text}
+                            </span>
+                        </div>
+                        ${firstArticle.inspectionResult.totalItems > 0 ? `
+                            <div class="text-xs text-gray-500 mt-1">
+                                ${firstArticle.inspectionResult.passItems}/${firstArticle.inspectionResult.totalItems} 通过
+                            </div>
+                        ` : ''}
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${approval.class} mt-1">
+                            <i class="${approval.icon} mr-1"></i>
+                            ${approval.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewFirstArticleDetail('${firstArticle.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${firstArticle.status === 'pending' ? `
+                                <button onclick="startInspection('${firstArticle.id}')" class="text-green-600 hover:text-green-900 p-1" title="开始检验">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            ` : ''}
+                            ${firstArticle.status === 'in_progress' ? `
+                                <button onclick="continueInspection('${firstArticle.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="继续检验">
+                                    <i class="fas fa-spinner"></i>
+                                </button>
+                            ` : ''}
+                            ${firstArticle.status === 'completed' && firstArticle.approvalStatus === 'pending' ? `
+                                <button onclick="approveFirstArticle('${firstArticle.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="批准放行">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            ` : ''}
+                            ${firstArticle.status === 'rejected' ? `
+                                <button onclick="remakeFirstArticle('${firstArticle.id}')" class="text-yellow-600 hover:text-yellow-900 p-1" title="重新制作">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            ` : ''}
+                            ${firstArticle.photos.length > 0 ? `
+                                <button onclick="viewPhotos('${firstArticle.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="查看照片">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewDocuments('${firstArticle.id}')" class="text-gray-600 hover:text-gray-900 p-1" title="查看文档">
+                                <i class="fas fa-file-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${firstArticleData.length} 条记录`;
+        }
+
+        // 首件检验操作函数
+        function viewFirstArticleDetail(firstArticleId) {
+            const firstArticle = firstArticleData.find(f => f.id === firstArticleId);
+            if (firstArticle) {
+                let detailText = `首件检验详情：\n首件编号: ${firstArticle.firstArticleCode}\n工单编号: ${firstArticle.workOrderCode}\n产品名称: ${firstArticle.productName}\n产品编号: ${firstArticle.productCode}\n生产线: ${firstArticle.productionLine}\n工位: ${firstArticle.workstation}`;
+
+                detailText += `\n\n生产信息:\n操作员: ${firstArticle.operator} (${firstArticle.operatorId})\n班次: ${firstArticle.shift}\n制作时间: ${firstArticle.createDate} ${firstArticle.createTime}`;
+
+                if (firstArticle.inspector) {
+                    detailText += `\n\n检验信息:\n检验员: ${firstArticle.inspector} (${firstArticle.inspectorId})\n检验时间: ${firstArticle.inspectionDate} ${firstArticle.inspectionTime}`;
+                }
+                detailText += `\n检验状态: ${statusMap[firstArticle.status].text}`;
+
+                detailText += `\n\n检验项目:`;
+                firstArticle.inspectionItems.forEach((item, index) => {
+                    const resultText = resultMap[item.result].text;
+                    detailText += `\n${index + 1}. ${item.item}\n   标准: ${item.standard}\n   结果: ${resultText}`;
+                    if (item.actualValue) {
+                        detailText += `\n   实测值: ${item.actualValue}`;
+                    }
+                    if (item.notes) {
+                        detailText += `\n   备注: ${item.notes}`;
+                    }
+                });
+
+                detailText += `\n\n工艺参数:`;
+                firstArticle.processParameters.forEach((param, index) => {
+                    const statusText = parameterStatusMap[param.status].text;
+                    detailText += `\n${index + 1}. ${param.parameter}\n   标准: ${param.standard}\n   实际: ${param.actual || '待测量'}\n   状态: ${statusText}`;
+                });
+
+                detailText += `\n\n检验结果:\n总项目数: ${firstArticle.inspectionResult.totalItems}\n合格项目: ${firstArticle.inspectionResult.passItems}\n不合格项目: ${firstArticle.inspectionResult.failItems}\n合格率: ${firstArticle.inspectionResult.passRate}%\n判定结果: ${judgmentMap[firstArticle.inspectionResult.judgment].text}`;
+
+                detailText += `\n\n批准状态: ${approvalStatusMap[firstArticle.approvalStatus].text}`;
+                if (firstArticle.approver) {
+                    detailText += `\n批准人: ${firstArticle.approver}\n批准日期: ${firstArticle.approvalDate}`;
+                }
+
+                detailText += `\n批量生产状态: ${firstArticle.batchProductionStatusName}`;
+
+                if (firstArticle.notes) {
+                    detailText += `\n\n备注: ${firstArticle.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function handleProcessAlert(alertId) {
+            if (confirm(`确认处理工艺异常？\n异常ID: ${alertId}\n\n处理措施：\n- 停止当前生产\n- 调整工艺参数\n- 重新制作首件\n- 验证工艺稳定性`)) {
+                alert('工艺异常处理完成！\n- 生产已暂停\n- 工艺参数已调整\n- 首件重新制作中');
+            }
+        }
+
+        function startInspection(firstArticleId) {
+            const firstArticle = firstArticleData.find(f => f.id === firstArticleId);
+            if (firstArticle) {
+                if (confirm(`开始首件检验？\n产品: ${firstArticle.productName}\n工单: ${firstArticle.workOrderCode}\n\n检验内容：\n- 全尺寸检验\n- 功能性能测试\n- 工艺参数确认`)) {
+                    firstArticle.status = 'in_progress';
+                    firstArticle.inspectionDate = new Date().toISOString().split('T')[0];
+                    firstArticle.inspectionTime = new Date().toTimeString().split(' ')[0];
+                    firstArticle.inspector = '当前检验员';
+                    firstArticle.inspectorId = 'IPQC999';
+                    renderFirstArticleTable();
+                    alert('首件检验已开始！\n- 检验员已分配\n- 检验项目已准备\n- 开始执行检验');
+                }
+            }
+        }
+
+        function continueInspection(firstArticleId) {
+            const firstArticle = firstArticleData.find(f => f.id === firstArticleId);
+            if (firstArticle) {
+                if (confirm(`继续首件检验？\n产品: ${firstArticle.productName}\n\n当前进度：\n- 已完成部分检验项目\n- 继续执行剩余项目\n- 更新检验数据`)) {
+                    // 模拟检验进度
+                    firstArticle.inspectionItems.forEach(item => {
+                        if (item.result === 'pending') {
+                            item.result = Math.random() > 0.15 ? 'pass' : 'fail';
+                            if (item.result === 'pass') {
+                                item.actualValue = '合格';
+                                item.notes = '检验合格';
+                            } else {
+                                item.actualValue = '不合格';
+                                item.notes = '发现问题';
+                            }
+                        }
+                    });
+
+                    // 检查是否所有项目都完成
+                    const allCompleted = firstArticle.inspectionItems.every(item => item.result !== 'pending');
+                    if (allCompleted) {
+                        firstArticle.status = 'completed';
+                        const passItems = firstArticle.inspectionItems.filter(item => item.result === 'pass').length;
+                        const failItems = firstArticle.inspectionItems.filter(item => item.result === 'fail').length;
+                        firstArticle.inspectionResult.passItems = passItems;
+                        firstArticle.inspectionResult.failItems = failItems;
+                        firstArticle.inspectionResult.passRate = Math.round((passItems / firstArticle.inspectionResult.totalItems) * 100);
+                        firstArticle.inspectionResult.judgment = failItems === 0 ? 'pass' : 'fail';
+
+                        if (firstArticle.inspectionResult.judgment === 'fail') {
+                            firstArticle.status = 'rejected';
+                            firstArticle.approvalStatus = 'rejected';
+                        }
+                    }
+
+                    renderFirstArticleTable();
+                    alert('检验进度已更新！\n- 检验项目继续进行\n- 检验数据已记录\n' + (allCompleted ? '- 检验已完成' : '- 继续执行检验'));
+                }
+            }
+        }
+
+        function approveFirstArticle(firstArticleId) {
+            const firstArticle = firstArticleData.find(f => f.id === firstArticleId);
+            if (firstArticle) {
+                if (confirm(`确认批准首件？\n产品: ${firstArticle.productName}\n检验结果: ${judgmentMap[firstArticle.inspectionResult.judgment].text}\n\n批准后将：\n- 放行批量生产\n- 锁定工艺参数\n- 生成首件报告`)) {
+                    firstArticle.approvalStatus = 'approved';
+                    firstArticle.approver = '质量主管';
+                    firstArticle.approvalDate = new Date().toISOString().split('T')[0];
+                    firstArticle.batchProductionStatus = 'started';
+                    firstArticle.batchProductionStatusName = '已开始批量生产';
+                    renderFirstArticleTable();
+                    alert('首件批准完成！\n- 批量生产已放行\n- 工艺参数已锁定\n- 首件报告已生成');
+                }
+            }
+        }
+
+        function remakeFirstArticle(firstArticleId) {
+            const firstArticle = firstArticleData.find(f => f.id === firstArticleId);
+            if (firstArticle) {
+                if (confirm(`确认重新制作首件？\n产品: ${firstArticle.productName}\n\n重新制作将：\n- 调整工艺参数\n- 重新制作首件\n- 重新执行检验`)) {
+                    firstArticle.status = 'pending';
+                    firstArticle.approvalStatus = 'pending';
+                    firstArticle.inspectionDate = null;
+                    firstArticle.inspectionTime = null;
+                    firstArticle.inspector = null;
+                    firstArticle.inspectorId = null;
+                    firstArticle.createDate = new Date().toISOString().split('T')[0];
+                    firstArticle.createTime = new Date().toTimeString().split(' ')[0];
+
+                    // 重置检验项目
+                    firstArticle.inspectionItems.forEach(item => {
+                        item.result = 'pending';
+                        item.actualValue = '';
+                        item.notes = '';
+                    });
+
+                    // 重置检验结果
+                    firstArticle.inspectionResult.passItems = 0;
+                    firstArticle.inspectionResult.failItems = 0;
+                    firstArticle.inspectionResult.passRate = 0;
+                    firstArticle.inspectionResult.judgment = 'pending';
+
+                    renderFirstArticleTable();
+                    alert('首件重新制作！\n- 工艺参数已调整\n- 首件重新制作中\n- 等待重新检验');
+                }
+            }
+        }
+
+        function viewAllInspectionItems(firstArticleId) {
+            const firstArticle = firstArticleData.find(f => f.id === firstArticleId);
+            if (firstArticle) {
+                let itemsText = `${firstArticle.productName} - 检验项目：\n\n`;
+                firstArticle.inspectionItems.forEach((item, index) => {
+                    const resultText = resultMap[item.result].text;
+                    itemsText += `${index + 1}. ${item.item}\n   标准: ${item.standard}\n   结果: ${resultText}`;
+                    if (item.actualValue) {
+                        itemsText += `\n   实测值: ${item.actualValue}`;
+                    }
+                    if (item.notes) {
+                        itemsText += `\n   备注: ${item.notes}`;
+                    }
+                    itemsText += '\n\n';
+                });
+                alert(itemsText);
+            }
+        }
+
+        function viewPhotos(firstArticleId) {
+            const firstArticle = firstArticleData.find(f => f.id === firstArticleId);
+            if (firstArticle) {
+                let photosText = `${firstArticle.productName} - 检验照片：\n\n`;
+                if (firstArticle.photos.length > 0) {
+                    firstArticle.photos.forEach((photo, index) => {
+                        photosText += `${index + 1}. ${photo}\n`;
+                    });
+                    photosText += `\n总计: ${firstArticle.photos.length}张照片`;
+                } else {
+                    photosText += '暂无检验照片';
+                }
+                alert(photosText);
+            }
+        }
+
+        function viewDocuments(firstArticleId) {
+            const firstArticle = firstArticleData.find(f => f.id === firstArticleId);
+            if (firstArticle) {
+                let documentsText = `${firstArticle.productName} - 相关文档：\n\n`;
+                if (firstArticle.documents.length > 0) {
+                    firstArticle.documents.forEach((doc, index) => {
+                        documentsText += `${index + 1}. ${doc}\n`;
+                    });
+                    documentsText += `\n总计: ${firstArticle.documents.length}份文档`;
+                } else {
+                    documentsText += '暂无相关文档';
+                }
+                alert(documentsText);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFirstArticleTable();
+
+            // 首件制作
+            document.getElementById('firstArticleBtn').addEventListener('click', function() {
+                alert('首件制作功能：\n- 工艺参数设定\n- 首件制作指导\n- 制作过程监控\n- 制作完成确认\n- 送检流程启动');
+            });
+
+            // 首件检验
+            document.getElementById('inspectionBtn').addEventListener('click', function() {
+                alert('首件检验功能：\n- 全尺寸检验\n- 功能性能测试\n- 工艺参数验证\n- 检验数据记录\n- 检验结果判定');
+            });
+
+            // 结果确认
+            document.getElementById('confirmationBtn').addEventListener('click', function() {
+                alert('结果确认功能：\n- 检验结果审核\n- 工艺稳定性确认\n- 批准决策制定\n- 生产放行授权\n- 首件报告生成');
+            });
+
+            // 批量生产
+            document.getElementById('productionBtn').addEventListener('click', function() {
+                alert('批量生产功能：\n- 生产放行确认\n- 工艺参数锁定\n- 生产计划启动\n- 过程质量监控\n- 末件检验安排');
+            });
+
+            // 质量跟踪
+            document.getElementById('qualityTrackingBtn').addEventListener('click', function() {
+                alert('质量跟踪功能：\n- 首件合格率统计\n- 工艺稳定性分析\n- 质量趋势监控\n- 问题原因分析\n- 改进措施跟踪');
+            });
+        });
+    </script>
+</body>
+</html>

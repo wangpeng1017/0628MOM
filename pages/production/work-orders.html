@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工单管理 - MOM系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面操作栏 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">工单管理</h1>
+                <p class="text-gray-600">管理生产工单的创建、分配和执行</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>新建工单
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-download mr-2"></i>导出工单
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-filter mr-2"></i>高级筛选
+                </button>
+            </div>
+        </div>
+        
+        <!-- 工单统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-blue-600 mb-1">24</div>
+                <div class="text-sm text-gray-600">进行中</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-green-600 mb-1">156</div>
+                <div class="text-sm text-gray-600">已完成</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-yellow-600 mb-1">8</div>
+                <div class="text-sm text-gray-600">待开始</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">3</div>
+                <div class="text-sm text-gray-600">已延期</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-gray-600 mb-1">2</div>
+                <div class="text-sm text-gray-600">已暂停</div>
+            </div>
+        </div>
+        
+        <!-- 工单列表 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h3 class="card-title">工单列表</h3>
+                    <div class="flex space-x-3">
+                        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                            <option>全部状态</option>
+                            <option>待开始</option>
+                            <option>进行中</option>
+                            <option>已完成</option>
+                            <option>已延期</option>
+                            <option>已暂停</option>
+                        </select>
+                        <select class="border border-gray-300 rounded-lg px-3 py-2 text-sm">
+                            <option>全部产线</option>
+                            <option>生产线A</option>
+                            <option>生产线B</option>
+                            <option>生产线C</option>
+                        </select>
+                        <input type="text" placeholder="搜索工单号或产品..." 
+                               class="border border-gray-300 rounded-lg px-3 py-2 text-sm w-64">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>工单号</th>
+                            <th>产品名称</th>
+                            <th>产品型号</th>
+                            <th>计划数量</th>
+                            <th>已完成</th>
+                            <th>进度</th>
+                            <th>优先级</th>
+                            <th>负责人</th>
+                            <th>开始时间</th>
+                            <th>预计完成</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-work-order-id="WO202501001" class="hover:bg-gray-50 transition-colors">
+                            <td class="font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewWorkOrderDetail('WO202501001')">WO202501001</td>
+                            <td>5KW变频器</td>
+                            <td>INV-5KW-001</td>
+                            <td>100</td>
+                            <td>65</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-20">
+                                        <div class="progress-fill bg-blue-500" style="width: 65%"></div>
+                                    </div>
+                                    <span class="text-sm">65%</span>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-danger">高</span></td>
+                            <td>生产主管王五</td>
+                            <td>2025-01-16 08:00</td>
+                            <td>2025-01-24 16:00</td>
+                            <td><span class="status-indicator status-warning">进行中</span></td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情" onclick="viewWorkOrderDetail('WO202501001')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-orange-600 hover:text-orange-800" title="质量检验">
+                                        <i class="fas fa-check-circle"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="工艺管理">
+                                        <i class="fas fa-cogs"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">WO-2024-001</td>
+                            <td>智能手机外壳</td>
+                            <td>iPhone-15-Case</td>
+                            <td>1,000</td>
+                            <td>850</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-20">
+                                        <div class="progress-fill" style="width: 85%"></div>
+                                    </div>
+                                    <span class="text-sm">85%</span>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-danger">高</span></td>
+                            <td>李师傅</td>
+                            <td>2024-06-26 08:00</td>
+                            <td>2024-06-28 18:00</td>
+                            <td><span class="status-indicator status-warning">进行中</span></td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-yellow-600 hover:text-yellow-800" title="暂停">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-800" title="取消">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="font-medium">WO-2024-002</td>
+                            <td>平板电脑屏幕</td>
+                            <td>iPad-Pro-Screen</td>
+                            <td>500</td>
+                            <td>500</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-20">
+                                        <div class="progress-fill" style="width: 100%"></div>
+                                    </div>
+                                    <span class="text-sm">100%</span>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-warning">中</span></td>
+                            <td>王师傅</td>
+                            <td>2024-06-25 09:00</td>
+                            <td>2024-06-27 17:00</td>
+                            <td><span class="status-indicator status-success">已完成</span></td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-gray-400" title="已完成" disabled>
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="复制工单">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="质检报告">
+                                        <i class="fas fa-clipboard-check"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="font-medium">WO-2024-003</td>
+                            <td>笔记本键盘</td>
+                            <td>MacBook-Keyboard</td>
+                            <td>800</td>
+                            <td>320</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-20">
+                                        <div class="progress-fill bg-red-500" style="width: 40%"></div>
+                                    </div>
+                                    <span class="text-sm">40%</span>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-danger">高</span></td>
+                            <td>张师傅</td>
+                            <td>2024-06-24 10:00</td>
+                            <td>2024-06-27 16:00</td>
+                            <td><span class="status-indicator status-danger">已延期</span></td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-orange-600 hover:text-orange-800" title="加急处理">
+                                        <i class="fas fa-exclamation"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-800" title="取消">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="font-medium">WO-2024-004</td>
+                            <td>智能手表表带</td>
+                            <td>AppleWatch-Band</td>
+                            <td>1,200</td>
+                            <td>720</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-20">
+                                        <div class="progress-fill" style="width: 60%"></div>
+                                    </div>
+                                    <span class="text-sm">60%</span>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-warning">中</span></td>
+                            <td>刘师傅</td>
+                            <td>2024-06-27 07:30</td>
+                            <td>2024-06-29 19:00</td>
+                            <td><span class="status-indicator status-warning">进行中</span></td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-yellow-600 hover:text-yellow-800" title="暂停">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-800" title="取消">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="font-medium">WO-2024-005</td>
+                            <td>耳机外壳</td>
+                            <td>AirPods-Case</td>
+                            <td>600</td>
+                            <td>0</td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-20">
+                                        <div class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="text-sm">0%</span>
+                                </div>
+                            </td>
+                            <td><span class="status-indicator status-info">低</span></td>
+                            <td>陈师傅</td>
+                            <td>-</td>
+                            <td>2024-06-30 15:00</td>
+                            <td><span class="status-indicator status-info">待开始</span></td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="开始生产">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="text-red-600 hover:text-red-800" title="取消">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+                <div class="text-sm text-gray-600">
+                    显示 1-5 条，共 25 条记录
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL参数处理 - 支持从AI助手跳转时高亮显示对应单据
+        function handleURLParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const docNumber = urlParams.get('doc');
+
+            if (docNumber) {
+                // 高亮显示对应的行
+                setTimeout(() => {
+                    const targetRow = document.querySelector(`tr[data-work-order-id="${docNumber}"]`);
+                    if (targetRow) {
+                        targetRow.classList.add('bg-blue-50', 'border-2', 'border-blue-300');
+                        targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                        // 3秒后移除高亮
+                        setTimeout(() => {
+                            targetRow.classList.remove('bg-blue-50', 'border-2', 'border-blue-300');
+                        }, 3000);
+                    }
+                }, 500);
+            }
+        }
+
+        // 查看工单详情
+        function viewWorkOrderDetail(workOrderId) {
+            if (workOrderId === 'WO202501001') {
+                alert(`工单详情：
+工单编号：${workOrderId}
+产品名称：5KW变频器
+产品型号：INV-5KW-001
+计划数量：100台
+已完成数量：65台
+完成进度：65%
+优先级：高
+负责人：生产主管王五
+开始时间：2025-01-16 08:00
+预计完成：2025-01-24 16:00
+当前状态：进行中
+当前工序：SMT贴片
+质量状态：首件检验合格，过程检验进行中
+关联需求：DM202501001
+关联MPS：MPS202501001`);
+            } else {
+                alert(`查看工单 ${workOrderId} 的详细信息`);
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            handleURLParams();
+        });
+    </script>
+</body>
+</html>

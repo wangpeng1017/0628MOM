@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预防性维护执行 - 数字工厂平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面操作栏 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">预防性维护执行</h1>
+                <p class="text-gray-600">执行预防性维护计划，记录维护过程和结果</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-play mr-2"></i>开始维护
+                </button>
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-qrcode mr-2"></i>扫码执行
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-calendar mr-2"></i>执行计划
+                </button>
+            </div>
+        </div>
+        
+        <!-- 执行概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-blue-600 mb-1">24</div>
+                <div class="text-sm text-gray-600">今日计划</div>
+                <div class="text-xs text-blue-600 mt-1">待执行任务</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-yellow-600 mb-1">8</div>
+                <div class="text-sm text-gray-600">执行中</div>
+                <div class="text-xs text-yellow-600 mt-1">平均进度60%</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-green-600 mb-1">16</div>
+                <div class="text-sm text-gray-600">今日完成</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+3 较昨日
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">2</div>
+                <div class="text-sm text-gray-600">发现异常</div>
+                <div class="text-xs text-red-600 mt-1">需要处理</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-purple-600 mb-1">94.5%</div>
+                <div class="text-sm text-gray-600">按时完成率</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+1.8% 较上月
+                </div>
+            </div>
+        </div>
+        
+        <!-- 筛选条件区域 -->
+        <div class="card">
+            <div class="p-4">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                    <div class="flex-1">
+                        <input type="text" placeholder="搜索计划编号、设备名称..." 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部状态</option>
+                        <option>待执行</option>
+                        <option>执行中</option>
+                        <option>已完成</option>
+                        <option>已延期</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部优先级</option>
+                        <option>高</option>
+                        <option>中</option>
+                        <option>低</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部设备</option>
+                        <option>注塑设备</option>
+                        <option>装配设备</option>
+                        <option>包装设备</option>
+                        <option>检测设备</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部执行人</option>
+                        <option>张师傅</option>
+                        <option>李师傅</option>
+                        <option>王师傅</option>
+                        <option>陈师傅</option>
+                    </select>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 预防性维护执行列表 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h3 class="card-title">预防性维护执行列表</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            <i class="fas fa-th"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>计划编号</th>
+                            <th>设备名称</th>
+                            <th>维护类型</th>
+                            <th>执行人</th>
+                            <th>优先级</th>
+                            <th>状态</th>
+                            <th>进度</th>
+                            <th>计划时间</th>
+                            <th>实际时间</th>
+                            <th>检查项目</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-blue-50">
+                            <td class="font-medium">PM-2024-001</td>
+                            <td>注塑机A1</td>
+                            <td>日常保养</td>
+                            <td>张师傅</td>
+                            <td><span class="status-indicator status-warning">高</span></td>
+                            <td><span class="status-indicator status-warning">待执行</span></td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill bg-gray-400" style="width: 0%"></div>
+                                    </div>
+                                    <span class="text-sm">0%</span>
+                                </div>
+                            </td>
+                            <td>2024-06-28 10:00</td>
+                            <td>-</td>
+                            <td>15项</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="开始执行">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="检查清单">
+                                        <i class="fas fa-list-check"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-yellow-50">
+                            <td class="font-medium">PM-2024-002</td>
+                            <td>装配机B1</td>
+                            <td>定期检查</td>
+                            <td>李师傅</td>
+                            <td><span class="status-indicator status-info">中</span></td>
+                            <td><span class="status-indicator status-info">执行中</span></td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill" style="width: 65%"></div>
+                                    </div>
+                                    <span class="text-sm">65%</span>
+                                </div>
+                            </td>
+                            <td>2024-06-28 08:30</td>
+                            <td>2024-06-28 08:35</td>
+                            <td>12项</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-yellow-600 hover:text-yellow-800" title="更新进度">
+                                        <i class="fas fa-tasks"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-blue-600 hover:text-blue-800" title="联系执行人">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-yellow-50">
+                            <td class="font-medium">PM-2024-003</td>
+                            <td>包装机C1</td>
+                            <td>部件更换</td>
+                            <td>王师傅</td>
+                            <td><span class="status-indicator status-warning">高</span></td>
+                            <td><span class="status-indicator status-info">执行中</span></td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill" style="width: 40%"></div>
+                                    </div>
+                                    <span class="text-sm">40%</span>
+                                </div>
+                            </td>
+                            <td>2024-06-28 09:00</td>
+                            <td>2024-06-28 09:10</td>
+                            <td>8项</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-yellow-600 hover:text-yellow-800" title="更新进度">
+                                        <i class="fas fa-tasks"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-blue-600 hover:text-blue-800" title="联系执行人">
+                                        <i class="fas fa-phone"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-green-50">
+                            <td class="font-medium">PM-2024-004</td>
+                            <td>检测设备D1</td>
+                            <td>校准维护</td>
+                            <td>陈师傅</td>
+                            <td><span class="status-indicator status-info">中</span></td>
+                            <td><span class="status-indicator status-success">已完成</span></td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill bg-green-500" style="width: 100%"></div>
+                                    </div>
+                                    <span class="text-sm">100%</span>
+                                </div>
+                            </td>
+                            <td>2024-06-28 07:00</td>
+                            <td>2024-06-28 07:05</td>
+                            <td>10项</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看报告">
+                                        <i class="fas fa-file-alt"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="验收">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="评价">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-red-50">
+                            <td class="font-medium">PM-2024-005</td>
+                            <td>注塑机A2</td>
+                            <td>深度保养</td>
+                            <td>张师傅</td>
+                            <td><span class="status-indicator status-warning">高</span></td>
+                            <td><span class="status-indicator status-danger">已延期</span></td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill bg-red-500" style="width: 20%"></div>
+                                    </div>
+                                    <span class="text-sm">20%</span>
+                                </div>
+                            </td>
+                            <td>2024-06-27 14:00</td>
+                            <td>2024-06-27 14:30</td>
+                            <td>20项</td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-red-600 hover:text-red-800" title="紧急处理">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-yellow-600 hover:text-yellow-800" title="重新安排">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+                <div class="text-sm text-gray-600">
+                    显示 1-5 条，共 50 条执行记录
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

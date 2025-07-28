@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>能源管理 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">能源管理</h1>
+            <p class="text-gray-600">基于Process.md 2.4.6流程：能源计划→数据采集→实时监控→绩效考核，实现电、水、气、热等能耗的精准管理</p>
+        </div>
+
+        <!-- 能源管理流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">能源管理流程</h3>
+                    <span class="text-sm text-gray-600">全流程能耗管理</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">计划目标</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">数据采集</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">实时监控</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">绩效考核</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="energyPlanBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-bullseye mr-2"></i>
+                能源计划
+            </button>
+            <button id="dataCollectionBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-database mr-2"></i>
+                数据采集
+            </button>
+            <button id="realTimeMonitorBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-tv mr-2"></i>
+                实时监控
+            </button>
+            <button id="performanceAssessBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-chart-line mr-2"></i>
+                绩效考核
+            </button>
+            <button id="energyAnalysisBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-analytics mr-2"></i>
+                能耗分析
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 能源管理统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">2,456</div>
+                        <div class="text-sm text-gray-600">总耗电量</div>
+                        <div class="text-xs text-gray-500">kWh/今日</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">156</div>
+                        <div class="text-sm text-gray-600">用水量</div>
+                        <div class="text-xs text-gray-500">m³/今日</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tint text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">89</div>
+                        <div class="text-sm text-gray-600">天然气</div>
+                        <div class="text-xs text-gray-500">m³/今日</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-fire text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">92.5%</div>
+                        <div class="text-sm text-gray-600">能效比</div>
+                        <div class="text-xs text-gray-500">目标达成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tachometer-alt text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">¥12,580</div>
+                        <div class="text-sm text-gray-600">能源成本</div>
+                        <div class="text-xs text-gray-500">今日</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-coins text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">3</div>
+                        <div class="text-sm text-gray-600">能耗告警</div>
+                        <div class="text-xs text-gray-500">超阈值</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 能源监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 分区域能耗监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">分区域能耗监控</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-industry text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">PACK产线</div>
+                                <div class="text-xs text-gray-500">用电: 856kWh | 用水: 45m³</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-blue-600">正常</div>
+                            <div class="text-xs text-gray-500">效率: 94.2%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-microchip text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">PCBA生产车间</div>
+                                <div class="text-xs text-gray-500">用电: 642kWh | 用水: 32m³</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-green-600">正常</div>
+                            <div class="text-xs text-gray-500">效率: 91.8%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-cogs text-yellow-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">逆变器车间</div>
+                                <div class="text-xs text-gray-500">用电: 758kWh | 用水: 38m³</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-yellow-600">偏高</div>
+                            <div class="text-xs text-gray-500">效率: 88.5%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-box text-red-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">包装车间</div>
+                                <div class="text-xs text-gray-500">用电: 200kWh | 用水: 41m³</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-red-600">异常</div>
+                            <div class="text-xs text-gray-500">效率: 65.2%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 能耗告警面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">能耗告警管理</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">用电量超标</div>
+                                <div class="text-xs text-gray-600">包装车间 | 当前: 200kWh | 阈值: 180kWh</div>
+                                <div class="text-xs text-gray-500">时间: 14:25:30</div>
+                            </div>
+                            <button onclick="handleEnergyAlarm('ENERGY001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">单位产品能耗偏高</div>
+                                <div class="text-xs text-gray-600">逆变器车间 | 当前: 15.2kWh/件 | 目标: 12kWh/件</div>
+                                <div class="text-xs text-gray-500">时间: 14:30:15</div>
+                            </div>
+                            <button onclick="handleEnergyAlarm('ENERGY002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                                处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">异常负荷检测</div>
+                                <div class="text-xs text-gray-600">PACK产线 | 负荷波动: ±15% | 正常范围: ±5%</div>
+                                <div class="text-xs text-gray-500">时间: 14:35:45</div>
+                            </div>
+                            <button onclick="handleEnergyAlarm('ENERGY003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                处理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">今日告警统计</span>
+                        <span class="font-medium">严重: 1 | 警告: 2 | 提醒: 5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 能源管理数据表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">能源管理数据</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部区域</option>
+                        <option>PACK产线</option>
+                        <option>PCBA车间</option>
+                        <option>逆变器车间</option>
+                        <option>包装车间</option>
+                        <option>试产车间</option>
+                        <option>仓储区域</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部能源类型</option>
+                        <option>电力</option>
+                        <option>水</option>
+                        <option>天然气</option>
+                        <option>压缩空气</option>
+                    </select>
+                    <input type="date" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                    <input type="text" placeholder="搜索区域、设备..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">区域信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">能源类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">实时消耗</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划目标</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">单位产品能耗</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">能效状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">成本分析</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最后更新</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="energyTableBody">
+                        <!-- 能源数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.6的能源管理数据模型
+        const energyManagementData = [
+            {
+                id: 'ENERGY001',
+                areaCode: 'PACK-LINE',
+                areaName: 'PACK产线',
+                areaType: '生产区域',
+                energyTypes: {
+                    electricity: {
+                        current: 856.5,
+                        target: 800.0,
+                        unit: 'kWh',
+                        status: 'normal',
+                        cost: 684.2,
+                        unitCost: 0.8
+                    },
+                    water: {
+                        current: 45.2,
+                        target: 50.0,
+                        unit: 'm³',
+                        status: 'normal',
+                        cost: 135.6,
+                        unitCost: 3.0
+                    },
+                    gas: {
+                        current: 25.8,
+                        target: 30.0,
+                        unit: 'm³',
+                        status: 'normal',
+                        cost: 77.4,
+                        unitCost: 3.0
+                    }
+                },
+                production: {
+                    output: 120,
+                    unit: '件',
+                    unitEnergyConsumption: {
+                        electricity: 7.14,
+                        water: 0.38,
+                        gas: 0.22
+                    }
+                },
+                efficiency: 94.2,
+                alarms: [],
+                lastUpdate: '2025-01-16 14:35:30'
+            },
+            {
+                id: 'ENERGY002',
+                areaCode: 'PCBA-WORKSHOP',
+                areaName: 'PCBA生产车间',
+                areaType: '生产区域',
+                energyTypes: {
+                    electricity: {
+                        current: 642.3,
+                        target: 650.0,
+                        unit: 'kWh',
+                        status: 'normal',
+                        cost: 513.8,
+                        unitCost: 0.8
+                    },
+                    water: {
+                        current: 32.1,
+                        target: 35.0,
+                        unit: 'm³',
+                        status: 'normal',
+                        cost: 96.3,
+                        unitCost: 3.0
+                    }
+                },
+                production: {
+                    output: 200,
+                    unit: '件',
+                    unitEnergyConsumption: {
+                        electricity: 3.21,
+                        water: 0.16
+                    }
+                },
+                efficiency: 91.8,
+                alarms: [],
+                lastUpdate: '2025-01-16 14:35:25'
+            },
+            {
+                id: 'ENERGY003',
+                areaCode: 'INVERTER-WORKSHOP',
+                areaName: '逆变器车间',
+                areaType: '生产区域',
+                energyTypes: {
+                    electricity: {
+                        current: 758.6,
+                        target: 700.0,
+                        unit: 'kWh',
+                        status: 'warning',
+                        cost: 606.9,
+                        unitCost: 0.8
+                    },
+                    water: {
+                        current: 38.5,
+                        target: 40.0,
+                        unit: 'm³',
+                        status: 'normal',
+                        cost: 115.5,
+                        unitCost: 3.0
+                    },
+                    gas: {
+                        current: 35.2,
+                        target: 32.0,
+                        unit: 'm³',
+                        status: 'warning',
+                        cost: 105.6,
+                        unitCost: 3.0
+                    }
+                },
+                production: {
+                    output: 50,
+                    unit: '件',
+                    unitEnergyConsumption: {
+                        electricity: 15.17,
+                        water: 0.77,
+                        gas: 0.70
+                    }
+                },
+                efficiency: 88.5,
+                alarms: [
+                    { level: 'warning', message: '单位产品能耗偏高', time: '14:30:15' }
+                ],
+                lastUpdate: '2025-01-16 14:35:20'
+            },
+            {
+                id: 'ENERGY004',
+                areaCode: 'PACKAGING-WORKSHOP',
+                areaName: '包装车间',
+                areaType: '生产区域',
+                energyTypes: {
+                    electricity: {
+                        current: 200.8,
+                        target: 180.0,
+                        unit: 'kWh',
+                        status: 'alarm',
+                        cost: 160.6,
+                        unitCost: 0.8
+                    },
+                    water: {
+                        current: 41.2,
+                        target: 25.0,
+                        unit: 'm³',
+                        status: 'alarm',
+                        cost: 123.6,
+                        unitCost: 3.0
+                    }
+                },
+                production: {
+                    output: 32,
+                    unit: '件',
+                    unitEnergyConsumption: {
+                        electricity: 6.28,
+                        water: 1.29
+                    }
+                },
+                efficiency: 65.2,
+                alarms: [
+                    { level: 'critical', message: '用电量超标', time: '14:25:30' },
+                    { level: 'warning', message: '用水量异常', time: '14:28:45' }
+                ],
+                lastUpdate: '2025-01-16 14:25:35'
+            },
+            {
+                id: 'ENERGY005',
+                areaCode: 'TRIAL-WORKSHOP',
+                areaName: '试产车间',
+                areaType: '生产区域',
+                energyTypes: {
+                    electricity: {
+                        current: 125.4,
+                        target: 150.0,
+                        unit: 'kWh',
+                        status: 'normal',
+                        cost: 100.3,
+                        unitCost: 0.8
+                    },
+                    water: {
+                        current: 18.6,
+                        target: 20.0,
+                        unit: 'm³',
+                        status: 'normal',
+                        cost: 55.8,
+                        unitCost: 3.0
+                    }
+                },
+                production: {
+                    output: 15,
+                    unit: '件',
+                    unitEnergyConsumption: {
+                        electricity: 8.36,
+                        water: 1.24
+                    }
+                },
+                efficiency: 78.5,
+                alarms: [],
+                lastUpdate: '2025-01-16 14:35:15'
+            },
+            {
+                id: 'ENERGY006',
+                areaCode: 'WAREHOUSE',
+                areaName: '仓储区域',
+                areaType: '仓储区域',
+                energyTypes: {
+                    electricity: {
+                        current: 89.2,
+                        target: 100.0,
+                        unit: 'kWh',
+                        status: 'normal',
+                        cost: 71.4,
+                        unitCost: 0.8
+                    },
+                    water: {
+                        current: 12.5,
+                        target: 15.0,
+                        unit: 'm³',
+                        status: 'normal',
+                        cost: 37.5,
+                        unitCost: 3.0
+                    }
+                },
+                production: {
+                    output: 0,
+                    unit: '件',
+                    unitEnergyConsumption: {
+                        electricity: 0,
+                        water: 0
+                    }
+                },
+                efficiency: 95.8,
+                alarms: [],
+                lastUpdate: '2025-01-16 14:35:10'
+            }
+        ];
+
+        // 能源状态映射
+        const energyStatusMap = {
+            normal: { text: '正常', class: 'text-green-600', icon: 'fas fa-check-circle' },
+            warning: { text: '警告', class: 'text-yellow-600', icon: 'fas fa-exclamation-triangle' },
+            alarm: { text: '告警', class: 'text-red-600', icon: 'fas fa-times-circle' }
+        };
+
+        // 能源类型映射
+        const energyTypeMap = {
+            electricity: { text: '电力', icon: 'fas fa-bolt', color: 'text-blue-600', unit: 'kWh' },
+            water: { text: '水', icon: 'fas fa-tint', color: 'text-cyan-600', unit: 'm³' },
+            gas: { text: '天然气', icon: 'fas fa-fire', color: 'text-orange-600', unit: 'm³' },
+            steam: { text: '蒸汽', icon: 'fas fa-cloud', color: 'text-gray-600', unit: 't' },
+            compressed_air: { text: '压缩空气', icon: 'fas fa-wind', color: 'text-purple-600', unit: 'm³' }
+        };
+
+        // 告警级别映射
+        const alarmLevelMap = {
+            info: { text: '信息', class: 'bg-blue-100 text-blue-800' },
+            warning: { text: '警告', class: 'bg-yellow-100 text-yellow-800' },
+            critical: { text: '严重', class: 'bg-red-100 text-red-800' }
+        };
+
+        let filteredData = [...energyManagementData];
+
+        // 渲染能源管理表格
+        function renderEnergyTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('energyTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(area => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                // 计算主要能源类型
+                const mainEnergyType = Object.keys(area.energyTypes)[0];
+                const mainEnergy = area.energyTypes[mainEnergyType];
+                const energyType = energyTypeMap[mainEnergyType];
+
+                // 计算总成本
+                const totalCost = Object.values(area.energyTypes).reduce((sum, energy) => sum + energy.cost, 0);
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-building text-blue-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewAreaDetail('${area.id}')">
+                                    ${area.areaCode}
+                                </div>
+                                <div class="text-sm text-gray-900">${area.areaName}</div>
+                                <div class="text-xs text-gray-500">${area.areaType}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="space-y-1">
+                            ${Object.entries(area.energyTypes).map(([type, energy]) => `
+                                <div class="flex items-center">
+                                    <i class="${energyTypeMap[type].icon} ${energyTypeMap[type].color} mr-2"></i>
+                                    <span class="text-sm text-gray-900">${energyTypeMap[type].text}</span>
+                                    <span class="ml-2 text-xs ${energyStatusMap[energy.status].class}">
+                                        <i class="${energyStatusMap[energy.status].icon}"></i>
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="space-y-1">
+                            ${Object.entries(area.energyTypes).map(([type, energy]) => `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-600">${energyTypeMap[type].text}:</span>
+                                    <span class="text-xs font-medium ${energyStatusMap[energy.status].class}">
+                                        ${energy.current}${energy.unit}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="space-y-1">
+                            ${Object.entries(area.energyTypes).map(([type, energy]) => `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-600">${energyTypeMap[type].text}:</span>
+                                    <span class="text-xs text-gray-900">
+                                        ${energy.target}${energy.unit}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="mt-1">
+                            <div class="w-full bg-gray-200 rounded-full h-1">
+                                <div class="bg-blue-600 h-1 rounded-full" style="width: ${Math.min(100, (area.efficiency))}%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">达成率: ${area.efficiency}%</div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${area.production.output > 0 ? `
+                            <div class="space-y-1">
+                                ${Object.entries(area.production.unitEnergyConsumption).map(([type, consumption]) => `
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs text-gray-600">${energyTypeMap[type].text}:</span>
+                                        <span class="text-xs text-gray-900">
+                                            ${consumption.toFixed(2)}${energyTypeMap[type].unit}/件
+                                        </span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="text-xs text-blue-600 mt-1">
+                                产量: ${area.production.output}${area.production.unit}
+                            </div>
+                        ` : `
+                            <span class="text-xs text-gray-500">非生产区域</span>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">效率: ${area.efficiency}%</div>
+                        <div class="w-16 bg-gray-200 rounded-full h-2 mt-1">
+                            <div class="bg-${area.efficiency >= 90 ? 'green' : area.efficiency >= 80 ? 'yellow' : 'red'}-600 h-2 rounded-full" style="width: ${area.efficiency}%"></div>
+                        </div>
+                        ${area.alarms.length > 0 ? `
+                            <div class="text-xs text-red-600 mt-1">
+                                ${area.alarms.length}个告警
+                            </div>
+                        ` : `
+                            <div class="text-xs text-green-600 mt-1">运行正常</div>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">¥${totalCost.toFixed(2)}</div>
+                        <div class="space-y-1 mt-1">
+                            ${Object.entries(area.energyTypes).slice(0, 2).map(([type, energy]) => `
+                                <div class="text-xs text-gray-500">
+                                    ${energyTypeMap[type].text}: ¥${energy.cost.toFixed(2)}
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${area.production.output > 0 ? `
+                            <div class="text-xs text-orange-600 mt-1">
+                                单件成本: ¥${(totalCost / area.production.output).toFixed(2)}
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${area.lastUpdate.split(' ')[1]}</div>
+                        <div class="text-xs text-gray-500">${area.lastUpdate.split(' ')[0]}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewAreaDetail('${area.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="viewEnergyChart('${area.id}')" class="text-green-600 hover:text-green-900 p-1" title="能耗图表">
+                                <i class="fas fa-chart-line"></i>
+                            </button>
+                            ${area.alarms.length > 0 ? `
+                                <button onclick="handleAreaAlarms('${area.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="处理告警">
+                                    <i class="fas fa-bell"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="configureEnergyTarget('${area.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="目标配置">
+                                <i class="fas fa-bullseye"></i>
+                            </button>
+                            <button onclick="exportEnergyData('${area.id}')" class="text-gray-600 hover:text-gray-900 p-1" title="导出数据">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${energyManagementData.length} 条记录`;
+        }
+
+        // 能源管理操作函数
+        function viewAreaDetail(areaId) {
+            const area = energyManagementData.find(a => a.id === areaId);
+            if (area) {
+                let detailText = `区域详情：\n区域编号: ${area.areaCode}\n区域名称: ${area.areaName}\n区域类型: ${area.areaType}\n能效比: ${area.efficiency}%`;
+
+                detailText += `\n\n能源消耗:`;
+                Object.entries(area.energyTypes).forEach(([type, energy]) => {
+                    detailText += `\n${energyTypeMap[type].text}:\n  当前: ${energy.current}${energy.unit}\n  目标: ${energy.target}${energy.unit}\n  状态: ${energyStatusMap[energy.status].text}\n  成本: ¥${energy.cost}`;
+                });
+
+                if (area.production.output > 0) {
+                    detailText += `\n\n生产数据:\n产量: ${area.production.output}${area.production.unit}`;
+                    detailText += `\n\n单位产品能耗:`;
+                    Object.entries(area.production.unitEnergyConsumption).forEach(([type, consumption]) => {
+                        detailText += `\n${energyTypeMap[type].text}: ${consumption}${energyTypeMap[type].unit}/件`;
+                    });
+                }
+
+                if (area.alarms.length > 0) {
+                    detailText += `\n\n活跃告警:`;
+                    area.alarms.forEach(alarm => {
+                        detailText += `\n• ${alarm.message} (${alarm.time})`;
+                    });
+                }
+
+                detailText += `\n\n最后更新: ${area.lastUpdate}`;
+
+                alert(detailText);
+            }
+        }
+
+        function viewEnergyChart(areaId) {
+            const area = energyManagementData.find(a => a.id === areaId);
+            if (area) {
+                alert(`能耗图表：\n区域: ${area.areaName}\n\n图表类型：\n- 实时能耗趋势\n- 分类能耗对比\n- 单位产品能耗分析\n- 成本变化趋势\n- 效率分析图表\n\n数据更新频率: 实时\n历史数据: 30天`);
+            }
+        }
+
+        function handleAreaAlarms(areaId) {
+            const area = energyManagementData.find(a => a.id === areaId);
+            if (area && area.alarms.length > 0) {
+                if (confirm(`处理告警：\n区域: ${area.areaName}\n告警数量: ${area.alarms.length}\n\n确认处理所有告警？`)) {
+                    area.alarms = [];
+                    renderEnergyTable();
+                    alert('告警处理完成！\n- 已确认所有告警\n- 通知相关人员\n- 记录处理日志\n- 制定改进措施');
+                }
+            }
+        }
+
+        function handleEnergyAlarm(alarmId) {
+            if (confirm(`确认处理此能耗告警？\n告警ID: ${alarmId}`)) {
+                alert('能耗告警处理完成！\n- 已确认告警\n- 分析原因\n- 制定改进措施\n- 通知相关部门');
+            }
+        }
+
+        function configureEnergyTarget(areaId) {
+            const area = energyManagementData.find(a => a.id === areaId);
+            if (area) {
+                alert(`能源目标配置：\n区域: ${area.areaName}\n\n可配置项：\n- 各类能源消耗目标\n- 单位产品能耗标准\n- 告警阈值设置\n- 绩效考核指标\n- 节能目标制定\n\n当前效率: ${area.efficiency}%`);
+            }
+        }
+
+        function exportEnergyData(areaId) {
+            const area = energyManagementData.find(a => a.id === areaId);
+            if (area) {
+                alert(`导出能源数据：\n区域: ${area.areaName}\n\n导出内容：\n- 历史能耗数据\n- 成本分析报告\n- 效率统计\n- 告警记录\n- 绩效评估\n\n格式: Excel/PDF\n时间范围: 可选择`);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderEnergyTable();
+
+            // 模拟实时数据更新
+            setInterval(updateEnergyData, 10000);
+
+            // 能源计划
+            document.getElementById('energyPlanBtn').addEventListener('click', function() {
+                alert('能源计划功能：\n- 年度能源目标制定\n- 月度计划分解\n- 单位产品能耗标准\n- 节能目标设定\n- 绩效考核指标');
+            });
+
+            // 数据采集
+            document.getElementById('dataCollectionBtn').addEventListener('click', function() {
+                alert('数据采集功能：\n- 智能电表接入\n- 水表气表集成\n- 实时数据采集\n- 数据质量监控\n- 采集频率配置');
+            });
+
+            // 实时监控
+            document.getElementById('realTimeMonitorBtn').addEventListener('click', function() {
+                alert('实时监控功能：\n- 能耗实时展示\n- 异常状态预警\n- 负荷分析监控\n- 效率实时计算\n- 监控大屏展示');
+            });
+
+            // 绩效考核
+            document.getElementById('performanceAssessBtn').addEventListener('click', function() {
+                alert('绩效考核功能：\n- 能耗目标达成评估\n- 部门绩效排名\n- 节能效果评价\n- 成本控制考核\n- 改进建议制定');
+            });
+
+            // 能耗分析
+            document.getElementById('energyAnalysisBtn').addEventListener('click', function() {
+                alert('能耗分析功能：\n- 高耗能设备识别\n- 能源浪费点分析\n- 节能潜力评估\n- 成本效益分析\n- 优化建议生成');
+            });
+        });
+
+        // 模拟实时数据更新
+        function updateEnergyData() {
+            energyManagementData.forEach(area => {
+                // 模拟能耗数据变化
+                Object.keys(area.energyTypes).forEach(type => {
+                    const energy = area.energyTypes[type];
+                    const variation = (Math.random() - 0.5) * 0.05;
+                    energy.current = Math.max(0, energy.current * (1 + variation));
+                    energy.cost = energy.current * energy.unitCost;
+
+                    // 更新状态
+                    if (energy.current > energy.target * 1.1) {
+                        energy.status = 'alarm';
+                    } else if (energy.current > energy.target * 1.05) {
+                        energy.status = 'warning';
+                    } else {
+                        energy.status = 'normal';
+                    }
+                });
+
+                // 更新效率
+                const totalCurrent = Object.values(area.energyTypes).reduce((sum, energy) => sum + energy.current, 0);
+                const totalTarget = Object.values(area.energyTypes).reduce((sum, energy) => sum + energy.target, 0);
+                area.efficiency = Math.max(60, Math.min(100, (totalTarget / totalCurrent) * 100));
+
+                // 更新最后更新时间
+                area.lastUpdate = new Date().toLocaleString('zh-CN');
+            });
+
+            // 重新渲染表格
+            renderEnergyTable();
+        }
+    </script>
+</body>
+</html>

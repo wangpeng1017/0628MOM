@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空间资产 - 慧新全智厂园一体平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="min-h-screen p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2 flex items-center">
+                <i class="fas fa-map text-purple-600 mr-3"></i>
+                空间资产
+            </h1>
+            <p class="text-gray-600">空间管理、资产配置、使用统计 - 智能化空间资源管理</p>
+        </div>
+
+        <!-- 空间概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-building text-purple-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-purple-600">12</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">建筑栋数</h3>
+                <p class="text-sm text-gray-600">总建筑面积</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-door-open text-blue-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-blue-600">156</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">房间总数</h3>
+                <p class="text-sm text-gray-600">可用空间</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-percentage text-green-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-green-600">78%</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">空间利用率</h3>
+                <p class="text-sm text-gray-600">当前使用情况</p>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-calendar-check text-yellow-600 text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-yellow-600">23</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">今日预约</h3>
+                <p class="text-sm text-gray-600">会议室预约</p>
+            </div>
+        </div>
+
+        <!-- 设备设施全生命周期管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-cogs text-primary mr-2"></i>
+                    设备设施全生命周期管理
+                </h2>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">设备台账</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">维护计划</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">报废处置</button>
+                </div>
+            </div>
+
+            <!-- 设备生命周期统计 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">设备总数</span>
+                        <i class="fas fa-server text-blue-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-blue-600">1,856</div>
+                    <div class="text-xs text-gray-500">在用: 1,742</div>
+                    <div class="text-xs text-green-600 mt-1">运行率: 93.9%</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">维护计划</span>
+                        <i class="fas fa-wrench text-green-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-green-600">45</div>
+                    <div class="text-xs text-gray-500">本月计划</div>
+                    <div class="text-xs text-blue-600 mt-1">已完成: 38个</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">预警设备</span>
+                        <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-yellow-600">12</div>
+                    <div class="text-xs text-gray-500">需要关注</div>
+                    <div class="text-xs text-orange-600 mt-1">临近报废: 3台</div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">资产价值</span>
+                        <i class="fas fa-dollar-sign text-purple-600"></i>
+                    </div>
+                    <div class="text-2xl font-bold text-purple-600">¥2.8亿</div>
+                    <div class="text-xs text-gray-500">净值</div>
+                    <div class="text-xs text-green-600 mt-1">增值: +5.2%</div>
+                </div>
+            </div>
+
+            <!-- 设备生命周期管理 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 设备采购与入库 -->
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-shopping-cart text-blue-600 mr-2"></i>
+                        采购与入库
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-lg p-3 border border-blue-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">待入库设备</span>
+                                <span class="text-lg font-bold text-blue-600">8台</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 生产设备: 3台</div>
+                                <div>• 检测设备: 2台</div>
+                                <div>• 办公设备: 3台</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-green-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">本月采购</span>
+                                <span class="text-lg font-bold text-green-600">¥156万</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 预算执行率: 78.5%</div>
+                                <div>• 采购周期: 平均15天</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 运维与保养 -->
+                <div class="bg-gradient-to-br from-green-50 to-teal-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-tools text-green-600 mr-2"></i>
+                        运维与保养
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-lg p-3 border border-green-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">维护任务</span>
+                                <span class="text-lg font-bold text-green-600">23个</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 日常保养: 15个</div>
+                                <div>• 定期检修: 6个</div>
+                                <div>• 故障维修: 2个</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-yellow-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">设备健康度</span>
+                                <span class="text-lg font-bold text-yellow-600">87.5%</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 优良: 1,520台 (87.2%)</div>
+                                <div>• 一般: 210台 (12.1%)</div>
+                                <div>• 较差: 12台 (0.7%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 报废与处置 -->
+                <div class="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg p-4">
+                    <h3 class="text-md font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-trash-alt text-orange-600 mr-2"></i>
+                        报废与处置
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="bg-white rounded-lg p-3 border border-orange-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">待报废设备</span>
+                                <span class="text-lg font-bold text-orange-600">5台</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 超期服役: 3台</div>
+                                <div>• 故障无法修复: 2台</div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 border border-red-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-gray-700">处置收益</span>
+                                <span class="text-lg font-bold text-red-600">¥12万</span>
+                            </div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>• 回收价值: ¥8万</div>
+                                <div>• 残值收入: ¥4万</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主要功能区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 空间地图 -->
+            <div class="lg:col-span-2 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-map-marked-alt text-primary mr-2"></i>
+                    园区空间地图
+                </h2>
+                <div class="bg-gray-100 rounded-lg p-4 h-96">
+                    <div class="grid grid-cols-4 gap-2 h-full">
+                        <!-- 建筑A -->
+                        <div class="bg-blue-200 rounded p-2 flex flex-col">
+                            <div class="text-xs font-medium text-blue-800 mb-1">建筑A</div>
+                            <div class="flex-1 grid grid-cols-2 gap-1">
+                                <div class="bg-green-400 rounded text-xs flex items-center justify-center text-white">A101</div>
+                                <div class="bg-green-400 rounded text-xs flex items-center justify-center text-white">A102</div>
+                                <div class="bg-yellow-400 rounded text-xs flex items-center justify-center text-white">A103</div>
+                                <div class="bg-red-400 rounded text-xs flex items-center justify-center text-white">A104</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 建筑B -->
+                        <div class="bg-green-200 rounded p-2 flex flex-col">
+                            <div class="text-xs font-medium text-green-800 mb-1">建筑B</div>
+                            <div class="flex-1 grid grid-cols-2 gap-1">
+                                <div class="bg-green-400 rounded text-xs flex items-center justify-center text-white">B101</div>
+                                <div class="bg-green-400 rounded text-xs flex items-center justify-center text-white">B102</div>
+                                <div class="bg-green-400 rounded text-xs flex items-center justify-center text-white">B103</div>
+                                <div class="bg-yellow-400 rounded text-xs flex items-center justify-center text-white">B104</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 建筑C -->
+                        <div class="bg-purple-200 rounded p-2 flex flex-col">
+                            <div class="text-xs font-medium text-purple-800 mb-1">建筑C</div>
+                            <div class="flex-1 grid grid-cols-2 gap-1">
+                                <div class="bg-yellow-400 rounded text-xs flex items-center justify-center text-white">C101</div>
+                                <div class="bg-red-400 rounded text-xs flex items-center justify-center text-white">C102</div>
+                                <div class="bg-green-400 rounded text-xs flex items-center justify-center text-white">C103</div>
+                                <div class="bg-green-400 rounded text-xs flex items-center justify-center text-white">C104</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 建筑D -->
+                        <div class="bg-orange-200 rounded p-2 flex flex-col">
+                            <div class="text-xs font-medium text-orange-800 mb-1">建筑D</div>
+                            <div class="flex-1 grid grid-cols-2 gap-1">
+                                <div class="bg-green-400 rounded text-xs flex items-center justify-center text-white">D101</div>
+                                <div class="bg-green-400 rounded text-xs flex items-center justify-center text-white">D102</div>
+                                <div class="bg-green-400 rounded text-xs flex items-center justify-center text-white">D103</div>
+                                <div class="bg-green-400 rounded text-xs flex items-center justify-center text-white">D104</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 图例 -->
+                    <div class="flex items-center justify-center mt-4 space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-green-400 rounded mr-2"></div>
+                            <span class="text-xs text-gray-600">空闲</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-yellow-400 rounded mr-2"></div>
+                            <span class="text-xs text-gray-600">使用中</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 bg-red-400 rounded mr-2"></div>
+                            <span class="text-xs text-gray-600">维护中</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 空间管理 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-cogs text-primary mr-2"></i>
+                    空间管理
+                </h2>
+                <div class="space-y-4">
+                    <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">会议室A</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">空闲</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mb-2">容量: 10人 | 设备: 投影仪</div>
+                        <button class="w-full bg-blue-600 text-white py-1 px-3 rounded text-xs hover:bg-blue-700 transition-colors">
+                            立即预约
+                        </button>
+                    </div>
+
+                    <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">会议室B</span>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">使用中</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mb-2">容量: 20人 | 14:00-16:00</div>
+                        <button class="w-full bg-gray-400 text-white py-1 px-3 rounded text-xs cursor-not-allowed" disabled>
+                            使用中
+                        </button>
+                    </div>
+
+                    <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">培训室</span>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">空闲</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mb-2">容量: 50人 | 设备: 音响</div>
+                        <button class="w-full bg-green-600 text-white py-1 px-3 rounded text-xs hover:bg-green-700 transition-colors">
+                            立即预约
+                        </button>
+                    </div>
+
+                    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-sm font-medium text-gray-700">实验室</span>
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">维护中</span>
+                        </div>
+                        <div class="text-xs text-gray-500 mb-2">设备检修 | 预计明日恢复</div>
+                        <button class="w-full bg-gray-400 text-white py-1 px-3 rounded text-xs cursor-not-allowed" disabled>
+                            维护中
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预约管理 -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-calendar-alt text-primary mr-2"></i>
+                    预约管理
+                </h2>
+                <button class="bg-primary text-white px-4 py-2 rounded text-sm hover:bg-primary-light transition-colors">
+                    <i class="fas fa-plus mr-2"></i>新增预约
+                </button>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-200">
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">空间名称</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">预约人</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">预约时间</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">用途</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">状态</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4 text-gray-800">会议室A</td>
+                            <td class="py-3 px-4 text-gray-600">张经理</td>
+                            <td class="py-3 px-4 text-gray-600">14:00-16:00</td>
+                            <td class="py-3 px-4 text-gray-600">项目评审</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">进行中</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <button class="text-blue-600 hover:text-blue-700 text-xs mr-2">查看</button>
+                                <button class="text-red-600 hover:text-red-700 text-xs">取消</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4 text-gray-800">培训室</td>
+                            <td class="py-3 px-4 text-gray-600">李主管</td>
+                            <td class="py-3 px-4 text-gray-600">16:30-18:00</td>
+                            <td class="py-3 px-4 text-gray-600">员工培训</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">待开始</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <button class="text-blue-600 hover:text-blue-700 text-xs mr-2">查看</button>
+                                <button class="text-orange-600 hover:text-orange-700 text-xs">修改</button>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100">
+                            <td class="py-3 px-4 text-gray-800">会议室B</td>
+                            <td class="py-3 px-4 text-gray-600">王总监</td>
+                            <td class="py-3 px-4 text-gray-600">明日 09:00-11:00</td>
+                            <td class="py-3 px-4 text-gray-600">月度总结</td>
+                            <td class="py-3 px-4">
+                                <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">已预约</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <button class="text-blue-600 hover:text-blue-700 text-xs mr-2">查看</button>
+                                <button class="text-orange-600 hover:text-orange-700 text-xs">修改</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 资产盘点系统与租赁管理 -->
+    <div class="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- 资产盘点系统 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-clipboard-list text-primary mr-2"></i>
+                    资产盘点系统
+                </h2>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">盘点计划</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">盘点执行</button>
+                </div>
+            </div>
+
+            <!-- 盘点统计 -->
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-lg font-bold text-blue-600">85.6%</div>
+                            <div class="text-xs text-gray-600">盘点完成率</div>
+                        </div>
+                        <i class="fas fa-check-circle text-blue-600"></i>
+                    </div>
+                    <div class="text-xs text-green-600 mt-1">已盘点: 1,589台</div>
+                </div>
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-lg font-bold text-orange-600">12</div>
+                            <div class="text-xs text-gray-600">盘点差异</div>
+                        </div>
+                        <i class="fas fa-exclamation-triangle text-orange-600"></i>
+                    </div>
+                    <div class="text-xs text-red-600 mt-1">需要核实</div>
+                </div>
+            </div>
+
+            <!-- 盘点进度 -->
+            <div class="mb-4">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm font-medium text-gray-700">年度盘点进度</span>
+                    <span class="text-sm text-blue-600">85.6%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-blue-500 h-2 rounded-full" style="width: 85.6%"></div>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">预计完成时间: 2025年1月25日</div>
+            </div>
+
+            <!-- 盘点任务 -->
+            <div class="space-y-2 mb-4">
+                <div class="bg-green-50 border border-green-200 rounded p-2">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-sm font-medium text-gray-700">A区生产设备</span>
+                            <div class="text-xs text-gray-500">负责人: 张工程师</div>
+                        </div>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                    </div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded p-2">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-sm font-medium text-gray-700">B区办公设备</span>
+                            <div class="text-xs text-gray-500">负责人: 李主管</div>
+                        </div>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">进行中</span>
+                    </div>
+                </div>
+                <div class="bg-gray-50 border border-gray-200 rounded p-2">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-sm font-medium text-gray-700">C区检测设备</span>
+                            <div class="text-xs text-gray-500">负责人: 王技师</div>
+                        </div>
+                        <span class="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">待开始</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 盘点操作 -->
+            <div class="grid grid-cols-2 gap-2">
+                <button class="px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                    <i class="fas fa-plus mr-1"></i>新建盘点
+                </button>
+                <button class="px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                    <i class="fas fa-download mr-1"></i>盘点报告
+                </button>
+            </div>
+        </div>
+
+        <!-- 租赁与空间运营管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-handshake text-primary mr-2"></i>
+                    租赁与空间运营
+                </h2>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">租赁管理</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">收益分析</button>
+                </div>
+            </div>
+
+            <!-- 租赁统计 -->
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-lg font-bold text-green-600">¥28.5万</div>
+                            <div class="text-xs text-gray-600">月租赁收入</div>
+                        </div>
+                        <i class="fas fa-dollar-sign text-green-600"></i>
+                    </div>
+                    <div class="text-xs text-green-600 mt-1">较上月: ↑12.3%</div>
+                </div>
+                <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-3">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="text-lg font-bold text-purple-600">92.5%</div>
+                            <div class="text-xs text-gray-600">空间出租率</div>
+                        </div>
+                        <i class="fas fa-chart-pie text-purple-600"></i>
+                    </div>
+                    <div class="text-xs text-blue-600 mt-1">可租面积: 8,500㎡</div>
+                </div>
+            </div>
+
+            <!-- 租赁合同管理 -->
+            <div class="mb-4">
+                <h3 class="text-sm font-semibold text-gray-700 mb-2">租赁合同状态</h3>
+                <div class="space-y-2">
+                    <div class="bg-green-50 border border-green-200 rounded p-2">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-sm font-medium text-gray-700">科技公司A - 1,200㎡</span>
+                                <div class="text-xs text-gray-500">租期: 2023.01-2026.01</div>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 border border-yellow-200 rounded p-2">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-sm font-medium text-gray-700">制造企业B - 800㎡</span>
+                                <div class="text-xs text-gray-500">租期: 2024.06-2025.06</div>
+                            </div>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">即将到期</span>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 rounded p-2">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <span class="text-sm font-medium text-gray-700">服务公司C - 600㎡</span>
+                                <div class="text-xs text-gray-500">租期: 2024.12-2027.12</div>
+                            </div>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">新签约</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 空间运营分析 -->
+            <div class="mb-4">
+                <h3 class="text-sm font-semibold text-gray-700 mb-2">运营效益分析</h3>
+                <div class="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-3">
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <div>• 平均租金: ¥35/㎡/月</div>
+                        <div>• 空置成本: ¥2.1万/月</div>
+                        <div>• 运营成本: ¥8.5万/月</div>
+                        <div class="text-indigo-600">• 净收益率: 68.5%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 租赁管理操作 -->
+            <div class="grid grid-cols-2 gap-2">
+                <button class="px-3 py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700">
+                    <i class="fas fa-contract mr-1"></i>合同管理
+                </button>
+                <button class="px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                    <i class="fas fa-chart-line mr-1"></i>收益分析
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟实时空间数据更新
+        function updateSpaceData() {
+            console.log('空间资产数据更新');
+
+            // 更新设备生命周期数据
+            updateEquipmentLifecycle();
+
+            // 更新空间利用率
+            updateSpaceUtilization();
+
+            // 更新资产盘点进度
+            updateInventoryProgress();
+
+            // 更新租赁收益数据
+            updateRentalRevenue();
+        }
+
+        // 更新设备生命周期数据
+        function updateEquipmentLifecycle() {
+            const lifecycleData = {
+                totalEquipment: Math.floor(1850 + Math.random() * 20),
+                activeEquipment: Math.floor(1740 + Math.random() * 10),
+                maintenancePlans: Math.floor(40 + Math.random() * 10),
+                warningEquipment: Math.floor(10 + Math.random() * 5),
+                assetValue: (2.7 + Math.random() * 0.2).toFixed(1) + '亿'
+            };
+
+            console.log('设备生命周期数据更新:', lifecycleData);
+        }
+
+        // 更新空间利用率
+        function updateSpaceUtilization() {
+            const utilizationData = {
+                totalBuildings: 12,
+                totalRooms: Math.floor(155 + Math.random() * 5),
+                utilizationRate: Math.floor(75 + Math.random() * 10) + '%',
+                todayReservations: Math.floor(20 + Math.random() * 8)
+            };
+
+            console.log('空间利用率数据更新:', utilizationData);
+        }
+
+        // 更新资产盘点进度
+        function updateInventoryProgress() {
+            const inventoryData = {
+                completionRate: (83 + Math.random() * 5).toFixed(1) + '%',
+                inventoriedItems: Math.floor(1580 + Math.random() * 20),
+                discrepancies: Math.floor(10 + Math.random() * 5),
+                estimatedCompletion: '2025年1月25日'
+            };
+
+            console.log('资产盘点进度更新:', inventoryData);
+        }
+
+        // 更新租赁收益数据
+        function updateRentalRevenue() {
+            const rentalData = {
+                monthlyRevenue: (27 + Math.random() * 3).toFixed(1) + '万',
+                occupancyRate: (90 + Math.random() * 5).toFixed(1) + '%',
+                rentableArea: '8,500㎡',
+                netProfitRate: (65 + Math.random() * 8).toFixed(1) + '%'
+            };
+
+            console.log('租赁收益数据更新:', rentalData);
+        }
+
+        // 初始化设备生命周期管理
+        function initEquipmentLifecycleManagement() {
+            console.log('初始化设备生命周期管理');
+
+            // 设备管理按钮事件
+            const equipmentButtons = document.querySelectorAll('button');
+            equipmentButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('设备台账')) {
+                    button.addEventListener('click', function() {
+                        console.log('查看设备台账');
+                        alert('设备台账管理:\n总设备: 1,856台\n在用设备: 1,742台\n设备分类: 生产设备、检测设备、办公设备');
+                    });
+                } else if (text.includes('维护计划')) {
+                    button.addEventListener('click', function() {
+                        console.log('查看维护计划');
+                        alert('维护计划管理:\n本月计划: 45个\n已完成: 38个\n进行中: 7个\n设备健康度: 87.5%');
+                    });
+                } else if (text.includes('报废处置')) {
+                    button.addEventListener('click', function() {
+                        console.log('设备报废处置');
+                        alert('报废处置管理:\n待报废: 5台\n处置收益: ¥12万\n回收价值: ¥8万');
+                    });
+                }
+            });
+        }
+
+        // 初始化空间预约管理
+        function initSpaceReservationManagement() {
+            console.log('初始化空间预约管理');
+
+            // 预约操作按钮事件
+            const reservationButtons = document.querySelectorAll('button');
+            reservationButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('新增预约')) {
+                    button.addEventListener('click', function() {
+                        console.log('新增空间预约');
+                        alert('新增空间预约:\n可预约空间: 会议室、培训室、实验室\n预约时段: 08:00-18:00\n预约规则: 提前1天预约');
+                    });
+                } else if (text.includes('查看') && this.closest('tr')) {
+                    button.addEventListener('click', function() {
+                        const spaceName = this.closest('tr').querySelector('td').textContent;
+                        console.log('查看预约详情:', spaceName);
+                        alert(`查看 ${spaceName} 的预约详情...`);
+                    });
+                } else if (text.includes('取消') && this.closest('tr')) {
+                    button.addEventListener('click', function() {
+                        const spaceName = this.closest('tr').querySelector('td').textContent;
+                        console.log('取消预约:', spaceName);
+                        alert(`确认取消 ${spaceName} 的预约吗？`);
+                    });
+                }
+            });
+        }
+
+        // 初始化资产盘点系统
+        function initInventoryManagement() {
+            console.log('初始化资产盘点系统');
+
+            // 盘点管理按钮事件
+            const inventoryButtons = document.querySelectorAll('button');
+            inventoryButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('新建盘点')) {
+                    button.addEventListener('click', function() {
+                        console.log('新建盘点任务');
+                        alert('新建盘点任务:\n盘点范围: 选择区域和设备类型\n负责人: 指定盘点负责人\n计划时间: 设置盘点周期');
+                    });
+                } else if (text.includes('盘点报告')) {
+                    button.addEventListener('click', function() {
+                        console.log('生成盘点报告');
+                        alert('盘点报告:\n完成率: 85.6%\n盘点差异: 12项\n资产状况: 良好\n建议措施: 加强日常管理');
+                    });
+                } else if (text.includes('盘点计划')) {
+                    button.addEventListener('click', function() {
+                        console.log('查看盘点计划');
+                        alert('盘点计划管理:\n年度盘点: 进行中\n季度盘点: 已完成\n月度抽盘: 计划中');
+                    });
+                } else if (text.includes('盘点执行')) {
+                    button.addEventListener('click', function() {
+                        console.log('盘点执行管理');
+                        alert('盘点执行:\nA区: 已完成\nB区: 进行中\nC区: 待开始\n总体进度: 85.6%');
+                    });
+                }
+            });
+        }
+
+        // 初始化租赁管理系统
+        function initRentalManagement() {
+            console.log('初始化租赁管理系统');
+
+            // 租赁管理按钮事件
+            const rentalButtons = document.querySelectorAll('button');
+            rentalButtons.forEach(button => {
+                const text = button.textContent.trim();
+
+                if (text.includes('合同管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('租赁合同管理');
+                        alert('租赁合同管理:\n有效合同: 15份\n即将到期: 3份\n新签约: 2份\n续约率: 85%');
+                    });
+                } else if (text.includes('收益分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('租赁收益分析');
+                        alert('租赁收益分析:\n月收入: ¥28.5万\n出租率: 92.5%\n净收益率: 68.5%\n同比增长: +12.3%');
+                    });
+                } else if (text.includes('租赁管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('租赁管理');
+                        alert('租赁管理:\n可租面积: 8,500㎡\n已租面积: 7,863㎡\n空置面积: 637㎡\n平均租金: ¥35/㎡/月');
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后启动实时更新
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化实时数据更新
+            updateSpaceData();
+            setInterval(updateSpaceData, 30000); // 每30秒更新一次
+
+            // 初始化各功能模块
+            initEquipmentLifecycleManagement();
+            initSpaceReservationManagement();
+            initInventoryManagement();
+            initRentalManagement();
+
+            console.log('空间资产深度功能初始化完成');
+        });
+    </script>
+</body>
+</html>

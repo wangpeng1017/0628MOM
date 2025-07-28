@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>车辆出入管理 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-car text-primary mr-3"></i>
+                车辆出入管理
+            </h1>
+            <p class="text-gray-600 mt-2">管理园区车辆出入和停车，确保交通有序安全</p>
+        </div>
+
+        <!-- 车辆统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">在园车辆</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">23</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-car text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>员工车辆:</span>
+                        <span class="text-blue-600 font-medium">18辆</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>访客车辆:</span>
+                        <span class="text-purple-600 font-medium">5辆</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">今日通行</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">156</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-exchange-alt text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>进入:</span>
+                        <span class="text-green-600 font-medium">89次</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>离开:</span>
+                        <span class="text-red-600 font-medium">67次</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">停车位占用</h3>
+                        <p class="text-3xl font-bold text-orange-600 mt-2">78%</p>
+                    </div>
+                    <div class="bg-orange-100 p-3 rounded-full">
+                        <i class="fas fa-parking text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>已占用:</span>
+                        <span class="text-orange-600 font-medium">78/100</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>剩余:</span>
+                        <span class="text-green-600 font-medium">22个</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">违章事件</h3>
+                        <p class="text-3xl font-bold text-red-600 mt-2">2</p>
+                    </div>
+                    <div class="bg-red-100 p-3 rounded-full">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>违规停车:</span>
+                        <span class="text-red-600 font-medium">1起</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>超速行驶:</span>
+                        <span class="text-orange-600 font-medium">1起</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 出入口状态监控 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-road text-blue-600 mr-2"></i>
+                出入口状态监控
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">主入口</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>今日通行:</span>
+                            <span class="font-medium text-green-600">89次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>当前排队:</span>
+                            <span class="font-medium">0辆</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>道闸状态:</span>
+                            <span class="font-medium text-green-600">正常</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>识别率:</span>
+                            <span class="font-medium text-blue-600">98.5%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">货运入口</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>今日通行:</span>
+                            <span class="font-medium text-blue-600">34次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>当前排队:</span>
+                            <span class="font-medium">1辆</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>道闸状态:</span>
+                            <span class="font-medium text-green-600">正常</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>识别率:</span>
+                            <span class="font-medium text-blue-600">96.8%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">应急出口</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">维护中</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>今日通行:</span>
+                            <span class="font-medium text-yellow-600">0次</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>当前排队:</span>
+                            <span class="font-medium">0辆</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>道闸状态:</span>
+                            <span class="font-medium text-yellow-600">维护中</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>预计恢复:</span>
+                            <span class="font-medium text-orange-600">16:00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 停车管理 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-parking text-green-600 mr-2"></i>
+                    停车引导系统
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">A区停车场</h4>
+                            <span class="text-lg font-bold text-green-600">15/40</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3 mb-2">
+                            <div class="bg-green-500 h-3 rounded-full" style="width: 37.5%"></div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <span>剩余车位: 25个</span>
+                            <span class="float-right text-green-600">充足</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">B区停车场</h4>
+                            <span class="text-lg font-bold text-yellow-600">28/35</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3 mb-2">
+                            <div class="bg-yellow-500 h-3 rounded-full" style="width: 80%"></div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <span>剩余车位: 7个</span>
+                            <span class="float-right text-yellow-600">紧张</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">C区停车场</h4>
+                            <span class="text-lg font-bold text-red-600">25/25</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3 mb-2">
+                            <div class="bg-red-500 h-3 rounded-full" style="width: 100%"></div>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <span>剩余车位: 0个</span>
+                            <span class="float-right text-red-600">已满</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-camera text-purple-600 mr-2"></i>
+                    违章抓拍系统
+                </h3>
+                <div class="space-y-4">
+                    <div class="border border-red-200 bg-red-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">违规停车</span>
+                            <span class="text-sm text-gray-500">14:25</span>
+                        </div>
+                        <div class="text-sm text-gray-700">
+                            <div>车牌号: 京A12345</div>
+                            <div>位置: 消防通道</div>
+                            <div>违规时长: 15分钟</div>
+                        </div>
+                        <div class="flex space-x-2 mt-3">
+                            <button class="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700">
+                                发送通知
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="border border-orange-200 bg-orange-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded-full">超速行驶</span>
+                            <span class="text-sm text-gray-500">13:45</span>
+                        </div>
+                        <div class="text-sm text-gray-700">
+                            <div>车牌号: 沪B67890</div>
+                            <div>位置: 园区主干道</div>
+                            <div>行驶速度: 35 km/h (限速20)</div>
+                        </div>
+                        <div class="flex space-x-2 mt-3">
+                            <button class="px-3 py-1 bg-orange-600 text-white text-xs rounded hover:bg-orange-700">
+                                发送警告
+                            </button>
+                            <button class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                                查看详情
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">抓拍统计</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 今日抓拍: 2起违章</div>
+                            <div>• 本月累计: 15起</div>
+                            <div>• 处理率: 100%</div>
+                            <div class="text-green-600">• 违章率: 0.8%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 车辆流量分析 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                车辆流量分析
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="h-64 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-area text-4xl mb-4"></i>
+                        <p>车辆流量趋势图</p>
+                        <p class="text-sm">显示24小时车辆进出统计</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">高峰时段</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 早高峰: 08:00-09:00 (45辆)</div>
+                            <div>• 午高峰: 12:00-13:00 (28辆)</div>
+                            <div>• 晚高峰: 17:30-18:30 (52辆)</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">流量统计</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 日均进入: 89辆次</div>
+                            <div>• 日均离开: 87辆次</div>
+                            <div>• 平均停留: 6.5小时</div>
+                            <div class="text-blue-600">• 周转率: 1.8次/天</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-car text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">车辆登记</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-search text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">车辆查询</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-map-marked-alt text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">停车导航</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">流量报表</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 车辆出入管理功能
+        function initVehicleManagement() {
+            console.log('初始化车辆出入管理功能');
+            
+            // 违章处理按钮事件
+            const violationButtons = document.querySelectorAll('button');
+            violationButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('发送通知') || text.includes('发送警告')) {
+                    button.addEventListener('click', function() {
+                        const plateNumber = this.closest('.rounded-lg').querySelector('div:nth-child(2) div:first-child').textContent;
+                        console.log('发送违章通知:', plateNumber);
+                        alert(`已向 ${plateNumber} 发送违章通知`);
+                    });
+                } else if (text.includes('查看详情')) {
+                    button.addEventListener('click', function() {
+                        const plateNumber = this.closest('.rounded-lg').querySelector('div:nth-child(2) div:first-child').textContent;
+                        console.log('查看违章详情:', plateNumber);
+                        alert(`查看 ${plateNumber} 的违章详情...`);
+                    });
+                }
+            });
+        }
+
+        // 实时更新停车位信息
+        function updateParkingInfo() {
+            console.log('更新停车位信息');
+            // 这里可以添加实时停车位更新逻辑
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initVehicleManagement();
+            updateParkingInfo();
+            setInterval(updateParkingInfo, 60000); // 每分钟更新一次停车位信息
+            
+            console.log('车辆出入管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

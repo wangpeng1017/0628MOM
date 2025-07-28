@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备能耗控制 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #1e40af;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-sliders-h text-primary mr-3"></i>
+                设备能耗控制
+            </h1>
+            <p class="text-gray-600 mt-2">智能设备能耗控制，优化能源使用效率</p>
+        </div>
+
+        <!-- 设备能耗统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">受控设备</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">156</p>
+                        <p class="text-sm text-gray-500">台设备</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-microchip text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>在线设备:</span>
+                        <span class="text-green-600 font-medium">152台</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>离线设备:</span>
+                        <span class="text-red-600 font-medium">4台</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">总功率</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">1,850</p>
+                        <p class="text-sm text-gray-500">kW</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-bolt text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较昨日:</span>
+                        <span class="text-green-600 font-medium">-8.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>负荷率:</span>
+                        <span class="text-blue-600 font-medium">74%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">节能效果</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">12.3%</p>
+                        <p class="text-sm text-gray-500">能耗降低</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-leaf text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>节能量:</span>
+                        <span class="text-purple-600 font-medium">456 kWh</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>节省费用:</span>
+                        <span class="text-green-600 font-medium">¥365</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">控制策略</h3>
+                        <p class="text-3xl font-bold text-orange-600 mt-2">8</p>
+                        <p class="text-sm text-gray-500">执行中</p>
+                    </div>
+                    <div class="bg-orange-100 p-3 rounded-full">
+                        <i class="fas fa-cogs text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>自动策略:</span>
+                        <span class="text-blue-600 font-medium">6个</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>手动策略:</span>
+                        <span class="text-orange-600 font-medium">2个</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 智能设备控制 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-home text-blue-600 mr-2"></i>
+                智能设备控制
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">空调系统</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">自动控制</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>设备数量:</span>
+                            <span class="font-medium text-blue-600">45台</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>当前功率:</span>
+                            <span class="font-medium">680 kW</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>设定温度:</span>
+                            <span class="font-medium text-green-600">24°C</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>节能模式:</span>
+                            <span class="font-medium text-purple-600">启用</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex space-x-2">
+                        <button class="flex-1 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                            调节温度
+                        </button>
+                        <button class="flex-1 px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+                            节能模式
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">照明系统</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">智能调节</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>灯具数量:</span>
+                            <span class="font-medium text-yellow-600">1,280盏</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>当前功率:</span>
+                            <span class="font-medium">320 kW</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>亮度调节:</span>
+                            <span class="font-medium text-green-600">85%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>感应控制:</span>
+                            <span class="font-medium text-blue-600">启用</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex space-x-2">
+                        <button class="flex-1 px-3 py-1 bg-yellow-600 text-white text-xs rounded hover:bg-yellow-700">
+                            调节亮度
+                        </button>
+                        <button class="flex-1 px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+                            定时控制
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-semibold text-gray-800">生产设备</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">错峰运行</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-2">
+                        <div class="flex justify-between">
+                            <span>设备数量:</span>
+                            <span class="font-medium text-green-600">28台</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>当前功率:</span>
+                            <span class="font-medium">850 kW</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>负荷调度:</span>
+                            <span class="font-medium text-blue-600">自动</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>运行效率:</span>
+                            <span class="font-medium text-green-600">92%</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 flex space-x-2">
+                        <button class="flex-1 px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700">
+                            负荷调度
+                        </button>
+                        <button class="flex-1 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                            运行计划
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 节能策略配置 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-brain text-purple-600 mr-2"></i>
+                    节能策略配置
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">温度优化策略</h4>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                            </label>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 夏季空调温度上调2°C</div>
+                            <div>• 冬季空调温度下调2°C</div>
+                            <div>• 非工作时间温度放宽</div>
+                            <div class="text-green-600">• 预计节能: 15%</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">照明智能控制</h4>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 人体感应自动开关</div>
+                            <div>• 光照度自动调节</div>
+                            <div>• 分区域定时控制</div>
+                            <div class="text-blue-600">• 预计节能: 25%</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">设备错峰运行</h4>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                            </label>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 避开用电高峰时段</div>
+                            <div>• 优化设备启动顺序</div>
+                            <div>• 负荷均衡分配</div>
+                            <div class="text-purple-600">• 预计节能: 10%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-green-600 mr-2"></i>
+                    设备运行优化
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">运行效率分析</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 平均运行效率: 89.5%</div>
+                            <div>• 最高效率设备: 生产线A (95%)</div>
+                            <div>• 最低效率设备: 空调3号 (78%)</div>
+                            <div class="text-orange-600">• 优化潜力: 8.5%</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">维护建议</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 空调系统清洗: 3台</div>
+                            <div>• 照明设备更换: 15盏</div>
+                            <div>• 生产设备校准: 2台</div>
+                            <div class="text-green-600">• 预计效率提升: 5%</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">能耗预警</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 高能耗设备: 2台</div>
+                            <div>• 异常功率波动: 1台</div>
+                            <div>• 超时运行设备: 0台</div>
+                            <div class="text-blue-600">• 系统状态: 良好</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时控制面板 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-gamepad text-blue-600 mr-2"></i>
+                实时控制面板
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">空调控制</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">温度设定</span>
+                            <div class="flex items-center space-x-2">
+                                <button class="w-6 h-6 bg-blue-600 text-white rounded text-xs">-</button>
+                                <span class="text-sm font-medium">24°C</span>
+                                <button class="w-6 h-6 bg-blue-600 text-white rounded text-xs">+</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">运行模式</span>
+                            <select class="text-xs border rounded px-2 py-1">
+                                <option>自动</option>
+                                <option>制冷</option>
+                                <option>制热</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">照明控制</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">亮度调节</span>
+                            <div class="flex items-center space-x-2">
+                                <button class="w-6 h-6 bg-yellow-600 text-white rounded text-xs">-</button>
+                                <span class="text-sm font-medium">85%</span>
+                                <button class="w-6 h-6 bg-yellow-600 text-white rounded text-xs">+</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">感应模式</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" checked class="sr-only peer">
+                                <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-yellow-600"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">设备调度</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">负荷限制</span>
+                            <div class="flex items-center space-x-2">
+                                <button class="w-6 h-6 bg-green-600 text-white rounded text-xs">-</button>
+                                <span class="text-sm font-medium">80%</span>
+                                <button class="w-6 h-6 bg-green-600 text-white rounded text-xs">+</button>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">错峰运行</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer">
+                                <div class="w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-600"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <h4 class="font-semibold text-gray-800 mb-3">系统状态</h4>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">总功率</span>
+                            <span class="text-sm font-medium text-purple-600">1,850 kW</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">节能率</span>
+                            <span class="text-sm font-medium text-green-600">12.3%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-power-off text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">设备开关</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-leaf text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">节能模式</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-clock text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">定时控制</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">控制报表</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 设备能耗控制功能
+        function initDeviceEnergyControl() {
+            console.log('初始化设备能耗控制功能');
+            
+            // 温度控制按钮事件
+            const tempButtons = document.querySelectorAll('button');
+            tempButtons.forEach(button => {
+                if (button.textContent === '+' || button.textContent === '-') {
+                    button.addEventListener('click', function() {
+                        console.log('温度调节:', button.textContent);
+                        // 这里可以添加温度调节逻辑
+                    });
+                }
+            });
+            
+            // 开关控制事件
+            const switches = document.querySelectorAll('input[type="checkbox"]');
+            switches.forEach(switchEl => {
+                switchEl.addEventListener('change', function() {
+                    console.log('开关状态变更:', this.checked);
+                    // 这里可以添加开关控制逻辑
+                });
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initDeviceEnergyControl();
+            console.log('设备能耗控制页面加载完成');
+        });
+    </script>
+</body>
+</html>

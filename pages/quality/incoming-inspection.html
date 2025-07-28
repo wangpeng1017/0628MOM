@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>来料检验管理 - 质量管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">来料检验管理</h1>
+            <p class="text-gray-600">基于Process.md 2.5.1流程：检验计划→抽样检验→结果判定→放行/退货，确保来料质量符合要求</p>
+        </div>
+
+        <!-- 来料检验流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">来料检验流程</h3>
+                    <span class="text-sm text-gray-600">IQC检验质量控制</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">到货通知</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">抽样检验</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">结果判定</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">放行/退货</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="arrivalNoticeBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-bell mr-2"></i>
+                到货通知
+            </button>
+            <button id="samplingInspectionBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-search mr-2"></i>
+                抽样检验
+            </button>
+            <button id="resultJudgmentBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-gavel mr-2"></i>
+                结果判定
+            </button>
+            <button id="releaseReturnBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-truck mr-2"></i>
+                放行/退货
+            </button>
+            <button id="qualityAnalysisBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-chart-line mr-2"></i>
+                质量分析
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 来料检验统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-600">检验批次</div>
+                        <div class="text-xs text-gray-500">本月累计</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clipboard-list text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">98.5%</div>
+                        <div class="text-sm text-gray-600">合格率</div>
+                        <div class="text-xs text-gray-500">质量指标</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">12</div>
+                        <div class="text-sm text-gray-600">待检验</div>
+                        <div class="text-xs text-gray-500">排队中</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">8</div>
+                        <div class="text-sm text-gray-600">不合格批次</div>
+                        <div class="text-xs text-gray-500">需要处理</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-times-circle text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">2.3天</div>
+                        <div class="text-sm text-gray-600">平均周期</div>
+                        <div class="text-xs text-gray-500">检验时间</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-stopwatch text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">5</div>
+                        <div class="text-sm text-gray-600">供应商异常</div>
+                        <div class="text-xs text-gray-500">需要关注</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 检验进度和质量监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 检验进度跟踪 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">检验进度跟踪</h3>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-bell text-blue-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">到货通知</div>
+                                    <div class="text-xs text-gray-500">供应商通知、物料接收</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-blue-600">100%</div>
+                                <div class="text-xs text-gray-500">已完成</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-green-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-search text-green-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">抽样检验</div>
+                                    <div class="text-xs text-gray-500">按AQL标准抽样检测</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-green-600">85%</div>
+                                <div class="text-xs text-gray-500">进行中</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-purple-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-gavel text-purple-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">结果判定</div>
+                                    <div class="text-xs text-gray-500">合格性判定、数据分析</div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-semibold text-purple-600">30%</div>
+                                <div class="text-xs text-gray-500">准备中</div>
+                            </div>
+                        </div>
+                        <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-600 h-2 rounded-full" style="width: 30%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 质量监控面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">质量监控</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">电容器批次异常</div>
+                                <div class="text-xs text-gray-600">批次C2025001不合格率15%</div>
+                                <div class="text-xs text-gray-500">供应商: 华星电子</div>
+                            </div>
+                            <button onclick="handleIncomingAlert('ALERT001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                立即处理
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">PCB板尺寸偏差</div>
+                                <div class="text-xs text-gray-600">批次P2025002尺寸超差</div>
+                                <div class="text-xs text-gray-500">供应商: 精密电路</div>
+                            </div>
+                            <button onclick="handleIncomingAlert('ALERT002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                                分析中
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">包装材料缺陷</div>
+                                <div class="text-xs text-gray-600">纸箱强度不符合要求</div>
+                                <div class="text-xs text-gray-500">供应商: 包装制品</div>
+                            </div>
+                            <button onclick="handleIncomingAlert('ALERT003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                待处理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">质量趋势</span>
+                        <span class="font-medium text-green-600">本月提升: +0.8%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 来料检验记录表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">来料检验记录</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部物料类型</option>
+                        <option>电子元器件</option>
+                        <option>PCB板</option>
+                        <option>包装材料</option>
+                        <option>辅助材料</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部检验状态</option>
+                        <option>待检验</option>
+                        <option>检验中</option>
+                        <option>已合格</option>
+                        <option>不合格</option>
+                        <option>特采放行</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部供应商</option>
+                        <option>华星电子</option>
+                        <option>精密电路</option>
+                        <option>包装制品</option>
+                        <option>金属加工</option>
+                    </select>
+                    <input type="date" class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                    <input type="text" placeholder="搜索物料编号、批次号..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检验信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">供应商信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检验项目</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检验人员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间进度</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检验状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">检验结果</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="incomingTableBody">
+                        <!-- 检验数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.5.1的来料检验数据模型
+        const incomingInspectionData = [
+            {
+                id: 'IQC202501001',
+                inspectionCode: 'IQC-CAP-001',
+                materialCode: 'CAP-100uF-25V',
+                materialName: '电解电容器',
+                materialType: '电子元器件',
+                batchNumber: 'C2025001',
+                quantity: 10000,
+                unit: 'PCS',
+                supplier: {
+                    name: '华星电子',
+                    code: 'SUP001',
+                    contact: '张经理',
+                    phone: '138-0001-0001'
+                },
+                arrivalDate: '2025-01-15',
+                inspectionDate: '2025-01-16',
+                inspector: '李检验员',
+                inspectorId: 'IQC001',
+                inspectionStatus: 'completed',
+                inspectionStatusName: '已完成',
+                inspectionItems: [
+                    { item: '外观检查', standard: '无破损、变形', result: 'pass', notes: '外观良好' },
+                    { item: '尺寸测量', standard: '±0.1mm', result: 'pass', notes: '尺寸符合要求' },
+                    { item: '电气性能', standard: '100±20%μF', result: 'pass', notes: '电容值正常' },
+                    { item: '耐压测试', standard: '≥25V', result: 'pass', notes: '耐压合格' }
+                ],
+                samplingPlan: {
+                    method: 'AQL',
+                    aqlLevel: '1.0',
+                    sampleSize: 80,
+                    acceptNumber: 1,
+                    rejectNumber: 2
+                },
+                inspectionResult: {
+                    totalSamples: 80,
+                    defectSamples: 0,
+                    defectRate: 0,
+                    judgment: 'accept',
+                    judgmentName: '合格'
+                },
+                qualityGrade: 'A',
+                releaseStatus: 'released',
+                releaseStatusName: '已放行',
+                releaseDate: '2025-01-16',
+                storageLocation: '原料仓A区-01',
+                documents: ['检验报告', '合格证', '放行单'],
+                photos: ['外观检查.jpg', '尺寸测量.jpg'],
+                notes: '检验合格，质量稳定'
+            },
+            {
+                id: 'IQC202501002',
+                inspectionCode: 'IQC-PCB-002',
+                materialCode: 'PCB-MAIN-V1.2',
+                materialName: '主控PCB板',
+                materialType: 'PCB板',
+                batchNumber: 'P2025002',
+                quantity: 500,
+                unit: 'PCS',
+                supplier: {
+                    name: '精密电路',
+                    code: 'SUP002',
+                    contact: '王工程师',
+                    phone: '138-0002-0002'
+                },
+                arrivalDate: '2025-01-16',
+                inspectionDate: '2025-01-17',
+                inspector: '赵检验员',
+                inspectorId: 'IQC002',
+                inspectionStatus: 'in_progress',
+                inspectionStatusName: '检验中',
+                inspectionItems: [
+                    { item: '外观检查', standard: '无划伤、污染', result: 'pass', notes: '外观良好' },
+                    { item: '尺寸测量', standard: '100±0.1mm', result: 'fail', notes: '长度超差0.15mm' },
+                    { item: '阻焊检查', standard: '无气泡、脱落', result: 'pass', notes: '阻焊完整' },
+                    { item: '电气测试', standard: '导通正常', result: 'pending', notes: '测试中' }
+                ],
+                samplingPlan: {
+                    method: 'AQL',
+                    aqlLevel: '0.65',
+                    sampleSize: 32,
+                    acceptNumber: 0,
+                    rejectNumber: 1
+                },
+                inspectionResult: {
+                    totalSamples: 32,
+                    defectSamples: 5,
+                    defectRate: 15.6,
+                    judgment: 'pending',
+                    judgmentName: '检验中'
+                },
+                qualityGrade: null,
+                releaseStatus: 'pending',
+                releaseStatusName: '待处理',
+                releaseDate: null,
+                storageLocation: '待检区B-02',
+                documents: ['检验记录'],
+                photos: ['尺寸超差.jpg'],
+                notes: '发现尺寸超差问题，需要进一步分析'
+            },
+            {
+                id: 'IQC202501003',
+                inspectionCode: 'IQC-PKG-003',
+                materialCode: 'BOX-PACK-L',
+                materialName: '包装纸箱',
+                materialType: '包装材料',
+                batchNumber: 'B2025003',
+                quantity: 1000,
+                unit: 'PCS',
+                supplier: {
+                    name: '包装制品',
+                    code: 'SUP003',
+                    contact: '陈主管',
+                    phone: '138-0003-0003'
+                },
+                arrivalDate: '2025-01-17',
+                inspectionDate: null,
+                inspector: null,
+                inspectorId: null,
+                inspectionStatus: 'pending',
+                inspectionStatusName: '待检验',
+                inspectionItems: [
+                    { item: '外观检查', standard: '无破损、污渍', result: 'pending', notes: '' },
+                    { item: '尺寸测量', standard: '500×300×200mm', result: 'pending', notes: '' },
+                    { item: '强度测试', standard: '≥20kg', result: 'pending', notes: '' },
+                    { item: '印刷质量', standard: '清晰、无偏移', result: 'pending', notes: '' }
+                ],
+                samplingPlan: {
+                    method: 'AQL',
+                    aqlLevel: '2.5',
+                    sampleSize: 50,
+                    acceptNumber: 3,
+                    rejectNumber: 4
+                },
+                inspectionResult: {
+                    totalSamples: 0,
+                    defectSamples: 0,
+                    defectRate: 0,
+                    judgment: 'pending',
+                    judgmentName: '待检验'
+                },
+                qualityGrade: null,
+                releaseStatus: 'pending',
+                releaseStatusName: '待检验',
+                releaseDate: null,
+                storageLocation: '待检区C-01',
+                documents: ['到货单'],
+                photos: [],
+                notes: '刚到货，等待安排检验'
+            },
+            {
+                id: 'IQC202501004',
+                inspectionCode: 'IQC-RES-004',
+                materialCode: 'RES-1K-1%',
+                materialName: '精密电阻',
+                materialType: '电子元器件',
+                batchNumber: 'R2025004',
+                quantity: 50000,
+                unit: 'PCS',
+                supplier: {
+                    name: '华星电子',
+                    code: 'SUP001',
+                    contact: '张经理',
+                    phone: '138-0001-0001'
+                },
+                arrivalDate: '2025-01-14',
+                inspectionDate: '2025-01-15',
+                inspector: '王检验员',
+                inspectorId: 'IQC003',
+                inspectionStatus: 'rejected',
+                inspectionStatusName: '不合格',
+                inspectionItems: [
+                    { item: '外观检查', standard: '无破损、变色', result: 'pass', notes: '外观正常' },
+                    { item: '阻值测试', standard: '1000±10Ω', result: 'fail', notes: '阻值偏差超标' },
+                    { item: '温度系数', standard: '±100ppm/°C', result: 'fail', notes: '温度系数不合格' },
+                    { item: '包装检查', standard: '防静电包装', result: 'pass', notes: '包装合格' }
+                ],
+                samplingPlan: {
+                    method: 'AQL',
+                    aqlLevel: '1.0',
+                    sampleSize: 125,
+                    acceptNumber: 2,
+                    rejectNumber: 3
+                },
+                inspectionResult: {
+                    totalSamples: 125,
+                    defectSamples: 18,
+                    defectRate: 14.4,
+                    judgment: 'reject',
+                    judgmentName: '不合格'
+                },
+                qualityGrade: 'D',
+                releaseStatus: 'returned',
+                releaseStatusName: '已退货',
+                releaseDate: '2025-01-15',
+                storageLocation: '不合格品区',
+                documents: ['检验报告', '不合格通知单', '退货单'],
+                photos: ['阻值测试.jpg', '不合格标识.jpg'],
+                notes: '阻值偏差严重，已通知供应商退货处理'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            pending: { text: '待检验', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-clock' },
+            in_progress: { text: '检验中', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-spinner' },
+            completed: { text: '已完成', class: 'bg-green-100 text-green-800', icon: 'fas fa-check-circle' },
+            rejected: { text: '不合格', class: 'bg-red-100 text-red-800', icon: 'fas fa-times-circle' }
+        };
+
+        // 放行状态映射
+        const releaseStatusMap = {
+            pending: { text: '待检验', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-clock' },
+            released: { text: '已放行', class: 'bg-green-100 text-green-800', icon: 'fas fa-check' },
+            returned: { text: '已退货', class: 'bg-red-100 text-red-800', icon: 'fas fa-undo' },
+            special_release: { text: '特采放行', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-exclamation' }
+        };
+
+        // 检验结果映射
+        const resultMap = {
+            pass: { text: '合格', class: 'text-green-600', icon: 'fas fa-check' },
+            fail: { text: '不合格', class: 'text-red-600', icon: 'fas fa-times' },
+            pending: { text: '待测试', class: 'text-gray-600', icon: 'fas fa-clock' }
+        };
+
+        // 判定结果映射
+        const judgmentMap = {
+            accept: { text: '合格', class: 'text-green-600', icon: 'fas fa-check-circle' },
+            reject: { text: '不合格', class: 'text-red-600', icon: 'fas fa-times-circle' },
+            pending: { text: '检验中', class: 'text-blue-600', icon: 'fas fa-spinner' }
+        };
+
+        let filteredData = [...incomingInspectionData];
+
+        // 渲染来料检验表格
+        function renderIncomingTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('incomingTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(inspection => {
+                const status = statusMap[inspection.inspectionStatus];
+                const releaseStatus = releaseStatusMap[inspection.releaseStatus];
+                const judgment = judgmentMap[inspection.inspectionResult.judgment];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewInspectionDetail('${inspection.id}')">
+                            ${inspection.inspectionCode}
+                        </div>
+                        <div class="text-xs text-gray-500">批次: ${inspection.batchNumber}</div>
+                        <div class="text-xs text-gray-500">到货: ${inspection.arrivalDate}</div>
+                        ${inspection.inspectionDate ? `
+                            <div class="text-xs text-blue-600">检验: ${inspection.inspectionDate}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${inspection.materialName}</div>
+                        <div class="text-xs text-gray-500">${inspection.materialCode}</div>
+                        <div class="text-xs text-gray-500">${inspection.materialType}</div>
+                        <div class="text-xs text-blue-600">${inspection.quantity.toLocaleString()} ${inspection.unit}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${inspection.supplier.name}</div>
+                        <div class="text-xs text-gray-500">${inspection.supplier.code}</div>
+                        <div class="text-xs text-gray-500">${inspection.supplier.contact}</div>
+                        <div class="text-xs text-blue-600">${inspection.supplier.phone}</div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="space-y-1">
+                            ${inspection.inspectionItems.slice(0, 3).map(item => `
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-600">${item.item}</span>
+                                    <span class="text-xs ${resultMap[item.result].class}">
+                                        <i class="${resultMap[item.result].icon}"></i> ${resultMap[item.result].text}
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ${inspection.inspectionItems.length > 3 ? `
+                            <button onclick="viewAllInspectionItems('${inspection.id}')" class="text-xs text-blue-600 hover:underline mt-1">
+                                查看全部 (${inspection.inspectionItems.length})
+                            </button>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        ${inspection.inspector ? `
+                            <div class="text-sm text-gray-900">${inspection.inspector}</div>
+                            <div class="text-xs text-gray-500">${inspection.inspectorId}</div>
+                        ` : `
+                            <div class="text-sm text-gray-600">待分配</div>
+                        `}
+                        <div class="text-xs text-blue-600">AQL: ${inspection.samplingPlan.aqlLevel}</div>
+                        <div class="text-xs text-gray-500">样本: ${inspection.samplingPlan.sampleSize}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">到货: ${inspection.arrivalDate}</div>
+                        ${inspection.inspectionDate ? `
+                            <div class="text-xs text-gray-500">检验: ${inspection.inspectionDate}</div>
+                        ` : `
+                            <div class="text-xs text-gray-500">未开始检验</div>
+                        `}
+                        ${inspection.releaseDate ? `
+                            <div class="text-xs text-green-600">放行: ${inspection.releaseDate}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${inspection.inspectionResult.defectRate > 0 ? `
+                            <div class="text-xs text-red-600 mt-1">
+                                不良率: ${inspection.inspectionResult.defectRate}%
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <span class="text-sm ${judgment.class}">
+                                <i class="${judgment.icon} mr-1"></i>
+                                ${judgment.text}
+                            </span>
+                        </div>
+                        ${inspection.qualityGrade ? `
+                            <div class="text-xs text-gray-500 mt-1">等级: ${inspection.qualityGrade}</div>
+                        ` : ''}
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${releaseStatus.class} mt-1">
+                            <i class="${releaseStatus.icon} mr-1"></i>
+                            ${releaseStatus.text}
+                        </span>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewInspectionDetail('${inspection.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${inspection.inspectionStatus === 'pending' ? `
+                                <button onclick="startInspection('${inspection.id}')" class="text-green-600 hover:text-green-900 p-1" title="开始检验">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            ` : ''}
+                            ${inspection.inspectionStatus === 'in_progress' ? `
+                                <button onclick="continueInspection('${inspection.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="继续检验">
+                                    <i class="fas fa-spinner"></i>
+                                </button>
+                            ` : ''}
+                            ${inspection.inspectionStatus === 'completed' && inspection.releaseStatus === 'pending' ? `
+                                <button onclick="releaseDecision('${inspection.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="放行决策">
+                                    <i class="fas fa-gavel"></i>
+                                </button>
+                            ` : ''}
+                            ${inspection.photos.length > 0 ? `
+                                <button onclick="viewPhotos('${inspection.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="查看照片">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewDocuments('${inspection.id}')" class="text-yellow-600 hover:text-yellow-900 p-1" title="查看文档">
+                                <i class="fas fa-file-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${incomingInspectionData.length} 条记录`;
+        }
+
+        // 来料检验操作函数
+        function viewInspectionDetail(inspectionId) {
+            const inspection = incomingInspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                let detailText = `来料检验详情：\n检验编号: ${inspection.inspectionCode}\n物料名称: ${inspection.materialName}\n物料编号: ${inspection.materialCode}\n批次号: ${inspection.batchNumber}\n数量: ${inspection.quantity.toLocaleString()} ${inspection.unit}`;
+
+                detailText += `\n\n供应商信息:\n名称: ${inspection.supplier.name}\n编号: ${inspection.supplier.code}\n联系人: ${inspection.supplier.contact}\n电话: ${inspection.supplier.phone}`;
+
+                detailText += `\n\n检验信息:\n到货日期: ${inspection.arrivalDate}`;
+                if (inspection.inspectionDate) {
+                    detailText += `\n检验日期: ${inspection.inspectionDate}`;
+                }
+                if (inspection.inspector) {
+                    detailText += `\n检验员: ${inspection.inspector} (${inspection.inspectorId})`;
+                }
+                detailText += `\n检验状态: ${statusMap[inspection.inspectionStatus].text}`;
+
+                detailText += `\n\n抽样方案:\n方法: ${inspection.samplingPlan.method}\nAQL水平: ${inspection.samplingPlan.aqlLevel}\n样本数: ${inspection.samplingPlan.sampleSize}\n接收数: ${inspection.samplingPlan.acceptNumber}\n拒收数: ${inspection.samplingPlan.rejectNumber}`;
+
+                detailText += `\n\n检验项目:`;
+                inspection.inspectionItems.forEach((item, index) => {
+                    const resultText = resultMap[item.result].text;
+                    detailText += `\n${index + 1}. ${item.item}\n   标准: ${item.standard}\n   结果: ${resultText}`;
+                    if (item.notes) {
+                        detailText += `\n   备注: ${item.notes}`;
+                    }
+                });
+
+                detailText += `\n\n检验结果:\n总样本数: ${inspection.inspectionResult.totalSamples}\n不良样本: ${inspection.inspectionResult.defectSamples}\n不良率: ${inspection.inspectionResult.defectRate}%\n判定结果: ${judgmentMap[inspection.inspectionResult.judgment].text}`;
+
+                if (inspection.qualityGrade) {
+                    detailText += `\n质量等级: ${inspection.qualityGrade}`;
+                }
+
+                detailText += `\n\n放行状态: ${releaseStatusMap[inspection.releaseStatus].text}`;
+                if (inspection.releaseDate) {
+                    detailText += `\n放行日期: ${inspection.releaseDate}`;
+                }
+                detailText += `\n存放位置: ${inspection.storageLocation}`;
+
+                if (inspection.notes) {
+                    detailText += `\n\n备注: ${inspection.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function handleIncomingAlert(alertId) {
+            if (confirm(`确认处理来料异常？\n异常ID: ${alertId}\n\n处理措施：\n- 立即隔离问题批次\n- 通知供应商分析原因\n- 制定纠正预防措施\n- 加强后续批次检验`)) {
+                alert('来料异常处理完成！\n- 问题批次已隔离\n- 供应商已通知\n- 纠正措施已制定');
+            }
+        }
+
+        function startInspection(inspectionId) {
+            const inspection = incomingInspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                if (confirm(`开始检验？\n物料: ${inspection.materialName}\n批次: ${inspection.batchNumber}\n\n检验内容：\n- 按AQL ${inspection.samplingPlan.aqlLevel}抽样\n- 执行检验项目\n- 记录检验数据`)) {
+                    inspection.inspectionStatus = 'in_progress';
+                    inspection.inspectionDate = new Date().toISOString().split('T')[0];
+                    inspection.inspector = '当前检验员';
+                    inspection.inspectorId = 'IQC999';
+                    renderIncomingTable();
+                    alert('检验已开始！\n- 检验员已分配\n- 抽样计划已生成\n- 检验项目已准备');
+                }
+            }
+        }
+
+        function continueInspection(inspectionId) {
+            const inspection = incomingInspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                if (confirm(`继续检验？\n物料: ${inspection.materialName}\n\n当前进度：\n- 已完成部分检验项目\n- 继续执行剩余项目\n- 更新检验数据`)) {
+                    // 模拟检验进度
+                    inspection.inspectionItems.forEach(item => {
+                        if (item.result === 'pending') {
+                            item.result = Math.random() > 0.1 ? 'pass' : 'fail';
+                            if (item.result === 'pass') {
+                                item.notes = '检验合格';
+                            } else {
+                                item.notes = '发现不合格';
+                            }
+                        }
+                    });
+
+                    // 检查是否所有项目都完成
+                    const allCompleted = inspection.inspectionItems.every(item => item.result !== 'pending');
+                    if (allCompleted) {
+                        inspection.inspectionStatus = 'completed';
+                        const defectItems = inspection.inspectionItems.filter(item => item.result === 'fail').length;
+                        inspection.inspectionResult.defectSamples = defectItems * 5; // 模拟不良数量
+                        inspection.inspectionResult.defectRate = (inspection.inspectionResult.defectSamples / inspection.inspectionResult.totalSamples * 100).toFixed(1);
+                        inspection.inspectionResult.judgment = inspection.inspectionResult.defectSamples <= inspection.samplingPlan.acceptNumber ? 'accept' : 'reject';
+                    }
+
+                    renderIncomingTable();
+                    alert('检验进度已更新！\n- 检验项目继续进行\n- 检验数据已记录\n' + (allCompleted ? '- 检验已完成' : '- 继续执行检验'));
+                }
+            }
+        }
+
+        function releaseDecision(inspectionId) {
+            const inspection = incomingInspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                if (confirm(`确认放行决策？\n物料: ${inspection.materialName}\n检验结果: ${judgmentMap[inspection.inspectionResult.judgment].text}\n\n决策选项：\n- 合格放行\n- 不合格退货\n- 特采放行`)) {
+                    if (inspection.inspectionResult.judgment === 'accept') {
+                        inspection.releaseStatus = 'released';
+                        inspection.releaseDate = new Date().toISOString().split('T')[0];
+                        inspection.storageLocation = '原料仓A区-' + String(Math.floor(Math.random() * 10) + 1).padStart(2, '0');
+                    } else {
+                        inspection.releaseStatus = 'returned';
+                        inspection.releaseDate = new Date().toISOString().split('T')[0];
+                        inspection.storageLocation = '不合格品区';
+                    }
+                    renderIncomingTable();
+                    alert('放行决策完成！\n- 决策结果已确认\n- 物料状态已更新\n- 存储位置已分配');
+                }
+            }
+        }
+
+        function viewAllInspectionItems(inspectionId) {
+            const inspection = incomingInspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                let itemsText = `${inspection.materialName} - 检验项目：\n\n`;
+                inspection.inspectionItems.forEach((item, index) => {
+                    const resultText = resultMap[item.result].text;
+                    itemsText += `${index + 1}. ${item.item}\n   标准: ${item.standard}\n   结果: ${resultText}`;
+                    if (item.notes) {
+                        itemsText += `\n   备注: ${item.notes}`;
+                    }
+                    itemsText += '\n\n';
+                });
+                alert(itemsText);
+            }
+        }
+
+        function viewPhotos(inspectionId) {
+            const inspection = incomingInspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                let photosText = `${inspection.materialName} - 检验照片：\n\n`;
+                if (inspection.photos.length > 0) {
+                    inspection.photos.forEach((photo, index) => {
+                        photosText += `${index + 1}. ${photo}\n`;
+                    });
+                    photosText += `\n总计: ${inspection.photos.length}张照片`;
+                } else {
+                    photosText += '暂无检验照片';
+                }
+                alert(photosText);
+            }
+        }
+
+        function viewDocuments(inspectionId) {
+            const inspection = incomingInspectionData.find(i => i.id === inspectionId);
+            if (inspection) {
+                let documentsText = `${inspection.materialName} - 相关文档：\n\n`;
+                if (inspection.documents.length > 0) {
+                    inspection.documents.forEach((doc, index) => {
+                        documentsText += `${index + 1}. ${doc}\n`;
+                    });
+                    documentsText += `\n总计: ${inspection.documents.length}份文档`;
+                } else {
+                    documentsText += '暂无相关文档';
+                }
+                alert(documentsText);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderIncomingTable();
+
+            // 到货通知
+            document.getElementById('arrivalNoticeBtn').addEventListener('click', function() {
+                alert('到货通知功能：\n- 供应商到货通知\n- 物料信息确认\n- 检验计划制定\n- 检验员分配\n- 抽样方案确定');
+            });
+
+            // 抽样检验
+            document.getElementById('samplingInspectionBtn').addEventListener('click', function() {
+                alert('抽样检验功能：\n- AQL抽样计划\n- 检验项目执行\n- 检验数据记录\n- 不合格品标识\n- 检验过程监控');
+            });
+
+            // 结果判定
+            document.getElementById('resultJudgmentBtn').addEventListener('click', function() {
+                alert('结果判定功能：\n- 检验数据分析\n- 合格性判定\n- 质量等级评定\n- 不合格原因分析\n- 判定结果确认');
+            });
+
+            // 放行/退货
+            document.getElementById('releaseReturnBtn').addEventListener('click', function() {
+                alert('放行/退货功能：\n- 合格品放行\n- 不合格品退货\n- 特采放行审批\n- 存储位置分配\n- 状态标识管理');
+            });
+
+            // 质量分析
+            document.getElementById('qualityAnalysisBtn').addEventListener('click', function() {
+                alert('质量分析功能：\n- 合格率统计\n- 供应商质量分析\n- 不合格趋势分析\n- 质量改进建议\n- 质量报告生成');
+            });
+        });
+    </script>
+</body>
+</html>

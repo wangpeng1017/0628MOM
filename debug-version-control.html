@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>版本控制调试页面</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 p-6">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">版本控制功能调试</h1>
+        
+        <!-- 当前状态显示 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">当前状态</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">localStorage数据:</label>
+                    <textarea id="localStorageData" class="w-full h-32 p-3 border border-gray-300 rounded-md text-xs" readonly></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">sessionStorage数据:</label>
+                    <textarea id="sessionStorageData" class="w-full h-32 p-3 border border-gray-300 rounded-md text-xs" readonly></textarea>
+                </div>
+            </div>
+            <div class="mt-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">解析后的版本信息:</label>
+                <div id="versionInfo" class="p-3 bg-gray-50 rounded-md text-sm"></div>
+            </div>
+        </div>
+
+        <!-- 测试按钮 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">测试操作</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button onclick="setGeneralVersion()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    设置通用行业
+                </button>
+                <button onclick="setAutomotiveVersion()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    设置汽车零部件
+                </button>
+                <button onclick="clearStorage()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    清除存储
+                </button>
+                <button onclick="refreshData()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                    刷新数据
+                </button>
+            </div>
+        </div>
+
+        <!-- 导航项检查 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">智慧园区导航项检查</h2>
+            <div id="navigationCheck" class="space-y-2"></div>
+        </div>
+
+        <!-- 控制台日志 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">控制台日志</h2>
+            <div id="consoleLog" class="bg-gray-900 text-green-400 p-4 rounded-md h-64 overflow-y-auto text-xs font-mono"></div>
+        </div>
+    </div>
+
+    <script>
+        // 行业版本配置
+        const industryVersions = {
+            general: {
+                id: 'general',
+                name: '通用行业',
+                title: '数字工厂一体化平台',
+                description: '基于变频器生产制造场景的智能制造执行系统'
+            },
+            automotive: {
+                id: 'automotive',
+                name: '汽车零部件行业',
+                title: '汽车零部件智能制造平台',
+                description: '专注汽车零部件制造的智能工厂管理系统'
+            }
+        };
+
+        // 智慧园区导航项ID列表
+        const smartParkNavIds = ['ioc', 'security', 'access', 'energy-park', 'space', 'environment', 'service', 'logistics-park'];
+
+        // 重写console.log以显示在页面上
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            const logElement = document.getElementById('consoleLog');
+            const timestamp = new Date().toLocaleTimeString();
+            logElement.innerHTML += `<div>[${timestamp}] ${args.join(' ')}</div>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        };
+
+        // 设置通用行业版本
+        function setGeneralVersion() {
+            const loginData = {
+                username: 'admin',
+                industryVersion: 'general',
+                versionInfo: industryVersions.general,
+                loginTime: new Date().toISOString(),
+                isLoggedIn: true
+            };
+            localStorage.setItem('loginData', JSON.stringify(loginData));
+            console.log('设置通用行业版本:', loginData);
+            refreshData();
+        }
+
+        // 设置汽车零部件版本
+        function setAutomotiveVersion() {
+            const loginData = {
+                username: 'admin',
+                industryVersion: 'automotive',
+                versionInfo: industryVersions.automotive,
+                loginTime: new Date().toISOString(),
+                isLoggedIn: true
+            };
+            localStorage.setItem('loginData', JSON.stringify(loginData));
+            console.log('设置汽车零部件版本:', loginData);
+            refreshData();
+        }
+
+        // 清除存储
+        function clearStorage() {
+            localStorage.removeItem('loginData');
+            sessionStorage.removeItem('loginData');
+            console.log('已清除所有存储数据');
+            refreshData();
+        }
+
+        // 刷新数据显示
+        function refreshData() {
+            // 显示存储数据
+            const localData = localStorage.getItem('loginData');
+            const sessionData = sessionStorage.getItem('loginData');
+            
+            document.getElementById('localStorageData').value = localData || '无数据';
+            document.getElementById('sessionStorageData').value = sessionData || '无数据';
+
+            // 解析版本信息
+            const loginData = localData || sessionData;
+            if (loginData) {
+                try {
+                    const data = JSON.parse(loginData);
+                    const versionId = data.versionInfo ? data.versionInfo.id : '未知';
+                    const versionName = data.versionInfo ? data.versionInfo.name : '未知';
+                    document.getElementById('versionInfo').innerHTML = `
+                        <strong>版本ID:</strong> ${versionId}<br>
+                        <strong>版本名称:</strong> ${versionName}<br>
+                        <strong>是否通用行业:</strong> ${versionId === 'general' ? '是' : '否'}
+                    `;
+                } catch (error) {
+                    document.getElementById('versionInfo').innerHTML = `解析错误: ${error.message}`;
+                }
+            } else {
+                document.getElementById('versionInfo').innerHTML = '无登录数据';
+            }
+
+            // 检查导航项
+            checkNavigationItems();
+        }
+
+        // 检查导航项
+        function checkNavigationItems() {
+            const checkElement = document.getElementById('navigationCheck');
+            checkElement.innerHTML = '';
+
+            smartParkNavIds.forEach(navId => {
+                const navButton = parent.document ? parent.document.querySelector(`button[onclick="switchModule('${navId}')"]`) : null;
+                const status = navButton ? (navButton.style.display === 'none' ? '隐藏' : '显示') : '未找到';
+                const statusColor = status === '显示' ? 'text-green-600' : status === '隐藏' ? 'text-red-600' : 'text-gray-600';
+                
+                checkElement.innerHTML += `
+                    <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
+                        <span>${navId}</span>
+                        <span class="${statusColor} font-medium">${status}</span>
+                    </div>
+                `;
+            });
+        }
+
+        // 页面加载时刷新数据
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('调试页面已加载');
+            refreshData();
+        });
+    </script>
+</body>
+</html>

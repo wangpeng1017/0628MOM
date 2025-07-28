@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>巡检路线管理 - 数字工厂平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../assets/css/custom.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面操作栏 -->
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">巡检路线管理</h1>
+                <p class="text-gray-600">设计和管理巡检路线，优化巡检效率和覆盖范围</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>新建路线
+                </button>
+                <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-route mr-2"></i>路线优化
+                </button>
+                <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-map mr-2"></i>路线地图
+                </button>
+            </div>
+        </div>
+        
+        <!-- 路线概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-blue-600 mb-1">16</div>
+                <div class="text-sm text-gray-600">活跃路线</div>
+                <div class="text-xs text-blue-600 mt-1">正在使用</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-green-600 mb-1">156</div>
+                <div class="text-sm text-gray-600">检查点总数</div>
+                <div class="text-xs text-green-600 mt-1">设备覆盖率100%</div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-yellow-600 mb-1">2.5小时</div>
+                <div class="text-sm text-gray-600">平均巡检时长</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-arrow-down mr-1"></i>-15分钟
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-purple-600 mb-1">98.5%</div>
+                <div class="text-sm text-gray-600">路线完成率</div>
+                <div class="text-xs text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>+1.2% 较上月
+                </div>
+            </div>
+            <div class="card text-center">
+                <div class="text-2xl font-bold text-red-600 mb-1">4.8</div>
+                <div class="text-sm text-gray-600">平均评分</div>
+                <div class="text-xs text-green-600 mt-1">满分5.0</div>
+            </div>
+        </div>
+        
+        <!-- 筛选条件区域 -->
+        <div class="card">
+            <div class="p-4">
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                    <div class="flex-1">
+                        <input type="text" placeholder="搜索路线名称、编号..." 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    </div>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部状态</option>
+                        <option>活跃</option>
+                        <option>暂停</option>
+                        <option>草稿</option>
+                        <option>已停用</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部区域</option>
+                        <option>注塑车间</option>
+                        <option>装配车间</option>
+                        <option>包装车间</option>
+                        <option>公用设施</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部频率</option>
+                        <option>每日</option>
+                        <option>每周</option>
+                        <option>每月</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-lg px-3 py-2">
+                        <option>全部负责人</option>
+                        <option>张巡检员</option>
+                        <option>李巡检员</option>
+                        <option>王巡检员</option>
+                        <option>陈巡检员</option>
+                    </select>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 巡检路线列表 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="flex justify-between items-center">
+                    <h3 class="card-title">巡检路线列表</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            <i class="fas fa-th"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>路线编号</th>
+                            <th>路线名称</th>
+                            <th>覆盖区域</th>
+                            <th>检查点数量</th>
+                            <th>巡检频率</th>
+                            <th>预计时长</th>
+                            <th>负责人</th>
+                            <th>状态</th>
+                            <th>完成率</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-green-50">
+                            <td class="font-medium">RT-001</td>
+                            <td>注塑车间A区路线</td>
+                            <td>注塑车间A区</td>
+                            <td class="text-blue-600 font-semibold">12</td>
+                            <td>每日</td>
+                            <td>2.5小时</td>
+                            <td>张巡检员</td>
+                            <td><span class="status-indicator status-success">活跃</span></td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill bg-green-500" style="width: 98%"></div>
+                                    </div>
+                                    <span class="text-sm">98%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看路线">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="编辑路线">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="路线地图">
+                                        <i class="fas fa-map"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-blue-50">
+                            <td class="font-medium">RT-002</td>
+                            <td>装配车间B区路线</td>
+                            <td>装配车间B区</td>
+                            <td class="text-blue-600 font-semibold">8</td>
+                            <td>每日</td>
+                            <td>1.8小时</td>
+                            <td>李巡检员</td>
+                            <td><span class="status-indicator status-success">活跃</span></td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill bg-blue-500" style="width: 95%"></div>
+                                    </div>
+                                    <span class="text-sm">95%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看路线">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="编辑路线">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="路线地图">
+                                        <i class="fas fa-map"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-yellow-50">
+                            <td class="font-medium">RT-003</td>
+                            <td>包装车间C区路线</td>
+                            <td>包装车间C区</td>
+                            <td class="text-blue-600 font-semibold">10</td>
+                            <td>每日</td>
+                            <td>2.2小时</td>
+                            <td>王巡检员</td>
+                            <td><span class="status-indicator status-warning">暂停</span></td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill bg-yellow-500" style="width: 85%"></div>
+                                    </div>
+                                    <span class="text-sm">85%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看路线">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-yellow-600 hover:text-yellow-800" title="恢复路线">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="编辑路线">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-purple-50">
+                            <td class="font-medium">RT-004</td>
+                            <td>公用设施巡检路线</td>
+                            <td>公用设施区</td>
+                            <td class="text-blue-600 font-semibold">15</td>
+                            <td>每周</td>
+                            <td>3.5小时</td>
+                            <td>陈巡检员</td>
+                            <td><span class="status-indicator status-success">活跃</span></td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill bg-purple-500" style="width: 92%"></div>
+                                    </div>
+                                    <span class="text-sm">92%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看路线">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="编辑路线">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="路线地图">
+                                        <i class="fas fa-map"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="bg-gray-50">
+                            <td class="font-medium">RT-005</td>
+                            <td>夜班安全巡检路线</td>
+                            <td>全厂区</td>
+                            <td class="text-blue-600 font-semibold">20</td>
+                            <td>每日</td>
+                            <td>4.0小时</td>
+                            <td>值班员</td>
+                            <td><span class="status-indicator status-secondary">草稿</span></td>
+                            <td>
+                                <div class="flex items-center space-x-2">
+                                    <div class="progress-bar w-16">
+                                        <div class="progress-fill bg-gray-400" style="width: 0%"></div>
+                                    </div>
+                                    <span class="text-sm">0%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flex space-x-1">
+                                    <button class="text-blue-600 hover:text-blue-800" title="查看路线">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="完善路线">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-purple-600 hover:text-purple-800" title="启用路线">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+                <div class="text-sm text-gray-600">
+                    显示 1-5 条，共 16 条巡检路线
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

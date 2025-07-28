@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术标准规范管理 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">技术标准规范管理</h1>
+            <p class="text-gray-600">基于Process.md 2.4.1流程：标准编制→审核→评审→发布→归档，实现设备技术标准的规范化管理</p>
+        </div>
+
+        <!-- 技术标准管理流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">技术标准规范管理流程</h3>
+                    <span class="text-sm text-gray-600">设备管理基础流程</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">编制标准</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">部门审核</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">专家评审</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">发布归档</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="createStandardBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                编制标准
+            </button>
+            <button id="reviewStandardBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-search mr-2"></i>
+                审核评审
+            </button>
+            <button id="publishStandardBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-bullhorn mr-2"></i>
+                发布标准
+            </button>
+            <button id="sopManagementBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-book mr-2"></i>
+                SOP维护
+            </button>
+            <button id="standardArchiveBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-archive mr-2"></i>
+                标准归档
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出报告
+            </button>
+        </div>
+
+        <!-- 技术标准统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-600">技术标准</div>
+                        <div class="text-xs text-gray-500">已发布</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-file-alt text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">23</div>
+                        <div class="text-sm text-gray-600">待审核</div>
+                        <div class="text-xs text-gray-500">编制完成</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">12</div>
+                        <div class="text-sm text-gray-600">评审中</div>
+                        <div class="text-xs text-gray-500">专家评审</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-users text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">89</div>
+                        <div class="text-sm text-gray-600">SOP维护</div>
+                        <div class="text-xs text-gray-500">已关联</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-book text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">45</div>
+                        <div class="text-sm text-gray-600">本月更新</div>
+                        <div class="text-xs text-gray-500">标准修订</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-edit text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">8</div>
+                        <div class="text-sm text-gray-600">即将到期</div>
+                        <div class="text-xs text-gray-500">需要更新</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 标准编制和审核面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 标准编制面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">标准编制管理</h3>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4 hover:bg-gray-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-file-alt text-blue-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">5KW逆变器装配技术标准</div>
+                                    <div class="text-xs text-gray-500">编制人: 张工程师 | 类型: 装配工艺</div>
+                                </div>
+                            </div>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">编制中</span>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-gray-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-wrench text-orange-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">设备维护保养标准</div>
+                                    <div class="text-xs text-gray-500">编制人: 李工程师 | 类型: 维护保养</div>
+                                </div>
+                            </div>
+                            <span class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">待审核</span>
+                        </div>
+                    </div>
+                    <div class="border rounded-lg p-4 hover:bg-gray-50">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <i class="fas fa-shield-alt text-green-600 mr-3"></i>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">安全操作规程标准</div>
+                                    <div class="text-xs text-gray-500">编制人: 王工程师 | 类型: 安全规程</div>
+                                </div>
+                            </div>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">已完成</span>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="createNewStandard()" class="w-full mt-4 bg-primary text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>编制新标准
+                </button>
+            </div>
+
+            <!-- 审核评审面板 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">审核评审管理</h3>
+                <div class="space-y-4">
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">设备部负责人审核</div>
+                                <div class="text-xs text-gray-500">待审核标准: 3个</div>
+                            </div>
+                            <button onclick="reviewStandards('department')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                进入审核
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-lg border-l-4 border-purple-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">评审小组评审</div>
+                                <div class="text-xs text-gray-500">待评审标准: 2个</div>
+                            </div>
+                            <button onclick="reviewStandards('expert')" class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded hover:bg-purple-200">
+                                进入评审
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">行政部发布</div>
+                                <div class="text-xs text-gray-500">待发布标准: 1个</div>
+                            </div>
+                            <button onclick="publishStandards()" class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200">
+                                发布标准
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技术标准管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">技术标准管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部类型</option>
+                        <option>装配工艺</option>
+                        <option>维护保养</option>
+                        <option>安全规程</option>
+                        <option>质量检验</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>编制中</option>
+                        <option>待审核</option>
+                        <option>评审中</option>
+                        <option>已发布</option>
+                        <option>已归档</option>
+                    </select>
+                    <input type="text" placeholder="搜索标准名称、编制人..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标准编号</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标准名称</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">标准类型</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">编制人员</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">版本信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">审核状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SOP关联</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="standardsTableBody">
+                        <!-- 标准数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.1的技术标准规范管理数据模型
+        const technicalStandardsData = [
+            {
+                id: 'STD202501001',
+                standardCode: 'TS-ASM-001',
+                standardName: '5KW逆变器装配技术标准',
+                standardType: 'assembly',
+                standardTypeName: '装配工艺',
+                author: '张工程师',
+                authorId: 'ENG001',
+                department: '设备部',
+                version: 'V2.1',
+                status: 'published',
+                createDate: '2024-12-15',
+                reviewDate: '2024-12-20',
+                publishDate: '2024-12-25',
+                expiryDate: '2025-12-25',
+                sopLinked: true,
+                sopCount: 5,
+                reviewers: ['设备部负责人', '质量部专家', '工艺专家'],
+                description: '规定5KW逆变器装配工艺流程、质量要求和安全规范',
+                keyPoints: ['装配顺序', '扭矩要求', '质量检查点'],
+                relatedEquipment: ['装配线1', '装配线2', '测试设备'],
+                notes: '已发布并关联SOP，定期更新'
+            },
+            {
+                id: 'STD202501002',
+                standardCode: 'TS-MAINT-002',
+                standardName: '设备维护保养标准',
+                standardType: 'maintenance',
+                standardTypeName: '维护保养',
+                author: '李工程师',
+                authorId: 'ENG002',
+                department: '设备部',
+                version: 'V1.8',
+                status: 'reviewing',
+                createDate: '2025-01-10',
+                reviewDate: null,
+                publishDate: null,
+                expiryDate: null,
+                sopLinked: false,
+                sopCount: 0,
+                reviewers: ['设备部负责人'],
+                description: '设备日常维护、定期保养和预防性维护标准',
+                keyPoints: ['保养周期', '保养内容', '记录要求'],
+                relatedEquipment: ['生产设备', '测试设备', '辅助设备'],
+                notes: '正在进行部门审核'
+            },
+            {
+                id: 'STD202501003',
+                standardCode: 'TS-SAFE-003',
+                standardName: '安全操作规程标准',
+                standardType: 'safety',
+                standardTypeName: '安全规程',
+                author: '王工程师',
+                authorId: 'ENG003',
+                department: 'EHS部',
+                version: 'V3.0',
+                status: 'expert_review',
+                createDate: '2025-01-05',
+                reviewDate: '2025-01-12',
+                publishDate: null,
+                expiryDate: null,
+                sopLinked: false,
+                sopCount: 0,
+                reviewers: ['设备部负责人', '评审小组'],
+                description: '设备操作安全规程和应急处理标准',
+                keyPoints: ['安全要求', '操作规范', '应急处理'],
+                relatedEquipment: ['所有生产设备'],
+                notes: '专家评审中，预计本周完成'
+            },
+            {
+                id: 'STD202501004',
+                standardCode: 'TS-QC-004',
+                standardName: '质量检验标准',
+                standardType: 'quality',
+                standardTypeName: '质量检验',
+                author: '赵工程师',
+                authorId: 'ENG004',
+                department: '质量部',
+                version: 'V1.5',
+                status: 'draft',
+                createDate: '2025-01-14',
+                reviewDate: null,
+                publishDate: null,
+                expiryDate: null,
+                sopLinked: false,
+                sopCount: 0,
+                reviewers: [],
+                description: '产品质量检验标准和检测方法',
+                keyPoints: ['检验项目', '检测方法', '判定标准'],
+                relatedEquipment: ['检测设备', '测量工具'],
+                notes: '编制中，预计下周提交审核'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            draft: { text: '编制中', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-edit' },
+            reviewing: { text: '待审核', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-clock' },
+            expert_review: { text: '专家评审', class: 'bg-purple-100 text-purple-800', icon: 'fas fa-users' },
+            approved: { text: '审核通过', class: 'bg-blue-100 text-blue-800', icon: 'fas fa-check' },
+            published: { text: '已发布', class: 'bg-green-100 text-green-800', icon: 'fas fa-bullhorn' },
+            archived: { text: '已归档', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-archive' },
+            expired: { text: '已过期', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' }
+        };
+
+        // 标准类型映射
+        const standardTypeMap = {
+            assembly: { text: '装配工艺', icon: 'fas fa-cogs', color: 'text-blue-600' },
+            maintenance: { text: '维护保养', icon: 'fas fa-wrench', color: 'text-orange-600' },
+            safety: { text: '安全规程', icon: 'fas fa-shield-alt', color: 'text-red-600' },
+            quality: { text: '质量检验', icon: 'fas fa-search', color: 'text-green-600' },
+            operation: { text: '操作规程', icon: 'fas fa-play', color: 'text-purple-600' }
+        };
+
+        let filteredData = [...technicalStandardsData];
+
+        // 渲染技术标准表格
+        function renderStandardsTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('standardsTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(standard => {
+                const status = statusMap[standard.status];
+                const standardType = standardTypeMap[standard.standardType];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewStandardDetail('${standard.id}')">
+                            ${standard.standardCode}
+                        </div>
+                        <div class="text-xs text-gray-500">${standard.createDate}</div>
+                    </td>
+                    <td class="px-4 py-4">
+                        <div class="text-sm font-medium text-gray-900">${standard.standardName}</div>
+                        <div class="text-xs text-gray-500 mt-1">${standard.description}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <i class="${standardType.icon} ${standardType.color} mr-2"></i>
+                            <span class="text-sm text-gray-900">${standardType.text}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${standard.author}</div>
+                        <div class="text-xs text-gray-500">${standard.department}</div>
+                        <div class="text-xs text-gray-500">${standard.authorId}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${standard.version}</div>
+                        ${standard.publishDate ? `
+                            <div class="text-xs text-gray-500">发布: ${standard.publishDate}</div>
+                        ` : ''}
+                        ${standard.expiryDate ? `
+                            <div class="text-xs ${new Date(standard.expiryDate) < new Date() ? 'text-red-600' : 'text-gray-500'}">
+                                到期: ${standard.expiryDate}
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        ${standard.reviewers.length > 0 ? `
+                            <div class="text-xs text-gray-500 mt-1">
+                                审核人: ${standard.reviewers.length}人
+                            </div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-center">
+                        ${standard.sopLinked ? `
+                            <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                <i class="fas fa-link mr-1"></i>
+                                已关联 (${standard.sopCount})
+                            </span>
+                        ` : `
+                            <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                                <i class="fas fa-unlink mr-1"></i>
+                                未关联
+                            </span>
+                        `}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">创建: ${standard.createDate}</div>
+                        ${standard.reviewDate ? `
+                            <div class="text-xs text-gray-500">审核: ${standard.reviewDate}</div>
+                        ` : ''}
+                        ${standard.publishDate ? `
+                            <div class="text-xs text-gray-500">发布: ${standard.publishDate}</div>
+                        ` : ''}
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewStandardDetail('${standard.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            ${standard.status === 'draft' ? `
+                                <button onclick="editStandard('${standard.id}')" class="text-green-600 hover:text-green-900 p-1" title="编辑标准">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            ` : ''}
+                            ${standard.status === 'reviewing' || standard.status === 'expert_review' ? `
+                                <button onclick="reviewStandard('${standard.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="审核评审">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            ` : ''}
+                            ${standard.status === 'published' && !standard.sopLinked ? `
+                                <button onclick="linkSOP('${standard.id}')" class="text-indigo-600 hover:text-indigo-900 p-1" title="关联SOP">
+                                    <i class="fas fa-link"></i>
+                                </button>
+                            ` : ''}
+                            ${standard.status === 'published' ? `
+                                <button onclick="downloadStandard('${standard.id}')" class="text-gray-600 hover:text-gray-900 p-1" title="下载标准">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            ` : ''}
+                            <button onclick="viewHistory('${standard.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="版本历史">
+                                <i class="fas fa-history"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${technicalStandardsData.length} 条记录`;
+        }
+
+        // 标准管理操作函数
+        function viewStandardDetail(standardId) {
+            const standard = technicalStandardsData.find(s => s.id === standardId);
+            if (standard) {
+                let detailText = `技术标准详情：\n编号: ${standard.standardCode}\n名称: ${standard.standardName}\n类型: ${standardTypeMap[standard.standardType].text}\n编制人: ${standard.author} (${standard.department})\n版本: ${standard.version}\n状态: ${statusMap[standard.status].text}\n创建日期: ${standard.createDate}`;
+
+                if (standard.reviewDate) {
+                    detailText += `\n审核日期: ${standard.reviewDate}`;
+                }
+                if (standard.publishDate) {
+                    detailText += `\n发布日期: ${standard.publishDate}`;
+                }
+                if (standard.expiryDate) {
+                    detailText += `\n到期日期: ${standard.expiryDate}`;
+                }
+
+                detailText += `\n\n描述: ${standard.description}`;
+                detailText += `\n\n关键要点:\n${standard.keyPoints.map(point => `• ${point}`).join('\n')}`;
+                detailText += `\n\n相关设备:\n${standard.relatedEquipment.map(eq => `• ${eq}`).join('\n')}`;
+
+                if (standard.reviewers.length > 0) {
+                    detailText += `\n\n审核人员:\n${standard.reviewers.map(reviewer => `• ${reviewer}`).join('\n')}`;
+                }
+
+                detailText += `\n\nSOP关联: ${standard.sopLinked ? `已关联 (${standard.sopCount}个)` : '未关联'}`;
+
+                if (standard.notes) {
+                    detailText += `\n\n备注: ${standard.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function createNewStandard() {
+            const standardName = prompt('请输入技术标准名称：');
+            if (standardName) {
+                alert(`创建技术标准：\n名称: ${standardName}\n编号: 系统自动生成\n版本: V1.0\n状态: 编制中\n\n下一步：\n1. 编制标准内容\n2. 设置关键要点\n3. 关联相关设备\n4. 提交部门审核`);
+            }
+        }
+
+        function editStandard(standardId) {
+            const standard = technicalStandardsData.find(s => s.id === standardId);
+            if (standard) {
+                alert(`编辑技术标准：\n标准: ${standard.standardName}\n当前版本: ${standard.version}\n状态: ${statusMap[standard.status].text}\n\n可编辑内容：\n- 标准描述\n- 关键要点\n- 相关设备\n- 技术要求`);
+            }
+        }
+
+        function reviewStandard(standardId) {
+            const standard = technicalStandardsData.find(s => s.id === standardId);
+            if (standard) {
+                const action = standard.status === 'reviewing' ? '部门审核' : '专家评审';
+                if (confirm(`确认进行${action}？\n标准: ${standard.standardName}\n编制人: ${standard.author}`)) {
+                    if (standard.status === 'reviewing') {
+                        standard.status = 'expert_review';
+                        standard.reviewDate = new Date().toISOString().split('T')[0];
+                        standard.reviewers.push('评审小组');
+                    } else {
+                        standard.status = 'approved';
+                    }
+                    renderStandardsTable();
+                    alert(`${action}完成！标准进入下一流程。`);
+                }
+            }
+        }
+
+        function linkSOP(standardId) {
+            const standard = technicalStandardsData.find(s => s.id === standardId);
+            if (standard) {
+                if (confirm(`确认关联SOP？\n标准: ${standard.standardName}\n\n将创建以下SOP：\n- 设备操作SOP\n- 维护保养SOP\n- 质量检查SOP`)) {
+                    standard.sopLinked = true;
+                    standard.sopCount = 3;
+                    renderStandardsTable();
+                    alert('SOP关联完成！\n- 已创建相关作业标准\n- 支持设备点巡检\n- 支持维护保养提醒');
+                }
+            }
+        }
+
+        function downloadStandard(standardId) {
+            const standard = technicalStandardsData.find(s => s.id === standardId);
+            if (standard) {
+                alert(`下载技术标准：\n标准: ${standard.standardName}\n版本: ${standard.version}\n格式: PDF\n\n下载内容包括：\n- 标准正文\n- 技术要求\n- 操作规程\n- 质量要求\n- 安全规范`);
+            }
+        }
+
+        function viewHistory(standardId) {
+            const standard = technicalStandardsData.find(s => s.id === standardId);
+            if (standard) {
+                alert(`版本历史：\n标准: ${standard.standardName}\n\n版本记录：\n• V1.0 - 2024-01-15 - 初始版本\n• V1.5 - 2024-06-20 - 增加安全要求\n• V2.0 - 2024-10-10 - 工艺优化\n• ${standard.version} - ${standard.createDate} - 当前版本\n\n变更原因：\n- 工艺改进\n- 法规更新\n- 设备升级`);
+            }
+        }
+
+        function reviewStandards(type) {
+            const typeText = type === 'department' ? '部门审核' : '专家评审';
+            alert(`${typeText}功能：\n- 标准内容审核\n- 技术要求验证\n- 可行性评估\n- 合规性检查\n- 审核意见记录`);
+        }
+
+        function publishStandards() {
+            alert('标准发布功能：\n- 发布审核通过的标准\n- 自动版本管理\n- 通知相关人员\n- 更新标准库\n- 关联SOP维护');
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderStandardsTable();
+
+            // 编制标准
+            document.getElementById('createStandardBtn').addEventListener('click', createNewStandard);
+
+            // 审核评审
+            document.getElementById('reviewStandardBtn').addEventListener('click', function() {
+                alert('审核评审功能：\n- 部门负责人审核\n- 评审小组评审\n- 专业技术评估\n- 合规性检查\n- 审核流程跟踪');
+            });
+
+            // 发布标准
+            document.getElementById('publishStandardBtn').addEventListener('click', publishStandards);
+
+            // SOP维护
+            document.getElementById('sopManagementBtn').addEventListener('click', function() {
+                alert('SOP维护功能：\n- 作业标准维护\n- 设备操作规程\n- 维护保养要求\n- 质量检查要点\n- 安全操作规范');
+            });
+
+            // 标准归档
+            document.getElementById('standardArchiveBtn').addEventListener('click', function() {
+                alert('标准归档功能：\n- 过期标准归档\n- 版本历史管理\n- 文档存储管理\n- 检索查询功能\n- 知识库维护');
+            });
+        });
+    </script>
+</body>
+</html>
