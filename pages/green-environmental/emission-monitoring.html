@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排放监测 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-industry text-primary mr-3"></i>
+                排放监测管理
+            </h1>
+            <p class="text-gray-600 mt-2">实时监测排放数据，确保环保合规</p>
+        </div>
+
+        <!-- 排放概览统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">废气排放</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">达标</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-wind text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>SO₂:</span>
+                        <span class="text-green-600 font-medium">8 mg/m³</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>NOₓ:</span>
+                        <span class="text-green-600 font-medium">12 mg/m³</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">废水排放</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">达标</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-tint text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>COD:</span>
+                        <span class="text-blue-600 font-medium">45 mg/L</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>氨氮:</span>
+                        <span class="text-blue-600 font-medium">2.5 mg/L</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">碳排放</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">2,856</p>
+                        <p class="text-sm text-gray-500">吨CO₂</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-cloud text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较去年:</span>
+                        <span class="text-green-600 font-medium">-8.3%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>减排目标:</span>
+                        <span class="text-purple-600 font-medium">-10%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">固废产生</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">156</p>
+                        <p class="text-sm text-gray-500">吨</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-trash text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>处理率:</span>
+                        <span class="text-green-600 font-medium">100%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>回收率:</span>
+                        <span class="text-yellow-600 font-medium">85.6%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时监测数据 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-line text-green-600 mr-2"></i>
+                实时监测数据
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">废气排放口1</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• SO₂: 8 mg/m³ (标准≤35)</div>
+                        <div>• NOₓ: 12 mg/m³ (标准≤50)</div>
+                        <div>• 颗粒物: 5 mg/m³ (标准≤20)</div>
+                        <div>• 流量: 15,600 m³/h</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 23%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">排放浓度: 23%标准值</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">废水排放口</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">正常</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• COD: 45 mg/L (标准≤100)</div>
+                        <div>• BOD: 18 mg/L (标准≤30)</div>
+                        <div>• 氨氮: 2.5 mg/L (标准≤15)</div>
+                        <div>• pH值: 7.2 (标准6-9)</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 45%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">排放浓度: 45%标准值</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">噪声监测点</h4>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">达标</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 昼间: 58 dB(A) (标准≤65)</div>
+                        <div>• 夜间: 45 dB(A) (标准≤55)</div>
+                        <div>• 瞬时最大: 62 dB(A)</div>
+                        <div>• 监测时间: 连续</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-500 h-2 rounded-full" style="width: 89%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">噪声水平: 89%标准值</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 排放趋势分析 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-area text-blue-600 mr-2"></i>
+                    废气排放趋势
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-area text-6xl mb-4 text-blue-400"></i>
+                        <p class="text-lg font-medium">废气排放趋势图</p>
+                        <p class="text-sm">30天排放数据变化</p>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">8</div>
+                                <div class="text-xs text-gray-500">SO₂ mg/m³</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">12</div>
+                                <div class="text-xs text-gray-500">NOₓ mg/m³</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">5</div>
+                                <div class="text-xs text-gray-500">颗粒物 mg/m³</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">100%</div>
+                                <div class="text-xs text-gray-500">达标率</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-tint text-purple-600 mr-2"></i>
+                    废水排放分析
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-line text-6xl mb-4 text-purple-400"></i>
+                        <p class="text-lg font-medium">废水排放趋势</p>
+                        <p class="text-sm">水质指标变化分析</p>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">45</div>
+                                <div class="text-xs text-gray-500">COD mg/L</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">18</div>
+                                <div class="text-xs text-gray-500">BOD mg/L</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">2.5</div>
+                                <div class="text-xs text-gray-500">氨氮 mg/L</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">7.2</div>
+                                <div class="text-xs text-gray-500">pH值</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 监测设备管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-cogs text-green-600 mr-2"></i>
+                监测设备管理
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备编号</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">监测类型</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">位置</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最新数据</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">EM-001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">废气监测</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">排放口1</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">在线</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">SO₂: 8 mg/m³</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WM-002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">废水监测</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">总排口</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">在线</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">COD: 45 mg/L</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">NM-003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">噪声监测</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">厂界东侧</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">在线</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">58 dB(A)</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-green-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-chart-line text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">排放分析</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-bell text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">告警设置</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-file-alt text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">合规报告</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">数据导出</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 排放监测管理功能
+        function initEmissionMonitoring() {
+            console.log('初始化排放监测管理功能');
+            
+            // 快速操作按钮事件
+            const quickButtons = document.querySelectorAll('button');
+            quickButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('排放分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开排放分析');
+                        alert('正在打开排放数据分析报告...');
+                    });
+                } else if (text.includes('告警设置')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开告警设置');
+                        alert('正在打开排放告警设置...');
+                    });
+                } else if (text.includes('合规报告')) {
+                    button.addEventListener('click', function() {
+                        console.log('生成合规报告');
+                        alert('正在生成环保合规报告...');
+                    });
+                } else if (text.includes('数据导出')) {
+                    button.addEventListener('click', function() {
+                        console.log('导出监测数据');
+                        alert('正在导出排放监测数据...');
+                    });
+                }
+            });
+            
+            // 设备管理表格操作
+            const tableLinks = document.querySelectorAll('.cursor-pointer');
+            tableLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const deviceId = this.closest('tr').querySelector('td').textContent;
+                    console.log('查看设备详情:', deviceId);
+                    alert(`正在查看监测设备 ${deviceId} 的详细信息...`);
+                });
+            });
+            
+            // 实时数据更新
+            function updateEmissionData() {
+                console.log('更新排放监测数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateEmissionData, 5000); // 每5秒更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initEmissionMonitoring();
+            console.log('排放监测管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

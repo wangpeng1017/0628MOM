@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>员工服务 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-users text-primary mr-3"></i>
+                员工服务管理
+            </h1>
+            <p class="text-gray-600 mt-2">关爱员工成长，提升工作体验</p>
+        </div>
+
+        <!-- 员工服务概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">培训服务</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">156</p>
+                        <p class="text-sm text-gray-500">人次/月</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-graduation-cap text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>完成率:</span>
+                        <span class="text-blue-600 font-medium">92.3%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>满意度:</span>
+                        <span class="text-green-600 font-medium">4.7分</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">健康服务</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">89</p>
+                        <p class="text-sm text-gray-500">人次/月</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-heartbeat text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>体检率:</span>
+                        <span class="text-green-600 font-medium">98.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>健康率:</span>
+                        <span class="text-green-600 font-medium">95.2%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">福利服务</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">234</p>
+                        <p class="text-sm text-gray-500">申请/月</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-gift text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>审批率:</span>
+                        <span class="text-purple-600 font-medium">96.8%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>及时率:</span>
+                        <span class="text-green-600 font-medium">98.1%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">咨询服务</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">67</p>
+                        <p class="text-sm text-gray-500">次/月</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-comments text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>解决率:</span>
+                        <span class="text-yellow-600 font-medium">94.0%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>响应时间:</span>
+                        <span class="text-green-600 font-medium">2小时</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 培训服务管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-graduation-cap text-blue-600 mr-2"></i>
+                培训服务管理
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">本月培训计划</h4>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>安全培训:</span>
+                            <span class="font-medium">1月20日</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>技能培训:</span>
+                            <span class="font-medium">1月25日</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>管理培训:</span>
+                            <span class="font-medium">1月30日</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>新员工培训:</span>
+                            <span class="font-medium">每周三</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-3 px-3 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                        查看培训计划
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">培训统计</h4>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>已完成:</span>
+                            <span class="font-medium text-green-600">12场</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>参与人数:</span>
+                            <span class="font-medium text-green-600">456人</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>通过率:</span>
+                            <span class="font-medium text-green-600">92.3%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>满意度:</span>
+                            <span class="font-medium text-blue-600">4.7分</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-3 px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+                        培训统计
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">在线学习</h4>
+                    <div class="space-y-2 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>课程数量:</span>
+                            <span class="font-medium text-purple-600">45门</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>学习人数:</span>
+                            <span class="font-medium text-purple-600">234人</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>完成率:</span>
+                            <span class="font-medium text-purple-600">78.5%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>学习时长:</span>
+                            <span class="font-medium text-blue-600">156小时</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-3 px-3 py-2 bg-purple-600 text-white text-sm rounded hover:bg-purple-700">
+                        在线学习
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 健康服务和福利服务 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-heartbeat text-green-600 mr-2"></i>
+                    健康服务管理
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">健康体检</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div class="flex justify-between">
+                                <span>年度体检:</span>
+                                <span class="font-medium text-green-600">已完成</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>参与率:</span>
+                                <span class="font-medium text-green-600">98.5%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>健康率:</span>
+                                <span class="font-medium text-green-600">95.2%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>下次体检:</span>
+                                <span class="font-medium">2025年12月</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">健康活动</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div class="flex justify-between">
+                                <span>健身活动:</span>
+                                <span class="font-medium text-blue-600">每周三次</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>参与人数:</span>
+                                <span class="font-medium">89人</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>健康讲座:</span>
+                                <span class="font-medium">每月一次</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>心理咨询:</span>
+                                <span class="font-medium text-green-600">可预约</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-gift text-purple-600 mr-2"></i>
+                    福利服务管理
+                </h3>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">员工福利</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div class="flex justify-between">
+                                <span>生日福利:</span>
+                                <span class="font-medium text-purple-600">45人</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>节日福利:</span>
+                                <span class="font-medium text-purple-600">全员</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>年终奖金:</span>
+                                <span class="font-medium text-green-600">已发放</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>带薪年假:</span>
+                                <span class="font-medium">5-15天</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">申请审批</h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div class="flex justify-between">
+                                <span>待审批:</span>
+                                <span class="font-medium text-yellow-600">8件</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>已审批:</span>
+                                <span class="font-medium text-green-600">226件</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>审批率:</span>
+                                <span class="font-medium text-green-600">96.8%</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>平均时长:</span>
+                                <span class="font-medium">1.5天</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 员工服务工单 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-clipboard-list text-blue-600 mr-2"></i>
+                员工服务工单
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工单号</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">服务类型</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">申请人</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">内容</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">创建时间</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ES-2025-001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">培训服务</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">张三</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">技能培训申请</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已批准</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 09:30</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ES-2025-002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">健康服务</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">李四</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">心理咨询预约</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">处理中</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 08:15</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ES-2025-003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">福利服务</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">王五</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">年假申请</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已批准</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 07:45</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-graduation-cap text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">培训管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-heartbeat text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">健康管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-gift text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">福利管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-chart-bar text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">服务统计</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 员工服务管理功能
+        function initEmployeeService() {
+            console.log('初始化员工服务管理功能');
+            
+            // 培训服务按钮事件
+            const trainingButtons = document.querySelectorAll('button');
+            trainingButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('查看培训计划')) {
+                    button.addEventListener('click', function() {
+                        console.log('查看培训计划');
+                        alert('正在打开培训计划详情...');
+                    });
+                } else if (text.includes('培训统计')) {
+                    button.addEventListener('click', function() {
+                        console.log('培训统计');
+                        alert('正在打开培训统计报告...');
+                    });
+                } else if (text.includes('在线学习')) {
+                    button.addEventListener('click', function() {
+                        console.log('在线学习');
+                        alert('正在打开在线学习平台...');
+                    });
+                }
+            });
+            
+            // 快速操作按钮事件
+            const quickButtons = document.querySelectorAll('button');
+            quickButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('培训管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('培训管理');
+                        alert('正在打开培训管理模块...');
+                    });
+                } else if (text.includes('健康管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('健康管理');
+                        alert('正在打开健康管理模块...');
+                    });
+                } else if (text.includes('福利管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('福利管理');
+                        alert('正在打开福利管理模块...');
+                    });
+                } else if (text.includes('服务统计')) {
+                    button.addEventListener('click', function() {
+                        console.log('服务统计');
+                        alert('正在打开员工服务统计...');
+                    });
+                }
+            });
+            
+            // 工单管理表格操作
+            const tableLinks = document.querySelectorAll('.cursor-pointer');
+            tableLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const workOrderId = this.closest('tr').querySelector('td').textContent;
+                    console.log('查看工单详情:', workOrderId);
+                    alert(`正在查看工单 ${workOrderId} 的详细信息...`);
+                });
+            });
+            
+            // 实时数据更新
+            function updateEmployeeServiceData() {
+                console.log('更新员工服务数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateEmployeeServiceData, 60000); // 每分钟更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initEmployeeService();
+            console.log('员工服务管理页面加载完成');
+        });
+    </script>
+</body>
+</html>

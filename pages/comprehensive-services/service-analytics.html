@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务统计分析 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-chart-bar text-primary mr-3"></i>
+                服务统计分析
+            </h1>
+            <p class="text-gray-600 mt-2">数据驱动决策，优化服务质量</p>
+        </div>
+
+        <!-- 分析控制面板 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-filter text-blue-600 mr-2"></i>
+                分析控制面板
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">时间范围</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>本月</option>
+                        <option>上月</option>
+                        <option>本季度</option>
+                        <option>本年度</option>
+                        <option>自定义</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">服务类型</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>全部服务</option>
+                        <option>设施服务</option>
+                        <option>后勤服务</option>
+                        <option>员工服务</option>
+                        <option>IT服务</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">分析维度</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option>服务量</option>
+                        <option>满意度</option>
+                        <option>响应时间</option>
+                        <option>完成率</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button class="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-search mr-2"></i>生成分析
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心指标统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">总服务量</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">3,456</p>
+                        <p class="text-sm text-gray-500">本月</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-chart-line text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">+12.5%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>日均:</span>
+                        <span class="text-blue-600 font-medium">112件</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">平均满意度</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">4.7</p>
+                        <p class="text-sm text-gray-500">分</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-star text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">+0.2</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>目标:</span>
+                        <span class="text-green-600 font-medium">4.5分</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">平均响应时间</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">18</p>
+                        <p class="text-sm text-gray-500">分钟</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-clock text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">-3分钟</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>目标:</span>
+                        <span class="text-purple-600 font-medium">≤30分钟</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">服务完成率</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">96.8%</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-check-circle text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">+2.1%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>目标:</span>
+                        <span class="text-yellow-600 font-medium">≥95%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务趋势分析 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                    服务量趋势分析
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-line text-6xl mb-4 text-blue-400"></i>
+                        <p class="text-lg font-medium">服务量趋势图</p>
+                        <p class="text-sm">30天服务量变化趋势</p>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">3,456</div>
+                                <div class="text-xs text-gray-500">本月总量</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">+12.5%</div>
+                                <div class="text-xs text-gray-500">环比增长</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">112</div>
+                                <div class="text-xs text-gray-500">日均服务</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-yellow-600">156</div>
+                                <div class="text-xs text-gray-500">峰值/日</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-pie text-purple-600 mr-2"></i>
+                    服务类型分布
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-pie text-6xl mb-4 text-purple-400"></i>
+                        <p class="text-lg font-medium">服务类型占比</p>
+                        <p class="text-sm">各类服务分布情况</p>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">36%</div>
+                                <div class="text-xs text-gray-500">后勤服务</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">25%</div>
+                                <div class="text-xs text-gray-500">设施服务</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">22%</div>
+                                <div class="text-xs text-gray-500">员工服务</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-yellow-600">17%</div>
+                                <div class="text-xs text-gray-500">IT服务</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务质量分析 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-star text-green-600 mr-2"></i>
+                服务质量分析
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">设施服务</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span>满意度:</span>
+                            <span class="text-blue-600 font-medium">4.6分</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>响应时间:</span>
+                            <span class="text-blue-600 font-medium">25分钟</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>完成率:</span>
+                            <span class="text-blue-600 font-medium">94.2%</span>
+                        </div>
+                        <div class="mt-3">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 92%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">综合评分: 92%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">后勤服务</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span>满意度:</span>
+                            <span class="text-green-600 font-medium">4.8分</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>响应时间:</span>
+                            <span class="text-green-600 font-medium">12分钟</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>完成率:</span>
+                            <span class="text-green-600 font-medium">98.1%</span>
+                        </div>
+                        <div class="mt-3">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 96%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">综合评分: 96%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">员工服务</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span>满意度:</span>
+                            <span class="text-purple-600 font-medium">4.7分</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>响应时间:</span>
+                            <span class="text-purple-600 font-medium">15分钟</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>完成率:</span>
+                            <span class="text-purple-600 font-medium">96.8%</span>
+                        </div>
+                        <div class="mt-3">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 94%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">综合评分: 94%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">IT服务</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span>满意度:</span>
+                            <span class="text-yellow-600 font-medium">4.5分</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>响应时间:</span>
+                            <span class="text-yellow-600 font-medium">22分钟</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>完成率:</span>
+                            <span class="text-yellow-600 font-medium">92.3%</span>
+                        </div>
+                        <div class="mt-3">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 90%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">综合评分: 90%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务改进建议 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-lightbulb text-yellow-600 mr-2"></i>
+                服务改进建议
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-lg p-4 border border-red-200">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                            需要改进
+                        </h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• IT服务响应时间偏长，建议增加技术人员</div>
+                            <div>• 设施维修完成率有待提升，需优化流程</div>
+                            <div>• 部分服务满意度低于目标，需加强培训</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-chart-line text-yellow-600 mr-2"></i>
+                            优化建议
+                        </h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 建立服务质量监控体系</div>
+                            <div>• 实施服务标准化流程</div>
+                            <div>• 加强员工服务技能培训</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-thumbs-up text-green-600 mr-2"></i>
+                            表现优秀
+                        </h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 后勤服务满意度持续提升</div>
+                            <div>• 员工服务完成率超过目标</div>
+                            <div>• 整体服务量稳步增长</div>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                        <h4 class="font-semibold text-gray-800 mb-2 flex items-center">
+                            <i class="fas fa-target text-blue-600 mr-2"></i>
+                            发展目标
+                        </h4>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 整体满意度提升至4.8分</div>
+                            <div>• 响应时间缩短至15分钟内</div>
+                            <div>• 服务完成率达到98%以上</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-file-export text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">导出报告</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-chart-line text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">趋势分析</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-cog text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">分析设置</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-bell text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">预警设置</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 服务统计分析功能
+        function initServiceAnalytics() {
+            console.log('初始化服务统计分析功能');
+            
+            // 分析生成按钮事件
+            const generateButton = document.querySelector('button:has(i.fa-search)');
+            if (generateButton) {
+                generateButton.addEventListener('click', function() {
+                    console.log('生成服务分析');
+                    alert('正在生成服务统计分析报告，请稍候...');
+                });
+            }
+            
+            // 快速操作按钮事件
+            const quickButtons = document.querySelectorAll('button');
+            quickButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('导出报告')) {
+                    button.addEventListener('click', function() {
+                        console.log('导出分析报告');
+                        alert('正在导出服务统计分析报告...');
+                    });
+                } else if (text.includes('趋势分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('趋势分析');
+                        alert('正在打开服务趋势分析工具...');
+                    });
+                } else if (text.includes('分析设置')) {
+                    button.addEventListener('click', function() {
+                        console.log('分析设置');
+                        alert('正在打开分析参数设置...');
+                    });
+                } else if (text.includes('预警设置')) {
+                    button.addEventListener('click', function() {
+                        console.log('预警设置');
+                        alert('正在打开服务质量预警设置...');
+                    });
+                }
+            });
+            
+            // 实时数据更新
+            function updateAnalyticsData() {
+                console.log('更新统计分析数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateAnalyticsData, 60000); // 每分钟更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initServiceAnalytics();
+            console.log('服务统计分析页面加载完成');
+        });
+    </script>
+</body>
+</html>

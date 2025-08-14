@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务概览 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-concierge-bell text-primary mr-3"></i>
+                综合服务概览
+            </h1>
+            <p class="text-gray-600 mt-2">全方位服务管理，提升员工体验</p>
+        </div>
+
+        <!-- 服务核心指标 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">服务满意度</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">4.8</p>
+                        <p class="text-sm text-gray-500">分</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-star text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>评价人数:</span>
+                        <span class="text-blue-600 font-medium">1,245人</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>较上月:</span>
+                        <span class="text-green-600 font-medium">+0.2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">服务请求</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">2,856</p>
+                        <p class="text-sm text-gray-500">本月</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-clipboard-list text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>已完成:</span>
+                        <span class="text-green-600 font-medium">2,798个</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>完成率:</span>
+                        <span class="text-green-600 font-medium">98.0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">响应时间</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">15</p>
+                        <p class="text-sm text-gray-500">分钟</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-clock text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>目标:</span>
+                        <span class="text-purple-600 font-medium">≤30分钟</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>达标率:</span>
+                        <span class="text-green-600 font-medium">95.6%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">在线服务</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">24</p>
+                        <p class="text-sm text-gray-500">项</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-globe text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>使用率:</span>
+                        <span class="text-yellow-600 font-medium">85.2%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>新增:</span>
+                        <span class="text-green-600 font-medium">3项</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务分类统计 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-pie text-blue-600 mr-2"></i>
+                服务分类统计
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 border border-blue-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">设施服务</h4>
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">856次</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 维修服务: 456次</div>
+                        <div>• 清洁服务: 234次</div>
+                        <div>• 安全检查: 166次</div>
+                        <div>• 满意度: 4.7分</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 94%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">完成率: 94%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4 border border-green-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">后勤服务</h4>
+                        <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">1,245次</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 餐饮服务: 680次</div>
+                        <div>• 班车服务: 345次</div>
+                        <div>• 快递服务: 220次</div>
+                        <div>• 满意度: 4.9分</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 98%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">完成率: 98%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4 border border-purple-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">员工服务</h4>
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">567次</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 培训服务: 234次</div>
+                        <div>• 健康服务: 156次</div>
+                        <div>• 福利服务: 177次</div>
+                        <div>• 满意度: 4.8分</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-purple-500 h-2 rounded-full" style="width: 96%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">完成率: 96%</div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-4 border border-yellow-200">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-semibold text-gray-800">IT服务</h4>
+                        <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">188次</span>
+                    </div>
+                    <div class="text-sm text-gray-600 space-y-1">
+                        <div>• 技术支持: 98次</div>
+                        <div>• 设备维护: 56次</div>
+                        <div>• 系统升级: 34次</div>
+                        <div>• 满意度: 4.6分</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-yellow-500 h-2 rounded-full" style="width: 92%"></div>
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1">完成率: 92%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 实时服务状态 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-clock text-green-600 mr-2"></i>
+                    实时服务状态
+                </h3>
+                <div class="space-y-4">
+                    <div class="border border-green-200 bg-green-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">餐厅预订服务</h4>
+                            <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">正常</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 今日预订: 156人次</div>
+                            <div>• 可用座位: 45个</div>
+                            <div>• 服务时间: 11:30-13:30</div>
+                            <div>• 平均等待: 5分钟</div>
+                        </div>
+                    </div>
+                    <div class="border border-blue-200 bg-blue-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">班车服务</h4>
+                            <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">运行中</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 运行班次: 8班</div>
+                            <div>• 在途车辆: 3辆</div>
+                            <div>• 乘客人数: 45人</div>
+                            <div>• 准点率: 98.5%</div>
+                        </div>
+                    </div>
+                    <div class="border border-purple-200 bg-purple-50 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-gray-800">会议室预订</h4>
+                            <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">繁忙</span>
+                        </div>
+                        <div class="text-sm text-gray-600 space-y-1">
+                            <div>• 总会议室: 25间</div>
+                            <div>• 已预订: 18间</div>
+                            <div>• 使用率: 72%</div>
+                            <div>• 可预订: 7间</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-purple-600 mr-2"></i>
+                    服务趋势分析
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-line text-6xl mb-4 text-purple-400"></i>
+                        <p class="text-lg font-medium">服务趋势图</p>
+                        <p class="text-sm">30天服务数据变化</p>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">2,856</div>
+                                <div class="text-xs text-gray-500">本月请求</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">98.0%</div>
+                                <div class="text-xs text-gray-500">完成率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">15分钟</div>
+                                <div class="text-xs text-gray-500">响应时间</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-yellow-600">4.8分</div>
+                                <div class="text-xs text-gray-500">满意度</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 服务工单管理 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-clipboard-list text-blue-600 mr-2"></i>
+                服务工单管理
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工单号</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">服务类型</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">申请人</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">优先级</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">创建时间</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WO-2025-001</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">设施维修</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">张三</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">紧急</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">处理中</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 09:30</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WO-2025-002</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">IT支持</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">李四</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">普通</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 08:15</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WO-2025-003</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">餐饮预订</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">王五</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">低</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-17 07:45</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">查看详情</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-building text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">设施管理</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-truck text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">后勤服务</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-users text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">员工服务</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-chart-bar text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">服务分析</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 综合服务概览功能
+        function initServiceOverview() {
+            console.log('初始化综合服务概览功能');
+            
+            // 快速操作按钮事件
+            const quickButtons = document.querySelectorAll('button');
+            quickButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('设施管理')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开设施管理');
+                        alert('正在打开设施管理模块...');
+                    });
+                } else if (text.includes('后勤服务')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开后勤服务');
+                        alert('正在打开后勤服务管理...');
+                    });
+                } else if (text.includes('员工服务')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开员工服务');
+                        alert('正在打开员工服务管理...');
+                    });
+                } else if (text.includes('服务分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('打开服务分析');
+                        alert('正在打开服务统计分析...');
+                    });
+                }
+            });
+            
+            // 工单管理表格操作
+            const tableLinks = document.querySelectorAll('.cursor-pointer');
+            tableLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const workOrderId = this.closest('tr').querySelector('td').textContent;
+                    console.log('查看工单详情:', workOrderId);
+                    alert(`正在查看工单 ${workOrderId} 的详细信息...`);
+                });
+            });
+            
+            // 实时数据更新
+            function updateServiceData() {
+                console.log('更新服务数据');
+                // 这里可以添加实时数据更新逻辑
+            }
+            
+            // 启动定时更新
+            setInterval(updateServiceData, 30000); // 每30秒更新一次
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initServiceOverview();
+            console.log('综合服务概览页面加载完成');
+        });
+    </script>
+</body>
+</html>

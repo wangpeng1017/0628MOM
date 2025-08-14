@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>环保报告分析 - 慧新全智厂园一体平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-chart-bar text-primary mr-3"></i>
+                环保报告分析
+            </h1>
+            <p class="text-gray-600 mt-2">环保数据分析，合规报告生成</p>
+        </div>
+
+        <!-- 报告生成控制 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-file-alt text-green-600 mr-2"></i>
+                报告生成控制
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">报告类型</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <option>月度环保报告</option>
+                        <option>季度合规报告</option>
+                        <option>年度环保总结</option>
+                        <option>专项排放报告</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">时间范围</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <option>本月</option>
+                        <option>上月</option>
+                        <option>本季度</option>
+                        <option>本年度</option>
+                        <option>自定义</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">数据范围</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500">
+                        <option>全部数据</option>
+                        <option>废气排放</option>
+                        <option>废水排放</option>
+                        <option>固废处理</option>
+                        <option>能耗数据</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+                        <i class="fas fa-play mr-2"></i>生成报告
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 环保指标分析 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">合规率</h3>
+                        <p class="text-3xl font-bold text-green-600 mt-2">100%</p>
+                    </div>
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>达标天数:</span>
+                        <span class="text-green-600 font-medium">31/31天</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>超标次数:</span>
+                        <span class="text-green-600 font-medium">0次</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">减排效果</h3>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">8.3%</p>
+                    </div>
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-arrow-down text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>CO₂减排:</span>
+                        <span class="text-blue-600 font-medium">238吨</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>目标完成:</span>
+                        <span class="text-green-600 font-medium">83%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">处理效率</h3>
+                        <p class="text-3xl font-bold text-purple-600 mt-2">92.8%</p>
+                    </div>
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-filter text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>废气处理:</span>
+                        <span class="text-purple-600 font-medium">95.2%</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>废水处理:</span>
+                        <span class="text-purple-600 font-medium">90.4%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">环保投入</h3>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">¥285</p>
+                        <p class="text-sm text-gray-500">万元</p>
+                    </div>
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-coins text-yellow-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-sm text-gray-600">
+                    <div class="flex justify-between">
+                        <span>设备投入:</span>
+                        <span class="text-yellow-600 font-medium">¥180万</span>
+                    </div>
+                    <div class="flex justify-between mt-1">
+                        <span>运营成本:</span>
+                        <span class="text-yellow-600 font-medium">¥105万</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据分析图表 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                    排放趋势分析
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-line text-6xl mb-4 text-blue-400"></i>
+                        <p class="text-lg font-medium">排放趋势图</p>
+                        <p class="text-sm">12个月排放数据变化</p>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">-8.3%</div>
+                                <div class="text-xs text-gray-500">同比减少</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">100%</div>
+                                <div class="text-xs text-gray-500">达标率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">92.8%</div>
+                                <div class="text-xs text-gray-500">处理效率</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-yellow-600">0</div>
+                                <div class="text-xs text-gray-500">超标次数</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-chart-pie text-purple-600 mr-2"></i>
+                    环保投入分析
+                </h3>
+                <div class="h-64 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg flex items-center justify-center">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-chart-pie text-6xl mb-4 text-purple-400"></i>
+                        <p class="text-lg font-medium">投入构成分析</p>
+                        <p class="text-sm">环保资金分配情况</p>
+                        <div class="mt-4 grid grid-cols-2 gap-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-green-600">63%</div>
+                                <div class="text-xs text-gray-500">设备投入</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-blue-600">37%</div>
+                                <div class="text-xs text-gray-500">运营成本</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-purple-600">¥285万</div>
+                                <div class="text-xs text-gray-500">总投入</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-yellow-600">15.2%</div>
+                                <div class="text-xs text-gray-500">占营收比</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 报告列表 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-file-alt text-green-600 mr-2"></i>
+                历史报告列表
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">报告名称</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">报告类型</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间范围</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">生成时间</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2024年12月环保月报</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">月度报告</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-12</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-05</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">下载</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2024年Q4合规报告</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">季度报告</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024-Q4</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-10</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">已完成</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 cursor-pointer hover:underline">下载</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">2024年度环保总结</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">年度报告</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2024年</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-15</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">生成中</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">生成中</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 合规性分析 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-shield-check text-green-600 mr-2"></i>
+                合规性分析
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">废气排放合规</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span>SO₂达标率:</span>
+                            <span class="text-green-600 font-medium">100%</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>NOₓ达标率:</span>
+                            <span class="text-green-600 font-medium">100%</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>颗粒物达标率:</span>
+                            <span class="text-green-600 font-medium">100%</span>
+                        </div>
+                        <div class="mt-3">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">综合合规率: 100%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">废水排放合规</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span>COD达标率:</span>
+                            <span class="text-blue-600 font-medium">100%</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>氨氮达标率:</span>
+                            <span class="text-blue-600 font-medium">100%</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>pH值达标率:</span>
+                            <span class="text-blue-600 font-medium">100%</span>
+                        </div>
+                        <div class="mt-3">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 100%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">综合合规率: 100%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">固废处理合规</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span>处理率:</span>
+                            <span class="text-purple-600 font-medium">100%</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>回收利用率:</span>
+                            <span class="text-purple-600 font-medium">85.6%</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span>台账完整率:</span>
+                            <span class="text-purple-600 font-medium">100%</span>
+                        </div>
+                        <div class="mt-3">
+                            <div class="w-full bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 100%"></div>
+                            </div>
+                            <div class="text-xs text-gray-500 mt-1">综合合规率: 100%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt text-green-600 mr-2"></i>
+                快速操作
+            </h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+                    <i class="fas fa-file-plus text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">生成报告</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+                    <i class="fas fa-chart-line text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">数据分析</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+                    <i class="fas fa-shield-check text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">合规检查</span>
+                </button>
+                <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+                    <i class="fas fa-download text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-800">批量下载</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 环保报告分析功能
+        function initReportAnalysis() {
+            console.log('初始化环保报告分析功能');
+            
+            // 报告生成按钮事件
+            const generateButton = document.querySelector('button:has(i.fa-play)');
+            if (generateButton) {
+                generateButton.addEventListener('click', function() {
+                    console.log('生成环保报告');
+                    alert('正在生成环保报告，请稍候...');
+                });
+            }
+            
+            // 快速操作按钮事件
+            const quickButtons = document.querySelectorAll('button');
+            quickButtons.forEach(button => {
+                const text = button.textContent.trim();
+                if (text.includes('生成报告')) {
+                    button.addEventListener('click', function() {
+                        console.log('快速生成报告');
+                        alert('正在打开报告生成向导...');
+                    });
+                } else if (text.includes('数据分析')) {
+                    button.addEventListener('click', function() {
+                        console.log('环保数据分析');
+                        alert('正在打开环保数据分析工具...');
+                    });
+                } else if (text.includes('合规检查')) {
+                    button.addEventListener('click', function() {
+                        console.log('合规性检查');
+                        alert('正在执行环保合规性检查...');
+                    });
+                } else if (text.includes('批量下载')) {
+                    button.addEventListener('click', function() {
+                        console.log('批量下载报告');
+                        alert('正在准备批量下载...');
+                    });
+                }
+            });
+            
+            // 报告下载链接事件
+            const downloadLinks = document.querySelectorAll('.cursor-pointer');
+            downloadLinks.forEach(link => {
+                if (link.textContent.trim() === '下载') {
+                    link.addEventListener('click', function() {
+                        const reportName = this.closest('tr').querySelector('td').textContent;
+                        console.log('下载报告:', reportName);
+                        alert(`正在下载报告: ${reportName}`);
+                    });
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initReportAnalysis();
+            console.log('环保报告分析页面加载完成');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指标设置 - 逆变器数字工厂平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题和操作按钮 -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-chart-line text-blue-600 mr-3"></i>
+                    评估指标设置
+                </h1>
+                <p class="text-gray-600 mt-2">配置逆变器生产运营关键指标</p>
+            </div>
+            <div class="flex space-x-3">
+                <button id="newIndicatorBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>新建指标
+                </button>
+                <button id="runCalculationBtn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-play mr-2"></i>运行计算
+                </button>
+                <button id="saveConfigBtn" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-save mr-2"></i>保存配置
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- 左侧指标列表 -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">指标列表</h3>
+                        <div class="relative">
+                            <input type="text" placeholder="搜索指标..." class="pl-8 pr-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400 text-sm"></i>
+                        </div>
+                    </div>
+
+                    <!-- 产品质量指标 -->
+                    <div class="mb-4">
+                        <h4 class="text-sm font-medium text-blue-600 mb-2 flex items-center">
+                            <i class="fas fa-award mr-2"></i>产品质量
+                        </h4>
+                        <div class="space-y-2">
+                            <div class="indicator-item p-2 rounded cursor-pointer hover:bg-blue-50 border-l-4 border-blue-500" data-id="PQ-001">
+                                <div class="text-sm font-medium text-gray-800">产品合格率</div>
+                                <div class="text-xs text-gray-500">PQ-001</div>
+                            </div>
+                            <div class="indicator-item p-2 rounded cursor-pointer hover:bg-blue-50" data-id="PQ-002">
+                                <div class="text-sm font-medium text-gray-800">缺陷密度</div>
+                                <div class="text-xs text-gray-500">PQ-002</div>
+                            </div>
+                            <div class="indicator-item p-2 rounded cursor-pointer hover:bg-blue-50" data-id="PQ-003">
+                                <div class="text-sm font-medium text-gray-800">一次通过率</div>
+                                <div class="text-xs text-gray-500">PQ-003</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 过程质量指标 -->
+                    <div class="mb-4">
+                        <h4 class="text-sm font-medium text-purple-600 mb-2 flex items-center">
+                            <i class="fas fa-cogs mr-2"></i>过程质量
+                        </h4>
+                        <div class="space-y-2">
+                            <div class="indicator-item p-2 rounded cursor-pointer hover:bg-purple-50" data-id="PC-001">
+                                <div class="text-sm font-medium text-gray-800">过程能力指数Cp</div>
+                                <div class="text-xs text-gray-500">PC-001</div>
+                            </div>
+                            <div class="indicator-item p-2 rounded cursor-pointer hover:bg-purple-50" data-id="PC-002">
+                                <div class="text-sm font-medium text-gray-800">过程能力指数Cpk</div>
+                                <div class="text-xs text-gray-500">PC-002</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 设备运行指标 -->
+                    <div class="mb-4">
+                        <h4 class="text-sm font-medium text-green-600 mb-2 flex items-center">
+                            <i class="fas fa-server mr-2"></i>设备运行
+                        </h4>
+                        <div class="space-y-2">
+                            <div class="indicator-item p-2 rounded cursor-pointer hover:bg-green-50" data-id="EQ-001">
+                                <div class="text-sm font-medium text-gray-800">设备开机率</div>
+                                <div class="text-xs text-gray-500">EQ-001</div>
+                            </div>
+                            <div class="indicator-item p-2 rounded cursor-pointer hover:bg-green-50" data-id="EQ-002">
+                                <div class="text-sm font-medium text-gray-800">设备故障率</div>
+                                <div class="text-xs text-gray-500">EQ-002</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧配置区域 -->
+            <div class="lg:col-span-3">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800">计算配置</h3>
+                        <select id="calculationMode" class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="formula">公式计算</option>
+                            <option value="sql">SQL查询</option>
+                            <option value="api">API接口</option>
+                        </select>
+                    </div>
+
+                    <!-- 基本信息配置 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">指标名称</label>
+                            <input type="text" id="indicatorName" placeholder="请选择指标" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">数据源类型</label>
+                            <select id="dataSourceType" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="database">数据库表</option>
+                                <option value="api">API接口</option>
+                                <option value="file">文件导入</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">指标编码</label>
+                            <input type="text" id="indicatorCode" placeholder="-" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" readonly>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">数据表</label>
+                            <select id="dataTable" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="product_quality">product_quality (产品质量表)</option>
+                                <option value="equipment_status">equipment_status (设备状态表)</option>
+                                <option value="production_data">production_data (生产数据表)</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">指标定义</label>
+                            <input type="text" id="indicatorDefinition" placeholder="-" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+
+                    <!-- 字段映射 -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-3">字段映射</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="field_product_id" class="mr-2" checked>
+                                    <label for="field_product_id" class="text-sm text-gray-700">product_id (产品ID)</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="field_inspection_date" class="mr-2" checked>
+                                    <label for="field_inspection_date" class="text-sm text-gray-700">inspection_date (检验日期)</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="field_total_count" class="mr-2" checked>
+                                    <label for="field_total_count" class="text-sm text-gray-700">total_count (总数量)</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="field_pass_count" class="mr-2" checked>
+                                    <label for="field_pass_count" class="text-sm text-gray-700">pass_count (合格数量)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 计算逻辑配置 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">计算逻辑</label>
+                            <div class="bg-gray-900 text-green-400 p-4 rounded-md font-mono text-sm h-48 overflow-y-auto">
+                                <div class="text-yellow-400">// 产品合格率计算函数</div>
+                                <div><span class="text-blue-400">function</span> <span class="text-white">calculate</span>(<span class="text-orange-400">data</span>) {</div>
+                                <div class="ml-4"><span class="text-blue-400">const</span> <span class="text-white">passCount</span> = <span class="text-orange-400">data</span>.<span class="text-white">pass_count</span>;</div>
+                                <div class="ml-4"><span class="text-blue-400">const</span> <span class="text-white">totalCount</span> = <span class="text-orange-400">data</span>.<span class="text-white">total_count</span>;</div>
+                                <div class="ml-4"></div>
+                                <div class="ml-4"><span class="text-blue-400">if</span> (<span class="text-white">totalCount</span> === <span class="text-purple-400">0</span>) {</div>
+                                <div class="ml-8"><span class="text-blue-400">return</span> <span class="text-purple-400">0</span>;</div>
+                                <div class="ml-4">} <span class="text-blue-400">else</span> {</div>
+                                <div class="ml-8"><span class="text-blue-400">return</span> (<span class="text-white">passCount</span> / <span class="text-white">totalCount</span>) * <span class="text-purple-400">100</span>;</div>
+                                <div class="ml-4">}</div>
+                                <div>}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">筛选条件</label>
+                            <div class="bg-gray-100 p-4 rounded-md h-48 overflow-y-auto">
+                                <div class="text-sm text-gray-700 mb-2">例如:</div>
+                                <div class="text-sm text-gray-600 font-mono">
+                                    inspection_date > '2023-01-01' AND<br>
+                                    product_type = 'inverter' AND<br>
+                                    status = 'completed'
+                                </div>
+                                <textarea id="filterConditions" class="w-full mt-3 p-2 border border-gray-300 rounded text-sm" rows="6" placeholder="输入筛选条件..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 标准值配置 -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">标准值/范围</label>
+                            <input type="text" id="standardValue" placeholder="-" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">单位</label>
+                            <input type="text" id="unit" placeholder="%" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">计算方法</label>
+                            <select id="calculationMethod" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="formula">公式计算</option>
+                                <option value="aggregation">聚合统计</option>
+                                <option value="custom">自定义</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 计算预览 -->
+                    <div class="border-t pt-6">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4">计算预览与结果</h4>
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-sm text-gray-600">预计算结果</div>
+                                    <div class="text-2xl font-bold text-blue-600">99.5%</div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <button id="previewBtn" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors">
+                                        <i class="fas fa-eye mr-2"></i>预览
+                                    </button>
+                                    <button id="testBtn" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors">
+                                        <i class="fas fa-play mr-2"></i>测试
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 指标设置管理功能
+        function initIndicatorSettings() {
+            console.log('初始化指标设置功能');
+
+            // 指标数据库 - 逆变器行业专用指标
+            const indicators = {
+                'PQ-001': {
+                    name: '产品合格率',
+                    code: 'PQ-001',
+                    definition: '合格产品数量/总产品数量×100%',
+                    category: 'product_quality',
+                    unit: '%',
+                    standardValue: '≥99.5%',
+                    dataSource: 'product_quality',
+                    formula: 'function calculate(data) { return (data.pass_count / data.total_count) * 100; }'
+                },
+                'PQ-002': {
+                    name: '缺陷密度',
+                    code: 'PQ-002',
+                    definition: '缺陷数量/总产品数量×100%',
+                    category: 'product_quality',
+                    unit: '%',
+                    standardValue: '≤0.5%',
+                    dataSource: 'product_quality',
+                    formula: 'function calculate(data) { return (data.defect_count / data.total_count) * 100; }'
+                },
+                'PQ-003': {
+                    name: '一次通过率',
+                    code: 'PQ-003',
+                    definition: '一次检验合格产品数量/检验产品数量×100%',
+                    category: 'product_quality',
+                    unit: '%',
+                    standardValue: '≥98%',
+                    dataSource: 'product_quality',
+                    formula: 'function calculate(data) { return (data.first_pass_count / data.inspection_count) * 100; }'
+                },
+                'PC-001': {
+                    name: '过程能力指数Cp',
+                    code: 'PC-001',
+                    definition: '过程能力指数，反映过程的潜在能力',
+                    category: 'process_quality',
+                    unit: '',
+                    standardValue: '≥1.33',
+                    dataSource: 'process_data',
+                    formula: 'function calculate(data) { return (data.usl - data.lsl) / (6 * data.sigma); }'
+                },
+                'PC-002': {
+                    name: '过程能力指数Cpk',
+                    code: 'PC-002',
+                    definition: '修正的过程能力指数，考虑过程偏移',
+                    category: 'process_quality',
+                    unit: '',
+                    standardValue: '≥1.33',
+                    dataSource: 'process_data',
+                    formula: 'function calculate(data) { return Math.min((data.usl - data.mean) / (3 * data.sigma), (data.mean - data.lsl) / (3 * data.sigma)); }'
+                },
+                'EQ-001': {
+                    name: '设备开机率',
+                    code: 'EQ-001',
+                    definition: '设备实际运行时间/计划运行时间×100%',
+                    category: 'equipment',
+                    unit: '%',
+                    standardValue: '≥85%',
+                    dataSource: 'equipment_status',
+                    formula: 'function calculate(data) { return (data.actual_runtime / data.planned_runtime) * 100; }'
+                },
+                'EQ-002': {
+                    name: '设备故障率',
+                    code: 'EQ-002',
+                    definition: '故障时间/总运行时间×100%',
+                    category: 'equipment',
+                    unit: '%',
+                    standardValue: '≤2%',
+                    dataSource: 'equipment_status',
+                    formula: 'function calculate(data) { return (data.failure_time / data.total_runtime) * 100; }'
+                }
+            };
+
+            // 指标选择事件处理
+            const indicatorItems = document.querySelectorAll('.indicator-item');
+            indicatorItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // 移除其他选中状态
+                    indicatorItems.forEach(i => {
+                        i.classList.remove('border-l-4', 'border-blue-500', 'bg-blue-50', 'border-purple-500', 'bg-purple-50', 'border-green-500', 'bg-green-50');
+                    });
+
+                    // 根据指标类型添加对应的选中状态
+                    const indicatorId = this.dataset.id;
+                    const indicator = indicators[indicatorId];
+
+                    if (indicator) {
+                        if (indicator.category === 'product_quality') {
+                            this.classList.add('border-l-4', 'border-blue-500', 'bg-blue-50');
+                        } else if (indicator.category === 'process_quality') {
+                            this.classList.add('border-l-4', 'border-purple-500', 'bg-purple-50');
+                        } else if (indicator.category === 'equipment') {
+                            this.classList.add('border-l-4', 'border-green-500', 'bg-green-50');
+                        }
+
+                        // 更新配置表单
+                        updateConfigForm(indicator);
+                    }
+
+                    console.log('选择指标:', indicatorId, indicator);
+                });
+            });
+
+            // 更新配置表单
+            function updateConfigForm(indicator) {
+                document.getElementById('indicatorName').value = indicator.name;
+                document.getElementById('indicatorCode').value = indicator.code;
+                document.getElementById('indicatorDefinition').value = indicator.definition;
+                document.getElementById('unit').value = indicator.unit;
+                document.getElementById('standardValue').value = indicator.standardValue;
+
+                // 更新数据表选择
+                const dataTableSelect = document.getElementById('dataTable');
+                dataTableSelect.value = indicator.dataSource;
+
+                // 更新计算逻辑显示
+                updateCalculationDisplay(indicator.formula);
+            }
+
+            // 更新计算逻辑显示
+            function updateCalculationDisplay(formula) {
+                const codeDisplay = document.querySelector('.bg-gray-900');
+                if (codeDisplay && formula) {
+                    // 格式化显示计算公式
+                    const formattedCode = formatJavaScriptCode(formula);
+                    codeDisplay.innerHTML = formattedCode;
+                }
+            }
+
+            // JavaScript代码格式化显示
+            function formatJavaScriptCode(code) {
+                return code
+                    .replace(/function/g, '<span class="text-blue-400">function</span>')
+                    .replace(/calculate/g, '<span class="text-white">calculate</span>')
+                    .replace(/data/g, '<span class="text-orange-400">data</span>')
+                    .replace(/const|let|var/g, '<span class="text-blue-400">$&</span>')
+                    .replace(/return/g, '<span class="text-blue-400">return</span>')
+                    .replace(/if|else/g, '<span class="text-blue-400">$&</span>')
+                    .replace(/\d+/g, '<span class="text-purple-400">$&</span>');
+            }
+
+            // 按钮事件处理
+            document.getElementById('newIndicatorBtn').addEventListener('click', function() {
+                console.log('新建指标');
+                showNewIndicatorDialog();
+            });
+
+            document.getElementById('runCalculationBtn').addEventListener('click', function() {
+                console.log('运行计算');
+                executeCalculation();
+            });
+
+            document.getElementById('saveConfigBtn').addEventListener('click', function() {
+                console.log('保存配置');
+                saveConfiguration();
+            });
+
+            document.getElementById('previewBtn').addEventListener('click', function() {
+                console.log('预览计算结果');
+                previewCalculation();
+            });
+
+            document.getElementById('testBtn').addEventListener('click', function() {
+                console.log('测试计算');
+                testCalculation();
+            });
+
+            // 新建指标对话框
+            function showNewIndicatorDialog() {
+                alert('正在打开新建指标对话框...\n\n功能包括：\n- 指标基本信息配置\n- 数据源选择\n- 计算公式编辑\n- 字段映射设置');
+            }
+
+            // 执行计算
+            function executeCalculation() {
+                const selectedIndicator = document.querySelector('.indicator-item.border-l-4');
+                if (selectedIndicator) {
+                    const indicatorId = selectedIndicator.dataset.id;
+                    console.log('执行指标计算:', indicatorId);
+                    alert(`正在执行 ${indicators[indicatorId].name} 计算...\n\n预计完成时间：30秒`);
+                } else {
+                    alert('请先选择要计算的指标');
+                }
+            }
+
+            // 保存配置
+            function saveConfiguration() {
+                const config = {
+                    indicatorName: document.getElementById('indicatorName').value,
+                    indicatorCode: document.getElementById('indicatorCode').value,
+                    dataSource: document.getElementById('dataTable').value,
+                    calculationMode: document.getElementById('calculationMode').value
+                };
+
+                console.log('保存配置:', config);
+                alert('指标配置已保存成功！');
+            }
+
+            // 预览计算
+            function previewCalculation() {
+                const selectedIndicator = document.querySelector('.indicator-item.border-l-4');
+                if (selectedIndicator) {
+                    const indicatorId = selectedIndicator.dataset.id;
+                    const indicator = indicators[indicatorId];
+
+                    // 模拟计算结果
+                    let result;
+                    switch(indicatorId) {
+                        case 'PQ-001': result = '99.5%'; break;
+                        case 'PQ-002': result = '0.3%'; break;
+                        case 'PQ-003': result = '98.2%'; break;
+                        case 'PC-001': result = '1.45'; break;
+                        case 'PC-002': result = '1.38'; break;
+                        case 'EQ-001': result = '87.3%'; break;
+                        case 'EQ-002': result = '1.8%'; break;
+                        default: result = 'N/A';
+                    }
+
+                    // 更新预览结果
+                    const resultDisplay = document.querySelector('.text-2xl.font-bold.text-blue-600');
+                    if (resultDisplay) {
+                        resultDisplay.textContent = result;
+                    }
+
+                    alert(`计算预览：${indicator.name} = ${result}`);
+                } else {
+                    alert('请先选择要预览的指标');
+                }
+            }
+
+            // 测试计算
+            function testCalculation() {
+                alert('正在执行计算测试...\n\n测试项目：\n- 数据源连接测试\n- 计算公式验证\n- 结果准确性检查\n\n预计耗时：1分钟');
+            }
+
+            // 默认选择第一个指标
+            if (indicatorItems.length > 0) {
+                indicatorItems[0].click();
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initIndicatorSettings();
+            console.log('逆变器行业指标设置页面加载完成');
+        });
+    </script>
+</body>
+</html>

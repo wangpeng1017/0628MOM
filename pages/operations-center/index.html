@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运营中心 - 逆变器数字工厂平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题 -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-chart-line text-blue-600 mr-4"></i>
+                运营中心
+            </h1>
+            <p class="text-gray-600 mt-2 text-lg">逆变器生产运营指标管理与实时监控平台</p>
+        </div>
+
+        <!-- 功能模块卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <!-- 指标设置模块 -->
+            <div class="bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+                <div class="p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-cog text-blue-600 text-2xl"></i>
+                        </div>
+                        <div class="ml-6">
+                            <h2 class="text-2xl font-bold text-gray-800">指标设置</h2>
+                            <p class="text-gray-600 mt-1">配置和管理运营指标</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>创建和编辑指标配置</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>设置计算公式和数据源</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>配置标准值和阈值</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>字段映射和筛选条件</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="window.location.href='indicator-settings.html'" 
+                            class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
+                        <i class="fas fa-arrow-right mr-2"></i>
+                        进入指标设置
+                    </button>
+                </div>
+            </div>
+
+            <!-- 指标计算模块 -->
+            <div class="bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+                <div class="p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center">
+                            <i class="fas fa-calculator text-green-600 text-2xl"></i>
+                        </div>
+                        <div class="ml-6">
+                            <h2 class="text-2xl font-bold text-gray-800">指标计算</h2>
+                            <p class="text-gray-600 mt-1">实时监控和计算结果</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>实时指标计算和监控</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>指标结果展示和分析</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>异常状态预警提醒</span>
+                        </div>
+                        <div class="flex items-center text-gray-700">
+                            <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                            <span>历史数据和趋势分析</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="window.location.href='indicator-calculation.html'" 
+                            class="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors duration-200 font-medium">
+                        <i class="fas fa-arrow-right mr-2"></i>
+                        进入指标计算
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速统计概览 -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-chart-bar text-purple-600 mr-3"></i>
+                运营指标概览
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- 产品质量指标 -->
+                <div class="text-center p-6 bg-blue-50 rounded-lg border border-blue-200">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-award text-blue-600 text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">产品质量</h4>
+                    <div class="text-3xl font-bold text-blue-600 mb-1">8</div>
+                    <p class="text-sm text-gray-600">项指标</p>
+                </div>
+
+                <!-- 过程质量指标 -->
+                <div class="text-center p-6 bg-purple-50 rounded-lg border border-purple-200">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-cogs text-purple-600 text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">过程质量</h4>
+                    <div class="text-3xl font-bold text-purple-600 mb-1">6</div>
+                    <p class="text-sm text-gray-600">项指标</p>
+                </div>
+
+                <!-- 设备运行指标 -->
+                <div class="text-center p-6 bg-green-50 rounded-lg border border-green-200">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-server text-green-600 text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">设备运行</h4>
+                    <div class="text-3xl font-bold text-green-600 mb-1">10</div>
+                    <p class="text-sm text-gray-600">项指标</p>
+                </div>
+
+                <!-- 总体状态 -->
+                <div class="text-center p-6 bg-gray-50 rounded-lg border border-gray-200">
+                    <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-line text-gray-600 text-xl"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">运行状态</h4>
+                    <div class="text-3xl font-bold text-green-600 mb-1">正常</div>
+                    <p class="text-sm text-gray-600">系统状态</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 最近活动 -->
+        <div class="mt-8 bg-white rounded-xl shadow-lg border border-gray-200 p-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fas fa-clock text-orange-600 mr-3"></i>
+                最近活动
+            </h3>
+            
+            <div class="space-y-4">
+                <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-plus text-blue-600"></i>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <p class="text-gray-800 font-medium">新增产品合格率指标</p>
+                        <p class="text-sm text-gray-600">2024-01-15 14:30</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-sync text-green-600"></i>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <p class="text-gray-800 font-medium">指标计算任务完成</p>
+                        <p class="text-sm text-gray-600">2024-01-15 14:25</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center p-4 bg-gray-50 rounded-lg">
+                    <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <p class="text-gray-800 font-medium">一次通过率指标异常</p>
+                        <p class="text-sm text-gray-600">2024-01-15 14:20</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 运营中心主页功能
+        function initOperationsCenter() {
+            console.log('初始化运营中心主页');
+            
+            // 模拟实时数据更新
+            function updateRealTimeData() {
+                // 更新时间戳
+                const timeElements = document.querySelectorAll('.text-sm.text-gray-600');
+                const now = new Date();
+                const timeString = now.toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                // 更新最近活动时间（仅更新最新的一条）
+                if (timeElements.length > 0) {
+                    timeElements[0].textContent = timeString;
+                }
+            }
+            
+            // 每分钟更新一次时间
+            setInterval(updateRealTimeData, 60000);
+            
+            // 添加卡片悬停效果
+            const cards = document.querySelectorAll('.hover\\:shadow-xl');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            console.log('运营中心主页初始化完成');
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initOperationsCenter();
+            console.log('逆变器运营中心主页加载完成');
+        });
+    </script>
+</body>
+</html>

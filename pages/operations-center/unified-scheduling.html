@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>统一调度平台 - 逆变器数字工厂平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 甘特图组件 -->
+    <script src="https://cdn.jsdelivr.net/npm/dhtmlx-gantt@8.0.6/codebase/dhtmlxgantt.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dhtmlx-gantt@8.0.6/codebase/dhtmlxgantt.css">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-6">
+        <!-- 页面标题和操作按钮 -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                    <i class="fas fa-project-diagram text-blue-600 mr-3"></i>
+                    统一调度平台
+                </h1>
+                <p class="text-gray-600 mt-2">智能工厂资源统一调度与业务系统集成管理平台</p>
+            </div>
+            <div class="flex space-x-3">
+                <button id="refreshBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-sync-alt mr-2"></i>刷新数据
+                </button>
+                <button id="scheduleBtn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-calendar-plus mr-2"></i>新建调度
+                </button>
+                <button id="exportBtn" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-download mr-2"></i>导出计划
+                </button>
+            </div>
+        </div>
+
+        <!-- 资源监控看板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- 人员资源监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users text-blue-600 text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-800">人员资源</h3>
+                            <p class="text-sm text-gray-600">当前在岗人员状态</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-blue-600">156</div>
+                        <div class="text-sm text-gray-500">总人数</div>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">在岗人员</span>
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-green-600">142人</span>
+                            <div class="w-16 bg-gray-200 rounded-full h-2 ml-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 91%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">技能匹配度</span>
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-blue-600">87%</span>
+                            <div class="w-16 bg-gray-200 rounded-full h-2 ml-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 87%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">工作负荷</span>
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-yellow-600">75%</span>
+                            <div class="w-16 bg-gray-200 rounded-full h-2 ml-2">
+                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <button class="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center">
+                        查看详情 <i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 设备资源监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-cogs text-green-600 text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-800">设备资源</h3>
+                            <p class="text-sm text-gray-600">设备运行状态监控</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-green-600">48</div>
+                        <div class="text-sm text-gray-500">设备台数</div>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">运行中</span>
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-green-600">42台</span>
+                            <div class="w-16 bg-gray-200 rounded-full h-2 ml-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 87.5%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">产能利用率</span>
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-blue-600">82%</span>
+                            <div class="w-16 bg-gray-200 rounded-full h-2 ml-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 82%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">维护计划</span>
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-orange-600">6台</span>
+                            <div class="w-16 bg-gray-200 rounded-full h-2 ml-2">
+                                <div class="bg-orange-500 h-2 rounded-full" style="width: 12.5%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <button class="text-green-600 hover:text-green-800 text-sm font-medium flex items-center">
+                        查看详情 <i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 物资资源监控 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-boxes text-purple-600 text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-800">物资资源</h3>
+                            <p class="text-sm text-gray-600">库存与物料状态</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-purple-600">1,247</div>
+                        <div class="text-sm text-gray-500">物料种类</div>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">库存充足</span>
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-green-600">1,089</span>
+                            <div class="w-16 bg-gray-200 rounded-full h-2 ml-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 87%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">在途物料</span>
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-blue-600">124</span>
+                            <div class="w-16 bg-gray-200 rounded-full h-2 ml-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 10%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">安全库存预警</span>
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-red-600">34</span>
+                            <div class="w-16 bg-gray-200 rounded-full h-2 ml-2">
+                                <div class="bg-red-500 h-2 rounded-full" style="width: 3%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <button class="text-purple-600 hover:text-purple-800 text-sm font-medium flex items-center">
+                        查看详情 <i class="fas fa-chevron-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 计划vs实际对比和时间维度选择 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">资源配置计划对比</h3>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">日</button>
+                    <button class="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm hover:bg-gray-300">周</button>
+                    <button class="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm hover:bg-gray-300">月</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-blue-600 mb-2">87%</div>
+                    <div class="text-sm text-gray-600 mb-4">人员配置达成率</div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 87%"></div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-green-600 mb-2">92%</div>
+                    <div class="text-sm text-gray-600 mb-4">设备利用率达成</div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-500 h-2 rounded-full" style="width: 92%"></div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-purple-600 mb-2">78%</div>
+                    <div class="text-sm text-gray-600 mb-4">物料配送及时率</div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-purple-500 h-2 rounded-full" style="width: 78%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 甘特图区域 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">资源调度时间线</h3>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm hover:bg-gray-300">
+                        <i class="fas fa-expand-arrows-alt mr-1"></i>全屏
+                    </button>
+                    <button class="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm hover:bg-gray-300">
+                        <i class="fas fa-cog mr-1"></i>设置
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 甘特图容器 -->
+            <div id="gantt_here" style="width:100%; height:400px; border: 1px solid #e5e7eb; border-radius: 8px;"></div>
+        </div>
+
+        <!-- 业务系统集成控制面板 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-6">业务系统集成调度</h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 订单触发调度 -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-shopping-cart text-blue-600 mr-2"></i>
+                        订单触发自动调度
+                    </h4>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                            <div>
+                                <div class="font-medium text-gray-800">新销售订单 #SO-2024-001</div>
+                                <div class="text-sm text-gray-600">逆变器 INV-5000W × 100台</div>
+                            </div>
+                            <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
+                                启动调度
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div id="mesSchedulingBtn" class="text-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-green-50 hover:border-green-300 transition-colors">
+                                <i class="fas fa-industry text-green-600 text-xl mb-2"></i>
+                                <div class="text-sm font-medium">MES生产调度</div>
+                                <div class="text-xs text-gray-600">工单派发</div>
+                            </div>
+                            <div id="wmsSchedulingBtn" class="text-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-purple-50 hover:border-purple-300 transition-colors">
+                                <i class="fas fa-warehouse text-purple-600 text-xl mb-2"></i>
+                                <div class="text-sm font-medium">WMS物料调度</div>
+                                <div class="text-xs text-gray-600">出库配送</div>
+                            </div>
+                            <div id="hrSchedulingBtn" class="text-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-orange-50 hover:border-orange-300 transition-colors">
+                                <i class="fas fa-user-tie text-orange-600 text-xl mb-2"></i>
+                                <div class="text-sm font-medium">人员调度</div>
+                                <div class="text-xs text-gray-600">技能匹配</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 系统集成状态 -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-network-wired text-green-600 mr-2"></i>
+                        系统集成状态
+                    </h4>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                                <span class="text-sm">MES生产管理系统</span>
+                            </div>
+                            <span class="text-xs text-green-600 font-medium">在线</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                                <span class="text-sm">WMS仓储管理系统</span>
+                            </div>
+                            <span class="text-xs text-green-600 font-medium">在线</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full mr-3"></div>
+                                <span class="text-sm">ERP企业资源计划</span>
+                            </div>
+                            <span class="text-xs text-yellow-600 font-medium">同步中</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                                <span class="text-sm">QMS质量管理系统</span>
+                            </div>
+                            <span class="text-xs text-green-600 font-medium">在线</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                        <div class="text-sm text-gray-600">
+                            最后同步时间: <span class="font-medium">2024-01-15 14:30:25</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 统一调度平台功能
+        function initUnifiedScheduling() {
+            console.log('初始化统一调度平台功能');
+
+            // 初始化甘特图
+            initGanttChart();
+
+            // 绑定事件监听器
+            bindEventListeners();
+
+            // 初始化实时数据更新
+            initRealTimeUpdates();
+        }
+
+        // 初始化甘特图
+        function initGanttChart() {
+            // 配置甘特图
+            gantt.config.date_format = "%Y-%m-%d %H:%i:%s";
+            gantt.config.scale_unit = "hour";
+            gantt.config.date_scale = "%H:%i";
+            gantt.config.scale_height = 50;
+            gantt.config.row_height = 30;
+            gantt.config.grid_width = 300;
+
+            // 设置列配置
+            gantt.config.columns = [
+                {name: "text", label: "资源名称", width: 150, tree: true},
+                {name: "resource_type", label: "类型", width: 80},
+                {name: "progress", label: "进度", width: 70}
+            ];
+
+            // 初始化甘特图
+            gantt.init("gantt_here");
+
+            // 加载示例数据
+            const ganttData = {
+                data: [
+                    {
+                        id: 1,
+                        text: "生产线A调度",
+                        start_date: "2024-01-15 08:00:00",
+                        duration: 8,
+                        progress: 0.6,
+                        resource_type: "设备",
+                        parent: 0
+                    },
+                    {
+                        id: 2,
+                        text: "物料配送计划",
+                        start_date: "2024-01-15 09:00:00",
+                        duration: 6,
+                        progress: 0.8,
+                        resource_type: "物资",
+                        parent: 0
+                    },
+                    {
+                        id: 3,
+                        text: "技术人员排班",
+                        start_date: "2024-01-15 08:30:00",
+                        duration: 9,
+                        progress: 0.4,
+                        resource_type: "人员",
+                        parent: 0
+                    },
+                    {
+                        id: 4,
+                        text: "质检流程安排",
+                        start_date: "2024-01-15 10:00:00",
+                        duration: 4,
+                        progress: 0.2,
+                        resource_type: "人员",
+                        parent: 0
+                    },
+                    {
+                        id: 5,
+                        text: "设备维护窗口",
+                        start_date: "2024-01-15 18:00:00",
+                        duration: 2,
+                        progress: 0.0,
+                        resource_type: "设备",
+                        parent: 0
+                    }
+                ],
+                links: [
+                    {id: 1, source: 1, target: 2, type: "0"},
+                    {id: 2, source: 2, target: 4, type: "0"}
+                ]
+            };
+
+            gantt.parse(ganttData);
+        }
+
+        // 绑定事件监听器
+        function bindEventListeners() {
+            // 刷新数据按钮
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                console.log('刷新数据');
+                refreshResourceData();
+                showNotification('数据已刷新', 'success');
+            });
+
+            // 新建调度按钮
+            document.getElementById('scheduleBtn').addEventListener('click', function() {
+                console.log('新建调度');
+                showScheduleModal();
+            });
+
+            // 导出计划按钮
+            document.getElementById('exportBtn').addEventListener('click', function() {
+                console.log('导出计划');
+                exportSchedulePlan();
+                showNotification('计划导出成功', 'success');
+            });
+
+            // 时间维度切换按钮
+            const timeDimensionBtns = document.querySelectorAll('.bg-blue-600, .bg-gray-200');
+            timeDimensionBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的激活状态
+                    timeDimensionBtns.forEach(b => {
+                        b.className = b.className.replace('bg-blue-600 text-white', 'bg-gray-200 text-gray-700');
+                    });
+                    // 激活当前按钮
+                    this.className = this.className.replace('bg-gray-200 text-gray-700', 'bg-blue-600 text-white');
+
+                    const dimension = this.textContent.trim();
+                    console.log('切换时间维度:', dimension);
+                    updateResourceComparison(dimension);
+                });
+            });
+
+            // 启动调度按钮
+            const startScheduleBtn = document.querySelector('.bg-blue-600.text-white.rounded.text-sm');
+            if (startScheduleBtn) {
+                startScheduleBtn.addEventListener('click', function() {
+                    console.log('启动自动调度');
+                    startAutoScheduling();
+                });
+            }
+
+            // MES生产调度按钮 - 跳转到计划管理模块的工单管理页面
+            const mesSchedulingBtn = document.getElementById('mesSchedulingBtn');
+            if (mesSchedulingBtn) {
+                mesSchedulingBtn.addEventListener('click', function() {
+                    console.log('点击MES生产调度，跳转到工单管理页面');
+                    navigateToWorkOrderManagement();
+                });
+            }
+
+            // WMS物料调度按钮
+            const wmsSchedulingBtn = document.getElementById('wmsSchedulingBtn');
+            if (wmsSchedulingBtn) {
+                wmsSchedulingBtn.addEventListener('click', function() {
+                    console.log('点击WMS物料调度');
+                    showNotification('WMS物料调度功能开发中...', 'info');
+                });
+            }
+
+            // 人员调度按钮
+            const hrSchedulingBtn = document.getElementById('hrSchedulingBtn');
+            if (hrSchedulingBtn) {
+                hrSchedulingBtn.addEventListener('click', function() {
+                    console.log('点击人员调度');
+                    showNotification('人员调度功能开发中...', 'info');
+                });
+            }
+        }
+
+        // 刷新资源数据
+        function refreshResourceData() {
+            // 模拟数据更新
+            const resourceCards = document.querySelectorAll('.text-2xl.font-bold');
+            resourceCards.forEach(card => {
+                const currentValue = parseInt(card.textContent);
+                const variation = Math.floor(Math.random() * 10) - 5; // -5 到 +5 的随机变化
+                const newValue = Math.max(0, currentValue + variation);
+                card.textContent = newValue;
+            });
+
+            // 更新进度条
+            const progressBars = document.querySelectorAll('.bg-green-500, .bg-blue-500, .bg-yellow-500, .bg-orange-500, .bg-red-500, .bg-purple-500');
+            progressBars.forEach(bar => {
+                const variation = Math.random() * 10 - 5; // -5% 到 +5% 的变化
+                const currentWidth = parseFloat(bar.style.width) || 50;
+                const newWidth = Math.max(0, Math.min(100, currentWidth + variation));
+                bar.style.width = newWidth + '%';
+
+                // 更新对应的百分比文本
+                const parentContainer = bar.closest('.flex.items-center');
+                if (parentContainer) {
+                    const percentText = parentContainer.querySelector('.text-sm.font-medium');
+                    if (percentText && percentText.textContent.includes('%')) {
+                        percentText.textContent = Math.round(newWidth) + '%';
+                    }
+                }
+            });
+        }
+
+        // 显示调度模态框
+        function showScheduleModal() {
+            alert('新建调度功能开发中...\n\n将支持：\n- 选择资源类型\n- 设置调度时间\n- 配置依赖关系\n- 自动冲突检测');
+        }
+
+        // 导出调度计划
+        function exportSchedulePlan() {
+            // 模拟导出功能
+            const planData = {
+                exportTime: new Date().toLocaleString('zh-CN'),
+                resourceSummary: {
+                    personnel: 156,
+                    equipment: 48,
+                    materials: 1247
+                },
+                schedules: gantt.serialize().data
+            };
+
+            console.log('导出的计划数据:', planData);
+
+            // 实际项目中这里会调用后端API或生成文件下载
+        }
+
+        // 更新资源对比数据
+        function updateResourceComparison(dimension) {
+            console.log('更新资源对比数据，维度:', dimension);
+
+            // 根据时间维度更新对比数据
+            const comparisonValues = {
+                '日': [87, 92, 78],
+                '周': [89, 88, 82],
+                '月': [91, 85, 79]
+            };
+
+            const values = comparisonValues[dimension] || comparisonValues['日'];
+            const comparisonCards = document.querySelectorAll('.text-2xl.font-bold.text-blue-600, .text-2xl.font-bold.text-green-600, .text-2xl.font-bold.text-purple-600');
+
+            comparisonCards.forEach((card, index) => {
+                if (values[index]) {
+                    card.textContent = values[index] + '%';
+
+                    // 更新对应的进度条
+                    const progressBar = card.closest('.text-center').querySelector('.bg-blue-500, .bg-green-500, .bg-purple-500');
+                    if (progressBar) {
+                        progressBar.style.width = values[index] + '%';
+                    }
+                }
+            });
+        }
+
+        // 启动自动调度
+        function startAutoScheduling() {
+            showNotification('正在启动自动调度...', 'info');
+
+            // 模拟调度过程
+            setTimeout(() => {
+                showNotification('MES系统：生产工单已创建', 'success');
+            }, 1000);
+
+            setTimeout(() => {
+                showNotification('WMS系统：物料出库指令已发送', 'success');
+            }, 2000);
+
+            setTimeout(() => {
+                showNotification('人员调度：技能匹配完成，已安排作业人员', 'success');
+            }, 3000);
+
+            setTimeout(() => {
+                showNotification('自动调度完成！所有系统已同步', 'success');
+            }, 4000);
+        }
+
+        // 跳转到计划管理模块的工单管理页面
+        function navigateToWorkOrderManagement() {
+            try {
+                // 检查是否在iframe中运行
+                if (window.parent && window.parent !== window) {
+                    // 在iframe中，需要调用父窗口的导航函数
+                    if (window.parent.switchModule && window.parent.loadSubPage) {
+                        console.log('通过父窗口导航到工单管理页面');
+
+                        // 先切换到计划管理模块
+                        window.parent.switchModule('planning');
+
+                        // 延迟加载工单管理页面，确保模块切换完成
+                        setTimeout(() => {
+                            window.parent.loadSubPage('pages/planning/work-order-management.html', '工单管理');
+                            showNotification('正在跳转到工单管理页面...', 'success');
+                        }, 200);
+                    } else {
+                        console.error('父窗口导航函数不可用');
+                        showNotification('导航功能不可用', 'error');
+                    }
+                } else {
+                    // 不在iframe中，直接跳转
+                    console.log('直接跳转到工单管理页面');
+                    window.location.href = '../planning/work-order-management.html';
+                }
+            } catch (error) {
+                console.error('跳转到工单管理页面时出错:', error);
+                showNotification('跳转失败，请稍后重试', 'error');
+            }
+        }
+
+        // 初始化实时数据更新
+        function initRealTimeUpdates() {
+            // 每30秒自动刷新一次数据
+            setInterval(() => {
+                const now = new Date();
+                const timeString = now.toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+
+                // 更新最后同步时间
+                const syncTimeElement = document.querySelector('.text-sm.text-gray-600 .font-medium');
+                if (syncTimeElement) {
+                    syncTimeElement.textContent = timeString;
+                }
+
+                // 轻微更新数据
+                updateResourceMetrics();
+            }, 30000);
+        }
+
+        // 更新资源指标
+        function updateResourceMetrics() {
+            // 模拟轻微的数据波动
+            const metrics = document.querySelectorAll('.text-sm.font-medium');
+            metrics.forEach(metric => {
+                if (metric.textContent.includes('%')) {
+                    const currentValue = parseFloat(metric.textContent);
+                    const variation = (Math.random() - 0.5) * 2; // ±1% 的变化
+                    const newValue = Math.max(0, Math.min(100, currentValue + variation));
+                    metric.textContent = newValue.toFixed(0) + '%';
+                } else if (metric.textContent.includes('人') || metric.textContent.includes('台')) {
+                    const currentValue = parseInt(metric.textContent);
+                    const variation = Math.floor(Math.random() * 3) - 1; // -1 到 +1 的变化
+                    const newValue = Math.max(0, currentValue + variation);
+                    metric.textContent = newValue + (metric.textContent.includes('人') ? '人' : '台');
+                }
+            });
+        }
+
+        // 显示通知
+        function showNotification(message, type = 'info') {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transition-all duration-300 ${
+                type === 'success' ? 'bg-green-500 text-white' :
+                type === 'error' ? 'bg-red-500 text-white' :
+                type === 'warning' ? 'bg-yellow-500 text-white' :
+                'bg-blue-500 text-white'
+            }`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            // 3秒后自动移除
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initUnifiedScheduling();
+            console.log('逆变器统一调度平台加载完成');
+        });
+    </script>
+</body>
+</html>
