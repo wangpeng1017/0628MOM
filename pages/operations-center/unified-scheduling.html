@@ -9,6 +9,128 @@
     <!-- 甘特图组件 -->
     <script src="https://cdn.jsdelivr.net/npm/dhtmlx-gantt@8.0.6/codebase/dhtmlxgantt.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dhtmlx-gantt@8.0.6/codebase/dhtmlxgantt.css">
+
+    <!-- 车间地图样式 -->
+    <style>
+        /* 车间地图容器样式 */
+        .workshop-map-wrapper {
+            max-height: 500px;
+            overflow: auto;
+        }
+
+        /* 地图SVG样式 */
+        #workshop-map svg {
+            width: 100%;
+            height: auto;
+            min-height: 400px;
+            max-width: 100%;
+        }
+
+        /* 生产线区域交互样式 */
+        .production-area {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .production-area:hover {
+            opacity: 0.8 !important;
+            transform: scale(1.02);
+        }
+
+        .production-area.selected {
+            filter: drop-shadow(0 0 10px rgba(33, 150, 243, 0.8));
+        }
+
+        .production-area.selected rect {
+            stroke-width: 4 !important;
+            stroke: #2196f3 !important;
+        }
+
+        /* 地图控制按钮样式 */
+        #workshop-map-toggle {
+            transition: all 0.2s ease;
+        }
+
+        #workshop-map-toggle:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 选择指示器样式 */
+        #selected-line-indicator {
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        /* 地图容器动画 */
+        #workshop-map-container {
+            transition: all 0.3s ease;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .workshop-map-wrapper {
+                max-height: 300px;
+            }
+
+            #workshop-map svg {
+                min-height: 250px;
+            }
+
+            .flex.justify-between.items-start {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+
+            .flex.items-center.space-x-2 {
+                justify-content: space-between;
+            }
+        }
+
+        /* 地图加载状态 */
+        .map-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: #6b7280;
+        }
+
+        .map-loading::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 工具提示样式 */
+        .map-tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .map-tooltip.show {
+            opacity: 1;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
     <div class="container mx-auto px-4 py-6">
@@ -202,37 +324,597 @@
             </div>
         </div>
 
-        <!-- 计划vs实际对比和时间维度选择 -->
+        <!-- 核心功能模块 -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-lg font-semibold text-gray-800">资源配置计划对比</h3>
-                <div class="flex space-x-2">
-                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">日</button>
-                    <button class="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm hover:bg-gray-300">周</button>
-                    <button class="px-3 py-1 bg-gray-200 text-gray-700 rounded text-sm hover:bg-gray-300">月</button>
+            <h3 class="text-lg font-semibold text-gray-800 mb-6">实时智能调度</h3>
+
+            <!-- 功能模块标签页和车间地图 -->
+            <div class="border-b border-gray-200 mb-6">
+                <div class="flex justify-between items-start">
+                    <!-- 标签页导航 -->
+                    <nav class="-mb-px flex space-x-8">
+                        <button class="tab-btn active py-2 px-1 border-b-2 border-blue-500 font-medium text-sm text-blue-600" data-tab="production">
+                            生产调度
+                        </button>
+                        <button class="tab-btn py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="planning">
+                            计划管理
+                        </button>
+                        <button class="tab-btn py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="warehouse">
+                            仓储作业
+                        </button>
+                        <button class="tab-btn py-2 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300" data-tab="equipment">
+                            设备监控
+                        </button>
+                    </nav>
+
+                    <!-- 车间地图控制按钮 -->
+                    <div class="flex items-center space-x-2">
+                        <span id="selected-line-indicator" class="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                            全部生产线
+                        </span>
+                        <button id="workshop-map-toggle" class="flex items-center space-x-2 px-3 py-1 text-sm text-blue-600 hover:text-blue-800 hover:bg-blue-50 rounded-lg transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7"></path>
+                            </svg>
+                            <span>车间地图</span>
+                            <svg id="map-toggle-icon" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="text-center">
-                    <div class="text-2xl font-bold text-blue-600 mb-2">87%</div>
-                    <div class="text-sm text-gray-600 mb-4">人员配置达成率</div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-blue-500 h-2 rounded-full" style="width: 87%"></div>
+
+            <!-- 车间地图区域 -->
+            <div id="workshop-map-container" class="mb-6 bg-gray-50 rounded-lg border border-gray-200 overflow-hidden" style="display: none;">
+                <div class="p-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-md font-semibold text-gray-800">生产车间布局图</h4>
+                        <button id="reset-selection" class="text-sm text-gray-500 hover:text-gray-700 px-3 py-1 hover:bg-gray-200 rounded transition-colors">
+                            重置选择
+                        </button>
+                    </div>
+
+                    <!-- SVG地图容器 -->
+                    <div class="workshop-map-wrapper bg-white rounded-lg border border-gray-300 p-4 overflow-auto">
+                        <div id="workshop-map" class="w-full h-96 flex items-center justify-center">
+                            <!-- SVG地图将通过JavaScript加载 -->
+                        </div>
+                    </div>
+
+                    <!-- 选中生产线详情面板 -->
+                    <div id="selected-line-details" class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4" style="display: none;">
+                        <h5 class="font-semibold text-blue-800 mb-3">生产线详情</h5>
+                        <div id="line-details-content" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                            <!-- 详情内容将通过JavaScript动态填充 -->
+                        </div>
+                    </div>
+
+                    <!-- 地图说明 -->
+                    <div class="mt-4 text-sm text-gray-600">
+                        <p class="mb-2"><strong>使用说明：</strong></p>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>点击地图上的生产线区域可筛选对应数据</li>
+                            <li>选中的生产线会高亮显示并显示详细信息</li>
+                            <li>各标签页数据会根据选择自动更新</li>
+                            <li>点击"重置选择"可返回全部数据视图</li>
+                        </ul>
                     </div>
                 </div>
-                <div class="text-center">
-                    <div class="text-2xl font-bold text-green-600 mb-2">92%</div>
-                    <div class="text-sm text-gray-600 mb-4">设备利用率达成</div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-green-500 h-2 rounded-full" style="width: 92%"></div>
+            </div>
+
+            <!-- 生产调度标签页内容 -->
+            <div id="production-tab" class="tab-content">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- 人员作业情况监控 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-user-clock text-blue-600 mr-2"></i>
+                            人员作业情况监控
+                        </h4>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">在岗人员</span>
+                                <span class="text-sm font-medium text-green-600">142/156人</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">作业中</span>
+                                <span class="text-sm font-medium text-blue-600">128人</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">休息中</span>
+                                <span class="text-sm font-medium text-yellow-600">14人</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">技能匹配度</span>
+                                <span class="text-sm font-medium text-green-600">87%</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="text-xs text-gray-500 mb-2">当前工作分配</div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs">
+                                    <span>逆变器生产线(8条)</span>
+                                    <span class="text-green-600">89人</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>SMT生产线</span>
+                                    <span class="text-green-600">25人</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>PACK生产线</span>
+                                    <span class="text-green-600">18人</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>质检岗位</span>
+                                    <span class="text-green-600">10人</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-4 px-3 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
+                            查看详细分配
+                        </button>
+                    </div>
+
+                    <!-- 工单排程与物料追踪 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-clipboard-list text-green-600 mr-2"></i>
+                            工单排程与物料追踪
+                        </h4>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">今日工单</span>
+                                <span class="text-sm font-medium text-blue-600">24单</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">进行中</span>
+                                <span class="text-sm font-medium text-green-600">18单</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">已完成</span>
+                                <span class="text-sm font-medium text-gray-600">3单</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">延期风险</span>
+                                <span class="text-sm font-medium text-red-600">2单</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="text-xs text-gray-500 mb-2">物料齐套状态</div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs">
+                                    <span>齐套工单</span>
+                                    <span class="text-green-600">20单</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>缺料工单</span>
+                                    <span class="text-red-600">4单</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>在途物料</span>
+                                    <span class="text-yellow-600">6批次</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-4 px-3 py-2 bg-green-600 text-white rounded text-sm hover:bg-green-700">
+                            工单排程管理
+                        </button>
+                    </div>
+
+                    <!-- 计划执行情况 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-chart-line text-purple-600 mr-2"></i>
+                            计划执行情况
+                        </h4>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">计划达成率</span>
+                                <span class="text-sm font-medium text-green-600">89%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">产能利用率</span>
+                                <span class="text-sm font-medium text-blue-600">82%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">交期准时率</span>
+                                <span class="text-sm font-medium text-green-600">94%</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">瓶颈工序</span>
+                                <span class="text-sm font-medium text-orange-600">PCBA测试</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="text-xs text-gray-500 mb-2">今日生产进度</div>
+                            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 67%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-gray-600">
+                                <span>已完成: 670台</span>
+                                <span>目标: 1000台</span>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-4 px-3 py-2 bg-purple-600 text-white rounded text-sm hover:bg-purple-700">
+                            执行分析报告
+                        </button>
                     </div>
                 </div>
-                <div class="text-center">
-                    <div class="text-2xl font-bold text-purple-600 mb-2">78%</div>
-                    <div class="text-sm text-gray-600 mb-4">物料配送及时率</div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-purple-500 h-2 rounded-full" style="width: 78%"></div>
+            </div>
+
+            <!-- 计划管理标签页内容 -->
+            <div id="planning-tab" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- 计划看板与手工调整 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-tasks text-indigo-600 mr-2"></i>
+                            计划看板与手工调整
+                        </h4>
+
+                        <div class="space-y-3">
+                            <div class="bg-blue-50 p-3 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">工单 #WO-2024-001</span>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">进行中</span>
+                                </div>
+                                <div class="text-xs text-gray-600">逆变器 INV-3000W × 50台</div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-xs text-gray-600">预计完成: 16:30</span>
+                                    <button class="text-xs text-blue-600 hover:text-blue-800">调整</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-green-50 p-3 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">工单 #WO-2024-002</span>
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">待开始</span>
+                                </div>
+                                <div class="text-xs text-gray-600">PCBA板 × 200片</div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-xs text-gray-600">计划开始: 17:00</span>
+                                    <button class="text-xs text-green-600 hover:text-green-800">调整</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-yellow-50 p-3 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-sm font-medium">工单 #WO-2024-003</span>
+                                    <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">延期风险</span>
+                                </div>
+                                <div class="text-xs text-gray-600">逆变器 INV-5000W × 30台</div>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-xs text-gray-600">原计划: 18:00</span>
+                                    <button class="text-xs text-yellow-600 hover:text-yellow-800">紧急调整</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-4 px-3 py-2 bg-indigo-600 text-white rounded text-sm hover:bg-indigo-700">
+                            打开计划看板
+                        </button>
+                    </div>
+
+                    <!-- 缺料监控与排产 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-exclamation-triangle text-red-600 mr-2"></i>
+                            缺料监控与排产
+                        </h4>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">缺料工单</span>
+                                <span class="text-sm font-medium text-red-600">4单</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">预警物料</span>
+                                <span class="text-sm font-medium text-yellow-600">12种</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">可替代料</span>
+                                <span class="text-sm font-medium text-green-600">8种</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">紧急采购</span>
+                                <span class="text-sm font-medium text-orange-600">3项</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="text-xs text-gray-500 mb-2">缺料明细</div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center p-2 bg-red-50 rounded">
+                                    <span class="text-xs">IGBT模块 IGBT-500A</span>
+                                    <span class="text-xs text-red-600">缺50个</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-yellow-50 rounded">
+                                    <span class="text-xs">电容器 CAP-450V</span>
+                                    <span class="text-xs text-yellow-600">预警</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-orange-50 rounded">
+                                    <span class="text-xs">散热器 HS-AL-120</span>
+                                    <span class="text-xs text-orange-600">紧急采购</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-4 px-3 py-2 bg-red-600 text-white rounded text-sm hover:bg-red-700">
+                            缺料处理中心
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 仓储作业标签页内容 -->
+            <div id="warehouse-tab" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- 上下架作业管理 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-dolly text-cyan-600 mr-2"></i>
+                            上下架作业管理
+                        </h4>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">待上架任务</span>
+                                <span class="text-sm font-medium text-blue-600">23个</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">待下架任务</span>
+                                <span class="text-sm font-medium text-green-600">18个</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">AGV作业中</span>
+                                <span class="text-sm font-medium text-orange-600">6台</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">叉车作业中</span>
+                                <span class="text-sm font-medium text-purple-600">4台</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="text-xs text-gray-500 mb-2">作业效率统计</div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs">
+                                    <span>今日上架</span>
+                                    <span class="text-green-600">156件</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>今日下架</span>
+                                    <span class="text-green-600">142件</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>平均用时</span>
+                                    <span class="text-blue-600">3.2分钟</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-4 px-3 py-2 bg-cyan-600 text-white rounded text-sm hover:bg-cyan-700">
+                            作业任务管理
+                        </button>
+                    </div>
+
+                    <!-- 存取作业控制 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-exchange-alt text-teal-600 mr-2"></i>
+                            存取作业控制
+                        </h4>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">入库作业</span>
+                                <span class="text-sm font-medium text-green-600">12单</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">出库作业</span>
+                                <span class="text-sm font-medium text-blue-600">15单</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">质检待处理</span>
+                                <span class="text-sm font-medium text-yellow-600">8单</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">异常处理</span>
+                                <span class="text-sm font-medium text-red-600">2单</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="text-xs text-gray-500 mb-2">批次管理状态</div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs">
+                                    <span>FIFO执行率</span>
+                                    <span class="text-green-600">96%</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>批次追溯</span>
+                                    <span class="text-blue-600">100%</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>过期预警</span>
+                                    <span class="text-yellow-600">3批次</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-4 px-3 py-2 bg-teal-600 text-white rounded text-sm hover:bg-teal-700">
+                            存取作业中心
+                        </button>
+                    </div>
+
+                    <!-- 库存水位管理 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-chart-bar text-emerald-600 mr-2"></i>
+                            库存水位管理
+                        </h4>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">安全库存</span>
+                                <span class="text-sm font-medium text-green-600">正常</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">预警物料</span>
+                                <span class="text-sm font-medium text-yellow-600">34种</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">呆滞物料</span>
+                                <span class="text-sm font-medium text-red-600">12种</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">库存周转</span>
+                                <span class="text-sm font-medium text-blue-600">15.6天</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="text-xs text-gray-500 mb-2">库存分布</div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs">
+                                    <span>原材料库</span>
+                                    <span class="text-blue-600">68%</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>半成品库</span>
+                                    <span class="text-green-600">22%</span>
+                                </div>
+                                <div class="flex justify-between text-xs">
+                                    <span>成品库</span>
+                                    <span class="text-purple-600">10%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-4 px-3 py-2 bg-emerald-600 text-white rounded text-sm hover:bg-emerald-700">
+                            库存分析报告
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设备监控标签页内容 -->
+            <div id="equipment-tab" class="tab-content hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- 设备状态监控 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-cogs text-gray-600 mr-2"></i>
+                            设备状态监控
+                        </h4>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">运行设备</span>
+                                <span class="text-sm font-medium text-green-600">42/48台</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">维护中</span>
+                                <span class="text-sm font-medium text-yellow-600">4台</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">故障设备</span>
+                                <span class="text-sm font-medium text-red-600">2台</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">设备利用率</span>
+                                <span class="text-sm font-medium text-blue-600">82%</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="text-xs text-gray-500 mb-2">关键设备状态</div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center p-2 bg-green-50 rounded">
+                                    <span class="text-xs">逆变器1号线</span>
+                                    <span class="text-xs text-green-600">运行中</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-green-50 rounded">
+                                    <span class="text-xs">SMT生产线</span>
+                                    <span class="text-xs text-green-600">运行中</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-yellow-50 rounded">
+                                    <span class="text-xs">逆变器8号线</span>
+                                    <span class="text-xs text-yellow-600">维护中</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-red-50 rounded">
+                                    <span class="text-xs">PACK生产线</span>
+                                    <span class="text-xs text-red-600">故障</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-4 px-3 py-2 bg-gray-600 text-white rounded text-sm hover:bg-gray-700">
+                            设备管理中心
+                        </button>
+                    </div>
+
+                    <!-- 推拉信号系统 -->
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-medium text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-signal text-pink-600 mr-2"></i>
+                            推拉信号系统
+                        </h4>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">拉动信号</span>
+                                <span class="text-sm font-medium text-green-600">18个</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">推送信号</span>
+                                <span class="text-sm font-medium text-blue-600">12个</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">线边库预警</span>
+                                <span class="text-sm font-medium text-yellow-600">6个</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-600">配送任务</span>
+                                <span class="text-sm font-medium text-purple-600">9个</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="text-xs text-gray-500 mb-2">实时信号状态</div>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center p-2 bg-green-50 rounded">
+                                    <span class="text-xs">逆变器3号线物料需求</span>
+                                    <span class="text-xs text-green-600">已响应</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-blue-50 rounded">
+                                    <span class="text-xs">SMT生产线配送请求</span>
+                                    <span class="text-xs text-blue-600">配送中</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-yellow-50 rounded">
+                                    <span class="text-xs">逆变器5号线缓冲区满</span>
+                                    <span class="text-xs text-yellow-600">待处理</span>
+                                </div>
+                                <div class="flex justify-between items-center p-2 bg-red-50 rounded">
+                                    <span class="text-xs">PACK生产线物料积压</span>
+                                    <span class="text-xs text-red-600">紧急</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="w-full mt-4 px-3 py-2 bg-pink-600 text-white rounded text-sm hover:bg-pink-700">
+                            信号管理中心
+                        </button>
                     </div>
                 </div>
             </div>
@@ -251,7 +933,7 @@
                     </button>
                 </div>
             </div>
-            
+
             <!-- 甘特图容器 -->
             <div id="gantt_here" style="width:100%; height:400px; border: 1px solid #e5e7eb; border-radius: 8px;"></div>
         </div>
@@ -259,7 +941,7 @@
         <!-- 业务系统集成控制面板 -->
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h3 class="text-lg font-semibold text-gray-800 mb-6">业务系统集成调度</h3>
-            
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- 订单触发调度 -->
                 <div class="border border-gray-200 rounded-lg p-4">
@@ -267,7 +949,7 @@
                         <i class="fas fa-shopping-cart text-blue-600 mr-2"></i>
                         订单触发自动调度
                     </h4>
-                    
+
                     <div class="space-y-3">
                         <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
                             <div>
@@ -278,7 +960,7 @@
                                 启动调度
                             </button>
                         </div>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                             <div id="mesSchedulingBtn" class="text-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-green-50 hover:border-green-300 transition-colors">
                                 <i class="fas fa-industry text-green-600 text-xl mb-2"></i>
@@ -305,7 +987,7 @@
                         <i class="fas fa-network-wired text-green-600 mr-2"></i>
                         系统集成状态
                     </h4>
-                    
+
                     <div class="space-y-3">
                         <div class="flex justify-between items-center">
                             <div class="flex items-center">
@@ -336,7 +1018,7 @@
                             <span class="text-xs text-green-600 font-medium">在线</span>
                         </div>
                     </div>
-                    
+
                     <div class="mt-4 pt-4 border-t border-gray-200">
                         <div class="text-sm text-gray-600">
                             最后同步时间: <span class="font-medium">2024-01-15 14:30:25</span>
@@ -387,53 +1069,100 @@
                 data: [
                     {
                         id: 1,
-                        text: "生产线A调度",
+                        text: "逆变器1号线",
                         start_date: "2024-01-15 08:00:00",
                         duration: 8,
-                        progress: 0.6,
+                        progress: 0.75,
                         resource_type: "设备",
                         parent: 0
                     },
                     {
                         id: 2,
-                        text: "物料配送计划",
-                        start_date: "2024-01-15 09:00:00",
-                        duration: 6,
-                        progress: 0.8,
-                        resource_type: "物资",
+                        text: "逆变器2号线",
+                        start_date: "2024-01-15 08:30:00",
+                        duration: 8,
+                        progress: 0.68,
+                        resource_type: "设备",
                         parent: 0
                     },
                     {
                         id: 3,
-                        text: "技术人员排班",
-                        start_date: "2024-01-15 08:30:00",
-                        duration: 9,
-                        progress: 0.4,
-                        resource_type: "人员",
+                        text: "逆变器3号线",
+                        start_date: "2024-01-15 09:00:00",
+                        duration: 7.5,
+                        progress: 0.82,
+                        resource_type: "设备",
                         parent: 0
                     },
                     {
                         id: 4,
-                        text: "质检流程安排",
-                        start_date: "2024-01-15 10:00:00",
-                        duration: 4,
-                        progress: 0.2,
-                        resource_type: "人员",
+                        text: "逆变器4号线",
+                        start_date: "2024-01-15 08:15:00",
+                        duration: 8,
+                        progress: 0.55,
+                        resource_type: "设备",
                         parent: 0
                     },
                     {
                         id: 5,
-                        text: "设备维护窗口",
-                        start_date: "2024-01-15 18:00:00",
-                        duration: 2,
-                        progress: 0.0,
+                        text: "逆变器5号线",
+                        start_date: "2024-01-15 09:30:00",
+                        duration: 7,
+                        progress: 0.43,
+                        resource_type: "设备",
+                        parent: 0
+                    },
+                    {
+                        id: 6,
+                        text: "逆变器6号线",
+                        start_date: "2024-01-15 10:00:00",
+                        duration: 6.5,
+                        progress: 0.28,
+                        resource_type: "设备",
+                        parent: 0
+                    },
+                    {
+                        id: 7,
+                        text: "逆变器7号线",
+                        start_date: "2024-01-15 08:45:00",
+                        duration: 8,
+                        progress: 0.91,
+                        resource_type: "设备",
+                        parent: 0
+                    },
+                    {
+                        id: 8,
+                        text: "逆变器8号线",
+                        start_date: "2024-01-15 14:00:00",
+                        duration: 4,
+                        progress: 0.15,
+                        resource_type: "设备",
+                        parent: 0
+                    },
+                    {
+                        id: 9,
+                        text: "PACK生产线",
+                        start_date: "2024-01-15 08:00:00",
+                        duration: 9,
+                        progress: 0.67,
+                        resource_type: "设备",
+                        parent: 0
+                    },
+                    {
+                        id: 10,
+                        text: "SMT生产线",
+                        start_date: "2024-01-15 07:30:00",
+                        duration: 10,
+                        progress: 0.85,
                         resource_type: "设备",
                         parent: 0
                     }
                 ],
                 links: [
-                    {id: 1, source: 1, target: 2, type: "0"},
-                    {id: 2, source: 2, target: 4, type: "0"}
+                    {id: 1, source: 10, target: 9, type: "0"},
+                    {id: 2, source: 9, target: 1, type: "0"},
+                    {id: 3, source: 1, target: 2, type: "0"},
+                    {id: 4, source: 2, target: 3, type: "0"}
                 ]
             };
 
@@ -461,6 +1190,9 @@
                 exportSchedulePlan();
                 showNotification('计划导出成功', 'success');
             });
+
+            // 标签页切换功能
+            initTabSwitching();
 
             // 时间维度切换按钮
             const timeDimensionBtns = document.querySelectorAll('.bg-blue-600, .bg-gray-200');
@@ -718,9 +1450,577 @@
             }, 3000);
         }
 
+        // 初始化标签页切换功能
+        function initTabSwitching() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+
+                    // 移除所有按钮的激活状态
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('active', 'border-blue-500', 'text-blue-600');
+                        btn.classList.add('border-transparent', 'text-gray-500');
+                    });
+
+                    // 激活当前按钮
+                    this.classList.add('active', 'border-blue-500', 'text-blue-600');
+                    this.classList.remove('border-transparent', 'text-gray-500');
+
+                    // 隐藏所有标签页内容
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+
+                    // 显示目标标签页内容
+                    const targetContent = document.getElementById(targetTab + '-tab');
+                    if (targetContent) {
+                        targetContent.classList.remove('hidden');
+                    }
+
+                    console.log('切换到标签页:', targetTab);
+
+                    // 根据标签页类型和当前选择的生产线更新数据
+                    updateTabDataForLine(targetTab, currentSelectedLine);
+                });
+            });
+        }
+
+        // 更新标签页数据
+        function updateTabData(tabType) {
+            switch(tabType) {
+                case 'production':
+                    updateProductionData();
+                    break;
+                case 'planning':
+                    updatePlanningData();
+                    break;
+                case 'warehouse':
+                    updateWarehouseData();
+                    break;
+                case 'equipment':
+                    updateEquipmentData();
+                    break;
+            }
+        }
+
+        // 更新生产调度数据
+        function updateProductionData() {
+            console.log('更新生产调度数据');
+            // 模拟数据更新
+            const productionMetrics = {
+                personnel: {
+                    onDuty: Math.floor(Math.random() * 10) + 140,
+                    working: Math.floor(Math.random() * 10) + 125,
+                    resting: Math.floor(Math.random() * 5) + 12,
+                    skillMatch: Math.floor(Math.random() * 10) + 85
+                },
+                workOrders: {
+                    total: Math.floor(Math.random() * 5) + 22,
+                    inProgress: Math.floor(Math.random() * 3) + 16,
+                    completed: Math.floor(Math.random() * 2) + 2,
+                    delayed: Math.floor(Math.random() * 3) + 1
+                },
+                planExecution: {
+                    achievementRate: Math.floor(Math.random() * 10) + 85,
+                    utilization: Math.floor(Math.random() * 10) + 78,
+                    onTimeRate: Math.floor(Math.random() * 5) + 92
+                }
+            };
+
+            // 这里可以更新DOM元素显示新数据
+            showNotification('生产调度数据已更新', 'info');
+        }
+
+        // 更新计划管理数据
+        function updatePlanningData() {
+            console.log('更新计划管理数据');
+            showNotification('计划管理数据已更新', 'info');
+        }
+
+        // 更新仓储作业数据
+        function updateWarehouseData() {
+            console.log('更新仓储作业数据');
+            showNotification('仓储作业数据已更新', 'info');
+        }
+
+        // 更新设备监控数据
+        function updateEquipmentData() {
+            console.log('更新设备监控数据');
+            showNotification('设备监控数据已更新', 'info');
+        }
+
+        // 车间地图相关变量
+        let currentSelectedLine = null;
+        let workshopMapLoaded = false;
+
+        // 生产线数据映射
+        const productionLineData = {
+            'SMT生产线': {
+                id: 'smt',
+                name: 'SMT生产线',
+                type: 'PCBA制造',
+                capacity: '500件/天',
+                status: 'running'
+            },
+            'PACK生产线': {
+                id: 'pack',
+                name: 'PACK生产线',
+                type: '电池包装配',
+                capacity: '200套/天',
+                status: 'running'
+            },
+            '逆变器1号线': {
+                id: 'inv1',
+                name: '逆变器1号线',
+                type: 'INV-3000W',
+                capacity: '50台/天',
+                status: 'running'
+            },
+            '逆变器2号线': {
+                id: 'inv2',
+                name: '逆变器2号线',
+                type: 'INV-5000W',
+                capacity: '40台/天',
+                status: 'running'
+            },
+            '逆变器3号线': {
+                id: 'inv3',
+                name: '逆变器3号线',
+                type: 'INV-8000W',
+                capacity: '35台/天',
+                status: 'maintenance'
+            },
+            '逆变器4号线': {
+                id: 'inv4',
+                name: '逆变器4号线',
+                type: 'INV-10000W',
+                capacity: '30台/天',
+                status: 'running'
+            },
+            '逆变器5号线': {
+                id: 'inv5',
+                name: '逆变器5号线',
+                type: 'INV-15000W',
+                capacity: '25台/天',
+                status: 'running'
+            },
+            '逆变器6号线': {
+                id: 'inv6',
+                name: '逆变器6号线',
+                type: 'INV-20000W',
+                capacity: '20台/天',
+                status: 'running'
+            },
+            '逆变器7号线': {
+                id: 'inv7',
+                name: '逆变器7号线',
+                type: 'INV-25000W',
+                capacity: '18台/天',
+                status: 'idle'
+            },
+            '逆变器8号线': {
+                id: 'inv8',
+                name: '逆变器8号线',
+                type: 'INV-30000W',
+                capacity: '15台/天',
+                status: 'running'
+            }
+        };
+
+        // 初始化车间地图功能
+        function initWorkshopMap() {
+            const mapToggle = document.getElementById('workshop-map-toggle');
+            const mapContainer = document.getElementById('workshop-map-container');
+            const mapToggleIcon = document.getElementById('map-toggle-icon');
+            const resetButton = document.getElementById('reset-selection');
+
+            // 地图显示/隐藏切换
+            mapToggle.addEventListener('click', function() {
+                const isVisible = mapContainer.style.display !== 'none';
+
+                if (isVisible) {
+                    mapContainer.style.display = 'none';
+                    mapToggleIcon.style.transform = 'rotate(0deg)';
+                } else {
+                    mapContainer.style.display = 'block';
+                    mapToggleIcon.style.transform = 'rotate(180deg)';
+
+                    // 首次显示时加载地图
+                    if (!workshopMapLoaded) {
+                        loadWorkshopMap();
+                        workshopMapLoaded = true;
+                    }
+                }
+            });
+
+            // 重置选择按钮
+            resetButton.addEventListener('click', function() {
+                resetProductionLineSelection();
+            });
+        }
+
+        // 加载车间地图SVG
+        function loadWorkshopMap() {
+            const mapContainer = document.getElementById('workshop-map');
+
+            // 显示加载状态
+            mapContainer.innerHTML = '<div class="map-loading">正在加载车间地图...</div>';
+
+            fetch('/assets/images/workshop-layout.svg')
+                .then(response => {
+                    console.log('SVG响应状态:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(svgContent => {
+                    console.log('SVG内容加载成功，长度:', svgContent.length);
+                    mapContainer.innerHTML = svgContent;
+
+                    // 添加地图交互事件
+                    setupMapInteractions();
+
+                    // 创建工具提示元素
+                    createMapTooltip();
+
+                    console.log('车间地图加载完成');
+                })
+                .catch(error => {
+                    console.error('加载车间地图失败:', error);
+                    mapContainer.innerHTML = `
+                        <div class="text-center text-gray-500 py-8">
+                            <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-1.447-.894L15 4m0 13V4m0 0L9 7"></path>
+                            </svg>
+                            <p>车间地图加载失败</p>
+                            <p class="text-sm mt-2">错误: ${error.message}</p>
+                            <button onclick="loadWorkshopMap()" class="mt-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                                重新加载
+                            </button>
+                        </div>
+                    `;
+                });
+        }
+
+        // 创建地图工具提示
+        function createMapTooltip() {
+            const tooltip = document.createElement('div');
+            tooltip.id = 'map-tooltip';
+            tooltip.className = 'map-tooltip';
+            document.body.appendChild(tooltip);
+        }
+
+        // 设置地图交互事件
+        function setupMapInteractions() {
+            const productionAreas = document.querySelectorAll('.production-area');
+            const tooltip = document.getElementById('map-tooltip');
+
+            productionAreas.forEach(area => {
+                const lineName = area.getAttribute('data-line');
+                const lineData = productionLineData[lineName];
+
+                // 点击事件
+                area.addEventListener('click', function() {
+                    selectProductionLine(lineName, this);
+                });
+
+                // 鼠标进入事件 - 显示工具提示
+                area.addEventListener('mouseenter', function(e) {
+                    if (!this.classList.contains('selected')) {
+                        this.style.opacity = '0.8';
+                    }
+
+                    // 显示工具提示
+                    if (tooltip && lineData) {
+                        const statusText = getStatusText(lineData.status);
+                        const statusColor = getStatusColor(lineData.status);
+
+                        tooltip.innerHTML = `
+                            <div class="font-semibold">${lineData.name}</div>
+                            <div class="text-xs mt-1">类型: ${lineData.type}</div>
+                            <div class="text-xs">产能: ${lineData.capacity}</div>
+                            <div class="text-xs">状态: <span style="color: ${statusColor}">${statusText}</span></div>
+                        `;
+
+                        tooltip.classList.add('show');
+                        updateTooltipPosition(e, tooltip);
+                    }
+                });
+
+                // 鼠标移动事件 - 更新工具提示位置
+                area.addEventListener('mousemove', function(e) {
+                    if (tooltip && tooltip.classList.contains('show')) {
+                        updateTooltipPosition(e, tooltip);
+                    }
+                });
+
+                // 鼠标离开事件 - 隐藏工具提示
+                area.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.opacity = '1';
+                    }
+
+                    // 隐藏工具提示
+                    if (tooltip) {
+                        tooltip.classList.remove('show');
+                    }
+                });
+            });
+        }
+
+        // 更新工具提示位置
+        function updateTooltipPosition(event, tooltip) {
+            const x = event.pageX + 10;
+            const y = event.pageY - 10;
+
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = y + 'px';
+        }
+
+        // 获取状态文本
+        function getStatusText(status) {
+            const statusMap = {
+                'running': '运行中',
+                'idle': '空闲',
+                'maintenance': '维护中',
+                'error': '故障'
+            };
+            return statusMap[status] || '未知';
+        }
+
+        // 获取状态颜色
+        function getStatusColor(status) {
+            const colorMap = {
+                'running': '#10b981',
+                'idle': '#f59e0b',
+                'maintenance': '#3b82f6',
+                'error': '#ef4444'
+            };
+            return colorMap[status] || '#6b7280';
+        }
+
+        // 显示生产线详情
+        function showLineDetails(lineName) {
+            const detailsPanel = document.getElementById('selected-line-details');
+            const detailsContent = document.getElementById('line-details-content');
+            const lineData = productionLineData[lineName];
+
+            if (!lineData || !detailsPanel || !detailsContent) return;
+
+            const statusText = getStatusText(lineData.status);
+            const statusColor = getStatusColor(lineData.status);
+
+            // 模拟实时数据
+            const realTimeData = generateRealTimeData(lineData);
+
+            detailsContent.innerHTML = `
+                <div class="bg-white rounded p-3 border border-gray-200">
+                    <div class="text-xs text-gray-500 mb-1">生产线名称</div>
+                    <div class="font-semibold text-gray-800">${lineData.name}</div>
+                </div>
+                <div class="bg-white rounded p-3 border border-gray-200">
+                    <div class="text-xs text-gray-500 mb-1">产品类型</div>
+                    <div class="font-semibold text-gray-800">${lineData.type}</div>
+                </div>
+                <div class="bg-white rounded p-3 border border-gray-200">
+                    <div class="text-xs text-gray-500 mb-1">设计产能</div>
+                    <div class="font-semibold text-gray-800">${lineData.capacity}</div>
+                </div>
+                <div class="bg-white rounded p-3 border border-gray-200">
+                    <div class="text-xs text-gray-500 mb-1">当前状态</div>
+                    <div class="font-semibold" style="color: ${statusColor}">${statusText}</div>
+                </div>
+                <div class="bg-white rounded p-3 border border-gray-200">
+                    <div class="text-xs text-gray-500 mb-1">今日产量</div>
+                    <div class="font-semibold text-gray-800">${realTimeData.todayOutput}</div>
+                </div>
+                <div class="bg-white rounded p-3 border border-gray-200">
+                    <div class="text-xs text-gray-500 mb-1">设备利用率</div>
+                    <div class="font-semibold text-gray-800">${realTimeData.utilization}%</div>
+                </div>
+                <div class="bg-white rounded p-3 border border-gray-200">
+                    <div class="text-xs text-gray-500 mb-1">在线人员</div>
+                    <div class="font-semibold text-gray-800">${realTimeData.personnel}人</div>
+                </div>
+                <div class="bg-white rounded p-3 border border-gray-200">
+                    <div class="text-xs text-gray-500 mb-1">质量合格率</div>
+                    <div class="font-semibold text-gray-800">${realTimeData.qualityRate}%</div>
+                </div>
+            `;
+
+            detailsPanel.style.display = 'block';
+        }
+
+        // 隐藏生产线详情
+        function hideLineDetails() {
+            const detailsPanel = document.getElementById('selected-line-details');
+            if (detailsPanel) {
+                detailsPanel.style.display = 'none';
+            }
+        }
+
+        // 生成模拟实时数据
+        function generateRealTimeData(lineData) {
+            const baseOutput = parseInt(lineData.capacity);
+            const randomFactor = 0.8 + Math.random() * 0.4; // 80%-120%的随机因子
+
+            return {
+                todayOutput: Math.floor(baseOutput * randomFactor) + '台',
+                utilization: Math.floor(75 + Math.random() * 20), // 75%-95%
+                personnel: Math.floor(8 + Math.random() * 4), // 8-12人
+                qualityRate: (98 + Math.random() * 2).toFixed(1) // 98%-100%
+            };
+        }
+
+        // 选择生产线
+        function selectProductionLine(lineName, areaElement) {
+            // 移除之前的选择
+            const previousSelected = document.querySelector('.production-area.selected');
+            if (previousSelected) {
+                previousSelected.classList.remove('selected');
+                previousSelected.style.opacity = '1';
+            }
+
+            // 添加新的选择
+            areaElement.classList.add('selected');
+            areaElement.style.opacity = '1';
+
+            currentSelectedLine = lineName;
+
+            // 更新选择指示器
+            updateSelectedLineIndicator(lineName);
+
+            // 显示生产线详情
+            showLineDetails(lineName);
+
+            // 更新当前标签页的数据
+            const activeTab = document.querySelector('.tab-btn.active');
+            if (activeTab) {
+                const tabType = activeTab.getAttribute('data-tab');
+                updateTabDataForLine(tabType, lineName);
+            }
+
+            console.log('选择生产线:', lineName);
+            showNotification(`已选择 ${lineName}`, 'success');
+        }
+
+        // 重置生产线选择
+        function resetProductionLineSelection() {
+            // 移除地图上的选择
+            const selectedArea = document.querySelector('.production-area.selected');
+            if (selectedArea) {
+                selectedArea.classList.remove('selected');
+                selectedArea.style.opacity = '1';
+            }
+
+            currentSelectedLine = null;
+
+            // 更新选择指示器
+            updateSelectedLineIndicator(null);
+
+            // 隐藏生产线详情
+            hideLineDetails();
+
+            // 更新当前标签页的数据
+            const activeTab = document.querySelector('.tab-btn.active');
+            if (activeTab) {
+                const tabType = activeTab.getAttribute('data-tab');
+                updateTabDataForLine(tabType, null);
+            }
+
+            console.log('重置生产线选择');
+            showNotification('已重置为全部生产线视图', 'info');
+        }
+
+        // 更新选择指示器
+        function updateSelectedLineIndicator(lineName) {
+            const indicator = document.getElementById('selected-line-indicator');
+            if (lineName) {
+                indicator.textContent = lineName;
+                indicator.className = 'text-sm text-blue-600 bg-blue-100 px-3 py-1 rounded-full border border-blue-200';
+            } else {
+                indicator.textContent = '全部生产线';
+                indicator.className = 'text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full';
+            }
+        }
+
+        // 根据选择的生产线更新标签页数据
+        function updateTabDataForLine(tabType, lineName) {
+            switch(tabType) {
+                case 'production':
+                    updateProductionDataForLine(lineName);
+                    break;
+                case 'planning':
+                    updatePlanningDataForLine(lineName);
+                    break;
+                case 'warehouse':
+                    updateWarehouseDataForLine(lineName);
+                    break;
+                case 'equipment':
+                    updateEquipmentDataForLine(lineName);
+                    break;
+            }
+        }
+
+        // 更新生产调度数据（按生产线筛选）
+        function updateProductionDataForLine(lineName) {
+            console.log('更新生产调度数据 - 生产线:', lineName || '全部');
+
+            if (lineName) {
+                const lineData = productionLineData[lineName];
+                if (lineData) {
+                    showNotification(`${lineName} 生产调度数据已更新`, 'info');
+                    // 这里可以添加具体的数据更新逻辑
+                }
+            } else {
+                showNotification('全部生产线调度数据已更新', 'info');
+            }
+        }
+
+        // 更新计划管理数据（按生产线筛选）
+        function updatePlanningDataForLine(lineName) {
+            console.log('更新计划管理数据 - 生产线:', lineName || '全部');
+
+            if (lineName) {
+                showNotification(`${lineName} 计划管理数据已更新`, 'info');
+            } else {
+                showNotification('全部生产线计划数据已更新', 'info');
+            }
+        }
+
+        // 更新仓储作业数据（按生产线筛选）
+        function updateWarehouseDataForLine(lineName) {
+            console.log('更新仓储作业数据 - 生产线:', lineName || '全部');
+
+            if (lineName) {
+                showNotification(`${lineName} 相关仓储数据已更新`, 'info');
+            } else {
+                showNotification('全部仓储作业数据已更新', 'info');
+            }
+        }
+
+        // 更新设备监控数据（按生产线筛选）
+        function updateEquipmentDataForLine(lineName) {
+            console.log('更新设备监控数据 - 生产线:', lineName || '全部');
+
+            if (lineName) {
+                const lineData = productionLineData[lineName];
+                if (lineData) {
+                    showNotification(`${lineName} 设备状态已更新`, 'info');
+                }
+            } else {
+                showNotification('全部设备监控数据已更新', 'info');
+            }
+        }
+
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function() {
             initUnifiedScheduling();
+            initWorkshopMap();
             console.log('逆变器统一调度平台加载完成');
         });
     </script>
