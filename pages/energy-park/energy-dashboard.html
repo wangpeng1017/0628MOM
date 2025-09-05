@@ -6,6 +6,7 @@
   <title>能源看板 - 慧新全智厂园一体平台</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 </head>
 <body class="bg-gray-50">
   <div class="container mx-auto px-4 py-6">
@@ -59,17 +60,13 @@
         <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
           <i class="fas fa-chart-line text-blue-600 mr-2"></i>24小时功率/费用趋势
         </h3>
-        <div class="h-56 bg-gradient-to-r from-blue-50 to-indigo-50 rounded flex items-center justify-center text-gray-500">
-          折线图占位（支持在后续接入 ECharts）
-        </div>
+        <div id="chart-trend" class="h-56"></div>
       </div>
       <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
         <h3 class="text-lg font-semibold text-gray-800 mb-2 flex items-center">
           <i class="fas fa-chart-pie text-purple-600 mr-2"></i>当日用电分类占比
         </h3>
-        <div class="h-56 bg-gradient-to-r from-purple-50 to-pink-50 rounded flex items-center justify-center text-gray-500">
-          饼图占位（照明/动力/暖通/电梯/消防）
-        </div>
+        <div id="chart-pie" class="h-56"></div>
       </div>
     </div>
 
@@ -107,3 +104,53 @@
 </body>
 </html>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      // 折线图：24小时功率/费用趋势
+      const elTrend = document.getElementById('chart-trend');
+      if (elTrend) {
+        const trendChart = echarts.init(elTrend);
+        const hours = Array.from({length:24}, (_,i)=> `${i}:00`);
+        const power = hours.map((_,i)=> (1200 + Math.round(200*Math.sin(i/3))+ Math.round(Math.random()*80)));
+        const cost = power.map(v => Math.round(v*0.82));
+        trendChart.setOption({
+          tooltip: { trigger: 'axis' },
+          legend: { data: ['功率(kW)','费用(¥)'] },
+          grid: { left: 40, right: 20, top: 30, bottom: 30 },
+          xAxis: { type: 'category', data: hours },
+          yAxis: [
+            { type: 'value', name: 'kW' },
+            { type: 'value', name: '¥', alignTicks: true }
+          ],
+          series: [
+            { name: '功率(kW)', type: 'line', smooth: true, data: power },
+            { name: '费用(¥)', type: 'line', smooth: true, yAxisIndex: 1, data: cost }
+          ]
+        });
+        window.addEventListener('resize', ()=> trendChart.resize());
+      }
+
+      // 饼图：当日用电分类占比
+      const elPie = document.getElementById('chart-pie');
+      if (elPie) {
+        const pieChart = echarts.init(elPie);
+        const data = [
+          {name:'照明', value: 18},
+          {name:'动力', value: 44},
+          {name:'暖通', value: 22},
+          {name:'电梯', value: 8},
+          {name:'消防', value: 8},
+        ];
+        pieChart.setOption({
+          tooltip: { trigger: 'item', formatter: '{b}: {c}% ({d}%)' },
+          legend: { bottom: 0 },
+          series: [{
+            type: 'pie', radius: ['35%','60%'],
+            label: { formatter: '{b}: {d}%'},
+            data
+          }]
+        });
+        window.addEventListener('resize', ()=> pieChart.resize());
+      }
+    });
+  </script>

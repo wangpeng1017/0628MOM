@@ -6,6 +6,7 @@
   <title>能耗分析 - 慧新全智厂园一体平台</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 </head>
 <body class="bg-gray-50">
   <div class="container mx-auto px-4 py-6">
@@ -22,17 +23,13 @@
         <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
           <i class="fas fa-chart-pie text-purple-600 mr-2"></i>能耗分项（饼图）
         </h3>
-        <div class="h-56 bg-gradient-to-r from-purple-50 to-pink-50 rounded flex items-center justify-center text-gray-500">
-          饼图占位（按计量点累计电耗）
-        </div>
+        <div id="ea-pie" class="h-56"></div>
       </div>
       <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 lg:col-span-2">
         <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
           <i class="fas fa-chart-bar text-blue-600 mr-2"></i>能耗比较（柱状图）
         </h3>
-        <div class="h-56 bg-gradient-to-r from-blue-50 to-indigo-50 rounded flex items-center justify-center text-gray-500">
-          柱状图占位（本月 vs 上月）
-        </div>
+        <div id="ea-bar" class="h-56"></div>
       </div>
     </div>
 
@@ -47,9 +44,7 @@
           <input type="date" class="border rounded px-2 py-1" />
           <button class="px-3 py-1 bg-blue-600 text-white rounded">查询</button>
         </div>
-        <div class="h-56 bg-gradient-to-r from-blue-50 to-indigo-50 rounded flex items-center justify-center text-gray-500">
-          折线图占位（设备/区域时段能耗趋势）
-        </div>
+        <div id="ea-line" class="h-56"></div>
       </div>
       <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 lg:col-span-1">
         <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
@@ -84,6 +79,62 @@
       <p class="text-sm text-gray-700">支持一键巡查与自动异常告警，帮助快速定位异常能耗与故障点（移动端可消息推送，企业微信集成见“企业微信集成”）。</p>
     </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      // 饼图：能耗分项
+      const pieEl = document.getElementById('ea-pie');
+      if (pieEl) {
+        const pie = echarts.init(pieEl);
+        const data = [
+          {name:'PACK产线A', value: 5200},
+          {name:'逆变器车间', value: 8600},
+          {name:'仓库C', value: 1400},
+          {name:'办公楼B', value: 2300},
+        ];
+        pie.setOption({
+          tooltip: { trigger:'item' },
+          legend: { bottom: 0 },
+          series: [{ type:'pie', radius:['35%','60%'], label:{ formatter:'{b}: {d}%' }, data }]
+        });
+        window.addEventListener('resize', ()=> pie.resize());
+      }
+
+      // 柱状图：本月 vs 上月
+      const barEl = document.getElementById('ea-bar');
+      if (barEl) {
+        const bar = echarts.init(barEl);
+        const cats = ['工厂','PACK产线A','逆变器车间','仓库C','办公楼B'];
+        const cur = [17200,5200,8600,1400,2300];
+        const prev = [16500,4820,8120,1260,2100];
+        bar.setOption({
+          tooltip:{ trigger:'axis' },
+          legend:{ data:['本月','上月'] },
+          xAxis:{ type:'category', data: cats },
+          yAxis:{ type:'value', name:'kWh' },
+          series:[
+            { name:'本月', type:'bar', data: cur },
+            { name:'上月', type:'bar', data: prev }
+          ]
+        });
+        window.addEventListener('resize', ()=> bar.resize());
+      }
+
+      // 折线图：时段能耗趋势
+      const lineEl = document.getElementById('ea-line');
+      if (lineEl) {
+        const line = echarts.init(lineEl);
+        const hours = Array.from({length:24}, (_,i)=> `${i}:00`);
+        const values = hours.map((_,i)=> 400 + Math.round(100*Math.sin(i/2)) + Math.round(Math.random()*40));
+        line.setOption({
+          tooltip:{ trigger:'axis' },
+          xAxis:{ type:'category', data: hours },
+          yAxis:{ type:'value', name:'kWh' },
+          series:[{ type:'line', smooth:true, data: values, areaStyle:{} }]
+        });
+        window.addEventListener('resize', ()=> line.resize());
+      }
+    });
+  </script>
 </body>
 </html>
 

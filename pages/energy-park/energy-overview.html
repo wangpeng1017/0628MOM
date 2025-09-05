@@ -6,6 +6,7 @@
     <title>能源监控概览 - 慧新全智厂园一体平台</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
     <style>
         :root {
             --primary: #3b82f6;
@@ -130,14 +131,7 @@
                     <i class="fas fa-chart-line text-blue-600 mr-2"></i>
                     实时功率监控
                 </h3>
-                <div class="h-64 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg flex items-center justify-center">
-                    <div class="text-center text-gray-500">
-                        <i class="fas fa-chart-area text-4xl mb-4"></i>
-                        <p>实时功率曲线图</p>
-                        <p class="text-sm">当前功率: 1,850 kW</p>
-                        <p class="text-sm text-green-600">负荷率: 74%</p>
-                    </div>
-                </div>
+                <div id="eo-realtime" class="h-64"></div>
             </div>
 
             <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
@@ -224,6 +218,23 @@
                             <div>• 谷时用电: 25%</div>
                             <div class="text-blue-600">• 谷电利用率良好</div>
                         </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        const el = document.getElementById('eo-realtime');
+        if (el) {
+          const c = echarts.init(el);
+          const t = Array.from({length:24}, (_,i)=> `${i}:00`);
+          const v = t.map((_,i)=> 1000 + Math.round(200*Math.sin(i/3)) + Math.round(Math.random()*80));
+          c.setOption({
+            tooltip:{ trigger:'axis' },
+            xAxis:{ type:'category', data:t, boundaryGap:false },
+            yAxis:{ type:'value', name:'kW' },
+            series:[{ type:'line', data:v, areaStyle:{}, smooth:true }]
+          });
+          window.addEventListener('resize', ()=> c.resize());
+        }
+      });
+    </script>
                     </div>
                 </div>
             </div>
@@ -343,7 +354,7 @@
         // 能源监控概览功能
         function initEnergyOverview() {
             console.log('初始化能源监控概览功能');
-            
+
             // 告警处理按钮事件
             const alertButtons = document.querySelectorAll('button');
             alertButtons.forEach(button => {
@@ -381,7 +392,7 @@
             initEnergyOverview();
             updateEnergyData();
             setInterval(updateEnergyData, 30000); // 每30秒更新一次数据
-            
+
             console.log('能源监控概览页面加载完成');
         });
     </script>

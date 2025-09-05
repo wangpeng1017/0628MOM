@@ -6,6 +6,7 @@
   <title>能源大屏 - 慧新全智厂园一体平台</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
   <style>
     body { background: #0b1220; }
     .card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); }
@@ -26,7 +27,7 @@
         <h3 class="text-lg font-semibold mb-2 flex items-center">
           <i class="fas fa-bolt text-yellow-300 mr-2"></i>实时功率曲线
         </h3>
-        <div class="h-56 rounded bg-gradient-to-r from-indigo-900 to-indigo-700/60 flex items-center justify-center text-indigo-200">折线图占位</div>
+        <div id="bs-line" class="h-56"></div>
       </div>
       <div class="card rounded-lg p-6">
         <h3 class="text-lg font-semibold mb-2 flex items-center">
@@ -46,7 +47,7 @@
         <h3 class="text-lg font-semibold mb-2 flex items-center">
           <i class="fas fa-chart-pie text-pink-300 mr-2"></i>用电分类占比
         </h3>
-        <div class="h-44 rounded bg-gradient-to-r from-pink-900 to-pink-700/60 flex items-center justify-center text-pink-100">饼图占位</div>
+        <div id="bs-pie" class="h-44"></div>
       </div>
       <div class="card rounded-lg p-6">
         <h3 class="text-lg font-semibold mb-2 flex items-center">
@@ -69,6 +70,39 @@
         <i class="fas fa-building text-emerald-300 mr-2"></i>园区一张图（示意）
       </h3>
       <div class="h-64 rounded bg-gradient-to-r from-emerald-900 to-emerald-700/60 flex items-center justify-center text-emerald-100">GIS/孪生占位</div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const lineEl = document.getElementById('bs-line');
+      if (lineEl) {
+        const c = echarts.init(lineEl);
+        const t = Array.from({length:24}, (_,i)=> `${i}:00`);
+        const v = t.map((_,i)=> 1000 + Math.round(300*Math.abs(Math.sin(i/4))) + Math.round(Math.random()*100));
+        c.setOption({
+          tooltip:{ trigger:'axis' },
+          xAxis:{ type:'category', data:t, boundaryGap:false },
+          yAxis:{ type:'value', name:'kW' },
+          series:[{ type:'line', data:v, areaStyle:{}, smooth:true, color:'#60a5fa' }]
+        });
+        window.addEventListener('resize', ()=> c.resize());
+      }
+
+      const pieEl = document.getElementById('bs-pie');
+      if (pieEl) {
+        const p = echarts.init(pieEl);
+        p.setOption({
+          tooltip:{ trigger:'item' },
+          series:[{ type:'pie', radius:['35%','60%'], label:{ color:'#ddd' }, data:[
+            {name:'照明', value: 18},
+            {name:'动力', value: 44},
+            {name:'暖通', value: 22},
+            {name:'电梯', value: 8},
+            {name:'消防', value: 8}
+          ]}]
+        });
+        window.addEventListener('resize', ()=> p.resize());
+      }
+    });
+  </script>
     </div>
   </div>
 </body>
