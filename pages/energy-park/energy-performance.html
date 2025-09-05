@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>能源绩效考核 - 慧新全智厂园一体平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <div class="container mx-auto px-4 py-6">
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+        <i class="fas fa-award text-green-600 mr-3"></i>
+        能源绩效考核
+      </h1>
+      <p class="text-gray-600 mt-2">跟踪目标达成与节能绩效，支持按人/部门/产线考核</p>
+    </div>
+
+    <!-- KPI看板 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">目标达成率</h3>
+          <i class="fas fa-flag-checkered text-green-600"></i>
+        </div>
+        <div class="text-2xl font-bold text-green-600">86%</div>
+        <div class="text-sm text-gray-500">本月</div>
+      </div>
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">节能量</h3>
+          <i class="fas fa-battery-three-quarters text-blue-600"></i>
+        </div>
+        <div class="text-2xl font-bold text-blue-600">12,850 kWh</div>
+        <div class="text-sm text-gray-500">较上月 +8.2%</div>
+      </div>
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">成本节省</h3>
+          <i class="fas fa-coins text-yellow-600"></i>
+        </div>
+        <div class="text-2xl font-bold text-yellow-600">¥ 9,360</div>
+        <div class="text-sm text-gray-500">峰谷电价优化</div>
+      </div>
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">碳减排</h3>
+          <i class="fas fa-leaf text-green-600"></i>
+        </div>
+        <div class="text-2xl font-bold text-green-600">2.1 吨CO₂</div>
+        <div class="text-sm text-gray-500">本月累计</div>
+      </div>
+    </div>
+
+    <!-- 考核明细 -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+        <i class="fas fa-users-cog text-blue-600 mr-2"></i>
+        考核明细（部门/产线）
+      </h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="text-left text-gray-600">
+              <th class="py-2 pr-4">对象</th>
+              <th class="py-2 pr-4">目标项</th>
+              <th class="py-2 pr-4">完成率</th>
+              <th class="py-2 pr-4">节能量</th>
+              <th class="py-2 pr-4">成本节省</th>
+              <th class="py-2 pr-4">评分</th>
+            </tr>
+          </thead>
+          <tbody id="perf-tbody" class="text-gray-800"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 快速操作 -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+        <i class="fas fa-bolt text-blue-600 mr-2"></i>
+        快速操作
+      </h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <button id="btn-eval" class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+          <i class="fas fa-clipboard-check text-blue-600 text-2xl mb-2"></i>
+          <span class="text-sm font-medium text-gray-800">绩效评审</span>
+        </button>
+        <button id="btn-export" class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+          <i class="fas fa-download text-green-600 text-2xl mb-2"></i>
+          <span class="text-sm font-medium text-gray-800">导出报表</span>
+        </button>
+        <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+          <i class="fas fa-book text-purple-600 text-2xl mb-2"></i>
+          <span class="text-sm font-medium text-gray-800">知识库</span>
+        </button>
+        <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+          <i class="fas fa-flag text-orange-600 text-2xl mb-2"></i>
+          <span class="text-sm font-medium text-gray-800">改进任务</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/energy-park-utils.js"></script>
+  <script>
+    const perfRows = [
+      { obj: 'PACK产线A', kpi: '单位产品能耗', completion: 92, saving: 1850, cost: 1260, score: 92 },
+      { obj: '逆变器车间', kpi: '总能耗', completion: 83, saving: 4620, cost: 3120, score: 86 },
+      { obj: '仓库C', kpi: '峰时占比', completion: 78, saving: 980, cost: 620, score: 80 },
+      { obj: '办公楼B', kpi: '人均能耗', completion: 88, saving: 1430, cost: 950, score: 88 },
+    ];
+
+    function renderPerf(){
+      const tbody = document.getElementById('perf-tbody');
+      tbody.innerHTML = '';
+      perfRows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-t';
+        tr.innerHTML = `
+          <td class="py-2 pr-4">${r.obj}</td>
+          <td class="py-2 pr-4">${r.kpi}</td>
+          <td class="py-2 pr-4">${r.completion}%</td>
+          <td class="py-2 pr-4">${EnergyUtils.fmtNumber(r.saving)} kWh</td>
+          <td class="py-2 pr-4">¥ ${EnergyUtils.fmtNumber(r.cost)}</td>
+          <td class="py-2 pr-4">${r.score}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function exportPerf(){
+      const rows = [[ '对象','KPI','完成率(%)','节能量(kWh)','成本节省(¥)','评分' ]];
+      perfRows.forEach(r => rows.push([r.obj,r.kpi,r.completion,r.saving,r.cost,r.score]));
+      EnergyUtils.exportCSV('energy-performance.csv', rows);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPerf();
+      document.getElementById('btn-export').addEventListener('click', exportPerf);
+      document.getElementById('btn-eval').addEventListener('click', () => EnergyUtils.toast('已提交绩效评审流程 (模拟)'));
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>能源成本核算 - 慧新全智厂园一体平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <div class="container mx-auto px-4 py-6">
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+        <i class="fas fa-calculator text-yellow-600 mr-3"></i>
+        能源成本核算
+      </h1>
+      <p class="text-gray-600 mt-2">峰平谷电价成本、分摊与节能收益核算</p>
+    </div>
+
+    <!-- 成本概览 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">本月总成本</h3>
+          <i class="fas fa-yen-sign text-yellow-600"></i>
+        </div>
+        <div class="text-2xl font-bold text-yellow-600">¥ 168,320</div>
+        <div class="text-sm text-gray-500">含税</div>
+      </div>
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items中心 justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">峰时成本占比</h3>
+          <i class="fas fa-chart-pie text-red-600"></i>
+        </div>
+        <div class="text-2xl font-bold text-red-600">45%</div>
+        <div class="text-sm text-gray-500">电价结构</div>
+      </div>
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">节能收益</h3>
+          <i class="fas fa-piggy-bank text-green-600"></i>
+        </div>
+        <div class="text-2xl font-bold text-green-600">¥ 12,450</div>
+        <div class="text-sm text-gray-500">策略贡献</div>
+      </div>
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">分摊方式</h3>
+          <i class="fas fa-equals text-blue-600"></i>
+        </div>
+        <div class="text-2xl font-bold text-blue-600">按产线/区域</div>
+        <div class="text-sm text-gray-500">可配置</div>
+      </div>
+    </div>
+
+    <!-- 成本明细与筛选 -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+        <i class="fas fa-filter text-blue-600 mr-2"></i>
+        成本明细
+      </h3>
+      <div class="flex flex-wrap gap-3 mb-4 text-sm">
+        <select id="sel-period" class="border rounded px-2 py-1">
+          <option>2025-01</option>
+          <option>2024-12</option>
+        </select>
+        <select id="sel-tariff" class="border rounded px-2 py-1">
+          <option value="all">全部时段</option>
+          <option value="peak">峰</option>
+          <option value="flat">平</option>
+          <option value="valley">谷</option>
+        </select>
+        <select id="sel-scope" class="border rounded px-2 py-1">
+          <option value="plant">工厂</option>
+          <option value="line">产线</option>
+          <option value="area">区域</option>
+        </select>
+        <button id="btn-query" class="px-3 py-1 bg-blue-600 text-white rounded">查询</button>
+        <button id="btn-export" class="px-3 py-1 bg-green-600 text-white rounded">导出CSV</button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="text-left text-gray-600">
+              <th class="py-2 pr-4">对象</th>
+              <th class="py-2 pr-4">时段</th>
+              <th class="py-2 pr-4">用电量(kWh)</th>
+              <th class="py-2 pr-4">单价(¥)</th>
+              <th class="py-2 pr-4">金额(¥)</th>
+            </tr>
+          </thead>
+          <tbody id="cost-tbody" class="text-gray-800"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 快速操作 -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+        <i class="fas fa-bolt text-blue-600 mr-2"></i>
+        快速操作
+      </h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <button id="btn-config" class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+          <i class="fas fa-sliders-h text-purple-600 text-2xl mb-2"></i>
+          <span class="text-sm font-medium text-gray-800">电价配置</span>
+        </button>
+        <button id="btn-allocate" class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+          <i class="fas fa-random text-orange-600 text-2xl mb-2"></i>
+          <span class="text-sm font-medium text-gray-800">成本分摊</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/energy-park-utils.js"></script>
+  <script>
+    const tariffPrice = { peak: 1.2, flat: 0.8, valley: 0.5 };
+    const mockCosts = [
+      { obj: '工厂', period: '2025-01', slot: 'peak', kwh: 38200 },
+      { obj: '工厂', period: '2025-01', slot: 'flat', kwh: 46800 },
+      { obj: '工厂', period: '2025-01', slot: 'valley', kwh: 28600 },
+      { obj: 'PACK产线A', period: '2025-01', slot: 'peak', kwh: 8200 },
+      { obj: '逆变器车间', period: '2025-01', slot: 'flat', kwh: 12600 },
+      { obj: '仓库C', period: '2025-01', slot: 'valley', kwh: 6800 },
+    ];
+
+    function renderCosts(){
+      const tbody = document.getElementById('cost-tbody');
+      tbody.innerHTML = '';
+      const slotFilter = document.getElementById('sel-tariff').value;
+      const period = document.getElementById('sel-period').value;
+      mockCosts.filter(r => (slotFilter==='all' || r.slot===slotFilter) && r.period===period)
+        .forEach(r => {
+          const price = tariffPrice[r.slot] || 0.8;
+          const amount = r.kwh * price;
+          const tr = document.createElement('tr');
+          tr.className = 'border-t';
+          tr.innerHTML = `
+            <td class="py-2 pr-4">${r.obj}</td>
+            <td class="py-2 pr-4">${r.slot}</td>
+            <td class="py-2 pr-4">${EnergyUtils.fmtNumber(r.kwh)}</td>
+            <td class="py-2 pr-4">${price.toFixed(2)}</td>
+            <td class="py-2 pr-4">¥ ${EnergyUtils.fmtNumber(amount)}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCosts();
+      document.getElementById('btn-query').addEventListener('click', renderCosts);
+      document.getElementById('btn-export').addEventListener('click', () => {
+        const rows = [[ '对象','时段','用电量(kWh)','单价(¥)','金额(¥)' ]];
+        const slotFilter = document.getElementById('sel-tariff').value;
+        const period = document.getElementById('sel-period').value;
+        mockCosts.filter(r => (slotFilter==='all' || r.slot===slotFilter) && r.period===period)
+          .forEach(r => rows.push([r.obj,r.slot,r.kwh,tariffPrice[r.slot]||0.8,(r.kwh*(tariffPrice[r.slot]||0.8)).toFixed(2)]));
+        EnergyUtils.exportCSV('energy-costs.csv', rows);
+      });
+      document.getElementById('btn-config').addEventListener('click', () => EnergyUtils.toast('电价配置（模拟）'));
+      document.getElementById('btn-allocate').addEventListener('click', () => EnergyUtils.toast('成本分摊（模拟）'));
+    });
+  </script>
+</body>
+</html>
+

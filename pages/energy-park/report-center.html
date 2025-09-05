@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>能源报表中心 - 慧新全智厂园一体平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <div class="container mx-auto px-4 py-6">
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+        <i class="fas fa-file-alt text-blue-600 mr-3"></i>
+        能源报表中心
+      </h1>
+      <p class="text-gray-600 mt-2">能耗日报/周报/月报、绩效与双碳分析报表</p>
+    </div>
+
+    <!-- 报表筛选与操作 -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-6">
+      <div class="flex flex-wrap gap-3 text-sm">
+        <select id="report-type" class="border rounded px-2 py-1">
+          <option value="daily">日报</option>
+          <option value="weekly">周报</option>
+          <option value="monthly">月报</option>
+          <option value="annual">年度报告</option>
+        </select>
+        <input id="report-date" type="month" class="border rounded px-2 py-1" value="2025-01" />
+        <select id="report-scope" class="border rounded px-2 py-1">
+          <option value="plant">工厂</option>
+          <option value="line">产线</option>
+          <option value="area">区域</option>
+        </select>
+        <button id="btn-generate" class="px-3 py-1 bg-blue-600 text-white rounded">生成</button>
+        <button id="btn-export" class="px-3 py-1 bg-green-600 text-white rounded">导出CSV</button>
+      </div>
+    </div>
+
+    <!-- 报表结果 -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+        <i class="fas fa-table text-blue-600 mr-2"></i>
+        报表结果
+      </h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="text-left text-gray-600">
+              <th class="py-2 pr-4">对象</th>
+              <th class="py-2 pr-4">用电量(kWh)</th>
+              <th class="py-2 pr-4">峰/平/谷占比</th>
+              <th class="py-2 pr-4">节能量(kWh)</th>
+              <th class="py-2 pr-4">成本(¥)</th>
+              <th class="py-2 pr-4">碳排放(吨)</th>
+            </tr>
+          </thead>
+          <tbody id="report-tbody" class="text-gray-800"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/energy-park-utils.js"></script>
+  <script>
+    function genMockReport(){
+      return [
+        { obj: '工厂', kwh: 17200, peak: 36, flat: 42, valley: 22, saving: 1280, cost: 9630, carbon: 5.3 },
+        { obj: 'PACK产线A', kwh: 5200, peak: 32, flat: 45, valley: 23, saving: 380, cost: 3120, carbon: 1.6 },
+        { obj: '逆变器车间', kwh: 8600, peak: 38, flat: 40, valley: 22, saving: 520, cost: 4820, carbon: 2.7 },
+        { obj: '仓库C', kwh: 1400, peak: 28, flat: 40, valley: 32, saving: 180, cost: 690, carbon: 0.4 },
+      ];
+    }
+
+    function renderReport(){
+      const tbody = document.getElementById('report-tbody');
+      tbody.innerHTML = '';
+      const rows = genMockReport();
+      rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-t';
+        tr.innerHTML = `
+          <td class="py-2 pr-4">${r.obj}</td>
+          <td class="py-2 pr-4">${EnergyUtils.fmtNumber(r.kwh)}</td>
+          <td class="py-2 pr-4">${r.peak}/${r.flat}/${r.valley}%</td>
+          <td class="py-2 pr-4">${EnergyUtils.fmtNumber(r.saving)}</td>
+          <td class="py-2 pr-4">¥ ${EnergyUtils.fmtNumber(r.cost)}</td>
+          <td class="py-2 pr-4">${r.carbon.toFixed(1)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function exportReport(){
+      const rows = [[ '对象','用电量(kWh)','峰/平/谷(%)','节能量(kWh)','成本(¥)','碳排放(吨)' ]];
+      genMockReport().forEach(r => rows.push([r.obj,r.kwh,`${r.peak}/${r.flat}/${r.valley}`,r.saving,r.cost,r.carbon]));
+      EnergyUtils.exportCSV('energy-report.csv', rows);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderReport();
+      document.getElementById('btn-generate').addEventListener('click', renderReport);
+      document.getElementById('btn-export').addEventListener('click', exportReport);
+    });
+  </script>
+</body>
+</html>
+

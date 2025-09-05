@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>能源计划与目标 - 慧新全智厂园一体平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <div class="container mx-auto px-4 py-6">
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+        <i class="fas fa-bullseye text-blue-600 mr-3"></i>
+        能源计划与目标
+      </h1>
+      <p class="text-gray-600 mt-2">制定与分解园区能源目标，支撑节能PDCA闭环</p>
+    </div>
+
+    <!-- 目标设定概览 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">年度能耗目标</h3>
+          <i class="fas fa-calendar text-blue-600"></i>
+        </div>
+        <div class="text-2xl font-bold text-blue-600">1,200,000</div>
+        <div class="text-sm text-gray-500">kWh</div>
+      </div>
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">节能率目标</h3>
+          <i class="fas fa-leaf text-green-600"></i>
+        </div>
+        <div class="text-2xl font-bold text-green-600">12%</div>
+        <div class="text-sm text-gray-500">年度目标</div>
+      </div>
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">分解对象</h3>
+          <i class="fas fa-sitemap text-purple-600"></i>
+        </div>
+        <div class="text-2xl font-bold text-purple-600">产线/区域/设备</div>
+        <div class="text-sm text-gray-500">多维度管理</div>
+      </div>
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-800">目标完成度</h3>
+          <i class="fas fa-flag-checkered text-orange-600"></i>
+        </div>
+        <div id="target-completion" class="text-2xl font-bold text-orange-600">--%</div>
+        <div class="text-sm text-gray-500">实时计算</div>
+      </div>
+    </div>
+
+    <!-- 目标分解与管理 -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-8">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+        <i class="fas fa-project-diagram text-blue-600 mr-2"></i>
+        目标分解与管理
+      </h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="text-left text-gray-600">
+              <th class="py-2 pr-4">对象</th>
+              <th class="py-2 pr-4">类型</th>
+              <th class="py-2 pr-4">周期</th>
+              <th class="py-2 pr-4">目标值</th>
+              <th class="py-2 pr-4">当前值</th>
+              <th class="py-2 pr-4">完成率</th>
+              <th class="py-2 pr-4">操作</th>
+            </tr>
+          </thead>
+          <tbody id="target-tbody" class="text-gray-800">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 快速操作 -->
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+        <i class="fas fa-bolt text-blue-600 mr-2"></i>
+        快速操作
+      </h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <button id="btn-add" class="flex flex-col items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors">
+          <i class="fas fa-plus text-blue-600 text-2xl mb-2"></i>
+          <span class="text-sm font-medium text-gray-800">新增目标</span>
+        </button>
+        <button id="btn-export" class="flex flex-col items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition-colors">
+          <i class="fas fa-download text-green-600 text-2xl mb-2"></i>
+          <span class="text-sm font-medium text-gray-800">导出清单</span>
+        </button>
+        <button class="flex flex-col items-center p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
+          <i class="fas fa-cog text-purple-600 text-2xl mb-2"></i>
+          <span class="text-sm font-medium text-gray-800">阈值设置</span>
+        </button>
+        <button class="flex flex-col items-center p-4 bg-orange-50 border border-orange-200 rounded-lg hover:bg-orange-100 transition-colors">
+          <i class="fas fa-file-alt text-orange-600 text-2xl mb-2"></i>
+          <span class="text-sm font-medium text-gray-800">生成月报</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/energy-park-utils.js"></script>
+  <script>
+    const mockTargets = [
+      { object: 'PACK产线A', type: '单位产品能耗', period: '2025-01', target: 12.5, unit: 'kWh/台', actual: 12.1 },
+      { object: '逆变器车间', type: '总能耗', period: '2025-01', target: 85000, unit: 'kWh', actual: 81230 },
+      { object: '办公楼B', type: '人均能耗', period: '2025-01', target: 45, unit: 'kWh/人', actual: 42.8 },
+      { object: '仓库C', type: '峰时占比', period: '2025-01', target: 32, unit: '%', actual: 30.1 },
+    ];
+
+    function renderTargets() {
+      const tbody = document.getElementById('target-tbody');
+      tbody.innerHTML = '';
+      let totalTarget = 0, totalActual = 0;
+      mockTargets.forEach((t, idx) => {
+        const completion = t.unit.includes('%')
+          ? EnergyUtils.fmtPercent(t.actual)
+          : `${EnergyUtils.fmtNumber(t.actual)} ${t.unit}`;
+        const row = document.createElement('tr');
+        row.className = 'border-t';
+        row.innerHTML = `
+          <td class="py-2 pr-4">${t.object}</td>
+          <td class="py-2 pr-4">${t.type}</td>
+          <td class="py-2 pr-4">${t.period}</td>
+          <td class="py-2 pr-4">${EnergyUtils.fmtNumber(t.target)} ${t.unit}</td>
+          <td class="py-2 pr-4">${completion}</td>
+          <td class="py-2 pr-4">
+            <span class="text-sm font-medium ${EnergyUtils.kpi.targetCompletion(t.target, t.actual) >= 100 ? 'text-green-600' : 'text-orange-600'}">
+              ${EnergyUtils.kpi.targetCompletion(t.target, t.actual)}%
+            </span>
+          </td>
+          <td class="py-2 pr-4">
+            <button class="text-blue-600 hover:underline text-sm" onclick="editTarget(${idx})">编辑</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+        totalTarget += Number(t.target) || 0;
+        totalActual += Number(t.actual) || 0;
+      });
+      const overall = EnergyUtils.kpi.targetCompletion(totalTarget, totalActual);
+      document.getElementById('target-completion').textContent = overall + '%';
+    }
+
+    function editTarget(idx){
+      const t = mockTargets[idx];
+      const val = prompt(`编辑目标值: ${t.object} - ${t.type}`, t.target);
+      if(val!==null){
+        const num = Number(val);
+        if(!Number.isNaN(num)){
+          t.target = num;
+          renderTargets();
+          EnergyUtils.toast('目标已更新');
+        }
+      }
+    }
+
+    function addTarget(){
+      const object = prompt('对象名称');
+      if(!object) return;
+      const type = prompt('目标类型（如：总能耗/单位产品能耗/峰时占比 等）') || '总能耗';
+      const period = prompt('周期（YYYY-MM）') || '2025-01';
+      const unit = prompt('单位（kWh/台/% 等）') || 'kWh';
+      const target = Number(prompt('目标值')) || 0;
+      mockTargets.push({ object, type, period, unit, target, actual: 0 });
+      renderTargets();
+    }
+
+    function exportTargets(){
+      const rows = [[ '对象','类型','周期','目标值','单位','当前值' ]];
+      mockTargets.forEach(t => rows.push([t.object, t.type, t.period, t.target, t.unit, t.actual]));
+      EnergyUtils.exportCSV('energy-targets.csv', rows);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTargets();
+      document.getElementById('btn-add').addEventListener('click', addTarget);
+      document.getElementById('btn-export').addEventListener('click', exportTargets);
+    });
+  </script>
+</body>
+</html>
+
