@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>能耗分析 - 慧新全智厂园一体平台</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+  <div class="container mx-auto px-4 py-6">
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+        <i class="fas fa-chart-area text-blue-600 mr-3"></i>
+        能耗分析
+      </h1>
+      <p class="text-gray-600 mt-2">分项占比、周期对比、趋势查询与仪表监测</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 lg:col-span-1">
+        <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+          <i class="fas fa-chart-pie text-purple-600 mr-2"></i>能耗分项（饼图）
+        </h3>
+        <div class="h-56 bg-gradient-to-r from-purple-50 to-pink-50 rounded flex items-center justify-center text-gray-500">
+          饼图占位（按计量点累计电耗）
+        </div>
+      </div>
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 lg:col-span-2">
+        <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+          <i class="fas fa-chart-bar text-blue-600 mr-2"></i>能耗比较（柱状图）
+        </h3>
+        <div class="h-56 bg-gradient-to-r from-blue-50 to-indigo-50 rounded flex items-center justify-center text-gray-500">
+          柱状图占位（本月 vs 上月）
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 lg:col-span-2">
+        <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+          <i class="fas fa-chart-line text-blue-600 mr-2"></i>能耗查询（折线图）
+        </h3>
+        <div class="flex flex-wrap gap-3 mb-3 text-sm">
+          <select class="border rounded px-2 py-1"><option>PACK产线A</option><option>逆变器车间</option><option>办公楼B</option></select>
+          <input type="date" class="border rounded px-2 py-1" />
+          <input type="date" class="border rounded px-2 py-1" />
+          <button class="px-3 py-1 bg-blue-600 text-white rounded">查询</button>
+        </div>
+        <div class="h-56 bg-gradient-to-r from-blue-50 to-indigo-50 rounded flex items-center justify-center text-gray-500">
+          折线图占位（设备/区域时段能耗趋势）
+        </div>
+      </div>
+      <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 lg:col-span-1">
+        <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+          <i class="fas fa-plug text-green-600 mr-2"></i>仪表监测（参数列表）
+        </h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead>
+              <tr class="text-left text-gray-600">
+                <th class="py-2 pr-4">监测点</th>
+                <th class="py-2 pr-4">Ia/A</th>
+                <th class="py-2 pr-4">Ua/V</th>
+                <th class="py-2 pr-4">P/kW</th>
+                <th class="py-2 pr-4">PF</th>
+                <th class="py-2 pr-4">Ep/kWh</th>
+              </tr>
+            </thead>
+            <tbody class="text-gray-800">
+              <tr class="border-t"><td class="py-2 pr-4">M-1</td><td>32.5</td><td>227</td><td>6.3</td><td>0.95</td><td>12560</td></tr>
+              <tr class="border-t"><td class="py-2 pr-4">M-2</td><td>28.4</td><td>229</td><td>5.1</td><td>0.92</td><td>10230</td></tr>
+              <tr class="border-t"><td class="py-2 pr-4">M-3</td><td>41.2</td><td>231</td><td>8.2</td><td>0.90</td><td>18560</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+        <i class="fas fa-bell text-orange-600 mr-2"></i>异常告警服务（说明）
+      </h3>
+      <p class="text-sm text-gray-700">支持一键巡查与自动异常告警，帮助快速定位异常能耗与故障点（移动端可消息推送，企业微信集成见“企业微信集成”）。</p>
+    </div>
+  </div>
+</body>
+</html>
+
