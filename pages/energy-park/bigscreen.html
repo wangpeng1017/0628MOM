@@ -197,8 +197,8 @@
       setInterval(() => {
         const texts = svg.querySelectorAll('text');
         zones.forEach((z, idx) => {
-          // 只更新功率（每组第3个 text 元素）
-          const groupOffset = idx*3; // title, value 前还有 LED/rect，不在 textNode 里
+          // 只更新功率（每组第2个 text 元素，顺序为：title, value）
+          const groupOffset = idx*2;
           const powerText = texts[groupOffset + 1];
           if (powerText) {
             const jitter = Math.round((Math.random()-0.5)*30);
