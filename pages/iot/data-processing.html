@@ -213,24 +213,6 @@
             </div>
         </div>
 
-        <!-- 处理任务和分析图表 -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <!-- 处理性能监控 -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">处理性能监控</h3>
-                <div class="relative h-64">
-                    <canvas id="performanceChart"></canvas>
-                </div>
-            </div>
-
-            <!-- 数据质量分析 -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">数据质量分析</h3>
-                <div class="relative h-64">
-                    <canvas id="qualityChart"></canvas>
-                </div>
-            </div>
-        </div>
 
         <!-- 处理任务列表 -->
         <div class="bg-white rounded-lg shadow-sm">
@@ -502,85 +484,6 @@
             }
         }
 
-        // 初始化图表
-        document.addEventListener('DOMContentLoaded', function() {
-            // 处理性能监控图表
-            const ctx1 = document.getElementById('performanceChart').getContext('2d');
-            new Chart(ctx1, {
-                type: 'line',
-                data: {
-                    labels: ['10:00', '10:15', '10:30', '10:45', '11:00', '11:15', '11:30'],
-                    datasets: [
-                        {
-                            label: '处理速度 (k/s)',
-                            data: [12.5, 15.2, 18.7, 16.3, 19.1, 17.8, 15.8],
-                            borderColor: '#3b82f6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            tension: 0.4
-                        },
-                        {
-                            label: '延迟 (ms)',
-                            data: [25, 18, 12, 22, 10, 15, 20],
-                            borderColor: '#f59e0b',
-                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                            tension: 0.4,
-                            yAxisID: 'y1'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            position: 'left'
-                        },
-                        y1: {
-                            beginAtZero: true,
-                            position: 'right',
-                            grid: {
-                                drawOnChartArea: false
-                            }
-                        }
-                    }
-                }
-            });
-
-            // 数据质量分析图表
-            const ctx2 = document.getElementById('qualityChart').getContext('2d');
-            new Chart(ctx2, {
-                type: 'doughnut',
-                data: {
-                    labels: ['有效数据', '异常数据', '缺失数据', '重复数据'],
-                    datasets: [{
-                        data: [87.3, 8.2, 3.1, 1.4],
-                        backgroundColor: [
-                            '#10b981',
-                            '#ef4444',
-                            '#f59e0b',
-                            '#6b7280'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-        });
 
         // 点击模态框外部关闭
         document.getElementById('configModal').addEventListener('click', function(e) {
