@@ -454,6 +454,98 @@
         </div>
     </div>
 
+    <!-- 编辑设备弹窗 -->
+    <div id="editDeviceModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-800">编辑设备信息</h3>
+                        <button id="closeEditModal" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-6">
+                    <form id="editDeviceForm">
+                        <input type="hidden" name="deviceId" id="editDeviceId">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    设备名称 <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" name="deviceName" id="editDeviceName" required 
+                                       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">设备标识符</label>
+                                <input type="text" name="deviceIdentifier" id="editDeviceIdentifier" 
+                                       class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    设备类型 <span class="text-red-500">*</span>
+                                </label>
+                                <select name="deviceType" id="editDeviceType" required 
+                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="default">default</option>
+                                    <option value="传感器">传感器</option>
+                                    <option value="控制器">控制器</option>
+                                    <option value="网关">网关</option>
+                                    <option value="执行器">执行器</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">设备状态</label>
+                                <select name="deviceStatus" id="editDeviceStatus" 
+                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="online">在线</option>
+                                    <option value="offline">离线</option>
+                                    <option value="fault">故障</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">分配状态</label>
+                                <select name="deviceAssigned" id="editDeviceAssigned" 
+                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="true">已分配</option>
+                                    <option value="false">未分配</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">公开状态</label>
+                                <select name="devicePublic" id="editDevicePublic" 
+                                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="true">公开</option>
+                                    <option value="false">私有</option>
+                                </select>
+                            </div>
+
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">设备描述</label>
+                                <textarea name="deviceDescription" id="editDeviceDescription" rows="3" 
+                                          class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                          placeholder="请输入设备的详细描述信息"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+                    <button id="cancelEditDevice" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">取消</button>
+                    <button id="saveEditDevice" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700">保存修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // 模拟设备数据
         const deviceData = [
@@ -587,6 +679,9 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         <div class="flex space-x-2">
+                            <button onclick="editDevice(${device.id})" class="text-indigo-600 hover:text-indigo-900" title="编辑设备">
+                                <i class="fas fa-edit"></i>
+                            </button>
                             ${device.assigned ? `
                                 <button onclick="unassignDevice(${device.id})" class="text-orange-600 hover:text-orange-900" title="○4 取消分配用户">
                                     <i class="fas fa-user-times"></i>
@@ -654,6 +749,25 @@
             document.getElementById('assignGroupModal').classList.remove('hidden');
         }
 
+        // 编辑设备功能
+        function editDevice(deviceId) {
+            const device = deviceData.find(d => d.id === deviceId);
+            if (device) {
+                // 填充表单数据
+                document.getElementById('editDeviceId').value = device.id;
+                document.getElementById('editDeviceName').value = device.name;
+                document.getElementById('editDeviceIdentifier').value = device.identifier;
+                document.getElementById('editDeviceType').value = device.type;
+                document.getElementById('editDeviceStatus').value = device.status;
+                document.getElementById('editDeviceAssigned').value = device.assigned.toString();
+                document.getElementById('editDevicePublic').value = device.public.toString();
+                document.getElementById('editDeviceDescription').value = device.description || '';
+                
+                // 显示编辑弹窗
+                document.getElementById('editDeviceModal').classList.remove('hidden');
+            }
+        }
+
         // 通知函数
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
@@ -716,6 +830,45 @@
 
             document.getElementById('cancelAssign').addEventListener('click', function() {
                 document.getElementById('assignGroupModal').classList.add('hidden');
+            });
+
+            // 编辑设备事件
+            document.getElementById('closeEditModal').addEventListener('click', function() {
+                document.getElementById('editDeviceModal').classList.add('hidden');
+            });
+
+            document.getElementById('cancelEditDevice').addEventListener('click', function() {
+                document.getElementById('editDeviceModal').classList.add('hidden');
+            });
+
+            document.getElementById('saveEditDevice').addEventListener('click', function() {
+                const form = document.getElementById('editDeviceForm');
+                const formData = new FormData(form);
+                
+                const deviceId = parseInt(formData.get('deviceId'));
+                const device = deviceData.find(d => d.id === deviceId);
+                
+                if (device && formData.get('deviceName')) {
+                    // 更新设备数据
+                    device.name = formData.get('deviceName');
+                    device.identifier = formData.get('deviceIdentifier');
+                    device.type = formData.get('deviceType');
+                    device.status = formData.get('deviceStatus');
+                    device.assigned = formData.get('deviceAssigned') === 'true';
+                    device.public = formData.get('devicePublic') === 'true';
+                    device.description = formData.get('deviceDescription');
+                    
+                    // 重新渲染表格
+                    renderDeviceTable();
+                    
+                    // 关闭弹窗
+                    document.getElementById('editDeviceModal').classList.add('hidden');
+                    
+                    // 显示成功信息
+                    showNotification('设备信息修改成功！', 'success');
+                } else {
+                    showNotification('请填写必填字段', 'error');
+                }
             });
 
             // 添加设备表单提交
