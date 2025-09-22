@@ -129,24 +129,6 @@
             </div>
         </div>
 
-        <!-- API性能监控图表 -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <!-- API调用趋势 -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">API调用趋势</h3>
-                <div class="relative h-64">
-                    <canvas id="apiTrendChart"></canvas>
-                </div>
-            </div>
-
-            <!-- 响应时间分布 -->
-            <div class="bg-white rounded-lg shadow-sm p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">响应时间分布</h3>
-                <div class="relative h-64">
-                    <canvas id="responseTimeChart"></canvas>
-                </div>
-            </div>
-        </div>
 
         <!-- API服务列表 -->
         <div class="bg-white rounded-lg shadow-sm">
@@ -177,6 +159,7 @@
                             <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">端点</th>
                             <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">方法</th>
                             <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">分类</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">调用系统</th>
                             <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">调用量</th>
                             <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">响应时间</th>
                             <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">状态</th>
@@ -191,6 +174,7 @@
                                 <span class="inline-flex px-2 py-1 text-xs font-medium method-get rounded-full">GET</span>
                             </td>
                             <td class="py-3 px-4 text-sm text-gray-600">实时数据</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">设备管理</td>
                             <td class="py-3 px-4 text-sm text-gray-600">45,233</td>
                             <td class="py-3 px-4 text-sm text-gray-600">95ms</td>
                             <td class="py-3 px-4">
@@ -219,6 +203,7 @@
                                 <span class="inline-flex px-2 py-1 text-xs font-medium method-post rounded-full">POST</span>
                             </td>
                             <td class="py-3 px-4 text-sm text-gray-600">历史数据</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">能源管理</td>
                             <td class="py-3 px-4 text-sm text-gray-600">12,567</td>
                             <td class="py-3 px-4 text-sm text-gray-600">245ms</td>
                             <td class="py-3 px-4">
@@ -247,6 +232,7 @@
                                 <span class="inline-flex px-2 py-1 text-xs font-medium method-post rounded-full">POST</span>
                             </td>
                             <td class="py-3 px-4 text-sm text-gray-600">数据订阅</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">生产管理</td>
                             <td class="py-3 px-4 text-sm text-gray-600">3,421</td>
                             <td class="py-3 px-4 text-sm text-gray-600">78ms</td>
                             <td class="py-3 px-4">
@@ -275,6 +261,7 @@
                                 <span class="inline-flex px-2 py-1 text-xs font-medium method-post rounded-full">POST</span>
                             </td>
                             <td class="py-3 px-4 text-sm text-gray-600">数据推送</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">质量管理</td>
                             <td class="py-3 px-4 text-sm text-gray-600">8,945</td>
                             <td class="py-3 px-4 text-sm text-gray-600">156ms</td>
                             <td class="py-3 px-4">
@@ -303,6 +290,7 @@
                                 <span class="inline-flex px-2 py-1 text-xs font-medium method-put rounded-full">PUT</span>
                             </td>
                             <td class="py-3 px-4 text-sm text-gray-600">设备管理</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">仓储管理</td>
                             <td class="py-3 px-4 text-sm text-gray-600">1,234</td>
                             <td class="py-3 px-4 text-sm text-gray-600">312ms</td>
                             <td class="py-3 px-4">
@@ -542,76 +530,6 @@ Content-Type: application/json</pre>
             alert('API文档功能');
         }
 
-        // 初始化图表
-        document.addEventListener('DOMContentLoaded', function() {
-            // API调用趋势图表
-            const ctx1 = document.getElementById('apiTrendChart').getContext('2d');
-            new Chart(ctx1, {
-                type: 'line',
-                data: {
-                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
-                    datasets: [
-                        {
-                            label: '总调用量',
-                            data: [45000, 52000, 68000, 85000, 92000, 78000, 65000],
-                            borderColor: '#3b82f6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            tension: 0.4
-                        },
-                        {
-                            label: '成功调用',
-                            data: [44100, 50960, 66640, 83300, 90080, 76440, 63700],
-                            borderColor: '#10b981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            tension: 0.4
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-
-            // 响应时间分布图表
-            const ctx2 = document.getElementById('responseTimeChart').getContext('2d');
-            new Chart(ctx2, {
-                type: 'doughnut',
-                data: {
-                    labels: ['< 100ms', '100-200ms', '200-500ms', '> 500ms'],
-                    datasets: [{
-                        data: [65, 25, 8, 2],
-                        backgroundColor: [
-                            '#10b981',
-                            '#3b82f6',
-                            '#f59e0b',
-                            '#ef4444'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#ffffff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-        });
 
         // 点击模态框外部关闭
         document.getElementById('apiDetailModal').addEventListener('click', function(e) {
