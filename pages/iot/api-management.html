@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API服务管理 - IOT平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .api-status-active { @apply bg-success text-white; }
+        .api-status-inactive { @apply bg-secondary text-white; }
+        .api-status-error { @apply bg-danger text-white; }
+        
+        .method-get { @apply bg-blue-100 text-blue-800; }
+        .method-post { @apply bg-green-100 text-green-800; }
+        .method-put { @apply bg-yellow-100 text-yellow-800; }
+        .method-delete { @apply bg-red-100 text-red-800; }
+        
+        .code-block {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 1rem;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.875rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="p-6">
+        <!-- 页面头部 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">API服务管理</h1>
+                <p class="text-gray-600">实时数据查询、历史数据查询、数据订阅与推送服务</p>
+            </div>
+            <div class="flex space-x-3">
+                <button onclick="showAddApiModal()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>
+                    新增API
+                </button>
+                <button onclick="testAllApis()" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-play mr-2"></i>
+                    批量测试
+                </button>
+                <button onclick="showApiDocs()" class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+                    <i class="fas fa-book mr-2"></i>
+                    API文档
+                </button>
+            </div>
+        </div>
+
+        <!-- API统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-primary">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">API总数</p>
+                        <p class="text-2xl font-bold text-primary">24</p>
+                        <p class="text-xs text-success mt-1">
+                            <i class="fas fa-arrow-up mr-1"></i>
+                            +3 本周新增
+                        </p>
+                    </div>
+                    <i class="fas fa-code text-primary text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-success">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">活跃API</p>
+                        <p class="text-2xl font-bold text-success">21</p>
+                        <p class="text-xs text-success mt-1">
+                            运行正常
+                        </p>
+                    </div>
+                    <i class="fas fa-check-circle text-success text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-warning">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">请求总量</p>
+                        <p class="text-2xl font-bold text-warning">1.2M</p>
+                        <p class="text-xs text-gray-500 mt-1">
+                            今日调用
+                        </p>
+                    </div>
+                    <i class="fas fa-chart-bar text-warning text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-danger">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">平均响应</p>
+                        <p class="text-2xl font-bold text-danger">125ms</p>
+                        <p class="text-xs text-success mt-1">
+                            性能良好
+                        </p>
+                    </div>
+                    <i class="fas fa-tachometer-alt text-danger text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- API性能监控图表 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- API调用趋势 -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">API调用趋势</h3>
+                <div class="relative h-64">
+                    <canvas id="apiTrendChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 响应时间分布 -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">响应时间分布</h3>
+                <div class="relative h-64">
+                    <canvas id="responseTimeChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- API服务列表 -->
+        <div class="bg-white rounded-lg shadow-sm">
+            <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-800">API服务列表</h3>
+                <div class="flex space-x-3">
+                    <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <option>全部分类</option>
+                        <option>实时数据</option>
+                        <option>历史数据</option>
+                        <option>设备管理</option>
+                        <option>数据订阅</option>
+                    </select>
+                    <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <option>全部状态</option>
+                        <option>活跃</option>
+                        <option>停用</option>
+                        <option>错误</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200 bg-gray-50">
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">API名称</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">端点</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">方法</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">分类</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">调用量</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">响应时间</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">状态</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">获取设备实时数据</td>
+                            <td class="py-3 px-4 text-xs font-mono text-gray-600">/api/devices/{id}/realtime</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium method-get rounded-full">GET</span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">实时数据</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">45,233</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">95ms</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium api-status-active rounded-full">
+                                    活跃
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button onclick="testApi('/api/devices/{id}/realtime')" class="text-primary hover:text-primary-light text-sm" title="测试API">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button onclick="showApiDetails('realtime-data')" class="text-gray-600 hover:text-gray-800 text-sm" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button onclick="editApi('realtime-data')" class="text-warning hover:text-yellow-600 text-sm" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">查询历史数据</td>
+                            <td class="py-3 px-4 text-xs font-mono text-gray-600">/api/devices/{id}/history</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium method-post rounded-full">POST</span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">历史数据</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">12,567</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">245ms</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium api-status-active rounded-full">
+                                    活跃
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button onclick="testApi('/api/devices/{id}/history')" class="text-primary hover:text-primary-light text-sm" title="测试API">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button onclick="showApiDetails('history-data')" class="text-gray-600 hover:text-gray-800 text-sm" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button onclick="editApi('history-data')" class="text-warning hover:text-yellow-600 text-sm" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">创建数据订阅</td>
+                            <td class="py-3 px-4 text-xs font-mono text-gray-600">/api/subscriptions</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium method-post rounded-full">POST</span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">数据订阅</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">3,421</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">78ms</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium api-status-active rounded-full">
+                                    活跃
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button onclick="testApi('/api/subscriptions')" class="text-primary hover:text-primary-light text-sm" title="测试API">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button onclick="showApiDetails('subscription')" class="text-gray-600 hover:text-gray-800 text-sm" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button onclick="editApi('subscription')" class="text-warning hover:text-yellow-600 text-sm" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">Webhook推送</td>
+                            <td class="py-3 px-4 text-xs font-mono text-gray-600">/api/webhooks</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium method-post rounded-full">POST</span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">数据推送</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">8,945</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">156ms</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium api-status-active rounded-full">
+                                    活跃
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button onclick="testApi('/api/webhooks')" class="text-primary hover:text-primary-light text-sm" title="测试API">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button onclick="showApiDetails('webhook')" class="text-gray-600 hover:text-gray-800 text-sm" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button onclick="editApi('webhook')" class="text-warning hover:text-yellow-600 text-sm" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">设备控制命令</td>
+                            <td class="py-3 px-4 text-xs font-mono text-gray-600">/api/devices/{id}/control</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium method-put rounded-full">PUT</span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">设备管理</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">1,234</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">312ms</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium api-status-error rounded-full">
+                                    错误
+                                </span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button onclick="testApi('/api/devices/{id}/control')" class="text-primary hover:text-primary-light text-sm" title="测试API">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button onclick="showApiDetails('device-control')" class="text-gray-600 hover:text-gray-800 text-sm" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button onclick="editApi('device-control')" class="text-warning hover:text-yellow-600 text-sm" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- API详情模态框 -->
+    <div id="apiDetailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-800">API详情</h3>
+                    <button onclick="hideApiDetailModal()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- API基本信息 -->
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-800 mb-3">基本信息</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-600">API名称</label>
+                                    <p class="text-sm text-gray-800" id="apiName">获取设备实时数据</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-600">端点URL</label>
+                                    <p class="text-sm font-mono text-gray-800" id="apiUrl">/api/devices/{id}/realtime</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-600">HTTP方法</label>
+                                    <span class="inline-flex px-2 py-1 text-xs font-medium method-get rounded-full" id="apiMethod">GET</span>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-600">描述</label>
+                                    <p class="text-sm text-gray-800" id="apiDescription">获取指定设备的实时数据，包括传感器读数、设备状态等</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 请求参数 -->
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-800 mb-3">请求参数</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-600">路径参数</label>
+                                    <div class="code-block">
+                                        <div class="text-sm">
+                                            <span class="text-blue-600">id</span> (string) - 设备ID
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-600">查询参数</label>
+                                    <div class="code-block">
+                                        <div class="text-sm space-y-1">
+                                            <div><span class="text-blue-600">fields</span> (array) - 返回字段，可选</div>
+                                            <div><span class="text-blue-600">format</span> (string) - 数据格式：json|xml</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 示例代码 -->
+                    <div class="mt-6">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-3">请求示例</h4>
+                        <div class="code-block">
+                            <pre class="text-sm">GET /api/devices/INV-001-23456/realtime?fields=temperature,pressure,voltage&format=json
+
+Headers:
+Authorization: Bearer YOUR_API_TOKEN
+Content-Type: application/json</pre>
+                        </div>
+                    </div>
+
+                    <!-- 响应示例 -->
+                    <div class="mt-6">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-3">响应示例</h4>
+                        <div class="code-block">
+                            <pre class="text-sm">{
+  "success": true,
+  "data": {
+    "deviceId": "INV-001-23456",
+    "timestamp": "2024-01-15T10:30:25.123Z",
+    "temperature": 45.2,
+    "pressure": 1.25,
+    "voltage": 220.8,
+    "status": "online"
+  },
+  "meta": {
+    "responseTime": "95ms",
+    "dataPoints": 4
+  }
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增API模态框 -->
+    <div id="addApiModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">新增API服务</h3>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">API名称</label>
+                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入API名称">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">HTTP方法</label>
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option>GET</option>
+                                <option>POST</option>
+                                <option>PUT</option>
+                                <option>DELETE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">端点URL</label>
+                        <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="/api/...">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">分类</label>
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option>实时数据</option>
+                                <option>历史数据</option>
+                                <option>设备管理</option>
+                                <option>数据订阅</option>
+                                <option>数据推送</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">认证方式</label>
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option>Bearer Token</option>
+                                <option>API Key</option>
+                                <option>Basic Auth</option>
+                                <option>无认证</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">API描述</label>
+                        <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" rows="3" placeholder="请输入API功能描述"></textarea>
+                    </div>
+                </div>
+                <div class="p-6 border-t border-gray-200 flex justify-end space-x-3">
+                    <button onclick="hideAddApiModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        取消
+                    </button>
+                    <button onclick="saveApi()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700">
+                        保存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示API详情
+        function showApiDetails(apiId) {
+            document.getElementById('apiDetailModal').classList.remove('hidden');
+        }
+
+        // 隐藏API详情
+        function hideApiDetailModal() {
+            document.getElementById('apiDetailModal').classList.add('hidden');
+        }
+
+        // 显示新增API模态框
+        function showAddApiModal() {
+            document.getElementById('addApiModal').classList.remove('hidden');
+        }
+
+        // 隐藏新增API模态框
+        function hideAddApiModal() {
+            document.getElementById('addApiModal').classList.add('hidden');
+        }
+
+        // 保存API
+        function saveApi() {
+            alert('API已保存');
+            hideAddApiModal();
+        }
+
+        // 测试API
+        function testApi(endpoint) {
+            alert('测试API: ' + endpoint + '\n状态: 正常\n响应时间: 95ms');
+        }
+
+        // 编辑API
+        function editApi(apiId) {
+            alert('编辑API: ' + apiId);
+        }
+
+        // 批量测试API
+        function testAllApis() {
+            if (confirm('确定要测试所有API吗？')) {
+                alert('批量测试已启动，请等待结果...');
+            }
+        }
+
+        // 显示API文档
+        function showApiDocs() {
+            alert('API文档功能');
+        }
+
+        // 初始化图表
+        document.addEventListener('DOMContentLoaded', function() {
+            // API调用趋势图表
+            const ctx1 = document.getElementById('apiTrendChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+                    datasets: [
+                        {
+                            label: '总调用量',
+                            data: [45000, 52000, 68000, 85000, 92000, 78000, 65000],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: '成功调用',
+                            data: [44100, 50960, 66640, 83300, 90080, 76440, 63700],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // 响应时间分布图表
+            const ctx2 = document.getElementById('responseTimeChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['< 100ms', '100-200ms', '200-500ms', '> 500ms'],
+                    datasets: [{
+                        data: [65, 25, 8, 2],
+                        backgroundColor: [
+                            '#10b981',
+                            '#3b82f6',
+                            '#f59e0b',
+                            '#ef4444'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+
+        // 点击模态框外部关闭
+        document.getElementById('apiDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideApiDetailModal();
+            }
+        });
+
+        document.getElementById('addApiModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideAddApiModal();
+            }
+        });
+
+        // 模拟实时数据更新
+        setInterval(() => {
+            // 更新API调用量
+            const callCount = document.querySelector('.text-warning.text-2xl.font-bold');
+            if (callCount && Math.random() < 0.2) {
+                const current = parseFloat(callCount.textContent);
+                const newCount = (current + Math.random() * 0.1).toFixed(1);
+                callCount.textContent = newCount + 'M';
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
