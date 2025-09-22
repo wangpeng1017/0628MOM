@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据处理分析 - IOT平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .processing-animation {
+            animation: processing 3s ease-in-out infinite;
+        }
+        
+        @keyframes processing {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        .data-flow {
+            animation: flow 2s linear infinite;
+        }
+        
+        @keyframes flow {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="p-6">
+        <!-- 页面头部 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">数据处理与分析</h1>
+                <p class="text-gray-600">实时数据清洗、转换、聚合与智能分析</p>
+            </div>
+            <div class="flex space-x-3">
+                <button onclick="startProcessing()" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-play mr-2"></i>
+                    开始处理
+                </button>
+                <button onclick="pauseProcessing()" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors">
+                    <i class="fas fa-pause mr-2"></i>
+                    暂停处理
+                </button>
+                <button onclick="showConfigModal()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-cog mr-2"></i>
+                    处理配置
+                </button>
+            </div>
+        </div>
+
+        <!-- 处理状态概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-primary">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">处理速度</p>
+                        <p class="text-2xl font-bold text-primary">15.8k/s</p>
+                        <p class="text-xs text-success mt-1">
+                            <i class="fas fa-arrow-up mr-1"></i>
+                            处理中
+                        </p>
+                    </div>
+                    <div class="processing-animation">
+                        <i class="fas fa-microchip text-primary text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-success">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">清洗率</p>
+                        <p class="text-2xl font-bold text-success">98.7%</p>
+                        <p class="text-xs text-success mt-1">
+                            数据质量良好
+                        </p>
+                    </div>
+                    <i class="fas fa-filter text-success text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-warning">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">异常数据</p>
+                        <p class="text-2xl font-bold text-warning">156</p>
+                        <p class="text-xs text-warning mt-1">
+                            已自动处理
+                        </p>
+                    </div>
+                    <i class="fas fa-exclamation-triangle text-warning text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-secondary">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">存储大小</p>
+                        <p class="text-2xl font-bold text-secondary">2.4TB</p>
+                        <p class="text-xs text-gray-500 mt-1">
+                            使用率 68%
+                        </p>
+                    </div>
+                    <i class="fas fa-database text-secondary text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据处理流程图 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-6">数据处理流程</h3>
+            <div class="flex items-center justify-between">
+                <!-- 原始数据 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-database text-blue-600 text-2xl"></i>
+                    </div>
+                    <p class="text-sm font-medium text-gray-800">原始数据</p>
+                    <p class="text-xs text-gray-500">Raw Data</p>
+                </div>
+
+                <!-- 箭头 -->
+                <div class="flex-1 relative mx-4">
+                    <div class="h-1 bg-gray-300 relative overflow-hidden rounded">
+                        <div class="h-full bg-primary data-flow absolute w-8"></div>
+                    </div>
+                    <i class="fas fa-arrow-right text-primary absolute -right-2 -top-2"></i>
+                </div>
+
+                <!-- 数据清洗 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-filter text-green-600 text-2xl"></i>
+                    </div>
+                    <p class="text-sm font-medium text-gray-800">数据清洗</p>
+                    <p class="text-xs text-gray-500">Data Cleaning</p>
+                </div>
+
+                <!-- 箭头 -->
+                <div class="flex-1 relative mx-4">
+                    <div class="h-1 bg-gray-300 relative overflow-hidden rounded">
+                        <div class="h-full bg-primary data-flow absolute w-8" style="animation-delay: 0.5s;"></div>
+                    </div>
+                    <i class="fas fa-arrow-right text-primary absolute -right-2 -top-2"></i>
+                </div>
+
+                <!-- 数据转换 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-exchange-alt text-purple-600 text-2xl"></i>
+                    </div>
+                    <p class="text-sm font-medium text-gray-800">数据转换</p>
+                    <p class="text-xs text-gray-500">Transform</p>
+                </div>
+
+                <!-- 箭头 -->
+                <div class="flex-1 relative mx-4">
+                    <div class="h-1 bg-gray-300 relative overflow-hidden rounded">
+                        <div class="h-full bg-primary data-flow absolute w-8" style="animation-delay: 1s;"></div>
+                    </div>
+                    <i class="fas fa-arrow-right text-primary absolute -right-2 -top-2"></i>
+                </div>
+
+                <!-- 数据聚合 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-layer-group text-orange-600 text-2xl"></i>
+                    </div>
+                    <p class="text-sm font-medium text-gray-800">数据聚合</p>
+                    <p class="text-xs text-gray-500">Aggregation</p>
+                </div>
+
+                <!-- 箭头 -->
+                <div class="flex-1 relative mx-4">
+                    <div class="h-1 bg-gray-300 relative overflow-hidden rounded">
+                        <div class="h-full bg-primary data-flow absolute w-8" style="animation-delay: 1.5s;"></div>
+                    </div>
+                    <i class="fas fa-arrow-right text-primary absolute -right-2 -top-2"></i>
+                </div>
+
+                <!-- 数据存储 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-lg flex items-center justify-center mb-3">
+                        <i class="fas fa-save text-indigo-600 text-2xl"></i>
+                    </div>
+                    <p class="text-sm font-medium text-gray-800">数据存储</p>
+                    <p class="text-xs text-gray-500">Storage</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 处理任务和分析图表 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- 处理性能监控 -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">处理性能监控</h3>
+                <div class="relative h-64">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 数据质量分析 -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">数据质量分析</h3>
+                <div class="relative h-64">
+                    <canvas id="qualityChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 处理任务列表 -->
+        <div class="bg-white rounded-lg shadow-sm">
+            <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-800">数据处理任务</h3>
+                <div class="flex space-x-3">
+                    <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <option>全部状态</option>
+                        <option>运行中</option>
+                        <option>已暂停</option>
+                        <option>已完成</option>
+                        <option>失败</option>
+                    </select>
+                    <button onclick="showAddTaskModal()" class="bg-primary text-white px-3 py-2 rounded-lg text-sm hover:bg-blue-700">
+                        <i class="fas fa-plus mr-1"></i>
+                        新建任务
+                    </button>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200 bg-gray-50">
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">任务名称</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">数据源</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">处理类型</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">处理速度</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">完成度</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">状态</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">开始时间</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">温度数据实时清洗</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">温度传感器集群</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                                    实时清洗
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">2.4k/s</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-success h-2 rounded-full" style="width: 85%"></div>
+                                    </div>
+                                    <span class="text-xs text-gray-600">85%</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-success rounded-full mr-2 processing-animation"></div>
+                                    <span class="text-success text-sm font-medium">运行中</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">10:25:33</td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="text-primary hover:text-primary-light text-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-warning hover:text-yellow-600 text-sm">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">压力数据聚合分析</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">压力传感器网络</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">
+                                    数据聚合
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">1.8k/s</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-success h-2 rounded-full" style="width: 92%"></div>
+                                    </div>
+                                    <span class="text-xs text-gray-600">92%</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-success rounded-full mr-2 processing-animation"></div>
+                                    <span class="text-success text-sm font-medium">运行中</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">09:15:22</td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="text-primary hover:text-primary-light text-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-warning hover:text-yellow-600 text-sm">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">历史数据归档</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">全部数据源</td>
+                            <td class="py-3 px-4">
+                                <span class="inline-flex px-2 py-1 text-xs font-medium bg-indigo-100 text-indigo-800 rounded-full">
+                                    数据归档
+                                </span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">5.2k/s</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                        <div class="bg-success h-2 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                    <span class="text-xs text-gray-600">100%</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-success rounded-full mr-2"></div>
+                                    <span class="text-success text-sm font-medium">已完成</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">08:30:15</td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="text-primary hover:text-primary-light text-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-success hover:text-green-600 text-sm">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 处理配置模态框 -->
+    <div id="configModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">数据处理配置</h3>
+                </div>
+                <div class="p-6 space-y-6">
+                    <!-- 清洗规则配置 -->
+                    <div>
+                        <h4 class="text-md font-semibold text-gray-800 mb-3">数据清洗规则</h4>
+                        <div class="space-y-3">
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 mr-3" checked>
+                                <span class="text-sm text-gray-700">移除异常值（超出正常范围3倍标准差）</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 mr-3" checked>
+                                <span class="text-sm text-gray-700">填充缺失值（使用线性插值）</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="checkbox" class="rounded border-gray-300 mr-3">
+                                <span class="text-sm text-gray-700">去重处理（基于时间戳和设备ID）</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 转换规则配置 -->
+                    <div>
+                        <h4 class="text-md font-semibold text-gray-800 mb-3">数据转换规则</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">时间格式</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                    <option>ISO 8601</option>
+                                    <option>Unix时间戳</option>
+                                    <option>本地时间格式</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">数值精度</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                    <option>2位小数</option>
+                                    <option>3位小数</option>
+                                    <option>4位小数</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 聚合配置 -->
+                    <div>
+                        <h4 class="text-md font-semibold text-gray-800 mb-3">数据聚合配置</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">聚合周期</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                    <option>1分钟</option>
+                                    <option>5分钟</option>
+                                    <option>15分钟</option>
+                                    <option>1小时</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">聚合函数</label>
+                                <select class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                                    <option>平均值</option>
+                                    <option>最大值</option>
+                                    <option>最小值</option>
+                                    <option>总和</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 border-t border-gray-200 flex justify-end space-x-3">
+                    <button onclick="hideConfigModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        取消
+                    </button>
+                    <button onclick="saveConfig()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700">
+                        保存配置
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示配置模态框
+        function showConfigModal() {
+            document.getElementById('configModal').classList.remove('hidden');
+        }
+
+        // 隐藏配置模态框
+        function hideConfigModal() {
+            document.getElementById('configModal').classList.add('hidden');
+        }
+
+        // 保存配置
+        function saveConfig() {
+            alert('数据处理配置已保存');
+            hideConfigModal();
+        }
+
+        // 开始处理
+        function startProcessing() {
+            alert('开始数据处理');
+        }
+
+        // 暂停处理
+        function pauseProcessing() {
+            if (confirm('确定要暂停数据处理吗？')) {
+                alert('数据处理已暂停');
+            }
+        }
+
+        // 初始化图表
+        document.addEventListener('DOMContentLoaded', function() {
+            // 处理性能监控图表
+            const ctx1 = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['10:00', '10:15', '10:30', '10:45', '11:00', '11:15', '11:30'],
+                    datasets: [
+                        {
+                            label: '处理速度 (k/s)',
+                            data: [12.5, 15.2, 18.7, 16.3, 19.1, 17.8, 15.8],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: '延迟 (ms)',
+                            data: [25, 18, 12, 22, 10, 15, 20],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            position: 'left'
+                        },
+                        y1: {
+                            beginAtZero: true,
+                            position: 'right',
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 数据质量分析图表
+            const ctx2 = document.getElementById('qualityChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['有效数据', '异常数据', '缺失数据', '重复数据'],
+                    datasets: [{
+                        data: [87.3, 8.2, 3.1, 1.4],
+                        backgroundColor: [
+                            '#10b981',
+                            '#ef4444',
+                            '#f59e0b',
+                            '#6b7280'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+
+        // 点击模态框外部关闭
+        document.getElementById('configModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideConfigModal();
+            }
+        });
+
+        // 模拟实时数据更新
+        setInterval(() => {
+            // 更新处理速度
+            const speedElement = document.querySelector('.text-primary.text-2xl.font-bold');
+            if (speedElement && Math.random() < 0.3) {
+                const baseSpeed = 15.8;
+                const newSpeed = (baseSpeed + (Math.random() - 0.5) * 2).toFixed(1);
+                speedElement.textContent = newSpeed + 'k/s';
+            }
+        }, 2000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备监控 - IOT平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .status-online { background-color: #10b981; }
+        .status-offline { background-color: #6b7280; }
+        .status-fault { background-color: #ef4444; }
+        .status-maintenance { background-color: #f59e0b; }
+        
+        .device-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .device-card {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="p-6">
+        <!-- 页面头部 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">设备状态监控</h1>
+                <p class="text-gray-600">实时监控逆变器生产设备运行状态</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 text-sm">
+                    <span class="status-indicator status-online"></span>
+                    <span class="text-gray-600">在线: 25</span>
+                </div>
+                <div class="flex items-center space-x-2 text-sm">
+                    <span class="status-indicator status-offline"></span>
+                    <span class="text-gray-600">离线: 2</span>
+                </div>
+                <div class="flex items-center space-x-2 text-sm">
+                    <span class="status-indicator status-fault"></span>
+                    <span class="text-gray-600">故障: 1</span>
+                </div>
+                <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-sync mr-2"></i>
+                    刷新状态
+                </button>
+            </div>
+        </div>
+
+        <!-- 实时状态概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-success">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">在线设备</p>
+                        <p class="text-2xl font-bold text-success">25</p>
+                        <p class="text-xs text-success mt-1">运行正常</p>
+                    </div>
+                    <i class="fas fa-check-circle text-success text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-secondary">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">离线设备</p>
+                        <p class="text-2xl font-bold text-secondary">2</p>
+                        <p class="text-xs text-gray-500 mt-1">需要检查</p>
+                    </div>
+                    <i class="fas fa-wifi-slash text-secondary text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-danger">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">故障设备</p>
+                        <p class="text-2xl font-bold text-danger">1</p>
+                        <p class="text-xs text-danger mt-1">需要维修</p>
+                    </div>
+                    <i class="fas fa-exclamation-triangle text-danger text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-warning">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">维护设备</p>
+                        <p class="text-2xl font-bold text-warning">0</p>
+                        <p class="text-xs text-gray-500 mt-1">计划维护</p>
+                    </div>
+                    <i class="fas fa-tools text-warning text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- 筛选器 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                <div class="md:col-span-2">
+                    <input type="text" placeholder="搜索设备名称或资产编号..." 
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option>全部设备类型</option>
+                        <option>涂覆机</option>
+                        <option>悬臂吊</option>
+                        <option>伺服压力机</option>
+                        <option>机器人</option>
+                        <option>自动化设备</option>
+                    </select>
+                </div>
+                <div>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option>全部状态</option>
+                        <option>在线</option>
+                        <option>离线</option>
+                        <option>故障</option>
+                        <option>维护</option>
+                    </select>
+                </div>
+                <div>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option>全部供应商</option>
+                        <option>欧力</option>
+                        <option>普洛赛斯</option>
+                        <option>鼎泰</option>
+                        <option>豪钢</option>
+                        <option>布斯威</option>
+                    </select>
+                </div>
+                <div>
+                    <button class="w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-search mr-2"></i>
+                        搜索
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备监控卡片网格 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- 涂覆机1线 -->
+            <div class="device-card bg-white rounded-lg shadow-sm p-6 cursor-pointer" onclick="showDeviceDetail('1200000527')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <span class="status-indicator status-online"></span>
+                        <span class="text-sm font-medium text-success">在线</span>
+                    </div>
+                    <i class="fas fa-industry text-primary text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">涂覆机1线</h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <p><span class="font-medium">资产编号:</span> 1200000527</p>
+                    <p><span class="font-medium">设备型号:</span> OL-450ZS2</p>
+                    <p><span class="font-medium">供应商:</span> 欧力</p>
+                    <p><span class="font-medium">运行状态:</span> 正常运行</p>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-green-50 p-2 rounded">
+                        <p class="text-green-600 font-medium">效率: 98.5%</p>
+                    </div>
+                    <div class="bg-blue-50 p-2 rounded">
+                        <p class="text-blue-600 font-medium">温度: 45°C</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 涂覆机2-1线 -->
+            <div class="device-card bg-white rounded-lg shadow-sm p-6 cursor-pointer" onclick="showDeviceDetail('1200000528')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <span class="status-indicator status-online"></span>
+                        <span class="text-sm font-medium text-success">在线</span>
+                    </div>
+                    <i class="fas fa-industry text-primary text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">涂覆机2-1线</h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <p><span class="font-medium">资产编号:</span> 1200000528</p>
+                    <p><span class="font-medium">设备型号:</span> OL-450ZS2/定制</p>
+                    <p><span class="font-medium">供应商:</span> 欧力</p>
+                    <p><span class="font-medium">运行状态:</span> 正常运行</p>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-green-50 p-2 rounded">
+                        <p class="text-green-600 font-medium">效率: 96.8%</p>
+                    </div>
+                    <div class="bg-blue-50 p-2 rounded">
+                        <p class="text-blue-600 font-medium">温度: 48°C</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 悬臂吊1 -->
+            <div class="device-card bg-white rounded-lg shadow-sm p-6 cursor-pointer" onclick="showDeviceDetail('1600000211')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <span class="status-indicator status-online"></span>
+                        <span class="text-sm font-medium text-success">在线</span>
+                    </div>
+                    <i class="fas fa-crane text-primary text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">悬臂吊</h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <p><span class="font-medium">资产编号:</span> 1600000211</p>
+                    <p><span class="font-medium">设备型号:</span> 125KG-L2m-H3.4m</p>
+                    <p><span class="font-medium">供应商:</span> 豪钢</p>
+                    <p><span class="font-medium">运行状态:</span> 待机中</p>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-yellow-50 p-2 rounded">
+                        <p class="text-yellow-600 font-medium">负载: 0%</p>
+                    </div>
+                    <div class="bg-gray-50 p-2 rounded">
+                        <p class="text-gray-600 font-medium">待机</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 伺服压力机 -->
+            <div class="device-card bg-white rounded-lg shadow-sm p-6 cursor-pointer" onclick="showDeviceDetail('1200000529')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <span class="status-indicator status-fault"></span>
+                        <span class="text-sm font-medium text-danger">故障</span>
+                    </div>
+                    <i class="fas fa-hammer text-danger text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">伺服压力机</h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <p><span class="font-medium">资产编号:</span> 1200000529</p>
+                    <p><span class="font-medium">设备型号:</span> BSW08</p>
+                    <p><span class="font-medium">供应商:</span> 布斯威</p>
+                    <p><span class="font-medium">运行状态:</span> <span class="text-danger font-medium">压力异常</span></p>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-red-50 p-2 rounded">
+                        <p class="text-red-600 font-medium">告警: 压力超限</p>
+                    </div>
+                    <div class="bg-red-50 p-2 rounded">
+                        <p class="text-red-600 font-medium">需维修</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 散热器安装机器人 -->
+            <div class="device-card bg-white rounded-lg shadow-sm p-6 cursor-pointer" onclick="showDeviceDetail('1200000559-2')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <span class="status-indicator status-online"></span>
+                        <span class="text-sm font-medium text-success">在线</span>
+                    </div>
+                    <i class="fas fa-robot text-primary text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">6轴机器人</h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <p><span class="font-medium">资产编号:</span> 1200000559-2</p>
+                    <p><span class="font-medium">设备型号:</span> 定制</p>
+                    <p><span class="font-medium">供应商:</span> 鼎泰</p>
+                    <p><span class="font-medium">运行状态:</span> 散热器安装中</p>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-green-50 p-2 rounded">
+                        <p class="text-green-600 font-medium">精度: ±0.02mm</p>
+                    </div>
+                    <div class="bg-blue-50 p-2 rounded">
+                        <p class="text-blue-600 font-medium">速度: 85%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 自动升降车 -->
+            <div class="device-card bg-white rounded-lg shadow-sm p-6 cursor-pointer" onclick="showDeviceDetail('1200000591')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <span class="status-indicator status-offline"></span>
+                        <span class="text-sm font-medium text-secondary">离线</span>
+                    </div>
+                    <i class="fas fa-truck-loading text-secondary text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">自动升降车</h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <p><span class="font-medium">资产编号:</span> 1200000591</p>
+                    <p><span class="font-medium">设备型号:</span> EST 1.5T</p>
+                    <p><span class="font-medium">供应商:</span> 中力</p>
+                    <p><span class="font-medium">运行状态:</span> 通信中断</p>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-gray-50 p-2 rounded">
+                        <p class="text-gray-600 font-medium">最后在线: 2小时前</p>
+                    </div>
+                    <div class="bg-gray-50 p-2 rounded">
+                        <p class="text-gray-600 font-medium">需检查</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 电感自动螺丝机 -->
+            <div class="device-card bg-white rounded-lg shadow-sm p-6 cursor-pointer" onclick="showDeviceDetail('1200000559-3')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <span class="status-indicator status-online"></span>
+                        <span class="text-sm font-medium text-success">在线</span>
+                    </div>
+                    <i class="fas fa-screwdriver text-primary text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">电感螺丝机</h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <p><span class="font-medium">资产编号:</span> 1200000559-3</p>
+                    <p><span class="font-medium">设备型号:</span> 定制</p>
+                    <p><span class="font-medium">供应商:</span> 鼎泰</p>
+                    <p><span class="font-medium">运行状态:</span> 自动拧紧中</p>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-green-50 p-2 rounded">
+                        <p class="text-green-600 font-medium">扭矩: 标准</p>
+                    </div>
+                    <div class="bg-blue-50 p-2 rounded">
+                        <p class="text-blue-600 font-medium">效率: 92%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 自动老化设备 -->
+            <div class="device-card bg-white rounded-lg shadow-sm p-6 cursor-pointer" onclick="showDeviceDetail('1200000559-6')">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <span class="status-indicator status-online"></span>
+                        <span class="text-sm font-medium text-success">在线</span>
+                    </div>
+                    <i class="fas fa-thermometer-half text-primary text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">自动老化设备</h3>
+                <div class="space-y-2 text-sm text-gray-600">
+                    <p><span class="font-medium">资产编号:</span> 1200000559-6</p>
+                    <p><span class="font-medium">设备型号:</span> 定制</p>
+                    <p><span class="font-medium">供应商:</span> 鼎泰</p>
+                    <p><span class="font-medium">运行状态:</span> 老化测试中</p>
+                </div>
+                <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+                    <div class="bg-orange-50 p-2 rounded">
+                        <p class="text-orange-600 font-medium">温度: 65°C</p>
+                    </div>
+                    <div class="bg-purple-50 p-2 rounded">
+                        <p class="text-purple-600 font-medium">时间: 2.5h</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 加载更多按钮 -->
+        <div class="text-center mt-8">
+            <button class="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors">
+                <i class="fas fa-chevron-down mr-2"></i>
+                加载更多设备
+            </button>
+        </div>
+    </div>
+
+    <!-- 设备详情模态框 -->
+    <div id="deviceDetailModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-lg max-w-4xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-800">设备详情</h3>
+                    <button onclick="hideDeviceDetail()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- 设备基本信息 -->
+                        <div class="space-y-4">
+                            <h4 class="text-lg font-semibold text-gray-800">基本信息</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg space-y-2">
+                                <p><span class="font-medium text-gray-600">设备名称:</span> <span id="deviceName">涂覆机1线</span></p>
+                                <p><span class="font-medium text-gray-600">资产编号:</span> <span id="deviceAssetId">1200000527</span></p>
+                                <p><span class="font-medium text-gray-600">设备型号:</span> <span id="deviceModel">OL-450ZS2</span></p>
+                                <p><span class="font-medium text-gray-600">供应商:</span> <span id="deviceSupplier">欧力</span></p>
+                                <p><span class="font-medium text-gray-600">购入日期:</span> <span id="devicePurchaseDate">2022.07</span></p>
+                                <p><span class="font-medium text-gray-600">当前状态:</span> <span id="deviceStatus" class="text-success font-medium">在线运行</span></p>
+                            </div>
+                        </div>
+
+                        <!-- 实时数据 -->
+                        <div class="space-y-4">
+                            <h4 class="text-lg font-semibold text-gray-800">实时监控数据</h4>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-green-50 p-4 rounded-lg text-center">
+                                    <p class="text-green-600 text-2xl font-bold">98.5%</p>
+                                    <p class="text-sm text-gray-600">设备效率</p>
+                                </div>
+                                <div class="bg-blue-50 p-4 rounded-lg text-center">
+                                    <p class="text-blue-600 text-2xl font-bold">45°C</p>
+                                    <p class="text-sm text-gray-600">工作温度</p>
+                                </div>
+                                <div class="bg-purple-50 p-4 rounded-lg text-center">
+                                    <p class="text-purple-600 text-2xl font-bold">7.2kW</p>
+                                    <p class="text-sm text-gray-600">功率消耗</p>
+                                </div>
+                                <div class="bg-orange-50 p-4 rounded-lg text-center">
+                                    <p class="text-orange-600 text-2xl font-bold">156</p>
+                                    <p class="text-sm text-gray-600">今日产量</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 历史趋势图表 -->
+                    <div class="mt-6">
+                        <h4 class="text-lg font-semibold text-gray-800 mb-4">24小时运行趋势</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <canvas id="deviceTrendChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示设备详情
+        function showDeviceDetail(assetId) {
+            // 这里可以根据assetId加载具体的设备数据
+            document.getElementById('deviceDetailModal').classList.remove('hidden');
+            
+            // 初始化趋势图表
+            setTimeout(() => {
+                initDeviceTrendChart();
+            }, 100);
+        }
+
+        // 隐藏设备详情
+        function hideDeviceDetail() {
+            document.getElementById('deviceDetailModal').classList.add('hidden');
+        }
+
+        // 初始化设备趋势图表
+        function initDeviceTrendChart() {
+            const ctx = document.getElementById('deviceTrendChart');
+            if (!ctx) return;
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00', '12:00', '14:00', '16:00', '18:00', '20:00', '22:00'],
+                    datasets: [
+                        {
+                            label: '设备效率 (%)',
+                            data: [95, 94, 96, 98, 97, 98.5, 99, 98, 97, 98.2, 97.8, 98.5],
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: '温度 (°C)',
+                            data: [42, 41, 43, 45, 46, 45, 47, 48, 46, 45, 44, 45],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // 点击模态框外部关闭
+        document.getElementById('deviceDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideDeviceDetail();
+            }
+        });
+
+        // 模拟实时数据更新
+        setInterval(() => {
+            // 随机更新一些设备状态
+            const onlineCount = document.querySelector('.text-success.text-2xl.font-bold');
+            if (onlineCount && Math.random() < 0.1) {
+                const current = parseInt(onlineCount.textContent);
+                onlineCount.textContent = current + (Math.random() > 0.5 ? 1 : -1);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

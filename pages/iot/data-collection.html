@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据采集 - IOT平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .protocol-badge {
+            @apply inline-flex px-2 py-1 text-xs font-medium rounded-full;
+        }
+        .protocol-mqtt { @apply bg-blue-100 text-blue-800; }
+        .protocol-opcua { @apply bg-purple-100 text-purple-800; }
+        .protocol-modbus { @apply bg-green-100 text-green-800; }
+        .protocol-http { @apply bg-orange-100 text-orange-800; }
+        .protocol-coap { @apply bg-indigo-100 text-indigo-800; }
+        
+        .data-flow-animation {
+            animation: dataFlow 2s ease-in-out infinite;
+        }
+        
+        @keyframes dataFlow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="p-6">
+        <!-- 页面头部 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">数据采集管理</h1>
+                <p class="text-gray-600">多协议数据接入、实时采集与边缘计算处理</p>
+            </div>
+            <div class="flex space-x-3">
+                <button onclick="startCollectionTask()" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-play mr-2"></i>
+                    开始采集
+                </button>
+                <button onclick="stopCollectionTask()" class="bg-danger text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                    <i class="fas fa-stop mr-2"></i>
+                    停止采集
+                </button>
+                <button onclick="showAddTaskModal()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-plus mr-2"></i>
+                    新增任务
+                </button>
+            </div>
+        </div>
+
+        <!-- 数据采集统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-primary">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">数据点数量</p>
+                        <p class="text-2xl font-bold text-primary">15,247</p>
+                        <p class="text-xs text-success mt-1">
+                            <i class="fas fa-arrow-up mr-1"></i>
+                            +328 今日新增
+                        </p>
+                    </div>
+                    <i class="fas fa-database text-primary text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-success">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">采集频率</p>
+                        <p class="text-2xl font-bold text-success">2.4k/s</p>
+                        <p class="text-xs text-success mt-1">
+                            实时采集中
+                        </p>
+                    </div>
+                    <i class="fas fa-tachometer-alt text-success text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-warning">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">存储容量</p>
+                        <p class="text-2xl font-bold text-warning">1.8TB</p>
+                        <p class="text-xs text-gray-500 mt-1">
+                            使用率: 72%
+                        </p>
+                    </div>
+                    <i class="fas fa-hdd text-warning text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-danger">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">异常数据</p>
+                        <p class="text-2xl font-bold text-danger">23</p>
+                        <p class="text-xs text-danger mt-1">
+                            需要处理
+                        </p>
+                    </div>
+                    <i class="fas fa-exclamation-triangle text-danger text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据流监控面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <!-- 实时数据流 -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">实时数据流监控</h3>
+                <div class="relative h-64">
+                    <canvas id="dataFlowChart"></canvas>
+                </div>
+            </div>
+
+            <!-- 协议分布 -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">通信协议分布</h3>
+                <div class="relative h-64">
+                    <canvas id="protocolChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据采集任务列表 -->
+        <div class="bg-white rounded-lg shadow-sm">
+            <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-800">数据采集任务</h3>
+                <div class="flex space-x-3">
+                    <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <option>全部状态</option>
+                        <option>运行中</option>
+                        <option>已停止</option>
+                        <option>异常</option>
+                    </select>
+                    <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <option>全部协议</option>
+                        <option>MQTT</option>
+                        <option>OPC UA</option>
+                        <option>Modbus TCP</option>
+                        <option>HTTP/HTTPS</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200 bg-gray-50">
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">任务名称</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">数据源</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">协议</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">采集频率</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">数据点数</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">状态</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">最后采集</th>
+                            <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">涂覆机数据采集</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">192.168.1.101</td>
+                            <td class="py-3 px-4">
+                                <span class="protocol-badge protocol-mqtt">MQTT</span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">1秒</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">125</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-success rounded-full mr-2 data-flow-animation"></div>
+                                    <span class="text-success text-sm font-medium">运行中</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">2秒前</td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="text-primary hover:text-primary-light text-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-warning hover:text-yellow-600 text-sm">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">温度传感器采集</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">192.168.1.102</td>
+                            <td class="py-3 px-4">
+                                <span class="protocol-badge protocol-modbus">Modbus TCP</span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">5秒</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">8</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-success rounded-full mr-2 data-flow-animation"></div>
+                                    <span class="text-success text-sm font-medium">运行中</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">3秒前</td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="text-primary hover:text-primary-light text-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-warning hover:text-yellow-600 text-sm">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">智能电表数据</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">192.168.1.103</td>
+                            <td class="py-3 px-4">
+                                <span class="protocol-badge protocol-opcua">OPC UA</span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">10秒</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">45</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-secondary rounded-full mr-2"></div>
+                                    <span class="text-secondary text-sm font-medium">已停止</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">30分钟前</td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="text-primary hover:text-primary-light text-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-success hover:text-green-600 text-sm">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">机器人状态采集</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">192.168.1.201</td>
+                            <td class="py-3 px-4">
+                                <span class="protocol-badge protocol-http">HTTP</span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">2秒</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">68</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-success rounded-full mr-2 data-flow-animation"></div>
+                                    <span class="text-success text-sm font-medium">运行中</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">1秒前</td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="text-primary hover:text-primary-light text-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-warning hover:text-yellow-600 text-sm">
+                                        <i class="fas fa-pause"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="py-3 px-4 text-sm font-medium text-gray-800">压力机参数采集</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">192.168.1.205</td>
+                            <td class="py-3 px-4">
+                                <span class="protocol-badge protocol-modbus">Modbus TCP</span>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">3秒</td>
+                            <td class="py-3 px-4 text-sm text-gray-600">32</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-2 bg-danger rounded-full mr-2"></div>
+                                    <span class="text-danger text-sm font-medium">异常</span>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4 text-sm text-gray-600">5分钟前</td>
+                            <td class="py-3 px-4">
+                                <div class="flex space-x-2">
+                                    <button class="text-primary hover:text-primary-light text-sm">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-success hover:text-green-600 text-sm">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                    <button class="text-gray-600 hover:text-gray-800 text-sm">
+                                        <i class="fas fa-cog"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页 -->
+            <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-600">
+                    显示第 1-5 条，共 23 条记录
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+                        上一页
+                    </button>
+                    <button class="px-3 py-2 bg-primary text-white rounded-lg text-sm">
+                        1
+                    </button>
+                    <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+                        2
+                    </button>
+                    <button class="px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+                        下一页
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增采集任务模态框 -->
+    <div id="addTaskModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6 border-b border-gray-200">
+                    <h3 class="text-lg font-semibold text-gray-800">新增数据采集任务</h3>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">任务名称</label>
+                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="请输入任务名称">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">数据源地址</label>
+                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="192.168.1.100">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">通信协议</label>
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option>MQTT</option>
+                                <option>OPC UA</option>
+                                <option>Modbus TCP</option>
+                                <option>HTTP/HTTPS</option>
+                                <option>CoAP</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">端口号</label>
+                            <input type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="1883">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">采集频率</label>
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option>1秒</option>
+                                <option>2秒</option>
+                                <option>5秒</option>
+                                <option>10秒</option>
+                                <option>30秒</option>
+                                <option>1分钟</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">数据点配置</label>
+                        <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" rows="4" placeholder="请输入数据点配置（JSON格式）&#10;例如：&#10;{&#10;  &quot;temperature&quot;: &quot;40001&quot;,&#10;  &quot;pressure&quot;: &quot;40002&quot;,&#10;  &quot;voltage&quot;: &quot;40003&quot;&#10;}"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">认证方式</label>
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option>无认证</option>
+                                <option>用户名密码</option>
+                                <option>证书认证</option>
+                                <option>Token认证</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">数据存储</label>
+                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option>时序数据库</option>
+                                <option>关系数据库</option>
+                                <option>文件存储</option>
+                                <option>消息队列</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6 border-t border-gray-200 flex justify-end space-x-3">
+                    <button onclick="hideAddTaskModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                        取消
+                    </button>
+                    <button onclick="saveTask()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700">
+                        保存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示新增任务模态框
+        function showAddTaskModal() {
+            document.getElementById('addTaskModal').classList.remove('hidden');
+        }
+
+        // 隐藏新增任务模态框
+        function hideAddTaskModal() {
+            document.getElementById('addTaskModal').classList.add('hidden');
+        }
+
+        // 保存任务
+        function saveTask() {
+            alert('采集任务保存成功！');
+            hideAddTaskModal();
+        }
+
+        // 开始采集任务
+        function startCollectionTask() {
+            alert('开始所有采集任务');
+        }
+
+        // 停止采集任务
+        function stopCollectionTask() {
+            if (confirm('确定要停止所有采集任务吗？')) {
+                alert('已停止所有采集任务');
+            }
+        }
+
+        // 初始化图表
+        document.addEventListener('DOMContentLoaded', function() {
+            // 实时数据流图表
+            const ctx1 = document.getElementById('dataFlowChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['10:00', '10:05', '10:10', '10:15', '10:20', '10:25', '10:30'],
+                    datasets: [{
+                        label: '数据点/分钟',
+                        data: [2200, 2400, 2300, 2500, 2350, 2400, 2600],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+
+            // 协议分布图表
+            const ctx2 = document.getElementById('protocolChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['MQTT', 'Modbus TCP', 'OPC UA', 'HTTP/HTTPS', 'CoAP'],
+                    datasets: [{
+                        data: [45, 25, 15, 10, 5],
+                        backgroundColor: [
+                            '#3b82f6',
+                            '#10b981',
+                            '#8b5cf6',
+                            '#f59e0b',
+                            '#6366f1'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+
+        // 点击模态框外部关闭
+        document.getElementById('addTaskModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideAddTaskModal();
+            }
+        });
+
+        // 模拟实时数据更新
+        setInterval(() => {
+            // 更新数据点数量
+            const dataPoints = document.querySelector('.text-primary.text-2xl.font-bold');
+            if (dataPoints && Math.random() < 0.3) {
+                const current = parseInt(dataPoints.textContent.replace(',', ''));
+                const newValue = current + Math.floor(Math.random() * 10);
+                dataPoints.textContent = newValue.toLocaleString();
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
