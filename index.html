@@ -379,10 +379,10 @@
 
             <!-- 右侧内容区域 -->
             <main class="flex-1 flex flex-col">
-                <!-- 内容标题栏 (仅在非首页时显示) -->
-                <div id="page-title-bar" class="bg-white border-b border-gray-200 px-6 py-4" style="display: none;">
+                <!-- 内容标题栏 (已禁用，避免信息重复) -->
+                <!-- <div id="page-title-bar" class="bg-white border-b border-gray-200 px-6 py-4" style="display: none;">
                     <h2 id="page-title" class="text-xl font-semibold text-gray-800">首页</h2>
-                </div>
+                </div> -->
 
                 <!-- 内容iframe -->
                 <div class="flex-1 p-6">
@@ -791,21 +791,17 @@
                 targetButton.classList.remove('border-transparent', 'text-gray-600');
             }
 
-            // 控制左侧导航栏和页面标题栏的显示/隐藏
+            // 控制左侧导航栏的显示/隐藏
             const sidebarNav = document.getElementById('sidebar-nav');
-            const pageTitleBar = document.getElementById('page-title-bar');
 
             if (moduleId === 'dashboard') {
-                // 首页模块：隐藏左侧导航栏和页面标题栏
+                // 首页模块：隐藏左侧导航栏
                 sidebarNav.style.display = 'none';
-                pageTitleBar.style.display = 'none';
                 // 直接加载首页
                 loadSubPage(config.url, config.title);
-                document.getElementById('page-title').textContent = config.title;
             } else {
-                // 其他模块：显示左侧导航栏和页面标题栏
+                // 其他模块：显示左侧导航栏，隐藏重复的页面标题栏
                 sidebarNav.style.display = 'flex';
-                pageTitleBar.style.display = 'block';
                 // 更新左侧二级菜单
                 updateSubMenu(config.subMenus);
 
@@ -815,23 +811,14 @@
                     if (firstMenu.subItems && firstMenu.subItems.length > 0) {
                         // 如果有三级菜单，加载第一个三级菜单项
                         loadSubPage(firstMenu.subItems[0].url, firstMenu.subItems[0].name);
-                        document.getElementById('page-title').textContent = firstMenu.subItems[0].name;
                     } else if (firstMenu.url) {
                         // 如果没有三级菜单但有URL，直接加载二级菜单
                         loadSubPage(firstMenu.url, firstMenu.name);
-                        document.getElementById('page-title').textContent = firstMenu.name;
-                    } else {
-                        // 如果没有URL，显示模块标题
-                        document.getElementById('page-title').textContent = config.title;
                     }
                 } else {
                     // 如果没有子菜单，直接加载模块主页面
                     if (config.url) {
                         loadSubPage(config.url, config.title);
-                        document.getElementById('page-title').textContent = config.title;
-                    } else {
-                        // 如果没有URL，显示模块标题
-                        document.getElementById('page-title').textContent = config.title;
                     }
                 }
             }
