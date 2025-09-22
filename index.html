@@ -180,181 +180,232 @@
         #sidebar-nav.collapsed .sub-nav-item:hover .tooltip {
             opacity: 1;
         }
+
+        /* 合并导航栏的响应式样式 */
+        .compact-header {
+            min-height: 60px;
+        }
+        
+        /* 导航按钮紧凑样式 */
+        .module-nav-item {
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        
+        /* 小屏幕下的调整 */
+        @media (max-width: 1024px) {
+            .compact-header .flex {
+                gap: 0.5rem;
+            }
+            
+            .module-nav-item span {
+                font-size: 0.75rem;
+            }
+            
+            .module-nav-item {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            #platformDescription {
+                display: none;
+            }
+            
+            .module-nav-item span {
+                display: none;
+            }
+            
+            .module-nav-item {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
     <!-- 主容器 -->
     <div class="flex flex-col h-screen">
         <!-- 顶部导航栏 -->
-        <header class="bg-white shadow-sm border-b border-gray-200">
-            <!-- Logo和系统标题 -->
-            <div class="px-6 py-4 border-b border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                            <i class="fas fa-industry text-white text-lg"></i>
+        <header class="bg-white shadow-sm border-b border-gray-200 compact-header">
+            <!-- 合并的标题栏和导航栏 -->
+            <div class="px-6 py-3 flex items-center justify-between">
+                <!-- 左侧：Logo和系统标题 -->
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-3 flex-shrink-0">
+                        <div class="w-9 h-9 bg-primary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-industry text-white text-base"></i>
                         </div>
                         <div>
-                            <h1 id="platformTitle" class="text-xl font-bold text-gray-800">数字工厂一体化平台</h1>
-                            <p id="platformDescription" class="text-xs text-gray-500 mt-1">Digital Factory Platform</p>
+                            <h1 id="platformTitle" class="text-lg font-bold text-gray-800 leading-tight">数字工厂一体化平台</h1>
+                            <p id="platformDescription" class="text-xs text-gray-500 leading-none">Digital Factory Platform</p>
                         </div>
                     </div>
 
-                    <!-- 用户界面 -->
-                    <div class="flex items-center space-x-4">
-                        <!-- 系统状态和时间 -->
-                        <div class="hidden lg:flex items-center space-x-4 text-sm text-gray-500">
-                            <div class="flex items-center space-x-2">
-                                <div class="w-2 h-2 bg-success rounded-full"></div>
-                                <span>系统正常</span>
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <i class="fas fa-clock"></i>
-                                <span id="current-time"></span>
+                    <!-- 中间：一级模块导航 -->
+                    <nav class="relative flex-1 ml-8 mr-8">
+                        <!-- 左滚动按钮 -->
+                        <button id="nav-scroll-left" class="absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-white to-transparent z-10 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors" onclick="scrollNavigation('left')" style="display: none;">
+                            <i class="fas fa-chevron-left text-sm"></i>
+                        </button>
+
+                        <!-- 右滚动按钮 -->
+                        <button id="nav-scroll-right" class="absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent z-10 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors" onclick="scrollNavigation('right')" style="display: none;">
+                            <i class="fas fa-chevron-right text-sm"></i>
+                        </button>
+
+                        <!-- 导航容器 -->
+                        <div id="nav-container" class="overflow-x-auto scrollbar-hide" style="scroll-behavior: smooth;">
+                            <div id="nav-content" class="flex space-x-6 min-w-max">
+                            <button onclick="switchModule('dashboard')"
+                                    class="module-nav-item active flex items-center space-x-2 px-3 py-2 border-b-2 border-primary text-primary font-medium text-sm">
+                                <i class="fas fa-home text-sm"></i>
+                                <span>首页</span>
+                            </button>
+                            <button onclick="switchModule('planning')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-calendar-alt text-sm"></i>
+                                <span>计划管理</span>
+                            </button>
+                            <button onclick="switchModule('production')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-cogs text-sm"></i>
+                                <span>生产管理</span>
+                            </button>
+                            <button onclick="switchModule('inventory')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-boxes text-sm"></i>
+                                <span>仓储管理</span>
+                            </button>
+                            <button onclick="switchModule('logistics')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-truck text-sm"></i>
+                                <span>厂内物流</span>
+                            </button>
+                            <button onclick="switchModule('quality')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-check-circle text-sm"></i>
+                                <span>质量管理</span>
+                            </button>
+                            <button onclick="switchModule('equipment')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-tools text-sm"></i>
+                                <span>设备管理</span>
+                            </button>
+                            <button onclick="switchModule('ioc')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-desktop text-sm"></i>
+                                <span>IOC中心</span>
+                            </button>
+                            <button onclick="switchModule('security')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-shield-alt text-sm"></i>
+                                <span>智慧安防</span>
+                            </button>
+                            <button onclick="switchModule('access')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-key text-sm"></i>
+                                <span>便捷通行</span>
+                            </button>
+                            <button onclick="switchModule('energy-park')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-bolt text-sm"></i>
+                                <span>高效能源</span>
+                            </button>
+                            <button onclick="switchModule('space')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-map text-sm"></i>
+                                <span>空间资产</span>
+                            </button>
+                            <button onclick="switchModule('environment')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-leaf text-sm"></i>
+                                <span>绿色环保</span>
+                            </button>
+                            <button onclick="switchModule('service')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-concierge-bell text-sm"></i>
+                                <span>综合服务</span>
+                            </button>
+                            <button onclick="switchModule('logistics-park')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-truck text-sm"></i>
+                                <span>物流调度</span>
+                            </button>
+                            <button onclick="switchModule('iot')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-microchip text-sm"></i>
+                                <span>IOT平台</span>
+                            </button>
+                            <button onclick="switchModule('masterdata')"
+                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
+                                <i class="fas fa-database text-sm"></i>
+                                <span>主数据</span>
+                            </button>
                             </div>
                         </div>
+                    </nav>
+                </div>
 
+                <!-- 右侧：用户界面 -->
+                <div class="flex items-center space-x-4 flex-shrink-0">
+                    <!-- 系统状态和时间 -->
+                    <div class="hidden lg:flex items-center space-x-3 text-sm text-gray-500">
+                        <div class="flex items-center space-x-1">
+                            <div class="w-2 h-2 bg-success rounded-full"></div>
+                            <span class="text-xs">系统正常</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <i class="fas fa-clock text-xs"></i>
+                            <span id="current-time" class="text-xs"></span>
+                        </div>
+                    </div>
 
+                    <!-- 用户头像和下拉菜单 -->
+                    <div class="relative">
+                        <button id="userMenuButton" class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-lg transition-colors">
+                            <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-white text-xs"></i>
+                            </div>
+                            <span id="currentUser" class="text-sm font-medium text-gray-700 hidden sm:block">admin</span>
+                            <i class="fas fa-chevron-down text-gray-500 text-xs"></i>
+                        </button>
 
-                        <!-- 用户头像和下拉菜单 -->
-                        <div class="relative">
-                            <button id="userMenuButton" class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-lg transition-colors">
-                                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                                    <i class="fas fa-user text-white text-sm"></i>
-                                </div>
-                                <span id="currentUser" class="text-sm font-medium text-gray-700 hidden sm:block">admin</span>
-                                <i class="fas fa-chevron-down text-gray-500 text-xs"></i>
-                            </button>
-
-                            <!-- 下拉菜单 -->
-                            <div id="userDropdown" class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden">
-                                <div class="p-4 border-b border-gray-100">
-                                    <div class="flex items-center space-x-3">
-                                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                                            <i class="fas fa-user text-white"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-medium text-gray-800">管理员</p>
-                                            <p class="text-sm text-gray-500">admin</p>
-                                        </div>
+                        <!-- 下拉菜单 -->
+                        <div id="userDropdown" class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden">
+                            <div class="p-4 border-b border-gray-100">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user text-white"></i>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-800">管理员</p>
+                                        <p class="text-sm text-gray-500">admin</p>
                                     </div>
                                 </div>
-                                <div class="p-2">
-                                    <div class="px-3 py-2 text-sm text-gray-600">
-                                        <i class="fas fa-cogs mr-2 text-gray-400"></i>
-                                        <span>当前版本：</span>
-                                        <span id="currentVersion" class="font-medium text-primary">通用行业</span>
-                                    </div>
-                                    <div class="px-3 py-2 text-sm text-gray-600">
-                                        <i class="fas fa-clock mr-2 text-gray-400"></i>
-                                        <span>登录时间：</span>
-                                        <span id="loginTime" class="text-gray-500">--</span>
-                                    </div>
-                                    <hr class="my-2">
-                                    <button id="logoutButton" class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded transition-colors">
-                                        <i class="fas fa-sign-out-alt mr-2"></i>
-                                        退出登录
-                                    </button>
+                            </div>
+                            <div class="p-2">
+                                <div class="px-3 py-2 text-sm text-gray-600">
+                                    <i class="fas fa-cogs mr-2 text-gray-400"></i>
+                                    <span>当前版本：</span>
+                                    <span id="currentVersion" class="font-medium text-primary">通用行业</span>
                                 </div>
+                                <div class="px-3 py-2 text-sm text-gray-600">
+                                    <i class="fas fa-clock mr-2 text-gray-400"></i>
+                                    <span>登录时间：</span>
+                                    <span id="loginTime" class="text-gray-500">--</span>
+                                </div>
+                                <hr class="my-2">
+                                <button id="logoutButton" class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded transition-colors">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>
+                                    退出登录
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- 一级模块导航 -->
-            <nav class="px-6 relative">
-                <!-- 左滚动按钮 -->
-                <button id="nav-scroll-left" class="absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-white to-transparent z-10 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors" onclick="scrollNavigation('left')" style="display: none;">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-
-                <!-- 右滚动按钮 -->
-                <button id="nav-scroll-right" class="absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent z-10 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors" onclick="scrollNavigation('right')" style="display: none;">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-
-                <!-- 导航容器 -->
-                <div id="nav-container" class="overflow-x-auto scrollbar-hide" style="scroll-behavior: smooth;">
-                    <div id="nav-content" class="flex space-x-8 min-w-max">
-                    <button onclick="switchModule('dashboard')"
-                            class="module-nav-item active flex items-center space-x-2 px-4 py-3 border-b-2 border-primary text-primary font-medium">
-                        <i class="fas fa-home"></i>
-                        <span>首页</span>
-                    </button>
-                    <button onclick="switchModule('planning')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>计划管理</span>
-                    </button>
-                    <button onclick="switchModule('production')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-cogs"></i>
-                        <span>生产管理</span>
-                    </button>
-                    <button onclick="switchModule('inventory')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-boxes"></i>
-                        <span>仓储管理</span>
-                    </button>
-                    <button onclick="switchModule('logistics')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-truck"></i>
-                        <span>厂内物流</span>
-                    </button>
-                    <button onclick="switchModule('quality')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-check-circle"></i>
-                        <span>质量管理</span>
-                    </button>
-                    <button onclick="switchModule('equipment')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-tools"></i>
-                        <span>设备管理</span>
-                    </button>
-                    <button onclick="switchModule('ioc')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-desktop"></i>
-                        <span>IOC中心</span>
-                    </button>
-                    <button onclick="switchModule('security')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>智慧安防</span>
-                    </button>
-                    <button onclick="switchModule('access')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-key"></i>
-                        <span>便捷通行</span>
-                    </button>
-                    <button onclick="switchModule('energy-park')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-bolt"></i>
-                        <span>高效能源</span>
-                    </button>
-                    <button onclick="switchModule('space')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-map"></i>
-                        <span>空间资产</span>
-                    </button>
-                    <button onclick="switchModule('environment')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-leaf"></i>
-                        <span>绿色环保</span>
-                    </button>
-                    <button onclick="switchModule('service')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-concierge-bell"></i>
-                        <span>综合服务</span>
-                    </button>
-                    <button onclick="switchModule('logistics-park')"
-                            class="module-nav-item flex items-center space-x-2 px-4 py-3 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium">
-                        <i class="fas fa-truck"></i>
-                        <span>物流调度</span>
-                    </button>
-                    </div>
-                </div>
-            </nav>
         </header>
 
         <!-- 主内容区域 -->
