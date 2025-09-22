@@ -44,24 +44,26 @@
             display: none;  /* Chrome, Safari and Opera */
         }
 
-        /* 导航滚动按钮样式 */
-        #nav-scroll-left, #nav-scroll-right {
-            transition: opacity 0.3s ease;
+        /* 更多导航下拉菜单样式 */
+        #moreNavDropdown {
+            animation: dropdownFadeIn 0.2s ease-out;
         }
-
-        /* 导航容器样式 */
-        #nav-container {
-            padding-left: 0;
-            padding-right: 0;
+        
+        @keyframes dropdownFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-
-        /* 当显示滚动按钮时调整导航容器的padding */
-        .nav-with-scroll-left #nav-container {
-            padding-left: 32px;
-        }
-
-        .nav-with-scroll-right #nav-container {
-            padding-right: 32px;
+        
+        /* 导航按钮紧凑样式优化 */
+        .module-nav-item:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-radius: 4px;
         }
 
         /* 左侧导航收起/展开功能样式 */
@@ -244,105 +246,102 @@
                     </div>
 
                     <!-- 中间：一级模块导航 -->
-                    <nav class="relative flex-1 ml-8 mr-8">
-                        <!-- 左滚动按钮 -->
-                        <button id="nav-scroll-left" class="absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-white to-transparent z-10 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors" onclick="scrollNavigation('left')" style="display: none;">
-                            <i class="fas fa-chevron-left text-sm"></i>
-                        </button>
-
-                        <!-- 右滚动按钮 -->
-                        <button id="nav-scroll-right" class="absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent z-10 flex items-center justify-center text-gray-400 hover:text-gray-600 transition-colors" onclick="scrollNavigation('right')" style="display: none;">
-                            <i class="fas fa-chevron-right text-sm"></i>
-                        </button>
-
-                        <!-- 导航容器 -->
-                        <div id="nav-container" class="overflow-x-auto scrollbar-hide" style="scroll-behavior: smooth;">
-                            <div id="nav-content" class="flex space-x-6 min-w-max">
+                    <nav class="flex items-center space-x-1 flex-1 ml-6 mr-4">
+                        <!-- 主要导航项（固定显示7个） -->
+                        <div class="flex items-center space-x-1">
                             <button onclick="switchModule('dashboard')"
-                                    class="module-nav-item active flex items-center space-x-2 px-3 py-2 border-b-2 border-primary text-primary font-medium text-sm">
-                                <i class="fas fa-home text-sm"></i>
+                                    class="module-nav-item active flex items-center space-x-1 px-2 py-2 border-b-2 border-primary text-primary font-medium text-xs">
+                                <i class="fas fa-home text-xs"></i>
                                 <span>首页</span>
                             </button>
-                            <button onclick="switchModule('planning')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-calendar-alt text-sm"></i>
-                                <span>计划管理</span>
-                            </button>
                             <button onclick="switchModule('production')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-cogs text-sm"></i>
-                                <span>生产管理</span>
-                            </button>
-                            <button onclick="switchModule('inventory')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-boxes text-sm"></i>
-                                <span>仓储管理</span>
-                            </button>
-                            <button onclick="switchModule('logistics')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-truck text-sm"></i>
-                                <span>厂内物流</span>
+                                    class="module-nav-item flex items-center space-x-1 px-2 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-xs">
+                                <i class="fas fa-cogs text-xs"></i>
+                                <span>生产</span>
                             </button>
                             <button onclick="switchModule('quality')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-check-circle text-sm"></i>
-                                <span>质量管理</span>
+                                    class="module-nav-item flex items-center space-x-1 px-2 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-xs">
+                                <i class="fas fa-check-circle text-xs"></i>
+                                <span>质量</span>
                             </button>
                             <button onclick="switchModule('equipment')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-tools text-sm"></i>
-                                <span>设备管理</span>
+                                    class="module-nav-item flex items-center space-x-1 px-2 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-xs">
+                                <i class="fas fa-tools text-xs"></i>
+                                <span>设备</span>
                             </button>
-                            <button onclick="switchModule('ioc')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-desktop text-sm"></i>
-                                <span>IOC中心</span>
-                            </button>
-                            <button onclick="switchModule('security')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-shield-alt text-sm"></i>
-                                <span>智慧安防</span>
-                            </button>
-                            <button onclick="switchModule('access')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-key text-sm"></i>
-                                <span>便捷通行</span>
-                            </button>
-                            <button onclick="switchModule('energy-park')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-bolt text-sm"></i>
-                                <span>高效能源</span>
-                            </button>
-                            <button onclick="switchModule('space')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-map text-sm"></i>
-                                <span>空间资产</span>
-                            </button>
-                            <button onclick="switchModule('environment')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-leaf text-sm"></i>
-                                <span>绿色环保</span>
-                            </button>
-                            <button onclick="switchModule('service')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-concierge-bell text-sm"></i>
-                                <span>综合服务</span>
-                            </button>
-                            <button onclick="switchModule('logistics-park')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-truck text-sm"></i>
-                                <span>物流调度</span>
+                            <button onclick="switchModule('inventory')"
+                                    class="module-nav-item flex items-center space-x-1 px-2 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-xs">
+                                <i class="fas fa-boxes text-xs"></i>
+                                <span>仓储</span>
                             </button>
                             <button onclick="switchModule('iot')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-microchip text-sm"></i>
-                                <span>IOT平台</span>
+                                    class="module-nav-item flex items-center space-x-1 px-2 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-xs">
+                                <i class="fas fa-microchip text-xs"></i>
+                                <span>IOT</span>
                             </button>
-                            <button onclick="switchModule('masterdata')"
-                                    class="module-nav-item flex items-center space-x-2 px-3 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-sm">
-                                <i class="fas fa-database text-sm"></i>
-                                <span>主数据</span>
+                            <button onclick="switchModule('planning')"
+                                    class="module-nav-item flex items-center space-x-1 px-2 py-2 border-b-2 border-transparent text-gray-600 hover:text-gray-800 font-medium text-xs">
+                                <i class="fas fa-calendar-alt text-xs"></i>
+                                <span>计划</span>
                             </button>
+                        </div>
+
+                        <!-- 分割线 -->
+                        <div class="w-px h-6 bg-gray-300 mx-2"></div>
+
+                        <!-- 更多导航项（滚动显示） -->
+                        <div class="relative flex-shrink-0">
+                            <!-- 更多按钮 -->
+                            <button id="moreNavBtn" onclick="toggleMoreNav()" class="flex items-center space-x-1 px-2 py-2 text-gray-600 hover:text-gray-800 font-medium text-xs border-b-2 border-transparent hover:border-gray-300 transition-colors">
+                                <i class="fas fa-ellipsis-h text-xs"></i>
+                                <span>更多</span>
+                                <i id="moreNavIcon" class="fas fa-chevron-down text-xs transition-transform"></i>
+                            </button>
+
+                            <!-- 下拉导航菜单 -->
+                            <div id="moreNavDropdown" class="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
+                                <div class="py-2">
+                                    <button onclick="switchModule('logistics')" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm">
+                                        <i class="fas fa-truck text-sm text-gray-500"></i>
+                                        <span>厂内物流</span>
+                                    </button>
+                                    <button onclick="switchModule('ioc')" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm">
+                                        <i class="fas fa-desktop text-sm text-gray-500"></i>
+                                        <span>IOC中心</span>
+                                    </button>
+                                    <button onclick="switchModule('security')" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm">
+                                        <i class="fas fa-shield-alt text-sm text-gray-500"></i>
+                                        <span>智慧安防</span>
+                                    </button>
+                                    <button onclick="switchModule('access')" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm">
+                                        <i class="fas fa-key text-sm text-gray-500"></i>
+                                        <span>便捷通行</span>
+                                    </button>
+                                    <button onclick="switchModule('energy-park')" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm">
+                                        <i class="fas fa-bolt text-sm text-gray-500"></i>
+                                        <span>高效能源</span>
+                                    </button>
+                                    <button onclick="switchModule('space')" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm">
+                                        <i class="fas fa-map text-sm text-gray-500"></i>
+                                        <span>空间资产</span>
+                                    </button>
+                                    <button onclick="switchModule('environment')" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm">
+                                        <i class="fas fa-leaf text-sm text-gray-500"></i>
+                                        <span>绿色环保</span>
+                                    </button>
+                                    <button onclick="switchModule('service')" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm">
+                                        <i class="fas fa-concierge-bell text-sm text-gray-500"></i>
+                                        <span>综合服务</span>
+                                    </button>
+                                    <button onclick="switchModule('logistics-park')" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm">
+                                        <i class="fas fa-truck text-sm text-gray-500"></i>
+                                        <span>物流调度</span>
+                                    </button>
+                                    <button onclick="switchModule('masterdata')" class="flex items-center space-x-2 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left text-sm">
+                                        <i class="fas fa-database text-sm text-gray-500"></i>
+                                        <span>主数据平台</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </nav>
@@ -1184,9 +1183,6 @@
             // 初始化首页模块
             switchModule('dashboard');
 
-            // 初始化导航栏滚动功能
-            initNavigationScroll();
-
             // 延迟执行智慧园区可见性控制，确保所有DOM元素都已加载
             setTimeout(() => {
                 const loginData = localStorage.getItem('loginData') || sessionStorage.getItem('loginData');
@@ -1369,12 +1365,45 @@
             originalToggleSubItems(menuId);
         };
 
-        // 在页面加载完成后初始化侧边栏状态
+        // 更多导航菜单控制
+        let moreNavOpen = false;
+        
+        function toggleMoreNav() {
+            const dropdown = document.getElementById('moreNavDropdown');
+            const icon = document.getElementById('moreNavIcon');
+            
+            moreNavOpen = !moreNavOpen;
+            
+            if (moreNavOpen) {
+                dropdown.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                dropdown.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        // 点击外部关闭更多导航菜单
+        function closeMoreNavOnOutsideClick(event) {
+            const moreNavBtn = document.getElementById('moreNavBtn');
+            const moreNavDropdown = document.getElementById('moreNavDropdown');
+            
+            if (!moreNavBtn.contains(event.target) && !moreNavDropdown.contains(event.target)) {
+                if (moreNavOpen) {
+                    toggleMoreNav();
+                }
+            }
+        }
+
+        // 在页面加载完成后初始化侧边栏状态和更多导航功能
         document.addEventListener('DOMContentLoaded', function() {
             // 延迟初始化，确保所有元素都已加载
             setTimeout(() => {
                 initSidebarState();
             }, 100);
+            
+            // 添加全局点击事件监听器
+            document.addEventListener('click', closeMoreNavOnOutsideClick);
         });
     </script>
 
