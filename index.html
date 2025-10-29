@@ -373,23 +373,10 @@
                         </div>
                     </div>
 
-                    <!-- 系统信息显示 -->
-                    <div class="flex items-center space-x-4">
-                        <div class="hidden lg:flex items-center space-x-3 text-sm text-gray-500">
-                            <div class="flex items-center space-x-1">
-                                <div class="w-2 h-2 bg-success rounded-full"></div>
-                                <span class="text-xs">系统正常</span>
-                            </div>
-                            <div class="flex items-center space-x-1">
-                                <i class="fas fa-clock text-xs"></i>
-                                <span id="current-time" class="text-xs"></span>
-                            </div>
-                        </div>
-                        <!-- 版本信息 -->
-                        <div class="flex items-center space-x-2 px-3 py-1 bg-gray-100 rounded-lg">
-                            <i class="fas fa-cogs text-gray-500 text-xs"></i>
-                            <span class="text-xs font-medium text-gray-700">通用行业版</span>
-                        </div>
+                    <!-- 版本信息 -->
+                    <div class="flex items-center space-x-2 px-3 py-1 bg-gray-100 rounded-lg">
+                        <i class="fas fa-cogs text-gray-500 text-xs"></i>
+                        <span class="text-xs font-medium text-gray-700">逆变器行业版</span>
                     </div>
                 </div>
             </div>
@@ -1030,32 +1017,12 @@
             document.getElementById('current-time').textContent = timeString;
         }
 
-        // 行业版本配置
-        const industryVersions = {
-            general: {
-                id: 'general',
-                name: '通用行业',
-                title: '数字工厂一体化平台',
-                description: '基于变频器生产制造场景的智能制造执行系统'
-            },
-            automotive: {
-                id: 'automotive',
-                name: '汽车零部件行业',
-                title: '汽车零部件智能制造平台',
-                description: '专注汽车零部件制造的智能工厂管理系统'
-            },
-            optoelectronics: {
-                id: 'optoelectronics',
-                name: '光电行业',
-                title: '光电制造智能管理平台',
-                description: '面向光电器件制造的数字化工厂解决方案'
-            },
-            inverter: {
-                id: 'inverter',
-                name: '逆变器行业',
-                title: '逆变器智能制造平台',
-                description: '专业的逆变器生产制造管理系统'
-            }
+        // 固定版本配置 - 逆变器行业版
+        const systemVersion = {
+            id: 'inverter',
+            name: '逆变器行业版',
+            title: '逆变器智能制造平台',
+            description: '专业的逆变器生产制造管理系统'
         };
 
         // 移除所有登录相关函数
