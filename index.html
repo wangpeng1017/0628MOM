@@ -332,26 +332,34 @@
                             <div id="platformNavDropdown" class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
                                 <div class="py-2">
                                     <button onclick="switchModule('iot'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
-                                        <i class="fas fa-wifi text-cyan-600"></i>
+                                        <i class="fas fa-wifi text-cyan-600 w-5"></i>
                                         <span>IOT平台</span>
                                     </button>
                                     <button onclick="switchModule('lowcode'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
-                                        <i class="fas fa-code text-indigo-600"></i>
+                                        <i class="fas fa-code text-indigo-600 w-5"></i>
                                         <span>低代码平台</span>
                                     </button>
                                     <button onclick="switchModule('masterdata'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
-                                        <i class="fas fa-database text-gray-600"></i>
+                                        <i class="fas fa-database text-gray-600 w-5"></i>
                                         <span>主数据平台</span>
                                     </button>
-                                    <button onclick="window.open('https://imap.iimake.com/index/#/home', '_blank'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
-                                        <i class="fas fa-exchange-alt text-blue-600"></i>
-                                        <span>数据集成平台</span>
-                                        <i class="fas fa-external-link-alt text-xs text-gray-400 ml-auto"></i>
+                                    <!-- 外部链接按钮增加视觉区分 -->
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <button onclick="window.open('https://imap.iimake.com/index/#/home', '_blank'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-blue-50 w-full text-left transition-colors">
+                                        <i class="fas fa-exchange-alt text-blue-600 w-5"></i>
+                                        <div class="flex-1">
+                                            <span>数据集成平台</span>
+                                            <span class="block text-xs text-blue-500">数据同步、接口管理</span>
+                                        </div>
+                                        <i class="fas fa-external-link-alt text-xs text-blue-500 ml-2"></i>
                                     </button>
-                                    <button onclick="window.open('https://imap.iimake.com/index/#/home', '_blank'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
-                                        <i class="fas fa-cloud-upload-alt text-cyan-600"></i>
-                                        <span>慧图云平台</span>
-                                        <i class="fas fa-external-link-alt text-xs text-gray-400 ml-auto"></i>
+                                    <button onclick="window.open('https://imap.iimake.com/index/#/home', '_blank'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-cyan-50 w-full text-left transition-colors">
+                                        <i class="fas fa-cloud-upload-alt text-cyan-600 w-5"></i>
+                                        <div class="flex-1">
+                                            <span>慧图云平台</span>
+                                            <span class="block text-xs text-cyan-500">云端数据管理</span>
+                                        </div>
+                                        <i class="fas fa-external-link-alt text-xs text-cyan-500 ml-2"></i>
                                     </button>
                                 </div>
                             </div>
