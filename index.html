@@ -343,7 +343,7 @@
                                         <i class="fas fa-database text-gray-600"></i>
                                         <span>主数据平台</span>
                                     </button>
-                                    <button onclick="window.open('http://123.235.0.227:8081/login.html', '_blank'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="window.open('https://imap.iimake.com/index/#/home', '_blank'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-exchange-alt text-blue-600"></i>
                                         <span>数据集成平台</span>
                                         <i class="fas fa-external-link-alt text-xs text-gray-400 ml-auto"></i>
@@ -359,7 +359,7 @@
                     </nav>
                 </div>
 
-                <!-- 右侧：用户界面 -->
+                <!-- 右侧：系统信息 -->
                 <div class="flex items-center space-x-4 flex-shrink-0">
                     <!-- 系统状态和时间 -->
                     <div class="hidden lg:flex items-center space-x-3 text-sm text-gray-500">
@@ -373,46 +373,22 @@
                         </div>
                     </div>
 
-                    <!-- 用户头像和下拉菜单 -->
-                    <div class="relative">
-                        <button id="userMenuButton" class="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-lg transition-colors">
-                            <div class="w-7 h-7 bg-primary rounded-full flex items-center justify-center">
-                                <i class="fas fa-user text-white text-xs"></i>
+                    <!-- 系统信息显示 -->
+                    <div class="flex items-center space-x-4">
+                        <div class="hidden lg:flex items-center space-x-3 text-sm text-gray-500">
+                            <div class="flex items-center space-x-1">
+                                <div class="w-2 h-2 bg-success rounded-full"></div>
+                                <span class="text-xs">系统正常</span>
                             </div>
-                            <span id="currentUser" class="text-sm font-medium text-gray-700 hidden sm:block">admin</span>
-                            <i class="fas fa-chevron-down text-gray-500 text-xs"></i>
-                        </button>
-
-                        <!-- 下拉菜单 -->
-                        <div id="userDropdown" class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden">
-                            <div class="p-4 border-b border-gray-100">
-                                <div class="flex items-center space-x-3">
-                                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                                        <i class="fas fa-user text-white"></i>
-                                    </div>
-                                    <div>
-                                        <p class="font-medium text-gray-800">管理员</p>
-                                        <p class="text-sm text-gray-500">admin</p>
-                                    </div>
-                                </div>
+                            <div class="flex items-center space-x-1">
+                                <i class="fas fa-clock text-xs"></i>
+                                <span id="current-time" class="text-xs"></span>
                             </div>
-                            <div class="p-2">
-                                <div class="px-3 py-2 text-sm text-gray-600">
-                                    <i class="fas fa-cogs mr-2 text-gray-400"></i>
-                                    <span>当前版本：</span>
-                                    <span id="currentVersion" class="font-medium text-primary">通用行业</span>
-                                </div>
-                                <div class="px-3 py-2 text-sm text-gray-600">
-                                    <i class="fas fa-clock mr-2 text-gray-400"></i>
-                                    <span>登录时间：</span>
-                                    <span id="loginTime" class="text-gray-500">--</span>
-                                </div>
-                                <hr class="my-2">
-                                <button id="logoutButton" class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded transition-colors">
-                                    <i class="fas fa-sign-out-alt mr-2"></i>
-                                    退出登录
-                                </button>
-                            </div>
+                        </div>
+                        <!-- 版本信息 -->
+                        <div class="flex items-center space-x-2 px-3 py-1 bg-gray-100 rounded-lg">
+                            <i class="fas fa-cogs text-gray-500 text-xs"></i>
+                            <span class="text-xs font-medium text-gray-700">通用行业版</span>
                         </div>
                     </div>
                 </div>
@@ -1082,142 +1058,16 @@
             }
         };
 
-        // 检查登录状态
-        function checkLoginStatus() {
-            const loginData = localStorage.getItem('loginData') || sessionStorage.getItem('loginData');
-
-            if (!loginData) {
-                // 未登录，跳转到登录页面
-                window.location.href = 'login.html';
-                return false;
-            }
-
-            const data = JSON.parse(loginData);
-            if (!data.isLoggedIn) {
-                // 登录状态无效，跳转到登录页面
-                window.location.href = 'login.html';
-                return false;
-            }
-
-            // 更新界面显示
-            updateUserInterface(data);
-            return true;
-        }
-
-        // 更新用户界面
-        function updateUserInterface(loginData) {
-            const versionInfo = loginData.versionInfo || industryVersions.general;
-
-            // 更新页面标题（仅更新浏览器标题栏）
-            document.getElementById('pageTitle').textContent = versionInfo.title;
-
-            // 左上角系统名称保持固定显示"数字工厂一体化平台"
-            document.getElementById('platformTitle').textContent = '数字工厂一体化平台';
-            document.getElementById('platformDescription').textContent = 'Digital Factory Platform';
-
-            // 更新版本标识（仅更新用户菜单中的版本信息）
-            document.getElementById('currentVersion').textContent = versionInfo.name;
-
-            // 更新用户信息
-            document.getElementById('currentUser').textContent = loginData.username;
-
-            // 更新登录时间
-            if (loginData.loginTime) {
-                const loginTime = new Date(loginData.loginTime);
-                document.getElementById('loginTime').textContent = loginTime.toLocaleString('zh-CN');
-            }
-
-            // 根据行业版本控制智慧园区功能的显示/隐藏
-            updateSmartParkVisibility(versionInfo.id);
-        }
-
-        // 控制智慧园区功能的显示/隐藏
-        function updateSmartParkVisibility(versionId) {
-            console.log('updateSmartParkVisibility called with versionId:', versionId);
-            const isGeneralVersion = versionId === 'general';
-            console.log('isGeneralVersion:', isGeneralVersion);
-
-            // 智慧园区导航项ID列表
-            const smartParkNavIds = ['ioc', 'security', 'access', 'energy-park', 'space', 'environment', 'service', 'logistics-park'];
-
-            // 延迟执行以确保DOM元素已加载
-            setTimeout(() => {
-                // 控制顶部导航栏中智慧园区项的显示/隐藏
-                smartParkNavIds.forEach(navId => {
-                    const navButton = document.querySelector(`button[onclick="switchModule('${navId}')"]`);
-                    console.log(`Navigation button for ${navId}:`, navButton);
-                    if (navButton) {
-                        if (isGeneralVersion) {
-                            navButton.style.display = 'flex';
-                            console.log(`Showing navigation button for ${navId}`);
-                        } else {
-                            navButton.style.display = 'none';
-                            console.log(`Hiding navigation button for ${navId}`);
-                        }
-                    } else {
-                        console.warn(`Navigation button not found for ${navId}`);
-                    }
-                });
-            }, 100);
-        }
-
-        // 用户菜单切换
-        function toggleUserMenu() {
-            const dropdown = document.getElementById('userDropdown');
-            dropdown.classList.toggle('hidden');
-        }
-
-        // 退出登录
-        function logout() {
-            // 清除登录数据
-            localStorage.removeItem('loginData');
-            sessionStorage.removeItem('loginData');
-
-            // 跳转到登录页面
-            window.location.href = 'login.html';
-        }
-
-        // 点击外部关闭下拉菜单
-        document.addEventListener('click', function(event) {
-            const userMenuButton = document.getElementById('userMenuButton');
-            const userDropdown = document.getElementById('userDropdown');
-
-            if (!userMenuButton.contains(event.target) && !userDropdown.contains(event.target)) {
-                userDropdown.classList.add('hidden');
-            }
-        });
+        // 移除所有登录相关函数
 
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
-            // 检查登录状态
-            if (!checkLoginStatus()) {
-                return;
-            }
-
-            // 绑定用户菜单事件
-            document.getElementById('userMenuButton').addEventListener('click', toggleUserMenu);
-            document.getElementById('logoutButton').addEventListener('click', logout);
-
+            // 移除登录检查，直接初始化系统
             updateTime();
             setInterval(updateTime, 1000);
 
             // 初始化首页模块
             switchModule('dashboard');
-
-            // 延迟执行智慧园区可见性控制，确保所有DOM元素都已加载
-            setTimeout(() => {
-                const loginData = localStorage.getItem('loginData') || sessionStorage.getItem('loginData');
-                if (loginData) {
-                    try {
-                        const data = JSON.parse(loginData);
-                        const versionId = data.versionInfo ? data.versionInfo.id : 'general';
-                        console.log('Initializing smart park visibility for version:', versionId);
-                        updateSmartParkVisibility(versionId);
-                    } catch (error) {
-                        console.error('Error parsing login data:', error);
-                    }
-                }
-            }, 500);
         });
 
         // 导航栏滚动功能
