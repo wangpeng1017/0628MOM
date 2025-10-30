@@ -1,0 +1,309 @@
+<!-- 设备详情弹窗 -->
+<div id="modal-detail" class="modal">
+    <div class="bg-white rounded-lg w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl">
+        <div class="flex items-center justify-between p-6 border-b bg-gray-50">
+            <h2 class="text-xl font-bold text-gray-800">设备详情</h2>
+            <button onclick="closeModal('detail')" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="border-b">
+            <div class="flex px-6">
+                <button class="tab-button px-6 py-3 font-medium active" onclick="switchDetailTab('basic')">
+                    <i class="fas fa-info-circle mr-2"></i>基本信息
+                </button>
+                <button class="tab-button px-6 py-3 font-medium" onclick="switchDetailTab('tech')">
+                    <i class="fas fa-cog mr-2"></i>技术参数
+                </button>
+                <button class="tab-button px-6 py-3 font-medium" onclick="switchDetailTab('history')">
+                    <i class="fas fa-history mr-2"></i>设备履历
+                </button>
+                <button class="tab-button px-6 py-3 font-medium" onclick="switchDetailTab('files')">
+                    <i class="fas fa-folder-open mr-2"></i>附件文档
+                </button>
+                <button class="tab-button px-6 py-3 font-medium" onclick="switchDetailTab('maintenance')">
+                    <i class="fas fa-tools mr-2"></i>维保记录
+                </button>
+            </div>
+        </div>
+        <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 180px);">
+            <!-- 基本信息Tab -->
+            <div id="tab-basic">
+                <div class="grid grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-semibold text-lg mb-4 text-primary flex items-center">
+                            <i class="fas fa-database mr-2"></i>静态属性
+                        </h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">设备编码:</span><span class="font-medium text-gray-900" id="detail-code">EQ-2024-001</span></div>
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">设备名称:</span><span class="font-medium text-gray-900" id="detail-name">全自动贴片机</span></div>
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">设备型号:</span><span class="font-medium text-gray-900">YAMAHA YSM20R</span></div>
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">制造商:</span><span class="font-medium text-gray-900">雅马哈机器人</span></div>
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">采购日期:</span><span class="font-medium text-gray-900">2023-01-10</span></div>
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">原值:</span><span class="font-medium text-gray-900">¥1,280,000</span></div>
+                            <div class="flex py-2"><span class="w-32 text-gray-600">供应商:</span><span class="font-medium text-gray-900">上海雅马哈贸易有限公司</span></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-lg mb-4 text-success flex items-center">
+                            <i class="fas fa-sync-alt mr-2"></i>动态属性
+                        </h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">当前状态:</span><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs font-medium">在用</span></div>
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">物理位置:</span><span class="font-medium text-gray-900">宁波工厂/A车间/SMT-1号线</span></div>
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">责任人:</span><span class="font-medium text-gray-900">张工 (13800138000)</span></div>
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">启用日期:</span><span class="font-medium text-gray-900">2023-01-15</span></div>
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">累计运行:</span><span class="font-medium text-gray-900">9,520 小时</span></div>
+                            <div class="flex py-2 border-b"><span class="w-32 text-gray-600">净值:</span><span class="font-medium text-gray-900">¥684,000</span></div>
+                            <div class="flex py-2"><span class="w-32 text-gray-600">二维码:</span>
+                                <button class="text-primary hover:text-blue-700 text-sm font-medium transition-colors">
+                                    <i class="fas fa-qrcode mr-1"></i>查看/打印二维码
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 技术参数Tab -->
+            <div id="tab-tech" style="display:none;">
+                <h3 class="font-semibold text-lg mb-4 text-primary flex items-center">
+                    <i class="fas fa-cog mr-2"></i>技术参数
+                </h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                        <span class="text-gray-600 text-sm">额定功率:</span>
+                        <span class="ml-2 font-semibold text-gray-900">15 kW</span>
+                    </div>
+                    <div class="p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                        <span class="text-gray-600 text-sm">工作电压:</span>
+                        <span class="ml-2 font-semibold text-gray-900">380V 3相</span>
+                    </div>
+                    <div class="p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                        <span class="text-gray-600 text-sm">贴装速度:</span>
+                        <span class="ml-2 font-semibold text-gray-900">20,000 CPH</span>
+                    </div>
+                    <div class="p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                        <span class="text-gray-600 text-sm">贴装精度:</span>
+                        <span class="ml-2 font-semibold text-gray-900">±0.025mm</span>
+                    </div>
+                    <div class="p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                        <span class="text-gray-600 text-sm">PCB尺寸:</span>
+                        <span class="ml-2 font-semibold text-gray-900">50x50 ~ 510x460mm</span>
+                    </div>
+                    <div class="p-4 bg-blue-50 border border-blue-100 rounded-lg">
+                        <span class="text-gray-600 text-sm">元件范围:</span>
+                        <span class="ml-2 font-semibold text-gray-900">0201 ~ 74x74mm</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 设备履历Tab -->
+            <div id="tab-history" style="display:none;">
+                <h3 class="font-semibold text-lg mb-4 text-primary flex items-center">
+                    <i class="fas fa-history mr-2"></i>设备履历时间轴
+                </h3>
+                <div id="history-timeline">
+                    <!-- 将通过JS动态生成 -->
+                </div>
+            </div>
+            <!-- 附件文档Tab -->
+            <div id="tab-files" style="display:none;">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold text-lg text-primary flex items-center">
+                        <i class="fas fa-folder-open mr-2"></i>附件文档列表
+                    </h3>
+                    <button onclick="uploadAttachment()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                        <i class="fas fa-upload mr-2"></i>上传附件
+                    </button>
+                    <input type="file" id="attachment-file-input" style="display:none;" onchange="handleAttachmentUpload(event)">
+                </div>
+                <div id="attachments-list">
+                    <!-- 将通过JS动态生成 -->
+                </div>
+            </div>
+            <!-- 维保记录Tab -->
+            <div id="tab-maintenance" style="display:none;">
+                <h3 class="font-semibold text-lg mb-4 text-primary flex items-center">
+                    <i class="fas fa-tools mr-2"></i>维保记录
+                </h3>
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50 border-b">
+                        <tr>
+                            <th class="px-4 py-2 text-left">工单号</th>
+                            <th class="px-4 py-2 text-left">类型</th>
+                            <th class="px-4 py-2 text-left">描述</th>
+                            <th class="px-4 py-2 text-left">处理人</th>
+                            <th class="px-4 py-2 text-left">完成时间</th>
+                            <th class="px-4 py-2 text-left">状态</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y">
+                        <tr>
+                            <td class="px-4 py-2 text-primary font-medium">WO-2024-001</td>
+                            <td class="px-4 py-2"><span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs">保养</span></td>
+                            <td class="px-4 py-2">月度保养</td>
+                            <td class="px-4 py-2">李工</td>
+                            <td class="px-4 py-2">2024-10-20</td>
+                            <td class="px-4 py-2"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">已完成</span></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 text-primary font-medium">WO-2024-015</td>
+                            <td class="px-4 py-2"><span class="px-2 py-1 bg-orange-100 text-orange-700 rounded text-xs">维修</span></td>
+                            <td class="px-4 py-2">传感器更换</td>
+                            <td class="px-4 py-2">王工</td>
+                            <td class="px-4 py-2">2024-09-15</td>
+                            <td class="px-4 py-2"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">已完成</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 设备表单弹窗 -->
+<div id="modal-form" class="modal">
+    <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl">
+        <div class="flex items-center justify-between p-6 border-b bg-gray-50">
+            <h2 class="text-xl font-bold text-gray-800">新建设备档案</h2>
+            <button onclick="closeModal('form')" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 180px);">
+            <form id="equipment-form" class="space-y-6">
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">设备编码 *</label>
+                        <input type="text" id="form-code" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light focus:border-transparent" placeholder="系统自动生成" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">设备名称 *</label>
+                        <input type="text" id="form-name" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light focus:border-transparent" placeholder="请输入设备名称" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">设备型号 *</label>
+                        <input type="text" id="form-model" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light focus:border-transparent" placeholder="请输入设备型号" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">设备类别 *</label>
+                        <select id="form-category" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light focus:border-transparent" required>
+                            <option value="">请选择</option>
+                            <option value="生产设备">生产设备</option>
+                            <option value="测试设备">测试设备</option>
+                            <option value="检测设备">检测设备</option>
+                            <option value="动力设备">动力设备</option>
+                            <option value="物流设备">物流设备</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">制造商</label>
+                        <input type="text" id="form-manufacturer" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light focus:border-transparent" placeholder="请输入制造商">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">采购日期</label>
+                        <input type="date" id="form-purchase-date" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">原值(元)</label>
+                        <input type="number" id="form-value" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light focus:border-transparent" placeholder="请输入原值">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">物理位置 *</label>
+                        <select id="form-location" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light focus:border-transparent" required>
+                            <option value="">请选择</option>
+                            <option value="宁波工厂/A车间/SMT-1号线">宁波工厂/A车间/SMT-1号线</option>
+                            <option value="宁波工厂/B车间/测试区">宁波工厂/B车间/测试区</option>
+                            <option value="宁波工厂/D车间/组件线-2">宁波工厂/D车间/组件线-2</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">责任人 *</label>
+                        <select id="form-owner" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light focus:border-transparent" required>
+                            <option value="">请选择</option>
+                            <option value="张工">张工</option>
+                            <option value="李工">李工</option>
+                            <option value="王工">王工</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">启用日期</label>
+                        <input type="date" id="form-start-date" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light focus:border-transparent">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">备注</label>
+                    <textarea id="form-notes" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light focus:border-transparent" rows="3" placeholder="请输入备注信息"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
+            <button onclick="closeModal('form')" class="px-6 py-2 border rounded-lg hover:bg-gray-100 transition-colors">取消</button>
+            <button onclick="saveEquipment()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors">保存</button>
+        </div>
+    </div>
+</div>
+
+<!-- 二维码弹窗 -->
+<div id="modal-qrcode" class="modal">
+    <div class="bg-white rounded-lg w-full max-w-2xl overflow-hidden shadow-2xl">
+        <div class="flex items-center justify-between p-6 border-b bg-gray-50">
+            <h2 class="text-xl font-bold text-gray-800">设备二维码</h2>
+            <button onclick="closeModal('qrcode')" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="p-8">
+            <div id="qrcode-display" class="text-center mb-6">
+                <!-- 二维码将通过JS生成 -->
+            </div>
+            <div class="flex justify-center gap-4">
+                <button onclick="printQRCode()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                    <i class="fas fa-print mr-2"></i>打印二维码
+                </button>
+                <button onclick="downloadQRCode()" class="px-6 py-2 bg-success text-white rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                    <i class="fas fa-download mr-2"></i>下载二维码
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 批量导入弹窗 -->
+<div id="modal-import" class="modal">
+    <div class="bg-white rounded-lg w-full max-w-3xl overflow-hidden shadow-2xl">
+        <div class="flex items-center justify-between p-6 border-b bg-gray-50">
+            <h2 class="text-xl font-bold text-gray-800">批量导入设备</h2>
+            <button onclick="closeModal('import')" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <div class="p-6">
+            <div class="mb-6">
+                <h3 class="font-semibold text-gray-800 mb-3">导入步骤</h3>
+                <ol class="list-decimal list-inside space-y-2 text-sm text-gray-600">
+                    <li>下载Excel模板文件</li>
+                    <li>按照模板格式填写设备信息</li>
+                    <li>上传填写完成的Excel文件</li>
+                    <li>系统自动校验并导入数据</li>
+                </ol>
+            </div>
+            <div class="mb-6">
+                <button onclick="downloadTemplate()" class="px-6 py-2 bg-success text-white rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                    <i class="fas fa-download mr-2"></i>下载Excel模板
+                </button>
+            </div>
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                <p class="text-gray-600 mb-4">拖拽文件到此处或点击上传</p>
+                <input type="file" id="import-file-input" accept=".xlsx,.xls" onchange="handleFileUpload(event)" style="display:none;">
+                <button onclick="document.getElementById('import-file-input').click()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    选择文件
+                </button>
+            </div>
+        </div>
+        <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
+            <button onclick="closeModal('import')" class="px-6 py-2 border rounded-lg hover:bg-gray-100 transition-colors">取消</button>
+            <button onclick="startImport()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors">开始导入</button>
+        </div>
+    </div>
+</div>
