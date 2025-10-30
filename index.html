@@ -271,6 +271,22 @@
                                         <i class="fas fa-shopping-cart text-red-600"></i>
                                         <span>订单管理</span>
                                     </button>
+                                    <button onclick="switchModule('sop-management'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-chart-line text-blue-600"></i>
+                                        <span>S&OP管理</span>
+                                    </button>
+                                    <button onclick="switchModule('order-execution'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-cogs text-yellow-600"></i>
+                                        <span>订单执行</span>
+                                    </button>
+                                    <button onclick="switchModule('order-shipping'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-truck text-purple-600"></i>
+                                        <span>订单发货</span>
+                                    </button>
+                                    <button onclick="switchModule('order-aftermarket'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-headset text-green-600"></i>
+                                        <span>订单售后</span>
+                                    </button>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <button onclick="switchModule('planning'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-calendar-alt text-indigo-600"></i>
@@ -476,6 +492,26 @@
                     { id: 'order-shipping', name: '订单发货', icon: 'fas fa-truck', url: 'pages/coming-soon.html' },
                     { id: 'order-after-sales', name: '售后服务', icon: 'fas fa-headset', url: 'pages/coming-soon.html' }
                 ]
+            },
+            'sop-management': {
+                title: 'S&OP管理',
+                url: 'pages/sop-management.html',
+                subMenus: []
+            },
+            'order-execution': {
+                title: '订单执行',
+                url: 'pages/order-execution.html',
+                subMenus: []
+            },
+            'order-shipping': {
+                title: '订单发货',
+                url: 'pages/order-shipping.html',
+                subMenus: []
+            },
+            'order-aftermarket': {
+                title: '订单售后',
+                url: 'pages/order-aftermarket.html',
+                subMenus: []
             },
             planning: {
                 title: '计划管理',

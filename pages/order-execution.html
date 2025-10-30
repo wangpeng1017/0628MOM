@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单执行 - 集成化S&OP与订单管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .status-badge {
+            @apply px-3 py-1 rounded-full text-xs font-medium;
+        }
+        .status-planned { @apply bg-blue-100 text-blue-800; }
+        .status-production { @apply bg-yellow-100 text-yellow-800; }
+        .status-completed { @apply bg-green-100 text-green-800; }
+        .status-shipped { @apply bg-purple-100 text-purple-800; }
+        .status-pending { @apply bg-gray-100 text-gray-800; }
+        .status-low { @apply bg-red-100 text-red-800; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 顶部导航 -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <a href="../index.html" class="text-blue-600 hover:text-blue-800">
+                        <i class="fas fa-arrow-left mr-2"></i>返回主页面
+                    </a>
+                    <h1 class="text-xl font-semibold text-gray-900">
+                        <i class="fas fa-cogs mr-2"></i>订单执行管理
+                    </h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                        <i class="fas fa-play mr-2"></i>批量下发
+                    </button>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-sync mr-2"></i>同步库存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 统计概览 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <i class="fas fa-clipboard-list text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">待下发订单</p>
+                        <p class="text-2xl font-semibold text-gray-900">28</p>
+                        <p class="text-sm text-blue-600">今日新增 5</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                        <i class="fas fa-industry text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">生产中订单</p>
+                        <p class="text-2xl font-semibold text-gray-900">15</p>
+                        <p class="text-sm text-yellow-600">平均进度 65%</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <i class="fas fa-check-circle text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">已完成订单</p>
+                        <p class="text-2xl font-semibold text-gray-900">47</p>
+                        <p class="text-sm text-green-600">本周完成 12</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-red-100 text-red-600">
+                        <i class="fas fa-exclamation-triangle text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">异常订单</p>
+                        <p class="text-2xl font-semibold text-gray-900">3</p>
+                        <p class="text-sm text-red-600">需要处理</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 选项卡导航 -->
+        <div class="bg-white rounded-lg shadow mb-6">
+            <div class="border-b border-gray-200">
+                <nav class="-mb-px flex space-x-8 px-6">
+                    <button class="py-4 px-1 border-b-2 border-blue-500 font-medium text-sm text-blue-600 whitespace-nowrap" data-tab="order-dispatch">
+                        订单下发与执行
+                    </button>
+                    <button class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap" data-tab="inventory-management">
+                        库存管理
+                    </button>
+                    <button class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap" data-tab="production-tracking">
+                        生产跟踪
+                    </button>
+                    <button class="py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap" data-tab="abnormal-handling">
+                        异常处理
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- 订单下发与执行 -->
+        <div id="order-dispatch" class="tab-content">
+            <!-- 快速操作面板 -->
+            <div class="bg-white rounded-lg shadow p-6 mb-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">快速操作</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <button class="flex items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors">
+                        <div class="text-center">
+                            <i class="fas fa-rocket text-2xl text-blue-600 mb-2"></i>
+                            <p class="text-sm font-medium text-gray-900">自动下发</p>
+                        </div>
+                    </button>
+                    <button class="flex items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors">
+                        <div class="text-center">
+                            <i class="fas fa-cogs text-2xl text-green-600 mb-2"></i>
+                            <p class="text-sm font-medium text-gray-900">手动触发</p>
+                        </div>
+                    </button>
+                    <button class="flex items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-colors">
+                        <div class="text-center">
+                            <i class="fas fa-clock text-2xl text-purple-600 mb-2"></i>
+                            <p class="text-sm font-medium text-gray-900">定时下发</p>
+                        </div>
+                    </button>
+                    <button class="flex items-center justify-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-colors">
+                        <div class="text-center">
+                            <i class="fas fa-tasks text-2xl text-orange-600 mb-2"></i>
+                            <p class="text-sm font-medium text-gray-900">批量处理</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 订单下发列表 -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900">待下发订单</h3>
+                        <div class="flex items-center space-x-2">
+                            <button class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">
+                                全选下发
+                            </button>
+                            <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700">
+                                批量下发
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <input type="checkbox" class="rounded border-gray-300">
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">订单号</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">客户</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品类型</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数量</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">金额</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">交付日期</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">库存状态</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="rounded border-gray-300">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ORD-202501001</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">华为技术有限公司</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">光伏逆变器</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">50台</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">¥125,000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-02-15</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-pending">库存不足</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="text-blue-600 hover:text-blue-900 mr-2">下发</button>
+                                        <button class="text-gray-600 hover:text-gray-900">详情</button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <input type="checkbox" class="rounded border-gray-300">
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ORD-202501002</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">比亚迪股份有限公司</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">储能逆变器</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">30台</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">¥89,600</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-02-20</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-approved">库存充足</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="text-blue-600 hover:text-blue-900 mr-2">下发</button>
+                                        <button class="text-gray-600 hover:text-gray-900">详情</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系统联动状态 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h4 class="text-lg font-medium text-gray-900 mb-4">生产系统</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">MES系统</span>
+                            <span class="text-sm font-medium text-green-600">
+                                <i class="fas fa-check-circle mr-1"></i>正常
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">生产线A</span>
+                            <span class="text-sm font-medium text-blue-600">运行中</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">生产线B</span>
+                            <span class="text-sm font-medium text-yellow-600">维护中</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h4 class="text-lg font-medium text-gray-900 mb-4">库存系统</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">WMS系统</span>
+                            <span class="text-sm font-medium text-green-600">
+                                <i class="fas fa-check-circle mr-1"></i>正常
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">原料仓库</span>
+                            <span class="text-sm font-medium text-blue-600">98%库存</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">成品仓库</span>
+                            <span class="text-sm font-medium text-green-600">76%库存</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h4 class="text-lg font-medium text-gray-900 mb-4">质检系统</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">QMS系统</span>
+                            <span class="text-sm font-medium text-green-600">
+                                <i class="fas fa-check-circle mr-1"></i>正常
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">今日质检</span>
+                            <span class="text-sm font-medium text-blue-600">156批次</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">合格率</span>
+                            <span class="text-sm font-medium text-green-600">99.2%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 库存管理 -->
+        <div id="inventory-management" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <!-- 库存概览图表 -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">库存水平分析</h3>
+                    <div class="chart-container">
+                        <canvas id="inventoryChart"></canvas>
+                    </div>
+                </div>
+                <!-- 库存预警 -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">库存预警</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center p-3 bg-red-50 border-l-4 border-red-500 rounded">
+                            <i class="fas fa-exclamation-triangle text-red-600 mr-3"></i>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-red-800">关键芯片库存不足</p>
+                                <p class="text-xs text-red-600">当前库存: 45片 | 安全库存: 100片</p>
+                            </div>
+                            <button class="text-sm text-red-600 hover:text-red-800">采购</button>
+                        </div>
+                        <div class="flex items-center p-3 bg-yellow-50 border-l-4 border-yellow-500 rounded">
+                            <i class="fas fa-exclamation-circle text-yellow-600 mr-3"></i>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-yellow-800">变压器库存偏低</p>
+                                <p class="text-xs text-yellow-600">当前库存: 78台 | 安全库存: 100台</p>
+                            </div>
+                            <button class="text-sm text-yellow-600 hover:text-yellow-800">采购</button>
+                        </div>
+                        <div class="flex items-center p-3 bg-green-50 border-l-4 border-green-500 rounded">
+                            <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-green-800">电容库存正常</p>
+                                <p class="text-xs text-green-600">当前库存: 245个 | 安全库存: 100个</p>
+                            </div>
+                            <span class="text-sm text-green-600">正常</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 库存管理操作 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <!-- 实时库存查询 -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h4 class="text-lg font-medium text-gray-900 mb-4">实时库存查询</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">产品编号</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="输入产品编号">
+                        </div>
+                        <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            查询库存
+                        </button>
+                        <div class="mt-4 p-3 bg-gray-50 rounded">
+                            <p class="text-sm text-gray-600">查询结果将显示在此处</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 拣货出库 -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h4 class="text-lg font-medium text-gray-900 mb-4">拣货出库</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">拣货单号</label>
+                            <input type="text" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="输入拣货单号">
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                                开始拣货
+                            </button>
+                            <button class="flex-1 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                                复核
+                            </button>
+                        </div>
+                        <div class="mt-4 space-y-2">
+                            <div class="text-sm text-gray-600">待拣货: 12项</div>
+                            <div class="text-sm text-gray-600">已完成: 8项</div>
+                            <div class="text-sm text-green-600">完成率: 67%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 生产入库 -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h4 class="text-lg font-medium text-gray-900 mb-4">生产入库</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">生产工单</label>
+                            <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                <option>选择生产工单</option>
+                                <option>PRD-202501001</option>
+                                <option>PRD-202501002</option>
+                            </select>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="flex-1 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                                确认入库
+                            </button>
+                            <button class="flex-1 bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700">
+                                质检
+                            </button>
+                        </div>
+                        <div class="mt-4 space-y-2">
+                            <div class="text-sm text-gray-600">入库单号: RK202501015</div>
+                            <div class="text-sm text-gray-600">产品: 光伏逆变器</div>
+                            <div class="text-sm text-purple-600">数量: 50台</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 库存明细表 -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900">库存明细</h3>
+                        <div class="flex space-x-2">
+                            <button class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
+                                导出库存报表
+                            </button>
+                            <button class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">
+                                同步ERP
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料编码</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">物料名称</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">当前库存</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">安全库存</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">在途库存</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">库存状态</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">仓库位置</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">COMP-001</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">关键芯片</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600">45片</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">100片</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">200片</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-low">严重不足</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">A区-01架</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">COMP-002</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">变压器</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-yellow-600">78台</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">100台</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">50台</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-pending">偏低</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">B区-03架</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">COMP-003</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">电容</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">245个</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">100个</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">0个</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-approved">正常</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">C区-02架</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 生产跟踪 -->
+        <div id="production-tracking" class="tab-content hidden">
+            <!-- 生产进度概览 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">生产进度跟踪</h3>
+                        <div class="chart-container">
+                            <canvas id="productionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">当前生产状态</h3>
+                        <div class="space-y-4">
+                            <div class="border rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-900">生产线A</h4>
+                                    <span class="status-badge status-production">生产中</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">工单: PRD-202501001</p>
+                                <p class="text-sm text-gray-600 mb-2">产品: 光伏逆变器</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm text-gray-600">进度</span>
+                                    <span class="text-sm font-medium">78%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                                    <div class="bg-blue-600 h-2 rounded-full" style="width: 78%"></div>
+                                </div>
+                            </div>
+                            <div class="border rounded-lg p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-medium text-gray-900">生产线B</h4>
+                                    <span class="status-badge status-pending">维护中</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">预计恢复: 2025-01-16 14:00</p>
+                                <p class="text-sm text-gray-600">维护内容: 设备保养</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 生产工单列表 -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">生产工单跟踪</h3>
+                </div>
+                <div class="p-6">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">工单号</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">订单号</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数量</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划开始</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">计划完成</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">实际进度</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">PRD-202501001</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-202501001</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">光伏逆变器</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">50台</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-12</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-15</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                                <div class="bg-blue-600 h-2 rounded-full" style="width: 78%"></div>
+                                            </div>
+                                            <span class="text-sm font-medium">78%</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-production">生产中</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="text-blue-600 hover:text-blue-900 mr-2">跟踪</button>
+                                        <button class="text-gray-600 hover:text-gray-900">暂停</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">PRD-202501002</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">ORD-202501002</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">储能逆变器</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">30台</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-13</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2025-01-16</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                                                <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                                            </div>
+                                            <span class="text-sm font-medium">100%</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="status-badge status-completed">已完成</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button class="text-green-600 hover:text-green-900 mr-2">入库</button>
+                                        <button class="text-gray-600 hover:text-gray-900">详情</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 异常处理 -->
+        <div id="abnormal-handling" class="tab-content hidden">
+            <!-- 异常统计 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-red-50 border border-red-200 rounded-lg p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-red-100 text-red-600">
+                            <i class="fas fa-exclamation-triangle text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-red-800">严重异常</p>
+                            <p class="text-2xl font-semibold text-red-900">2</p>
+                            <p class="text-sm text-red-600">需立即处理</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                            <i class="fas fa-exclamation-circle text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-yellow-800">一般异常</p>
+                            <p class="text-2xl font-semibold text-yellow-900">5</p>
+                            <p class="text-sm text-yellow-600">需关注处理</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                            <i class="fas fa-info-circle text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-blue-800">预警信息</p>
+                            <p class="text-2xl font-semibold text-blue-900">8</p>
+                            <p class="text-sm text-blue-600">预防性提醒</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 异常处理列表 -->
+            <div class="bg-white rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h3 class="text-lg font-medium text-gray-900">异常处理记录</h3>
+                </div>
+                <div class="p-6">
+                    <div class="space-y-4">
+                        <!-- 严重异常 -->
+                        <div class="border-l-4 border-red-500 bg-red-50 p-4 rounded-r-lg">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <h4 class="font-medium text-red-800">关键芯片短缺</h4>
+                                        <span class="ml-2 px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded">严重</span>
+                                    </div>
+                                    <p class="text-sm text-red-700 mb-2">供应商A延迟交付，导致关键芯片库存不足，影响订单ORD-202501001生产</p>
+                                    <div class="flex items-center space-x-4 text-xs text-red-600">
+                                        <span><i class="fas fa-clock mr-1"></i>发现时间: 2025-01-14 09:30</span>
+                                        <span><i class="fas fa-user mr-1"></i>负责人: 张生产</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">
+                                        紧急处理
+                                    </button>
+                                    <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700">
+                                        详情
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 一般异常 -->
+                        <div class="border-l-4 border-yellow-500 bg-yellow-50 p-4 rounded-r-lg">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <h4 class="font-medium text-yellow-800">设备利用率过高</h4>
+                                        <span class="ml-2 px-2 py-1 text-xs font-medium bg-yellow-100 text-yellow-800 rounded">一般</span>
+                                    </div>
+                                    <p class="text-sm text-yellow-700 mb-2">生产线A利用率达95%，超出正常范围，可能影响后续订单交付</p>
+                                    <div class="flex items-center space-x-4 text-xs text-yellow-600">
+                                        <span><i class="fas fa-clock mr-1"></i>发现时间: 2025-01-14 11:15</span>
+                                        <span><i class="fas fa-user mr-1"></i>负责人: 李经理</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <button class="bg-yellow-600 text-white px-3 py-1 rounded text-sm hover:bg-yellow-700">
+                                        处理中
+                                    </button>
+                                    <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700">
+                                        详情
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 已处理的异常 -->
+                        <div class="border-l-4 border-green-500 bg-green-50 p-4 rounded-r-lg">
+                            <div class="flex items-start justify-between">
+                                <div class="flex-1">
+                                    <div class="flex items-center mb-2">
+                                        <h4 class="font-medium text-green-800">质量异常已解决</h4>
+                                        <span class="ml-2 px-2 py-1 text-xs font-medium bg-green-100 text-green-800 rounded">已解决</span>
+                                    </div>
+                                    <p class="text-sm text-green-700 mb-2">订单PRD-202501002产品质量检测异常，已完成返工并通过复检</p>
+                                    <div class="flex items-center space-x-4 text-xs text-green-600">
+                                        <span><i class="fas fa-clock mr-1"></i>发现时间: 2025-01-13 14:20</span>
+                                        <span><i class="fas fa-check mr-1"></i>解决时间: 2025-01-14 10:45</span>
+                                        <span><i class="fas fa-user mr-1"></i>负责人: 王质检</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-green-600 text-sm">已完成</span>
+                                    <button class="bg-gray-600 text-white px-3 py-1 rounded text-sm hover:bg-gray-700">
+                                        详情
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 异常处理工具 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h4 class="text-lg font-medium text-gray-900 mb-4">快速处理工具</h4>
+                    <div class="space-y-3">
+                        <button class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-left">
+                            <i class="fas fa-plus mr-2"></i>创建紧急工单
+                        </button>
+                        <button class="w-full bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 text-left">
+                            <i class="fas fa-bell mr-2"></i>发送预警通知
+                        </button>
+                        <button class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-left">
+                            <i class="fas fa-phone mr-2"></i>联系供应商
+                        </button>
+                        <button class="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 text-left">
+                            <i class="fas fa-tools mr-2"></i>申请设备维修
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h4 class="text-lg font-medium text-gray-900 mb-4">异常统计报表</h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">本月异常总数</span>
+                            <span class="text-sm font-medium">23</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">已处理异常</span>
+                            <span class="text-sm font-medium text-green-600">18</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">处理中异常</span>
+                            <span class="text-sm font-medium text-yellow-600">5</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">平均处理时间</span>
+                            <span class="text-sm font-medium">4.2小时</span>
+                        </div>
+                        <button class="w-full mt-4 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700">
+                            <i class="fas fa-chart-bar mr-2"></i>查看详细报表
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 选项卡切换功能
+        document.querySelectorAll('[data-tab]').forEach(button => {
+            button.addEventListener('click', function() {
+                // 移除所有活动状态
+                document.querySelectorAll('[data-tab]').forEach(btn => {
+                    btn.classList.remove('border-blue-500', 'text-blue-600');
+                    btn.classList.add('border-transparent', 'text-gray-500');
+                });
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // 添加当前活动状态
+                this.classList.add('border-blue-500', 'text-blue-600');
+                this.classList.remove('border-transparent', 'text-gray-500');
+                document.getElementById(this.dataset.tab).classList.remove('hidden');
+            });
+        });
+
+        // 图表配置
+        const chartConfig = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        };
+
+        // 库存水平分析图表
+        const inventoryCtx = document.getElementById('inventoryChart').getContext('2d');
+        new Chart(inventoryCtx, {
+            type: 'bar',
+            data: {
+                labels: ['关键芯片', '变压器', '电容', '电阻', '连接器'],
+                datasets: [{
+                    label: '当前库存',
+                    data: [45, 78, 245, 189, 156],
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                }, {
+                    label: '安全库存',
+                    data: [100, 100, 100, 150, 120],
+                    backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                }]
+            },
+            options: chartConfig
+        });
+
+        // 生产进度跟踪图表
+        const productionCtx = document.getElementById('productionChart').getContext('2d');
+        new Chart(productionCtx, {
+            type: 'line',
+            data: {
+                labels: ['第1天', '第2天', '第3天', '第4天', '第5天', '第6天'],
+                datasets: [{
+                    label: '计划进度',
+                    data: [15, 30, 45, 60, 75, 90],
+                    borderColor: 'rgb(59, 130, 246)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4
+                }, {
+                    label: '实际进度',
+                    data: [12, 28, 42, 58, 72, 85],
+                    borderColor: 'rgb(34, 197, 94)',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: chartConfig
+        });
+    </script>
+</body>
+</html>
