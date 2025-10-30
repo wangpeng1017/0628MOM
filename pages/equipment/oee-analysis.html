@@ -3,100 +3,369 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OEE统计分析</title>
+    <title>OEE统计分析 - 设备管理 - 数字工厂一体化平台</title>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- ECharts for charts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#6366f1',
+                        'primary-light': '#818cf8',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .metric-card {
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .oee-gauge {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
-    <div class="p-6">
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            <h1 class="text-2xl font-bold text-gray-800 mb-2">OEE统计分析</h1>
-            <p class="text-sm text-gray-600">设备综合效率分析、六大损失统计、持续改进</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">整体OEE</p>
-                        <p class="text-3xl font-bold text-blue-600">75.5%</p>
+    <div class="flex h-screen overflow-hidden">
+        <!-- 主内容区 -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <div class="bg-white border-b p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-xs font-semibold">OEE统计分析</span>
+                            <span class="text-xs text-gray-500">设备管理需求文档 4.8节 数据驱动决策</span>
+                        </div>
+                        <div class="flex items-center gap-4 mb-2">
+                            <h1 class="text-2xl font-bold text-gray-800">设备综合效率分析</h1>
+                            <div class="flex gap-1 border rounded-lg p-1">
+                                <button id="view-dashboard" class="px-3 py-1 text-xs bg-primary text-white rounded hover:bg-indigo-700 transition-colors" onclick="switchView('dashboard')">
+                                    <i class="fas fa-tachometer-alt mr-1"></i>驾驶舱
+                                </button>
+                                <button id="view-trend" class="px-3 py-1 text-xs bg-white text-gray-700 rounded hover:bg-gray-100 transition-colors" onclick="switchView('trend')">
+                                    <i class="fas fa-chart-line mr-1"></i>趋势
+                                </button>
+                                <button id="view-loss" class="px-3 py-1 text-xs bg-white text-gray-700 rounded hover:bg-gray-100 transition-colors" onclick="switchView('loss')">
+                                    <i class="fas fa-chart-bar mr-1"></i>六大损失
+                                </button>
+                                <button id="view-reports" class="px-3 py-1 text-xs bg-white text-gray-700 rounded hover:bg-gray-100 transition-colors" onclick="switchView('reports')">
+                                    <i class="fas fa-file-alt mr-1"></i>报表
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">实时监控设备综合效率，精准定位损失源，持续改进生产绩效</p>
                     </div>
-                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-chart-pie text-blue-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">时间稼动率</p>
-                        <p class="text-3xl font-bold text-green-600">85.2%</p>
-                    </div>
-                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-clock text-green-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">性能稼动率</p>
-                        <p class="text-3xl font-bold text-purple-600">90.8%</p>
-                    </div>
-                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-tachometer-alt text-purple-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">质量合格率</p>
-                        <p class="text-3xl font-bold text-orange-600">97.6%</p>
-                    </div>
-                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-check-double text-orange-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold">设备OEE分析</h3>
-                    <div class="flex space-x-2">
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                            <i class="fas fa-plus mr-2"></i>新增
+                    <div class="flex flex-wrap gap-2">
+                        <select id="time-range-select" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" onchange="changeTimeRange()">
+                            <option value="today">今日</option>
+                            <option value="week" selected>本周</option>
+                            <option value="month">本月</option>
+                            <option value="quarter">本季度</option>
+                        </select>
+                        <button onclick="refreshData()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                            <i class="fas fa-sync-alt mr-2"></i>刷新
                         </button>
-                        <button class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+                        <button onclick="exportReport()" class="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center">
                             <i class="fas fa-download mr-2"></i>导出
                         </button>
                     </div>
                 </div>
+
+                <!-- OEE核心指标卡片 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="metric-card bg-gradient-to-br from-indigo-500 to-indigo-600 text-white rounded-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <p class="text-sm opacity-90">设备综合效率 (OEE)</p>
+                                <p id="metric-oee" class="text-4xl font-bold">75.2%</p>
+                            </div>
+                            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-chart-pie text-3xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+2.3% 较上周</span>
+                        </div>
+                    </div>
+
+                    <div class="metric-card bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <p class="text-sm opacity-90">时间稼动率</p>
+                                <p id="metric-availability" class="text-4xl font-bold">85.0%</p>
+                            </div>
+                            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-clock text-3xl"></i>
+                            </div>
+                        </div>
+                        <div class="text-sm opacity-90">
+                            实际运行 / 计划运行
+                        </div>
+                    </div>
+
+                    <div class="metric-card bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <p class="text-sm opacity-90">性能稼动率</p>
+                                <p id="metric-performance" class="text-4xl font-bold">90.5%</p>
+                            </div>
+                            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-tachometer-alt text-3xl"></i>
+                            </div>
+                        </div>
+                        <div class="text-sm opacity-90">
+                            实际产量 / 理论产量
+                        </div>
+                    </div>
+
+                    <div class="metric-card bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-lg p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <p class="text-sm opacity-90">质量合格率</p>
+                                <p id="metric-quality" class="text-4xl font-bold">97.8%</p>
+                            </div>
+                            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-check-circle text-3xl"></i>
+                            </div>
+                        </div>
+                        <div class="text-sm opacity-90">
+                            合格品 / 总产量
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <table class="w-full">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left"><input type="checkbox" class="rounded"></th>
-                        <th class="px-6 py-3 text-left text-sm">设备名称</th>
-                        <th class="px-6 py-3 text-left text-sm">OEE</th>
-                        <th class="px-6 py-3 text-left text-sm">时间稼动率</th>
-                        <th class="px-6 py-3 text-left text-sm">性能稼动率</th>
-                        <th class="px-6 py-3 text-left text-sm">质量合格率</th>
-                        <th class="px-6 py-3 text-left text-sm">主要损失</th>
-                        <th class="px-6 py-3 text-left text-sm">改进建议</th>
-                        <th class="px-6 py-3 text-left text-sm">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">全自动贴片机</td><td class="px-6 py-4">82.5%</td><td class="px-6 py-4">90.0%</td><td class="px-6 py-4">95.0%</td><td class="px-6 py-4">96.5%</td><td class="px-6 py-4">换型调试</td><td class="px-6 py-4">优化换型流程</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">逆变器测试台</td><td class="px-6 py-4">68.3%</td><td class="px-6 py-4">75.0%</td><td class="px-6 py-4">88.0%</td><td class="px-6 py-4">103.5%</td><td class="px-6 py-4">故障停机</td><td class="px-6 py-4">加强预防性维护</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">组件层压机</td><td class="px-6 py-4">65.2%</td><td class="px-6 py-4">85.0%</td><td class="px-6 py-4">90.0%</td><td class="px-6 py-4">85.0%</td><td class="px-6 py-4">质量损失</td><td class="px-6 py-4">改进工艺参数</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                </tbody>
-            </table>
+
+            <!-- 筛选器 -->
+            <div class="bg-white border-b px-6 py-4">
+                <div class="flex flex-wrap gap-4">
+                    <select id="filter-workshop" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" onchange="applyFilters()">
+                        <option value="">全部车间</option>
+                        <option value="冲压">冲压车间</option>
+                        <option value="装配">装配车间</option>
+                        <option value="焊接">焊接车间</option>
+                        <option value="测试">测试中心</option>
+                    </select>
+                    <select id="filter-line" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" onchange="applyFilters()">
+                        <option value="">全部产线</option>
+                        <option value="A线">A线</option>
+                        <option value="B线">B线</option>
+                        <option value="C线">C线</option>
+                    </select>
+                    <select id="filter-shift" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500" onchange="applyFilters()">
+                        <option value="">全部班次</option>
+                        <option value="早班">早班</option>
+                        <option value="中班">中班</option>
+                        <option value="晚班">晚班</option>
+                    </select>
+                    <button onclick="resetFilters()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                        <i class="fas fa-redo mr-2"></i>重置
+                    </button>
+                </div>
+            </div>
+
+            <!-- 主内容区 -->
+            <div class="flex-1 overflow-auto p-6">
+                <!-- 驾驶舱视图 -->
+                <div id="dashboard-view" class="view-content">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <!-- OEE趋势图 -->
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h3 class="text-lg font-semibold mb-4">OEE趋势分析</h3>
+                            <div id="oee-trend-chart" style="height: 300px;"></div>
+                        </div>
+
+                        <!-- OEE构成分析 -->
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h3 class="text-lg font-semibold mb-4">OEE三要素构成</h3>
+                            <div id="oee-composition-chart" style="height: 300px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- 设备OEE排行 -->
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="p-4 border-b bg-gray-50">
+                            <h3 class="text-lg font-semibold">设备OEE排行</h3>
+                        </div>
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">排名</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备名称</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">车间</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">OEE</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间稼动率</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">性能稼动率</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">质量合格率</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="oee-ranking-tbody" class="bg-white divide-y divide-gray-200">
+                                <!-- 设备行将通过JS动态生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 趋势视图 -->
+                <div id="trend-view" class="view-content hidden">
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h3 class="text-lg font-semibold mb-4">OEE历史趋势</h3>
+                            <div id="oee-history-chart" style="height: 400px;"></div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div class="bg-white rounded-lg shadow-sm p-6">
+                                <h3 class="text-lg font-semibold mb-4">时间稼动率趋势</h3>
+                                <div id="availability-trend-chart" style="height: 250px;"></div>
+                            </div>
+                            <div class="bg-white rounded-lg shadow-sm p-6">
+                                <h3 class="text-lg font-semibold mb-4">性能稼动率趋势</h3>
+                                <div id="performance-trend-chart" style="height: 250px;"></div>
+                            </div>
+                            <div class="bg-white rounded-lg shadow-sm p-6">
+                                <h3 class="text-lg font-semibold mb-4">质量合格率趋势</h3>
+                                <div id="quality-trend-chart" style="height: 250px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 六大损失视图 -->
+                <div id="loss-view" class="view-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <!-- 损失柏拉图 -->
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h3 class="text-lg font-semibold mb-4">六大损失柏拉图</h3>
+                            <div id="loss-pareto-chart" style="height: 350px;"></div>
+                        </div>
+
+                        <!-- 损失分类饼图 -->
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h3 class="text-lg font-semibold mb-4">损失类型分布</h3>
+                            <div id="loss-pie-chart" style="height: 350px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- 损失详细列表 -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <h3 class="text-lg font-semibold mb-4">损失详细分析</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="loss-details-container">
+                            <!-- 损失卡片将通过JS动态生成 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 报表视图 -->
+                <div id="reports-view" class="view-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h3 class="text-lg font-semibold mb-4">预置报表</h3>
+                            <div class="space-y-3">
+                                <button onclick="generateReport('mtbf')" class="w-full text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">MTBF/MTTR分析报表</p>
+                                            <p class="text-sm text-gray-600">平均故障间隔时间和平均修复时间</p>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </div>
+                                </button>
+                                <button onclick="generateReport('maintenance-cost')" class="w-full text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">设备维修成本分析</p>
+                                            <p class="text-sm text-gray-600">维修费用、备件消耗统计</p>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </div>
+                                </button>
+                                <button onclick="generateReport('spare-parts')" class="w-full text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">备件消耗分析报表</p>
+                                            <p class="text-sm text-gray-600">备件使用频率和成本分析</p>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </div>
+                                </button>
+                                <button onclick="generateReport('pm-execution')" class="w-full text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">预防性维护执行率</p>
+                                            <p class="text-sm text-gray-600">计划维护完成情况统计</p>
+                                        </div>
+                                        <i class="fas fa-chevron-right text-gray-400"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h3 class="text-lg font-semibold mb-4">自定义报表</h3>
+                            <p class="text-gray-600 mb-4">通过拖拽方式创建个性化报表</p>
+                            <button onclick="openCustomReportBuilder()" class="w-full px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                <i class="fas fa-plus mr-2"></i>创建自定义报表
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script src="../../assets/js/equipment-oee-analysis.js"></script>
 </body>
 </html>

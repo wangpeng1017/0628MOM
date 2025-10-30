@@ -3,101 +3,457 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>备品备件管理</title>
+    <title>备品备件管理 - 设备管理 - 数字工厂一体化平台</title>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#8b5cf6',
+                        'primary-light': '#a78bfa',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-button {
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            border-bottom-color: #8b5cf6;
+            color: #7c3aed;
+            font-weight: 600;
+        }
+
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background-color: rgba(148, 163, 184, 0.5);
+            border-radius: 9999px;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
-    <div class="p-6">
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            <h1 class="text-2xl font-bold text-gray-800 mb-2">备品备件管理</h1>
-            <p class="text-sm text-gray-600">备件库存、出入库管理、智能预警补货</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">备件种类</p>
-                        <p class="text-3xl font-bold text-blue-600">328</p>
+    <div class="flex h-screen overflow-hidden">
+        <!-- 主内容区（全宽） -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <div class="bg-white border-b p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-semibold">备品备件管理</span>
+                            <span class="text-xs text-gray-500">设备管理需求文档 4.5节 后勤保障</span>
+                        </div>
+                        <div class="flex items-center gap-4 mb-2">
+                            <h1 class="text-2xl font-bold text-gray-800">备件管理工作台</h1>
+                            <div class="flex gap-1 border rounded-lg p-1">
+                                <button id="view-inventory" class="px-3 py-1 text-xs bg-primary text-white rounded hover:bg-purple-700 transition-colors" onclick="switchView('inventory')">
+                                    <i class="fas fa-boxes mr-1"></i>台账
+                                </button>
+                                <button id="view-transactions" class="px-3 py-1 text-xs bg-white text-gray-700 rounded hover:bg-gray-100 transition-colors" onclick="switchView('transactions')">
+                                    <i class="fas fa-exchange-alt mr-1"></i>出入库
+                                </button>
+                                <button id="view-alerts" class="px-3 py-1 text-xs bg-white text-gray-700 rounded hover:bg-gray-100 transition-colors" onclick="switchView('alerts')">
+                                    <i class="fas fa-bell mr-1"></i>预警
+                                </button>
+                                <button id="view-analysis" class="px-3 py-1 text-xs bg-white text-gray-700 rounded hover:bg-gray-100 transition-colors" onclick="switchView('analysis')">
+                                    <i class="fas fa-chart-pie mr-1"></i>分析
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">合理库存成本，确保备件及时供应，降低设备停机时间</p>
                     </div>
-                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-boxes text-blue-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">库存总值</p>
-                        <p class="text-3xl font-bold text-green-600">¥2.5M</p>
-                    </div>
-                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-dollar-sign text-green-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">低库存预警</p>
-                        <p class="text-3xl font-bold text-red-600">15</p>
-                    </div>
-                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-bell text-red-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">本月消耗</p>
-                        <p class="text-3xl font-bold text-purple-600">¥85K</p>
-                    </div>
-                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-chart-bar text-purple-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold">备件库存列表</h3>
-                    <div class="flex space-x-2">
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                            <i class="fas fa-plus mr-2"></i>新增
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="openSparePartModal()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                            <i class="fas fa-plus mr-2"></i>新增备件
                         </button>
-                        <button class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+                        <button onclick="openInboundModal()" class="px-4 py-2 bg-success text-white rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                            <i class="fas fa-arrow-down mr-2"></i>入库
+                        </button>
+                        <button onclick="openOutboundModal()" class="px-4 py-2 bg-warning text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center">
+                            <i class="fas fa-arrow-up mr-2"></i>出库
+                        </button>
+                        <button onclick="exportData()" class="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center">
                             <i class="fas fa-download mr-2"></i>导出
                         </button>
                     </div>
                 </div>
+
+                <!-- 统计卡片 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-purple-600 font-medium">备件总数</p>
+                                <p id="metric-total-parts" class="text-2xl font-bold text-purple-700">1,245</p>
+                                <p class="text-xs text-purple-500 mt-1">覆盖全厂设备</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-boxes text-2xl text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-green-600 font-medium">库存总值</p>
+                                <p id="metric-total-value" class="text-2xl font-bold text-green-700">¥2.8M</p>
+                                <p class="text-xs text-green-500 mt-1">+5.2% 较上月</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-coins text-2xl text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-red-600 font-medium">库存预警</p>
+                                <p id="metric-alerts" class="text-2xl font-bold text-red-700">12</p>
+                                <p class="text-xs text-red-500 mt-1">需要补货</p>
+                            </div>
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-exclamation-triangle text-2xl text-red-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-blue-600 font-medium">本月消耗</p>
+                                <p id="metric-monthly-usage" class="text-2xl font-bold text-blue-700">¥156K</p>
+                                <p class="text-xs text-blue-500 mt-1">-8.3% 较上月</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-chart-line text-2xl text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <table class="w-full">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left"><input type="checkbox" class="rounded"></th>
-                        <th class="px-6 py-3 text-left text-sm">备件编码</th>
-                        <th class="px-6 py-3 text-left text-sm">备件名称</th>
-                        <th class="px-6 py-3 text-left text-sm">规格型号</th>
-                        <th class="px-6 py-3 text-left text-sm">当前库存</th>
-                        <th class="px-6 py-3 text-left text-sm">安全库存</th>
-                        <th class="px-6 py-3 text-left text-sm">单位</th>
-                        <th class="px-6 py-3 text-left text-sm">单价</th>
-                        <th class="px-6 py-3 text-left text-sm">状态</th>
-                        <th class="px-6 py-3 text-left text-sm">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">SP-001</td><td class="px-6 py-4">伺服电机</td><td class="px-6 py-4">SGMJV-04ADE6S</td><td class="px-6 py-4">5</td><td class="px-6 py-4">3</td><td class="px-6 py-4">台</td><td class="px-6 py-4">¥3,500</td><td class="px-6 py-4">正常</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">SP-002</td><td class="px-6 py-4">传感器</td><td class="px-6 py-4">E2E-X5ME1</td><td class="px-6 py-4">2</td><td class="px-6 py-4">5</td><td class="px-6 py-4">个</td><td class="px-6 py-4">¥280</td><td class="px-6 py-4">低库存</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">SP-003</td><td class="px-6 py-4">轴承</td><td class="px-6 py-4">6205-2RS</td><td class="px-6 py-4">50</td><td class="px-6 py-4">20</td><td class="px-6 py-4">个</td><td class="px-6 py-4">¥45</td><td class="px-6 py-4">正常</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                </tbody>
-            </table>
+
+            <!-- 筛选器 -->
+            <div class="bg-white border-b px-6 py-4">
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex-1 min-w-[200px]">
+                        <input type="text" id="search-input" placeholder="搜索备件名称、编码..." 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                               onkeyup="applyFilters()">
+                    </div>
+                    <select id="filter-category" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" onchange="applyFilters()">
+                        <option value="">全部类别</option>
+                        <option value="电气">电气类</option>
+                        <option value="机械">机械类</option>
+                        <option value="液压">液压类</option>
+                        <option value="气动">气动类</option>
+                        <option value="传感器">传感器类</option>
+                    </select>
+                    <select id="filter-status" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" onchange="applyFilters()">
+                        <option value="">全部状态</option>
+                        <option value="normal">正常</option>
+                        <option value="low">库存不足</option>
+                        <option value="critical">严重不足</option>
+                        <option value="excess">库存过剩</option>
+                    </select>
+                    <button onclick="resetFilters()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                        <i class="fas fa-redo mr-2"></i>重置
+                    </button>
+                </div>
+            </div>
+
+            <!-- 主内容区 -->
+            <div class="flex-1 overflow-auto p-6">
+                <!-- 台账视图 -->
+                <div id="inventory-view" class="view-content">
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">备件编码</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">备件名称</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">规格型号</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">类别</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">当前库存</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">安全库存</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">单价</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">存放位置</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventory-tbody" class="bg-white divide-y divide-gray-200">
+                                <!-- 备件行将通过JS动态生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 出入库视图 -->
+                <div id="transactions-view" class="view-content hidden">
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">单据编号</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">类型</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">备件名称</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数量</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">金额</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作人</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">关联工单</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">时间</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactions-tbody" class="bg-white divide-y divide-gray-200">
+                                <!-- 出入库记录将通过JS动态生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 预警视图 -->
+                <div id="alerts-view" class="view-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="alerts-container">
+                        <!-- 预警卡片将通过JS动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 分析视图 -->
+                <div id="analysis-view" class="view-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- ABC分类分析 -->
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h3 class="text-lg font-semibold mb-4">ABC分类分析</h3>
+                            <div class="space-y-4" id="abc-analysis">
+                                <!-- ABC分析将通过JS动态生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 呆滞料分析 -->
+                        <div class="bg-white rounded-lg shadow-sm p-6">
+                            <h3 class="text-lg font-semibold mb-4">呆滞料分析</h3>
+                            <div class="space-y-4" id="stagnant-analysis">
+                                <!-- 呆滞料分析将通过JS动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- 备件模态窗口 -->
+    <div id="spare-part-modal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-auto">
+            <div class="flex items-center justify-between p-6 border-b">
+                <h3 class="text-xl font-semibold">新增备件</h3>
+                <button onclick="closeModal('spare-part-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="spare-part-form" class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">备件编码 *</label>
+                            <input type="text" id="part-code" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">备件名称 *</label>
+                            <input type="text" id="part-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">规格型号</label>
+                            <input type="text" id="part-spec" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">类别 *</label>
+                            <select id="part-category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                                <option value="">请选择</option>
+                                <option value="电气">电气类</option>
+                                <option value="机械">机械类</option>
+                                <option value="液压">液压类</option>
+                                <option value="气动">气动类</option>
+                                <option value="传感器">传感器类</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">单价（元）</label>
+                            <input type="number" id="part-price" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" step="0.01">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">安全库存</label>
+                            <input type="number" id="part-safety-stock" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">存放位置</label>
+                            <input type="text" id="part-location" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">供应商</label>
+                        <input type="text" id="part-supplier" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500">
+                    </div>
+                </form>
+            </div>
+            <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
+                <button onclick="closeModal('spare-part-modal')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">取消</button>
+                <button onclick="saveSparePart()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-purple-700">保存</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 入库模态窗口 -->
+    <div id="inbound-modal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-auto">
+            <div class="flex items-center justify-between p-6 border-b">
+                <h3 class="text-xl font-semibold">备件入库</h3>
+                <button onclick="closeModal('inbound-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="inbound-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">备件 *</label>
+                        <select id="inbound-part" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                            <option value="">请选择备件</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">入库数量 *</label>
+                            <input type="number" id="inbound-quantity" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">入库类型 *</label>
+                            <select id="inbound-type" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                                <option value="purchase">采购入库</option>
+                                <option value="return">退料入库</option>
+                                <option value="transfer">调拨入库</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">备注</label>
+                        <textarea id="inbound-remark" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
+                <button onclick="closeModal('inbound-modal')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">取消</button>
+                <button onclick="saveInbound()" class="px-4 py-2 bg-success text-white rounded-lg hover:bg-green-700">确认入库</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 出库模态窗口 -->
+    <div id="outbound-modal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-auto">
+            <div class="flex items-center justify-between p-6 border-b">
+                <h3 class="text-xl font-semibold">备件出库</h3>
+                <button onclick="closeModal('outbound-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="outbound-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">备件 *</label>
+                        <select id="outbound-part" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                            <option value="">请选择备件</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">出库数量 *</label>
+                            <input type="number" id="outbound-quantity" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">领用人 *</label>
+                            <input type="text" id="outbound-receiver" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">关联工单</label>
+                        <input type="text" id="outbound-workorder" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500" placeholder="可选">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">用途说明</label>
+                        <textarea id="outbound-purpose" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
+                <button onclick="closeModal('outbound-modal')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">取消</button>
+                <button onclick="saveOutbound()" class="px-4 py-2 bg-warning text-white rounded-lg hover:bg-orange-600">确认出库</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/equipment-spare-parts.js"></script>
 </body>
 </html>

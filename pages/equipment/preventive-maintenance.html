@@ -3,100 +3,452 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>计划性维护</title>
+    <title>计划性维护管理 - 设备管理 - 数字工厂一体化平台</title>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-button {
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            border-bottom-color: #3b82f6;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .calendar-day {
+            min-height: 100px;
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-day:hover {
+            background-color: #f3f4f6;
+        }
+
+        .calendar-day.today {
+            background-color: #eff6ff;
+            border-color: #3b82f6;
+        }
+
+        .task-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background-color: rgba(148, 163, 184, 0.5);
+            border-radius: 9999px;
+        }
+    </style>
 </head>
 <body class="bg-gray-50">
-    <div class="p-6">
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            <h1 class="text-2xl font-bold text-gray-800 mb-2">计划性维护</h1>
-            <p class="text-sm text-gray-600">保养计划制定、SOP管理、自动生成保养工单</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">保养策略</p>
-                        <p class="text-3xl font-bold text-blue-600">45</p>
+    <div class="flex h-screen overflow-hidden">
+        <!-- 主内容区（全宽） -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <div class="bg-white border-b p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">计划性维护管理</span>
+                            <span class="text-xs text-gray-500">Process.md 4.3 预防为主</span>
+                        </div>
+                        <div class="flex items-center gap-4 mb-2">
+                            <h1 class="text-2xl font-bold text-gray-800">保养计划工作台</h1>
+                            <div class="flex gap-1 border rounded-lg p-1">
+                                <button id="view-calendar" class="px-3 py-1 text-xs bg-primary text-white rounded hover:bg-blue-700 transition-colors" onclick="switchView('calendar')">
+                                    <i class="fas fa-calendar-days mr-1"></i>日历
+                                </button>
+                                <button id="view-list" class="px-3 py-1 text-xs bg-white text-gray-700 rounded hover:bg-gray-100 transition-colors" onclick="switchView('list')">
+                                    <i class="fas fa-list-ul mr-1"></i>列表
+                                </button>
+                                <button id="view-strategy" class="px-3 py-1 text-xs bg-white text-gray-700 rounded hover:bg-gray-100 transition-colors" onclick="switchView('strategy')">
+                                    <i class="fas fa-diagram-project mr-1"></i>策略
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">从被动维修到主动预防，通过定期保养消灭故障于萌芽状态</p>
                     </div>
-                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-calendar-alt text-blue-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">本周计划</p>
-                        <p class="text-3xl font-bold text-green-600">23</p>
-                    </div>
-                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-tasks text-green-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">执行中</p>
-                        <p class="text-3xl font-bold text-orange-600">8</p>
-                    </div>
-                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-cog text-orange-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">执行率</p>
-                        <p class="text-3xl font-bold text-purple-600">95%</p>
-                    </div>
-                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-chart-line text-purple-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold">保养计划列表</h3>
-                    <div class="flex space-x-2">
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                            <i class="fas fa-plus mr-2"></i>新增
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="openStrategyForm()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                            <i class="fas fa-plus mr-2"></i>新建策略
                         </button>
-                        <button class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+                        <button onclick="openSOPForm()" class="px-4 py-2 bg-success text-white rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                            <i class="fas fa-file-lines mr-2"></i>新建SOP
+                        </button>
+                        <button onclick="openTaskForm()" class="px-4 py-2 bg-warning text-white rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                            <i class="fas fa-clipboard-check mr-2"></i>新建任务
+                        </button>
+                        <button onclick="exportData()" class="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center">
                             <i class="fas fa-download mr-2"></i>导出
                         </button>
                     </div>
                 </div>
+
+                <!-- 统计卡片 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-blue-600 font-medium">保养策略</p>
+                                <p id="metric-strategies" class="text-2xl font-bold text-blue-700">0</p>
+                                <p class="text-xs text-blue-500 mt-1">活跃策略数</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-diagram-project text-blue-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-green-600 font-medium">本月任务</p>
+                                <p id="metric-tasks" class="text-2xl font-bold text-green-700">0</p>
+                                <p class="text-xs text-green-500 mt-1">已生成保养任务</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-calendar-check text-green-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-orange-600 font-medium">待执行</p>
+                                <p id="metric-pending" class="text-2xl font-bold text-orange-700">0</p>
+                                <p class="text-xs text-orange-500 mt-1">待派发/待执行</p>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-clock text-orange-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-purple-600 font-medium">完成率</p>
+                                <p id="metric-completion" class="text-2xl font-bold text-purple-700">0%</p>
+                                <p class="text-xs text-purple-500 mt-1">本月按时完成率</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-chart-line text-purple-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <table class="w-full">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left"><input type="checkbox" class="rounded"></th>
-                        <th class="px-6 py-3 text-left text-sm">计划编号</th>
-                        <th class="px-6 py-3 text-left text-sm">设备名称</th>
-                        <th class="px-6 py-3 text-left text-sm">保养类型</th>
-                        <th class="px-6 py-3 text-left text-sm">保养周期</th>
-                        <th class="px-6 py-3 text-left text-sm">负责人</th>
-                        <th class="px-6 py-3 text-left text-sm">下次保养</th>
-                        <th class="px-6 py-3 text-left text-sm">状态</th>
-                        <th class="px-6 py-3 text-left text-sm">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">PM-2024-001</td><td class="px-6 py-4">全自动贴片机</td><td class="px-6 py-4">月度保养</td><td class="px-6 py-4">每月1号</td><td class="px-6 py-4">李工</td><td class="px-6 py-4">2024-11-01</td><td class="px-6 py-4">待执行</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">PM-2024-002</td><td class="px-6 py-4">逆变器测试台</td><td class="px-6 py-4">季度保养</td><td class="px-6 py-4">每季度末</td><td class="px-6 py-4">王工</td><td class="px-6 py-4">2024-12-31</td><td class="px-6 py-4">计划中</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">PM-2024-003</td><td class="px-6 py-4">激光焊接机</td><td class="px-6 py-4">周保养</td><td class="px-6 py-4">每周一</td><td class="px-6 py-4">赵工</td><td class="px-6 py-4">2024-11-04</td><td class="px-6 py-4">执行中</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                </tbody>
-            </table>
+
+            <!-- 筛选器 -->
+            <div class="bg-white border-b p-4">
+                <div class="flex flex-wrap gap-3">
+                    <input type="text" id="filter-keyword" placeholder="设备名称/策略名称" class="flex-1 min-w-[200px] px-3 py-2 border rounded text-sm focus:ring-2 focus:ring-primary-light focus:border-transparent">
+                    <select id="filter-type" class="w-44 px-3 py-2 border rounded text-sm focus:ring-2 focus:ring-primary-light focus:border-transparent">
+                        <option value="">全部类型</option>
+                        <option value="time">基于时间(TBM)</option>
+                        <option value="usage">基于用量(UBM)</option>
+                        <option value="condition">基于状态(CBM)</option>
+                    </select>
+                    <select id="filter-status" class="w-40 px-3 py-2 border rounded text-sm focus:ring-2 focus:ring-primary-light focus:border-transparent">
+                        <option value="">全部状态</option>
+                        <option value="pending">待派发</option>
+                        <option value="assigned">已派发</option>
+                        <option value="in_progress">执行中</option>
+                        <option value="completed">已完成</option>
+                    </select>
+                    <input type="date" id="filter-start-date" class="w-40 px-3 py-2 border rounded text-sm focus:ring-2 focus:ring-primary-light focus:border-transparent">
+                    <input type="date" id="filter-end-date" class="w-40 px-3 py-2 border rounded text-sm focus:ring-2 focus:ring-primary-light focus:border-transparent">
+                    <button onclick="applyFilters()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-search mr-2"></i>查询
+                    </button>
+                    <button onclick="resetFilters()" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                        <i class="fas fa-redo mr-2"></i>重置
+                    </button>
+                </div>
+            </div>
+
+            <!-- 主内容区 -->
+            <div class="flex-1 overflow-auto p-6">
+                <!-- 日历视图 -->
+                <div id="view-calendar-content" class="view-content">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <button onclick="previousMonth()" class="px-3 py-2 border rounded hover:bg-gray-50">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <h2 id="calendar-title" class="text-lg font-bold text-gray-800">2025年1月</h2>
+                            <button onclick="nextMonth()" class="px-3 py-2 border rounded hover:bg-gray-50">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                        <div id="calendar-grid" class="grid grid-cols-7 gap-1"></div>
+                    </div>
+                </div>
+
+                <!-- 列表视图 -->
+                <div id="view-list-content" class="view-content hidden">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                        <div class="p-4 border-b flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="select-all" class="rounded" onclick="toggleSelectAll(this)">
+                                <span class="text-sm text-gray-600">已选择 <span id="selected-count" class="font-semibold text-primary">0</span> 条任务</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="batchAssign()" class="text-sm text-success hover:text-green-700">
+                                    <i class="fas fa-user-check mr-1"></i>批量派发
+                                </button>
+                                <button onclick="batchExport()" class="text-sm text-primary hover:text-blue-700">
+                                    <i class="fas fa-file-export mr-1"></i>批量导出
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-50 border-b">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left w-12"></th>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-700">任务编号</th>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-700">设备信息</th>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-700">保养内容</th>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-700">计划时间</th>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-700">执行人员</th>
+                                        <th class="px-4 py-3 text-left font-semibold text-gray-700">状态</th>
+                                        <th class="px-4 py-3 text-center font-semibold text-gray-700 w-48">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="task-tbody" class="divide-y"></tbody>
+                            </table>
+                        </div>
+                        <div class="p-4 border-t flex items-center justify-between">
+                            <div class="text-sm text-gray-600">显示第 <span id="pagination-range" class="font-semibold text-primary">1 - 10</span> 条，共 <span id="pagination-total" class="font-semibold text-primary">0</span> 条</div>
+                            <div class="flex gap-2">
+                                <button class="px-3 py-1 border rounded text-sm hover:bg-gray-50" onclick="changePage('prev')">上一页</button>
+                                <div id="pagination-pages" class="flex gap-1"></div>
+                                <button class="px-3 py-1 border rounded text-sm hover:bg-gray-50" onclick="changePage('next')">下一页</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 策略视图 -->
+                <div id="view-strategy-content" class="view-content hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">保养策略列表</h3>
+                            <div id="strategy-list" class="space-y-3"></div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4">SOP基准库</h3>
+                            <div id="sop-list" class="space-y-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- 保养任务详情弹窗 -->
+    <div id="modal-task-detail" class="modal">
+        <div class="bg-white rounded-lg w-full max-w-5xl max-h-[90vh] overflow-hidden shadow-2xl">
+            <div class="flex items-center justify-between p-6 border-b bg-gray-50">
+                <h2 class="text-xl font-bold text-gray-800">保养任务详情</h2>
+                <button onclick="closeModal('task-detail')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 180px);">
+                <div id="task-detail-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 保养策略表单弹窗 -->
+    <div id="modal-strategy-form" class="modal">
+        <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl">
+            <div class="flex items-center justify-between p-6 border-b bg-gray-50">
+                <h2 class="text-xl font-bold text-gray-800">新建/编辑保养策略</h2>
+                <button onclick="closeModal('strategy-form')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 180px);">
+                <form id="strategy-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">策略名称 *</label>
+                            <input type="text" id="form-strategy-name" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">策略类型 *</label>
+                            <select id="form-strategy-type" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light" required>
+                                <option value="time">基于时间(TBM)</option>
+                                <option value="usage">基于用量(UBM)</option>
+                                <option value="condition">基于状态(CBM)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">执行频率 *</label>
+                            <input type="text" id="form-strategy-frequency" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light" placeholder="如：每周、每月、每500小时" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">关联设备</label>
+                            <input type="text" id="form-strategy-equipment" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light" placeholder="选择设备或设备类别">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">关联SOP</label>
+                            <select id="form-strategy-sop" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light">
+                                <option value="">选择保养基准</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">策略描述</label>
+                            <textarea id="form-strategy-description" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
+                <button onclick="closeModal('strategy-form')" class="px-6 py-2 border rounded-lg hover:bg-gray-100">取消</button>
+                <button onclick="saveStrategy()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700">保存策略</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOP表单弹窗 -->
+    <div id="modal-sop-form" class="modal">
+        <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl">
+            <div class="flex items-center justify-between p-6 border-b bg-gray-50">
+                <h2 class="text-xl font-bold text-gray-800">新建/编辑保养SOP</h2>
+                <button onclick="closeModal('sop-form')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 180px);">
+                <form id="sop-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">SOP名称 *</label>
+                            <input type="text" id="form-sop-name" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">适用设备类别</label>
+                            <input type="text" id="form-sop-category" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">预计工时(小时)</label>
+                            <input type="number" id="form-sop-hours" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light" step="0.5">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">保养项目清单</label>
+                            <div id="sop-items-list" class="space-y-2 mb-2"></div>
+                            <button type="button" onclick="addSOPItem()" class="text-sm text-primary hover:text-blue-700">
+                                <i class="fas fa-plus mr-1"></i>添加检查项
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
+                <button onclick="closeModal('sop-form')" class="px-6 py-2 border rounded-lg hover:bg-gray-100">取消</button>
+                <button onclick="saveSOP()" class="px-6 py-2 bg-success text-white rounded-lg hover:bg-green-700">保存SOP</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 保养任务表单弹窗 -->
+    <div id="modal-task-form" class="modal">
+        <div class="bg-white rounded-lg w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl">
+            <div class="flex items-center justify-between p-6 border-b bg-gray-50">
+                <h2 class="text-xl font-bold text-gray-800">新建保养任务</h2>
+                <button onclick="closeModal('task-form')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto" style="max-height: calc(90vh - 180px);">
+                <form id="task-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">任务编号</label>
+                            <input type="text" id="form-task-code" class="w-full px-3 py-2 border rounded bg-gray-50" readonly>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">计划执行日期 *</label>
+                            <input type="date" id="form-task-date" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">选择设备 *</label>
+                            <input type="text" id="form-task-equipment" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">选择SOP</label>
+                            <select id="form-task-sop" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light">
+                                <option value="">选择保养基准</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">任务说明</label>
+                            <textarea id="form-task-description" class="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-primary-light" rows="3"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="flex justify-end gap-3 p-6 border-t bg-gray-50">
+                <button onclick="closeModal('task-form')" class="px-6 py-2 border rounded-lg hover:bg-gray-100">取消</button>
+                <button onclick="saveTask()" class="px-6 py-2 bg-warning text-white rounded-lg hover:bg-yellow-600">创建任务</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/equipment-planned-maintenance.js"></script>
 </body>
 </html>
