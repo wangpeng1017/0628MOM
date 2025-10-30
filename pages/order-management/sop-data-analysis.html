@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S&OP数据收集与分析</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">S&OP数据收集与分析</h1>
+            <p class="text-sm text-gray-600">收集和分析销售与运营关键数据，为S&OP决策提供支持</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">历史订单量</p>
+                        <p class="text-2xl font-bold text-blue-600">1,245</p>
+                    </div>
+                    <i class="fas fa-chart-bar text-3xl text-blue-600"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">产能利用率</p>
+                        <p class="text-2xl font-bold text-green-600">87%</p>
+                    </div>
+                    <i class="fas fa-cogs text-3xl text-green-600"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">供需缺口</p>
+                        <p class="text-2xl font-bold text-red-600">¥2.1M</p>
+                    </div>
+                    <i class="fas fa-exclamation-triangle text-3xl text-red-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold mb-4">产能利用率趋势</h3>
+                <canvas id="capacityChart" height="300"></canvas>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold mb-4">供需对比分析</h3>
+                <canvas id="demandChart" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Chart(document.getElementById('capacityChart'), {
+            type: 'line',
+            data: {
+                labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                datasets: [{
+                    label: '产能利用率',
+                    data: [85, 88, 92, 89, 91, 94],
+                    borderColor: 'rgb(59, 130, 246)',
+                    tension: 0.4
+                }]
+            }
+        });
+        new Chart(document.getElementById('demandChart'), {
+            type: 'bar',
+            data: {
+                labels: ['光伏逆变器', '储能逆变器', '智能电网'],
+                datasets: [{
+                    label: '需求',
+                    data: [500, 300, 200],
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)'
+                }, {
+                    label: '产能',
+                    data: [480, 350, 150],
+                    backgroundColor: 'rgba(34, 197, 94, 0.8)'
+                }]
+            }
+        });
+    </script>
+</body>
+</html>

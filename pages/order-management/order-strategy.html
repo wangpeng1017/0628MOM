@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单策略(合并/拆解)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">订单策略(合并/拆解)</h1>
+            <p class="text-sm text-gray-600">优化订单处理效率，支持多批次、多品类订单合并或拆解操作</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">订单合并</h3>
+                    <i class="fas fa-compress text-3xl text-purple-600"></i>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">将同一客户的多笔小订单合并并发货，提高物流效率</p>
+                <button class="w-full bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                    <i class="fas fa-compress mr-2"></i>执行订单合并
+                </button>
+            </div>
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">订单拆解</h3>
+                    <i class="fas fa-expand text-3xl text-orange-600"></i>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">将一个大额订单拆分为多次生产交付，降低生产压力</p>
+                <button class="w-full bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">
+                    <i class="fas fa-expand mr-2"></i>执行订单拆解
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b">
+                <h3 class="text-lg font-semibold">可操作订单列表</h3>
+            </div>
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left"><input type="checkbox" class="rounded"></th>
+                        <th class="px-6 py-3 text-left text-sm">订单号</th>
+                        <th class="px-6 py-3 text-left text-sm">客户名称</th>
+                        <th class="px-6 py-3 text-left text-sm">订单金额</th>
+                        <th class="px-6 py-3 text-left text-sm">数量</th>
+                        <th class="px-6 py-3 text-left text-sm">建议操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="px-6 py-4"><input type="checkbox" class="rounded"></td>
+                        <td class="px-6 py-4 font-medium text-blue-600">ORD-2024-001</td>
+                        <td class="px-6 py-4">华为技术有限公司</td>
+                        <td class="px-6 py-4">¥125,800</td>
+                        <td class="px-6 py-4">50台</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-purple-100 text-purple-800 rounded text-xs">可合并</span></td>
+                    </tr>
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="px-6 py-4"><input type="checkbox" class="rounded"></td>
+                        <td class="px-6 py-4 font-medium text-blue-600">ORD-2024-003</td>
+                        <td class="px-6 py-4">宁德时代新能源科技</td>
+                        <td class="px-6 py-4">¥203,400</td>
+                        <td class="px-6 py-4">200台</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-orange-100 text-orange-800 rounded text-xs">建议拆解</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

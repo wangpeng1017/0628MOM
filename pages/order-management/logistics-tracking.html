@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物流跟踪</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">物流跟踪</h1>
+            <p class="text-sm text-gray-600">实时查看货物的物流状态和位置信息</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b">
+                <h3 class="text-lg font-semibold">在途订单跟踪</h3>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="border rounded-lg p-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <p class="font-medium text-lg">订单号: ORD-2024-001</p>
+                            <p class="text-sm text-gray-600">物流单号: SF1234567890</p>
+                        </div>
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">运输中</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mt-1 mr-3"></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">已发货</p>
+                                <p class="text-xs text-gray-600">2024-10-25 09:00 - 杭州市萧山区</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mt-1 mr-3"></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">运输中</p>
+                                <p class="text-xs text-gray-600">2024-10-25 15:30 - 途经上海转运中心</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-3 h-3 bg-gray-300 rounded-full mt-1 mr-3"></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-400">预计送达</p>
+                                <p class="text-xs text-gray-400">2024-10-26 10:00 - 深圳市南山区</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border rounded-lg p-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <p class="font-medium text-lg">订单号: ORD-2024-002</p>
+                            <p class="text-sm text-gray-600">物流单号: DB9876543210</p>
+                        </div>
+                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">派送中</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-start">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mt-1 mr-3"></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">已发货</p>
+                                <p class="text-xs text-gray-600">2024-10-24 14:00 - 杭州市萧山区</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mt-1 mr-3"></div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">派送中</p>
+                                <p class="text-xs text-gray-600">2024-10-25 08:00 - 西安市雁塔区配送站</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S&OP计划编制</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">S&OP计划编制</h1>
+                    <p class="text-sm text-gray-600">基于数据分析结果，制定并协同评审S&OP计划</p>
+                </div>
+                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                    <i class="fas fa-plus mr-2"></i>新建计划
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 space-y-4">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">2025年Q1生产计划</h3>
+                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">已审核</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                        <div><span class="text-gray-600">计划目标:</span> <span class="font-medium">1500台逆变器</span></div>
+                        <div><span class="text-gray-600">预算:</span> <span class="font-medium">¥12.5M</span></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800 text-sm">查看详情</button>
+                        <button class="text-green-600 hover:text-green-800 text-sm">下载计划</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">2025年Q2生产计划</h3>
+                        <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">待审核</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                        <div><span class="text-gray-600">计划目标:</span> <span class="font-medium">900台逆变器</span></div>
+                        <div><span class="text-gray-600">预算:</span> <span class="font-medium">¥8.7M</span></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800 text-sm">查看详情</button>
+                        <button class="text-yellow-600 hover:text-yellow-800 text-sm">提交审核</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">审核工作流</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">1</div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">S&OP专员制定</p>
+                                <p class="text-xs text-gray-600">初步计划编制</p>
+                            </div>
+                            <i class="fas fa-check text-green-500"></i>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center">2</div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">跨部门评审</p>
+                                <p class="text-xs text-gray-600">销售、生产、采购、财务</p>
+                            </div>
+                            <i class="fas fa-clock text-yellow-500"></i>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-gray-100 text-gray-600 rounded-full flex items-center justify-center">3</div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium">计划锁定</p>
+                                <p class="text-xs text-gray-600">最终版本确认</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

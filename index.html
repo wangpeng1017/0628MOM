@@ -271,10 +271,6 @@
                                         <i class="fas fa-shopping-cart text-red-600"></i>
                                         <span>订单管理</span>
                                     </button>
-                                    <button onclick="switchModule('sop-management'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
-                                        <i class="fas fa-chart-line text-blue-600"></i>
-                                        <span>S&OP管理</span>
-                                    </button>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <button onclick="switchModule('planning'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-calendar-alt text-indigo-600"></i>
@@ -478,13 +474,59 @@
                 title: '订单管理',
                 url: 'pages/order-management.html',
                 subMenus: [
-                    { id: 'order-list', name: '订单列表', icon: 'fas fa-list', url: 'pages/order-management.html' },
-                    { id: 'order-create', name: '创建订单', icon: 'fas fa-plus', url: 'pages/order-management/order-create.html' },
-                    { id: 'order-edit', name: '编辑订单', icon: 'fas fa-edit', url: 'pages/order-management/order-edit.html' },
-                    { id: 'order-detail', name: '订单详情', icon: 'fas fa-eye', url: 'pages/order-management/order-detail.html' },
-                    { id: 'order-execution', name: '订单执行', icon: 'fas fa-cogs', url: 'pages/order-execution.html' },
-                    { id: 'order-shipping', name: '订单发货', icon: 'fas fa-truck', url: 'pages/order-shipping.html' },
-                    { id: 'order-aftermarket', name: '订单售后', icon: 'fas fa-headset', url: 'pages/order-aftermarket.html' }
+                    {
+                        id: 'sop-management',
+                        name: 'S&OP管理',
+                        icon: 'fas fa-chart-line',
+                        subItems: [
+                            { id: 'sop-data-analysis', name: 'S&OP数据收集与分析', url: 'pages/order-management/sop-data-analysis.html' },
+                            { id: 'sop-planning', name: 'S&OP计划编制', url: 'pages/order-management/sop-planning.html' },
+                            { id: 'sop-execution', name: 'S&OP执行监控', url: 'pages/order-management/sop-execution.html' },
+                            { id: 'sop-adjustment', name: 'S&OP计划调整', url: 'pages/order-management/sop-adjustment.html' }
+                        ]
+                    },
+                    {
+                        id: 'order-info',
+                        name: '订单信息管理',
+                        icon: 'fas fa-file-alt',
+                        subItems: [
+                            { id: 'order-list', name: '订单列表', url: 'pages/order-management.html' },
+                            { id: 'order-create', name: '创建订单', url: 'pages/order-management/order-create.html' },
+                            { id: 'order-review', name: '订单审核', url: 'pages/order-management/order-review.html' },
+                            { id: 'order-strategy', name: '订单策略(合并/拆解)', url: 'pages/order-management/order-strategy.html' }
+                        ]
+                    },
+                    {
+                        id: 'order-execution',
+                        name: '订单执行',
+                        icon: 'fas fa-cogs',
+                        subItems: [
+                            { id: 'order-dispatch', name: '订单下发', url: 'pages/order-management/order-dispatch.html' },
+                            { id: 'production-tracking', name: '生产进度跟踪', url: 'pages/order-management/production-tracking.html' },
+                            { id: 'inventory-management', name: '库存联动管理', url: 'pages/order-management/inventory-management.html' },
+                            { id: 'exception-handling', name: '异常处理', url: 'pages/order-management/exception-handling.html' }
+                        ]
+                    },
+                    {
+                        id: 'order-shipping',
+                        name: '订单发货',
+                        icon: 'fas fa-truck',
+                        subItems: [
+                            { id: 'logistics-management', name: '物流管理', url: 'pages/order-management/logistics-management.html' },
+                            { id: 'delivery-confirmation', name: '收货确认', url: 'pages/order-management/delivery-confirmation.html' },
+                            { id: 'logistics-tracking', name: '物流跟踪', url: 'pages/order-management/logistics-tracking.html' }
+                        ]
+                    },
+                    {
+                        id: 'order-aftermarket',
+                        name: '订单售后',
+                        icon: 'fas fa-headset',
+                        subItems: [
+                            { id: 'aftermarket-request', name: '售后请求管理', url: 'pages/order-management/aftermarket-request.html' },
+                            { id: 'return-exchange', name: '退换货处理', url: 'pages/order-management/return-exchange.html' },
+                            { id: 'aftermarket-records', name: '售后记录查询', url: 'pages/order-management/aftermarket-records.html' }
+                        ]
+                    }
                 ]
             },
             planning: {

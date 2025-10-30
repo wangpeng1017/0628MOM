@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>库存联动管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">库存联动管理</h1>
+            <p class="text-sm text-gray-600">实时同步库存数据，根据订单需求触发生产或出库</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-sm text-gray-600">库存充足订单</p>
+                <p class="text-3xl font-bold text-green-600">23</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-sm text-gray-600">需生产订单</p>
+                <p class="text-3xl font-bold text-yellow-600">12</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-sm text-gray-600">待入库订单</p>
+                <p class="text-3xl font-bold text-blue-600">8</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-sm text-gray-600">待发货订单</p>
+                <p class="text-3xl font-bold text-purple-600">15</p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b">
+                <h3 class="text-lg font-semibold">订单库存状态</h3>
+            </div>
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-sm">订单号</th>
+                        <th class="px-6 py-3 text-left text-sm">产品</th>
+                        <th class="px-6 py-3 text-left text-sm">需求数量</th>
+                        <th class="px-6 py-3 text-left text-sm">库存数量</th>
+                        <th class="px-6 py-3 text-left text-sm">库存状态</th>
+                        <th class="px-6 py-3 text-left text-sm">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="px-6 py-4 font-medium text-blue-600">ORD-2024-001</td>
+                        <td class="px-6 py-4">逆变器</td>
+                        <td class="px-6 py-4">50台</td>
+                        <td class="px-6 py-4">60台</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">库存充足</span></td>
+                        <td class="px-6 py-4">
+                            <button class="text-green-600 hover:text-green-800">
+                                <i class="fas fa-box mr-1"></i>生成拣货单
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="px-6 py-4 font-medium text-blue-600">ORD-2024-002</td>
+                        <td class="px-6 py-4">逆变器</td>
+                        <td class="px-6 py-4">100台</td>
+                        <td class="px-6 py-4">20台</td>
+                        <td class="px-6 py-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs">库存不足</span></td>
+                        <td class="px-6 py-4">
+                            <button class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-cogs mr-1"></i>触发生产
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
