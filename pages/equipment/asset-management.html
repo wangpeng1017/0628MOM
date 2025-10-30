@@ -8,115 +8,611 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50">
-    <div class="p-6">
+    <div class="p-6 space-y-6">
         <!-- 页面标题 -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            <h1 class="text-2xl font-bold text-gray-800 mb-2">设备资产管理</h1>
-            <p class="text-sm text-gray-600">设备台账管理、二维码标识、设备履历追溯</p>
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">设备资产管理</h1>
+                    <p class="text-sm text-gray-600 max-w-3xl">
+                        构建设备从“出生”到“退役”的数字孪生档案，打通静态属性、动态状态、业务事件、文档与二维码的全链路，实现全过程、可追溯、可分析的资产管理能力。
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"><i class="fas fa-plus mr-2"></i>新建设备档案</button>
+                    <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50 transition"><i class="fas fa-file-import mr-2"></i>批量导入</button>
+                    <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50 transition"><i class="fas fa-qrcode mr-2"></i>打印二维码</button>
+                </div>
+            </div>
         </div>
 
-        <!-- 统计卡片 -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+        <!-- 关键指标 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-gray-600">设备总数</p>
-                        <p class="text-3xl font-bold text-blue-600">156</p>
+                        <p class="text-sm text-gray-500">设备总量</p>
+                        <p class="text-3xl font-bold text-blue-600">1,248</p>
+                        <p class="text-xs text-gray-400">覆盖整个园区的在册设备</p>
                     </div>
                     <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                         <i class="fas fa-industry text-blue-600 text-xl"></i>
                     </div>
                 </div>
             </div>
-            
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-gray-600">在用设备</p>
-                        <p class="text-3xl font-bold text-green-600">142</p>
+                        <p class="text-sm text-gray-500">实时健康档案</p>
+                        <p class="text-3xl font-bold text-green-600">98%</p>
+                        <p class="text-xs text-gray-400">具备完整履历与附件的设备占比</p>
                     </div>
                     <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                        <i class="fas fa-file-medical text-green-600 text-xl"></i>
                     </div>
                 </div>
             </div>
-            
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-sm font-medium text-gray-600">维修中</p>
-                        <p class="text-3xl font-bold text-orange-600">8</p>
+                        <p class="text-sm text-gray-500">二维码应用</p>
+                        <p class="text-3xl font-bold text-purple-600">1,180</p>
+                        <p class="text-xs text-gray-400">已完成编码并启用扫码服务的设备</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-qrcode text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-500">当年新增档案</p>
+                        <p class="text-3xl font-bold text-orange-600">86</p>
+                        <p class="text-xs text-gray-400">自助导入+二维码激活双通道</p>
                     </div>
                     <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-tools text-orange-600 text-xl"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-600">待报废</p>
-                        <p class="text-3xl font-bold text-red-600">6</p>
-                    </div>
-                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                        <i class="fas fa-plus-circle text-orange-600 text-xl"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 设备台账列表 -->
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold">设备台账列表</h3>
-                    <div class="flex space-x-2">
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                            <i class="fas fa-plus mr-2"></i>新增设备
-                        </button>
-                        <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
-                            <i class="fas fa-qrcode mr-2"></i>生成二维码
-                        </button>
-                        <button class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
-                            <i class="fas fa-download mr-2"></i>导出
-                        </button>
+        <!-- 多维视图与树形结构说明 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-800">多维度设备树视图</h2>
+                    <span class="px-3 py-1 text-xs bg-blue-100 text-blue-600 rounded-full">物理 + 虚拟</span>
+                </div>
+                <ul class="space-y-3 text-sm text-gray-600">
+                    <li class="flex items-start gap-2"><i class="fas fa-sitemap text-blue-500 mt-1"></i><span><strong>物理位置树：</strong>公司 → 工厂 → 车间 → 产线 → 工位 → 设备，支持动态拖拽与批量调拨。</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-layer-group text-blue-500 mt-1"></i><span><strong>功能类别树：</strong>动力设备、测试设备、装配设备等虚拟分组，满足不同部门管理视角。</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-cubes text-blue-500 mt-1"></i><span><strong>系统拆分树：</strong>支持将大型装备拆分为控制系统、液压系统、传动系统等子层级，形成数字孪生拓扑。</span></li>
+                    <li class="flex items-start gap-2"><i class="fas fa-random text-blue-500 mt-1"></i><span>任意视图间一键切换，并支持收藏常用视图，提升管理效率。</span></li>
+                </ul>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-800">动态属性与履历追溯</h2>
+                    <span class="px-3 py-1 text-xs bg-green-100 text-green-600 rounded-full">实时更新</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600">
+                    <div class="p-4 bg-green-50 border border-green-100 rounded-lg">
+                        <p class="font-semibold text-green-700 mb-2">状态引擎</p>
+                        <p>在用、停机、维修中、保养中、待报废等状态自动切换，结合工单与计划形成闭环。</p>
+                    </div>
+                    <div class="p-4 bg-green-50 border border-green-100 rounded-lg">
+                        <p class="font-semibold text-green-700 mb-2">履历时间轴</p>
+                        <p>安装、调试、验收、保养、维修、技改、报废等事件自动写入时间轴，支持筛选与导出。</p>
+                    </div>
+                    <div class="p-4 bg-green-50 border border-green-100 rounded-lg">
+                        <p class="font-semibold text-green-700 mb-2">位置追踪</p>
+                        <p>记录设备在厂区内的每一次移动，精确到工位，实现资产流转可追溯。</p>
+                    </div>
+                    <div class="p-4 bg-green-50 border border-green-100 rounded-lg">
+                        <p class="font-semibold text-green-700 mb-2">责任人变更</p>
+                        <p>责任人、保养人、监管人变更自动记录，并与组织架构联动，实现责任落实。</p>
                     </div>
                 </div>
             </div>
-            
-            <table class="w-full">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left"><input type="checkbox" class="rounded"></th>
-                        <th class="px-6 py-3 text-left text-sm">设备编码</th>
-                        <th class="px-6 py-3 text-left text-sm">设备名称</th>
-                        <th class="px-6 py-3 text-left text-sm">设备类别</th>
-                        <th class="px-6 py-3 text-left text-sm">所在位置</th>
-                        <th class="px-6 py-3 text-left text-sm">当前状态</th>
-                        <th class="px-6 py-3 text-left text-sm">责任人</th>
-                        <th class="px-6 py-3 text-left text-sm">启用日期</th>
-                        <th class="px-6 py-3 text-left text-sm">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-001</td><td class="px-6 py-4">全自动贴片机</td><td class="px-6 py-4">生产设备</td><td class="px-6 py-4">A车间-1号产线</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">张工</td><td class="px-6 py-4">2023-01-15</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-002</td><td class="px-6 py-4">逆变器老化测试台</td><td class="px-6 py-4">测试设备</td><td class="px-6 py-4">B车间-测试区</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">李工</td><td class="px-6 py-4">2023-02-20</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-003</td><td class="px-6 py-4">激光焊接机</td><td class="px-6 py-4">生产设备</td><td class="px-6 py-4">A车间-2号产线</td><td class="px-6 py-4"><span class="px-2 py-1 bg-orange-100 text-orange-800 rounded text-xs">维修中</span></td><td class="px-6 py-4">王工</td><td class="px-6 py-4">2023-03-10</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-004</td><td class="px-6 py-4">AOI光学检测仪</td><td class="px-6 py-4">检测设备</td><td class="px-6 py-4">B车间-质检区</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">赵工</td><td class="px-6 py-4">2023-04-05</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-005</td><td class="px-6 py-4">CNC数控机床</td><td class="px-6 py-4">加工设备</td><td class="px-6 py-4">C车间-机加工区</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">刘工</td><td class="px-6 py-4">2023-05-12</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-006</td><td class="px-6 py-4">组件层压机</td><td class="px-6 py-4">生产设备</td><td class="px-6 py-4">D车间-组件产线</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">陈工</td><td class="px-6 py-4">2023-06-18</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-007</td><td class="px-6 py-4">伺服电机测试台</td><td class="px-6 py-4">测试设备</td><td class="px-6 py-4">B车间-测试区</td><td class="px-6 py-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs">保养中</span></td><td class="px-6 py-4">周工</td><td class="px-6 py-4">2023-07-22</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-008</td><td class="px-6 py-4">自动化装配线</td><td class="px-6 py-4">生产设备</td><td class="px-6 py-4">A车间-装配区</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">吴工</td><td class="px-6 py-4">2023-08-30</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-009</td><td class="px-6 py-4">高温老化房</td><td class="px-6 py-4">测试设备</td><td class="px-6 py-4">B车间-老化区</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">郑工</td><td class="px-6 py-4">2023-09-15</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-010</td><td class="px-6 py-4">精密冲压机</td><td class="px-6 py-4">加工设备</td><td class="px-6 py-4">C车间-冲压区</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">孙工</td><td class="px-6 py-4">2023-10-20</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-011</td><td class="px-6 py-4">电池模组测试系统</td><td class="px-6 py-4">测试设备</td><td class="px-6 py-4">E车间-储能测试区</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">马工</td><td class="px-6 py-4">2023-11-08</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-012</td><td class="px-6 py-4">自动点胶机</td><td class="px-6 py-4">生产设备</td><td class="px-6 py-4">A车间-1号产线</td><td class="px-6 py-4"><span class="px-2 py-1 bg-orange-100 text-orange-800 rounded text-xs">维修中</span></td><td class="px-6 py-4">许工</td><td class="px-6 py-4">2023-12-01</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-013</td><td class="px-6 py-4">真空回流焊</td><td class="px-6 py-4">生产设备</td><td class="px-6 py-4">A车间-2号产线</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">何工</td><td class="px-6 py-4">2024-01-10</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-014</td><td class="px-6 py-4">X-RAY检测设备</td><td class="px-6 py-4">检测设备</td><td class="px-6 py-4">B车间-质检区</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">韩工</td><td class="px-6 py-4">2024-02-15</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                    <tr class="border-t hover:bg-gray-50"><td class="px-6 py-4"><input type="checkbox" class="rounded"></td><td class="px-6 py-4 font-medium text-blue-600">EQ-2024-015</td><td class="px-6 py-4">AGV搬运机器人</td><td class="px-6 py-4">物流设备</td><td class="px-6 py-4">全厂区</td><td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">在用</span></td><td class="px-6 py-4">冯工</td><td class="px-6 py-4">2024-03-20</td><td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 mr-2">详情</button><button class="text-gray-600 hover:text-gray-800">编辑</button></td></tr>
-                </tbody>
-            </table>
+        </div>
+
+        <!-- 关键功能模块 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg font-semibold text-gray-800">核心功能模块</h2>
+                <span class="text-xs text-gray-500">覆盖档案、编码、附件、导入、自定义字段五大能力</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 text-sm text-gray-600">
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center"><i class="fas fa-id-card text-blue-600"></i></span>
+                        <div>
+                            <p class="font-semibold text-gray-800">数字孪生档案</p>
+                            <p class="text-xs text-gray-400">静态 + 动态字段模型</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 list-disc list-inside">
+                        <li>静态属性：型号、厂家、采购信息、技术参数</li>
+                        <li>动态属性：状态、位置、责任人、运行时长</li>
+                        <li>支持按设备类别自定义动态模板</li>
+                    </ul>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center"><i class="fas fa-mobile-alt text-purple-600"></i></span>
+                        <div>
+                            <p class="font-semibold text-gray-800">二维码 / RFID 深度应用</p>
+                            <p class="text-xs text-gray-400">一物一码 · 扫码即服务</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 list-disc list-inside">
+                        <li>支持批量生成二维码与标签设计</li>
+                        <li>扫码触发角色化菜单：操作员、维修工、点检员</li>
+                        <li>移动端离线缓存，弱网环境可用</li>
+                    </ul>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center"><i class="fas fa-folder-open text-green-600"></i></span>
+                        <div>
+                            <p class="font-semibold text-gray-800">附件与文档管理</p>
+                            <p class="text-xs text-gray-400">版本控制 + 权限管控</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 list-disc list-inside">
+                        <li>支持上传 CAD、PDF、Office、视频等素材</li>
+                        <li>自动记录版本，保留迭代历史</li>
+                        <li>细粒度权限：可查看、下载、编辑、审核</li>
+                    </ul>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center"><i class="fas fa-file-import text-orange-600"></i></span>
+                        <div>
+                            <p class="font-semibold text-gray-800">智能化数据导入</p>
+                            <p class="text-xs text-gray-400">校验 + 错误回写</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 list-disc list-inside">
+                        <li>标准化 Excel 模板，支持多语言</li>
+                        <li>字段级校验：编码唯一、日期格式、必填检查</li>
+                        <li>导入失败生成错误报告，支持二次导入</li>
+                    </ul>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="w-10 h-10 rounded-lg bg-teal-100 flex items-center justify-center"><i class="fas fa-puzzle-piece text-teal-600"></i></span>
+                        <div>
+                            <p class="font-semibold text-gray-800">自定义字段引擎</p>
+                            <p class="text-xs text-gray-400">低代码配置</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 list-disc list-inside">
+                        <li>支持文本、数字、下拉、多选、时间等控件</li>
+                        <li>字段自动参与查询筛选与报表统计</li>
+                        <li>字段权限与角色关联，保障数据规范</li>
+                    </ul>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow transition">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center"><i class="fas fa-history text-amber-600"></i></span>
+                        <div>
+                            <p class="font-semibold text-gray-800">履历 & 生命周期管理</p>
+                            <p class="text-xs text-gray-400">全链路事件归档</p>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 list-disc list-inside">
+                        <li>自动记录安装、验收、保养、维修、报废等事件</li>
+                        <li>支持外部系统回写，更改即记录日志</li>
+                        <li>结合BI生成生命周期成本分析报表</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 业务流程 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-gray-800">新设备入账与启用流程</h2>
+                <span class="text-xs text-gray-500">资产管理员 · 安装工程师 · 生产主管</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-7 gap-4 text-sm">
+                <div class="md:col-span-1 flex flex-col items-center text-center">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">1</div>
+                    <p class="mt-2 font-semibold text-gray-700">预入账</p>
+                    <p class="text-xs text-gray-500">资产管理员</p>
+                </div>
+                <div class="hidden md:flex items-center justify-center"><i class="fas fa-angle-right text-gray-300 text-2xl"></i></div>
+                <div class="md:col-span-1 flex flex-col items-center text-center">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">2</div>
+                    <p class="mt-2 font-semibold text-gray-700">编码 & 二维码</p>
+                    <p class="text-xs text-gray-500">系统自动生成</p>
+                </div>
+                <div class="hidden md:flex items-center justify-center"><i class="fas fa-angle-right text-gray-300 text-2xl"></i></div>
+                <div class="md:col-span-1 flex flex-col items-center text-center">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">3</div>
+                    <p class="mt-2 font-semibold text-gray-700">现场安装</p>
+                    <p class="text-xs text-gray-500">安装工程师</p>
+                </div>
+                <div class="hidden md:flex items-center justify-center"><i class="fas fa-angle-right text-gray-300 text-2xl"></i></div>
+                <div class="md:col-span-1 flex flex-col items-center text-center">
+                    <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-semibold">4</div>
+                    <p class="mt-2 font-semibold text-gray-700">扫码激活</p>
+                    <p class="text-xs text-gray-500">移动端更新动态信息</p>
+                </div>
+                <div class="hidden md:flex items-center justify-center"><i class="fas fa-angle-right text-gray-300 text-2xl"></i></div>
+                <div class="md:col-span-1 flex flex-col items-center text-center">
+                    <div class="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center font-semibold">5</div>
+                    <p class="mt-2 font-semibold text-gray-700">验收启用</p>
+                    <p class="text-xs text-gray-500">生产主管审核</p>
+                </div>
+            </div>
+            <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 text-sm text-blue-700">
+                <p class="font-semibold mb-1">流程亮点：</p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li>扫码即可调用移动端界面，减少手工录入；</li>
+                    <li>安装照片、验收报告在线留痕，自动归档至附件库；</li>
+                    <li>流程每一步自动写入设备履历，实现责任可追溯。</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 场景时间轴 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-6">典型业务场景时间轴</h2>
+            <div class="relative border-l-2 border-gray-100 pl-6 space-y-6">
+                <div class="absolute -left-2 top-0 bottom-0 border-l border-dashed border-gray-200"></div>
+                <div class="relative">
+                    <span class="absolute -left-3 top-0 w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">08:30</span>
+                    <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 text-sm text-blue-700">
+                        <p class="font-semibold">资产管理员 · 新建档案</p>
+                        <p class="text-xs mt-1">录入静态属性，选择设备类别 → 系统自动带出自定义字段模板。</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <span class="absolute -left-3 top-0 w-6 h-6 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs">10:00</span>
+                    <div class="bg-purple-50 border border-purple-100 rounded-lg p-4 text-sm text-purple-700">
+                        <p class="font-semibold">安装工程师 · 扫码补充信息</p>
+                        <p class="text-xs mt-1">更新安装位置、上传调试报告，状态切换至“待验收”。</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <span class="absolute -left-3 top-0 w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center text-xs">15:30</span>
+                    <div class="bg-green-50 border border-green-100 rounded-lg p-4 text-sm text-green-700">
+                        <p class="font-semibold">生产主管 · 验收通过</p>
+                        <p class="text-xs mt-1">线上验收单审批通过，设备状态自动更新为“在用”，启用日期入库。</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <span class="absolute -left-3 top-0 w-6 h-6 rounded-full bg-amber-600 text-white flex items-center justify-center text-xs">+60天</span>
+                    <div class="bg-amber-50 border border-amber-100 rounded-lg p-4 text-sm text-amber-700">
+                        <p class="font-semibold">保养记录写入履历</p>
+                        <p class="text-xs mt-1">计划性保养完成后，保养报告、测量数据自动沉淀至设备履历。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 系统架构与数据模型 -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+                <h2 class="text-lg font-semibold text-gray-800">系统架构视图</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                    <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                        <p class="font-semibold text-blue-700 mb-2">前端层</p>
+                        <ul class="space-y-1 list-disc list-inside text-blue-600">
+                            <li>设备树组件（多维切换）</li>
+                            <li>档案详情 Tab 布局</li>
+                            <li>表单生成器（自定义字段）</li>
+                            <li>移动端扫码界面</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 border border-green-100 rounded-lg p-4">
+                        <p class="font-semibold text-green-700 mb-2">业务服务层</p>
+                        <ul class="space-y-1 list-disc list-inside text-green-600">
+                            <li>资产管理服务 API</li>
+                            <li>设备状态机与履历引擎</li>
+                            <li>二维码/标识服务</li>
+                            <li>附件与版本管理服务</li>
+                        </ul>
+                    </div>
+                    <div class="bg-purple-50 border border-purple-100 rounded-lg p-4">
+                        <p class="font-semibold text-purple-700 mb-2">数据层</p>
+                        <ul class="space-y-1 list-disc list-inside text-purple-600">
+                            <li>设备主表（基础属性）</li>
+                            <li>设备履历表（事件日志）</li>
+                            <li>自定义字段值表</li>
+                            <li>设备附件表 / 对象存储</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-gray-50 border border-dashed border-gray-300 rounded-lg p-4 text-xs text-gray-600">
+                    <p class="font-semibold mb-1 text-gray-700">与其它模块的集成：</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>与维保服务共享设备履历，支撑工单自动回写；</li>
+                        <li>与备件管理共享BOM结构，实现备件映射；</li>
+                        <li>与IoT平台对接，获取实时运行状态与累计运行时长。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+                <h2 class="text-lg font-semibold text-gray-800">数据模型示例</h2>
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-2 text-left text-xs text-gray-500 uppercase tracking-wider">字段</th>
+                            <th class="px-4 py-2 text-left text-xs text-gray-500 uppercase tracking-wider">说明</th>
+                            <th class="px-4 py-2 text-left text-xs text-gray-500 uppercase tracking-wider">类型</th>
+                            <th class="px-4 py-2 text-left text-xs text-gray-500 uppercase tracking-wider">示例值</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 text-gray-600">
+                        <tr>
+                            <td class="px-4 py-2 font-medium text-gray-800">equipment_code</td>
+                            <td class="px-4 py-2">设备唯一编码，按编码规则自动生成</td>
+                            <td class="px-4 py-2">VARCHAR(32)</td>
+                            <td class="px-4 py-2">EQ-2024-001</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-medium text-gray-800">category_id</td>
+                            <td class="px-4 py-2">设备类别，与数据字典联动</td>
+                            <td class="px-4 py-2">VARCHAR(20)</td>
+                            <td class="px-4 py-2">TEST_EQUIP</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-medium text-gray-800">status</td>
+                            <td class="px-4 py-2">当前运行状态</td>
+                            <td class="px-4 py-2">ENUM</td>
+                            <td class="px-4 py-2">IN_USE / MAINTAINING</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-medium text-gray-800">location_path</td>
+                            <td class="px-4 py-2">物理位置（组织路径）</td>
+                            <td class="px-4 py-2">VARCHAR(255)</td>
+                            <td class="px-4 py-2">集团/宁波工厂/A车间/1号线</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-medium text-gray-800">lifecycle_event</td>
+                            <td class="px-4 py-2">履历事件类型</td>
+                            <td class="px-4 py-2">ENUM</td>
+                            <td class="px-4 py-2">INSTALL / ACCEPT / REPAIR / SCRAP</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-medium text-gray-800">custom_fields</td>
+                            <td class="px-4 py-2">自定义字段 JSON</td>
+                            <td class="px-4 py-2">JSONB</td>
+                            <td class="px-4 py-2">{"额定功率":"15kW","操作电压":"380V"}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 设备台账列表示例 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800">设备台账列表</h3>
+                    <p class="text-sm text-gray-500">支持多字段组合筛选、批量操作、导出及个性化列配置</p>
+                </div>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    <button class="px-3 py-2 rounded border border-gray-300 hover:bg-gray-50"><i class="fas fa-filter mr-2"></i>高级筛选</button>
+                    <button class="px-3 py-2 rounded border border-gray-300 hover:bg-gray-50"><i class="fas fa-sliders-h mr-2"></i>列配置</button>
+                    <button class="px-3 py-2 rounded border border-gray-300 hover:bg-gray-50"><i class="fas fa-download mr-2"></i>导出Excel</button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left"><input type="checkbox" class="rounded"></th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">设备编码</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">设备名称</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">物理位置</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">当前状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">责任人</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">启用日期</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">累计运行时长(h)</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">净值(万元)</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-100 text-gray-700">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4"><input type="checkbox" class="rounded"></td>
+                            <td class="px-6 py-4 font-medium text-blue-600">EQ-2024-001</td>
+                            <td class="px-6 py-4">全自动贴片机</td>
+                            <td class="px-6 py-4">宁波工厂 / A车间 / SMT产线-1</td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">在用</span></td>
+                            <td class="px-6 py-4">张工</td>
+                            <td class="px-6 py-4">2023-01-15</td>
+                            <td class="px-6 py-4">9,520</td>
+                            <td class="px-6 py-4">68.4</td>
+                            <td class="px-6 py-4 space-x-2 text-sm">
+                                <button class="text-blue-600 hover:text-blue-800">详情</button>
+                                <button class="text-gray-600 hover:text-gray-800">编辑</button>
+                                <button class="text-purple-600 hover:text-purple-800">履历</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4"><input type="checkbox" class="rounded"></td>
+                            <td class="px-6 py-4 font-medium text-blue-600">EQ-2024-019</td>
+                            <td class="px-6 py-4">逆变器老化测试台</td>
+                            <td class="px-6 py-4">宁波工厂 / B车间 / 测试区</td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs">保养中</span></td>
+                            <td class="px-6 py-4">李工</td>
+                            <td class="px-6 py-4">2022-09-08</td>
+                            <td class="px-6 py-4">6,380</td>
+                            <td class="px-6 py-4">52.7</td>
+                            <td class="px-6 py-4 space-x-2 text-sm">
+                                <button class="text-blue-600 hover:text-blue-800">详情</button>
+                                <button class="text-gray-600 hover:text-gray-800">编辑</button>
+                                <button class="text-purple-600 hover:text-purple-800">履历</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4"><input type="checkbox" class="rounded"></td>
+                            <td class="px-6 py-4 font-medium text-blue-600">EQ-2024-033</td>
+                            <td class="px-6 py-4">组件层压机</td>
+                            <td class="px-6 py-4">宁波工厂 / D车间 / 组件线-2</td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 bg-orange-100 text-orange-700 rounded text-xs">维修中</span></td>
+                            <td class="px-6 py-4">王工</td>
+                            <td class="px-6 py-4">2021-05-26</td>
+                            <td class="px-6 py-4">12,115</td>
+                            <td class="px-6 py-4">74.9</td>
+                            <td class="px-6 py-4 space-x-2 text-sm">
+                                <button class="text-blue-600 hover:text-blue-800">详情</button>
+                                <button class="text-gray-600 hover:text-gray-800">编辑</button>
+                                <button class="text-purple-600 hover:text-purple-800">履历</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4"><input type="checkbox" class="rounded"></td>
+                            <td class="px-6 py-4 font-medium text-blue-600">EQ-2024-047</td>
+                            <td class="px-6 py-4">伺服电机测试台</td>
+                            <td class="px-6 py-4">宁波工厂 / B车间 / 测试区</td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">待报废</span></td>
+                            <td class="px-6 py-4">赵工</td>
+                            <td class="px-6 py-4">2017-04-10</td>
+                            <td class="px-6 py-4">21,430</td>
+                            <td class="px-6 py-4">8.2</td>
+                            <td class="px-6 py-4 space-x-2 text-sm">
+                                <button class="text-blue-600 hover:text-blue-800">详情</button>
+                                <button class="text-gray-600 hover:text-gray-800">编辑</button>
+                                <button class="text-purple-600 hover:text-purple-800">履历</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4"><input type="checkbox" class="rounded"></td>
+                            <td class="px-6 py-4 font-medium text-blue-600">EQ-2024-052</td>
+                            <td class="px-6 py-4">AGV搬运机器人</td>
+                            <td class="px-6 py-4">宁波工厂 / 物流中心 / 自动仓库</td>
+                            <td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">在用</span></td>
+                            <td class="px-6 py-4">冯工</td>
+                            <td class="px-6 py-4">2023-03-12</td>
+                            <td class="px-6 py-4">4,260</td>
+                            <td class="px-6 py-4">49.6</td>
+                            <td class="px-6 py-4 space-x-2 text-sm">
+                                <button class="text-blue-600 hover:text-blue-800">详情</button>
+                                <button class="text-gray-600 hover:text-gray-800">编辑</button>
+                                <button class="text-purple-600 hover:text-purple-800">履历</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 二维码角色化菜单示意 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-gray-800">二维码角色化菜单示意</h2>
+                <span class="text-xs text-gray-500">移动端扫码即进入对应业务场景</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-700">
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center"><i class="fas fa-user-cog text-blue-600"></i></span>
+                        <div>
+                            <p class="font-semibold text-gray-800">操作员</p>
+                            <p class="text-xs text-gray-400">生产现场</p>
+                        </div>
+                    </div>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>查看SOP / 作业指导书</li>
+                        <li>查看实时状态与告警</li>
+                        <li>一键发起报修或记录异常</li>
+                    </ul>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center"><i class="fas fa-tools text-green-600"></i></span>
+                        <div>
+                            <p class="font-semibold text-gray-800">维修工程师</p>
+                            <p class="text-xs text-gray-400">维保场景</p>
+                        </div>
+                    </div>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>接收工单与记录工时</li>
+                        <li>扫码领用备件并回写工单</li>
+                        <li>查看历史维修记录与知识库</li>
+                    </ul>
+                </div>
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center"><i class="fas fa-search text-purple-600"></i></span>
+                        <div>
+                            <p class="font-semibold text-gray-800">点检员</p>
+                            <p class="text-xs text-gray-400">巡检场景</p>
+                        </div>
+                    </div>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>签到确认到位，杜绝漏检</li>
+                        <li>执行检查表与记录测量值</li>
+                        <li>异常一键升级为报修</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 附件与自定义字段说明 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+                <h2 class="text-lg font-semibold text-gray-800">附件与文档版本控制</h2>
+                <div class="space-y-3 text-sm text-gray-600">
+                    <p>支持将安装说明书、调试报告、验收单、维修记录等文件统一管理，自动生成版本号。</p>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>版本差异对比，快速回溯修改点；</li>
+                        <li>审批流集成，确保关键文档审核通过后发布；</li>
+                        <li>与知识库、维保模块共享，实现资料复用。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+                <h2 class="text-lg font-semibold text-gray-800">自定义字段应用案例</h2>
+                <div class="space-y-3 text-sm text-gray-600">
+                    <p>可按设备类别配置差异化字段，自动出现在档案表单、查询条件与报表字段中。</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="p-3 bg-gray-50 border border-gray-200 rounded">
+                            <p class="font-semibold text-gray-700">光伏逆变器</p>
+                            <p class="text-xs text-gray-500">新增：“额定功率”、“逆变效率”、“MPPT路数”</p>
+                        </div>
+                        <div class="p-3 bg-gray-50 border border-gray-200 rounded">
+                            <p class="font-semibold text-gray-700">AGV搬运车</p>
+                            <p class="text-xs text-gray-500">新增：“软件版本”、“电池循环次数”</p>
+                        </div>
+                        <div class="p-3 bg-gray-50 border border-gray-200 rounded">
+                            <p class="font-semibold text-gray-700">智能装配线</p>
+                            <p class="text-xs text-gray-500">新增：“最大节拍”、“联机系统IP”</p>
+                        </div>
+                        <div class="p-3 bg-gray-50 border border-gray-200 rounded">
+                            <p class="font-semibold text-gray-700">测试工装</p>
+                            <p class="text-xs text-gray-500">新增：“校准周期”、“标定机构”</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 风险与预警 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-4">
+            <h2 class="text-lg font-semibold text-gray-800">风险预警与数据治理</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+                <div class="p-4 border border-red-100 bg-red-50 rounded">
+                    <p class="font-semibold text-red-700 mb-1">数据完整性预警</p>
+                    <p class="text-xs text-red-600">发现 12 台设备缺少验收报告，提示资产管理员补录。</p>
+                </div>
+                <div class="p-4 border border-yellow-100 bg-yellow-50 rounded">
+                    <p class="font-semibold text-yellow-700 mb-1">状态异常预警</p>
+                    <p class="text-xs text-yellow-600">4 台设备状态超 30 天未更新，系统自动推送提醒责任人。</p>
+                </div>
+                <div class="p-4 border border-blue-100 bg-blue-50 rounded">
+                    <p class="font-semibold text-blue-700 mb-1">编码规范监控</p>
+                    <p class="text-xs text-blue-600">新增设备编码命中重复规则时，实时阻断并给出修正建议。</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
