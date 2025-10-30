@@ -587,124 +587,16 @@
             },
             equipment: {
                 title: '设备管理',
+                url: 'pages/equipment.html',
                 subMenus: [
-                    {
-                        id: 'overview',
-                        name: '设备管理总览',
-                        icon: 'fas fa-tachometer-alt',
-                        subItems: [
-                            { id: 'equipment-management', name: '设备管理模块', url: 'pages/equipment/equipment-management.html' }
-                        ]
-                    },
-                    {
-                        id: 'standards',
-                        name: '标准规范管理',
-                        icon: 'fas fa-file-alt',
-                        subItems: [
-                            { id: 'technical-standards', name: '技术标准规范管理', url: 'pages/equipment/technical-standards.html' },
-                            { id: 'master-data', name: '主数据管理', url: 'pages/equipment/master-data.html' }
-                        ]
-                    },
-                    {
-                        id: 'arrival-installation',
-                        name: '设备到货安装',
-                        icon: 'fas fa-truck',
-                        subItems: [
-                            { id: 'equipment-arrival', name: '设备到货确认', url: 'pages/equipment/equipment-arrival.html' },
-                            { id: 'equipment-installation', name: '设备安装验收', url: 'pages/equipment/equipment-installation.html' }
-                        ]
-                    },
-                    {
-                        id: 'monitoring',
-                        name: '运行状态监控',
-                        icon: 'fas fa-tv',
-                        subItems: [
-                            { id: 'equipment-monitoring', name: '设备运行监控', url: 'pages/equipment/equipment-monitoring.html' },
-                            { id: 'energy-management', name: '能源管理', url: 'pages/equipment/energy-management.html' },
-                            { id: 'equipment-ledger', name: '设备台账管理', url: 'pages/equipment/equipment-ledger.html' }
-                        ]
-                    },
-                    {
-                        id: 'maintenance',
-                        name: '设备维修与保养',
-                        icon: 'fas fa-tools',
-                        subItems: [
-                            { id: 'equipment-inspection', name: '设备点巡检', url: 'pages/equipment/equipment-inspection.html' },
-                            { id: 'equipment-maintenance', name: '设备保养', url: 'pages/equipment/equipment-maintenance.html' },
-                            { id: 'equipment-repair', name: '设备故障维修', url: 'pages/equipment/equipment-repair.html' }
-                        ]
-                    },
-                    {
-                        id: 'upgrade-budget',
-                        name: '技改与预算管理',
-                        icon: 'fas fa-cogs',
-                        subItems: [
-                            { id: 'equipment-upgrade', name: '技改管理', url: 'pages/equipment/equipment-upgrade.html' },
-                            { id: 'budget-management', name: '预算执行管理', url: 'pages/equipment/budget-management.html' },
-                            { id: 'spare-parts', name: '备品备件管理', url: 'pages/equipment/spare-parts.html' }
-                        ]
-                    },
-                    {
-                        id: 'idle-disposal',
-                        name: '闲置设备处置',
-                        icon: 'fas fa-recycle',
-                        subItems: [
-                            { id: 'idle-equipment-assessment', name: '闲置设备评估', url: 'pages/equipment/idle-equipment-assessment.html' },
-                            { id: 'idle-equipment-disposal', name: '闲置设备处置', url: 'pages/equipment/idle-equipment-disposal.html' }
-                        ]
-                    },
-                    {
-                        id: 'inspection',
-                        name: '点巡检管理',
-                        icon: 'fas fa-search',
-                        subItems: [
-                            { id: 'route-management', name: '巡检路线管理', url: 'pages/equipment/inspection/route-management.html' },
-                            { id: 'task-execution', name: '巡检任务执行', url: 'pages/equipment/inspection/task-execution.html' },
-                            { id: 'standard-library', name: '检查标准库', url: 'pages/equipment/inspection/standard-library.html' },
-                            { id: 'exception-handling', name: '异常处理记录', url: 'pages/equipment/inspection/exception-handling.html' }
-                        ]
-                    },
-                    {
-                        id: 'spare-parts',
-                        name: '备品备件管理',
-                        icon: 'fas fa-boxes',
-                        subItems: [
-                            { id: 'inventory-management', name: '备件台账管理', url: 'pages/equipment/spare-parts/inventory-management.html' },
-                            { id: 'stock-alert', name: '库存预警管理', url: 'pages/equipment/spare-parts/stock-alert.html' },
-                            { id: 'purchase-request', name: '采购申请管理', url: 'pages/equipment/spare-parts/purchase-request.html' },
-                            { id: 'warehouse-operations', name: '出入库管理', url: 'pages/equipment/spare-parts/warehouse-operations.html' }
-                        ]
-                    },
-                    {
-                        id: 'analytics',
-                        name: '统计分析',
-                        icon: 'fas fa-chart-bar',
-                        subItems: [
-                            { id: 'oee-analysis', name: 'OEE分析', url: 'pages/equipment/analytics/oee-analysis.html' },
-                            { id: 'fault-statistics', name: '故障统计分析', url: 'pages/equipment/analytics/fault-statistics.html' },
-                            { id: 'cost-benefit-analysis', name: '成本效益分析', url: 'pages/equipment/analytics/cost-benefit-analysis.html' }
-                        ]
-                    },
-                    {
-                        id: 'renovation',
-                        name: '技术改造管理',
-                        icon: 'fas fa-cogs',
-                        subItems: [
-                            { id: 'project-initiation', name: '项目立项管理', url: 'pages/equipment/renovation/project-initiation.html' },
-                            { id: 'project-tracking', name: '项目执行跟踪', url: 'pages/equipment/renovation/project-tracking.html' },
-                            { id: 'project-acceptance', name: '项目验收管理', url: 'pages/equipment/renovation/project-acceptance.html' }
-                        ]
-                    },
-                    {
-                        id: 'documents',
-                        name: '技术资料管理',
-                        icon: 'fas fa-folder-open',
-                        subItems: [
-                            { id: 'document-classification', name: '文档分类管理', url: 'pages/equipment/documents/document-classification.html' },
-                            { id: 'version-control', name: '版本控制管理', url: 'pages/equipment/documents/version-control.html' },
-                            { id: 'permission-audit', name: '权限审核管理', url: 'pages/equipment/documents/permission-audit.html' }
-                        ]
-                    }
+                    { id: 'asset-management', name: '设备资产管理', icon: 'fas fa-database', url: 'pages/equipment/asset-management.html' },
+                    { id: 'maintenance-repair', name: '维护维修管理', icon: 'fas fa-tools', url: 'pages/equipment/maintenance-repair.html' },
+                    { id: 'preventive-maintenance', name: '计划性维护', icon: 'fas fa-calendar-check', url: 'pages/equipment/preventive-maintenance.html' },
+                    { id: 'inspection-management', name: '点巡检管理', icon: 'fas fa-search', url: 'pages/equipment/inspection-management.html' },
+                    { id: 'spare-parts-management', name: '备品备件管理', icon: 'fas fa-boxes', url: 'pages/equipment/spare-parts-management.html' },
+                    { id: 'predictive-maintenance', name: '预测性维护', icon: 'fas fa-brain', url: 'pages/equipment/predictive-maintenance.html' },
+                    { id: 'knowledge-base', name: '知识库管理', icon: 'fas fa-book', url: 'pages/equipment/knowledge-base.html' },
+                    { id: 'oee-analysis', name: 'OEE统计分析', icon: 'fas fa-chart-line', url: 'pages/equipment/oee-analysis.html' }
                 ]
             },
             ioc: {
