@@ -275,18 +275,6 @@
                                         <i class="fas fa-chart-line text-blue-600"></i>
                                         <span>S&OP管理</span>
                                     </button>
-                                    <button onclick="switchModule('order-execution'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
-                                        <i class="fas fa-cogs text-yellow-600"></i>
-                                        <span>订单执行</span>
-                                    </button>
-                                    <button onclick="switchModule('order-shipping'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
-                                        <i class="fas fa-truck text-purple-600"></i>
-                                        <span>订单发货</span>
-                                    </button>
-                                    <button onclick="switchModule('order-aftermarket'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
-                                        <i class="fas fa-headset text-green-600"></i>
-                                        <span>订单售后</span>
-                                    </button>
                                     <div class="border-t border-gray-100 my-1"></div>
                                     <button onclick="switchModule('planning'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-calendar-alt text-indigo-600"></i>
@@ -481,37 +469,23 @@
                 url: 'pages/dashboard.html',
                 subMenus: []
             },
+            'sop-management': {
+                title: 'S&OP管理',
+                url: 'pages/sop-management.html',
+                subMenus: []
+            },
             'order-management': {
                 title: '订单管理',
                 url: 'pages/order-management.html',
                 subMenus: [
                     { id: 'order-list', name: '订单列表', icon: 'fas fa-list', url: 'pages/order-management.html' },
                     { id: 'order-create', name: '创建订单', icon: 'fas fa-plus', url: 'pages/order-management/order-create.html' },
-                    { id: 'order-approval', name: '订单审核', icon: 'fas fa-check-circle', url: 'pages/coming-soon.html' },
-                    { id: 'order-execution', name: '订单执行', icon: 'fas fa-cogs', url: 'pages/coming-soon.html' },
-                    { id: 'order-shipping', name: '订单发货', icon: 'fas fa-truck', url: 'pages/coming-soon.html' },
-                    { id: 'order-after-sales', name: '售后服务', icon: 'fas fa-headset', url: 'pages/coming-soon.html' }
+                    { id: 'order-edit', name: '编辑订单', icon: 'fas fa-edit', url: 'pages/order-management/order-edit.html' },
+                    { id: 'order-detail', name: '订单详情', icon: 'fas fa-eye', url: 'pages/order-management/order-detail.html' },
+                    { id: 'order-execution', name: '订单执行', icon: 'fas fa-cogs', url: 'pages/order-execution.html' },
+                    { id: 'order-shipping', name: '订单发货', icon: 'fas fa-truck', url: 'pages/order-shipping.html' },
+                    { id: 'order-aftermarket', name: '订单售后', icon: 'fas fa-headset', url: 'pages/order-aftermarket.html' }
                 ]
-            },
-            'sop-management': {
-                title: 'S&OP管理',
-                url: 'pages/sop-management.html',
-                subMenus: []
-            },
-            'order-execution': {
-                title: '订单执行',
-                url: 'pages/order-execution.html',
-                subMenus: []
-            },
-            'order-shipping': {
-                title: '订单发货',
-                url: 'pages/order-shipping.html',
-                subMenus: []
-            },
-            'order-aftermarket': {
-                title: '订单售后',
-                url: 'pages/order-aftermarket.html',
-                subMenus: []
             },
             planning: {
                 title: '计划管理',
