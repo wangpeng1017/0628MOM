@@ -1,0 +1,55 @@
+=================================================================
+立即执行这些命令 - 复制粘贴到CMD或Git Bash
+=================================================================
+
+请打开 CMD 或 Git Bash，然后复制粘贴以下所有命令：
+
+-----------------------------------------------------------------
+方法1: 使用 Git Bash (推荐)
+-----------------------------------------------------------------
+
+cd /e/trae/0628MOM
+bash fix-and-deploy.sh
+
+
+-----------------------------------------------------------------
+方法2: 在 CMD 中逐条执行
+-----------------------------------------------------------------
+
+cd e:\trae\0628MOM
+
+copy /Y pages\equipment\predictive-maintenance-new.html pages\equipment\predictive-maintenance.html
+
+copy /Y pages\equipment\knowledge-base-new.html pages\equipment\knowledge-base.html
+
+copy /Y pages\equipment\oee-analysis-new.html pages\equipment\oee-analysis.html
+
+copy /Y pages\equipment\inspection.html pages\equipment\inspection-management.html
+
+copy /Y pages\equipment\spare-parts.html pages\equipment\spare-parts-management.html
+
+copy /Y pages\equipment\planned-maintenance.html pages\equipment\preventive-maintenance.html
+
+del /F /Q pages\equipment\predictive-maintenance-new.html
+
+del /F /Q pages\equipment\knowledge-base-new.html
+
+del /F /Q pages\equipment\oee-analysis-new.html
+
+git add .
+
+git commit -m "fix: ensure all equipment module files match routing for Vercel"
+
+git push origin main
+
+
+=================================================================
+执行完成后
+=================================================================
+
+1. 等待 1-3 分钟让 Vercel 自动部署
+2. 访问 https://vercel.com/dashboard 查看部署状态
+3. 部署完成后访问 https://mom.aifly.me/pages/equipment.html
+4. 点击"计划性维护"等模块确认更新成功
+
+=================================================================
