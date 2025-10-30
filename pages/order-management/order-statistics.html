@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单统计报表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">订单统计报表</h1>
+            <p class="text-sm text-gray-600">订单数量、金额、状态等综合统计分析</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-sm text-gray-600">本月订单总数</p>
+                <p class="text-3xl font-bold text-blue-600">185</p>
+                <p class="text-xs text-gray-500 mt-2">较上月 +12.3%</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-sm text-gray-600">本月订单金额</p>
+                <p class="text-3xl font-bold text-green-600">¥3.2M</p>
+                <p class="text-xs text-gray-500 mt-2">较上月 +18.5%</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-sm text-gray-600">平均订单金额</p>
+                <p class="text-3xl font-bold text-purple-600">¥17.3K</p>
+                <p class="text-xs text-gray-500 mt-2">较上月 +5.2%</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <p class="text-sm text-gray-600">订单完成率</p>
+                <p class="text-3xl font-bold text-orange-600">92.5%</p>
+                <p class="text-xs text-gray-500 mt-2">较上月 +2.1%</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold mb-4">订单状态分布</h3>
+                <canvas id="statusChart" height="300"></canvas>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h3 class="text-lg font-semibold mb-4">月度订单趋势</h3>
+                <canvas id="monthlyChart" height="300"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow">
+            <div class="p-6 border-b">
+                <h3 class="text-lg font-semibold">产品类型统计</h3>
+            </div>
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-sm">产品类型</th>
+                        <th class="px-6 py-3 text-left text-sm">订单数量</th>
+                        <th class="px-6 py-3 text-left text-sm">订单金额</th>
+                        <th class="px-6 py-3 text-left text-sm">占比</th>
+                        <th class="px-6 py-3 text-left text-sm">同比增长</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="px-6 py-4">光伏逆变器</td>
+                        <td class="px-6 py-4 font-medium">98</td>
+                        <td class="px-6 py-4 font-semibold">¥1.8M</td>
+                        <td class="px-6 py-4">56.3%</td>
+                        <td class="px-6 py-4 text-green-600">+15.2%</td>
+                    </tr>
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="px-6 py-4">储能逆变器</td>
+                        <td class="px-6 py-4 font-medium">52</td>
+                        <td class="px-6 py-4 font-semibold">¥0.9M</td>
+                        <td class="px-6 py-4">28.1%</td>
+                        <td class="px-6 py-4 text-green-600">+22.8%</td>
+                    </tr>
+                    <tr class="border-t hover:bg-gray-50">
+                        <td class="px-6 py-4">智能电网设备</td>
+                        <td class="px-6 py-4 font-medium">35</td>
+                        <td class="px-6 py-4 font-semibold">¥0.5M</td>
+                        <td class="px-6 py-4">15.6%</td>
+                        <td class="px-6 py-4 text-green-600">+8.5%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        new Chart(document.getElementById('statusChart'), {
+            type: 'pie',
+            data: {
+                labels: ['待审核', '执行中', '已完成', '已发货', '已送达'],
+                datasets: [{
+                    data: [12, 45, 58, 42, 28],
+                    backgroundColor: ['#f59e0b', '#3b82f6', '#8b5cf6', '#06b6d4', '#10b981']
+                }]
+            }
+        });
+
+        new Chart(document.getElementById('monthlyChart'), {
+            type: 'bar',
+            data: {
+                labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                datasets: [{
+                    label: '订单数量',
+                    data: [145, 152, 168, 172, 165, 185],
+                    backgroundColor: '#3b82f6'
+                }, {
+                    label: '订单金额(万元)',
+                    data: [245, 268, 285, 298, 275, 320],
+                    backgroundColor: '#10b981'
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
