@@ -1,0 +1,35 @@
+订单审核(order-review.html) - 增加13条数据:
+ORD-2024-003到ORD-2024-015，客户包括：宁德时代、隆基绿能、天合光能、晶科能源、阿特斯、协鑫集成、东方日升、中国电建、国家电网、南方电网、中广核、三峡新能源、正泰集团
+
+订单策略(order-strategy.html) - 增加13条数据:
+同上订单号，金额从¥78K到¥356K，数量从20台到300台
+
+订单下发(order-dispatch.html) - 增加13条数据:
+同上订单号，下发目标包括生产系统和库存系统
+
+生产跟踪(production-tracking.html) - 增加13条数据:
+同上订单号，进度从0%到100%
+
+库存状态(inventory-management.html) - 增加13条数据:
+同上订单号，库存状态包括充足和不足
+
+异常列表(exception-handling.html) - 增加13条数据:
+异常类型包括零部件短缺、设备故障、质量问题、物流延误
+
+物流管理(logistics-management.html) - 增加13条数据:
+推荐物流包括顺丰、德邦、中通、圆通
+
+收货确认(delivery-confirmation.html) - 增加13条数据:
+物流状态包括派送中、已送达
+
+物流跟踪(logistics-tracking.html) - 增加13条数据:
+跟踪状态包括已发货、运输中、派送中
+
+售后请求(aftermarket-request.html) - 增加13条数据:
+问题类型包括产品质量、技术咨询、安装指导
+
+退换货(return-exchange.html) - 增加13条数据:
+类型包括退货、换货，原因包括质量问题、规格不符
+
+售后记录(aftermarket-records.html) - 增加13条数据:
+服务类型包括退货、换货、维修，处理结果为已完成
