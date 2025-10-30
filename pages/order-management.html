@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单管理系统</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .order-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .status-draft { background-color: #6b7280; }
+        .status-pending { background-color: #f59e0b; }
+        .status-approved { background-color: #10b981; }
+        .status-rejected { background-color: #ef4444; }
+        .status-executing { background-color: #3b82f6; }
+        .status-completed { background-color: #8b5cf6; }
+        .status-shipped { background-color: #06b6d4; }
+        .status-delivered { background-color: #10b981; }
+        .status-cancelled { background-color: #6b7280; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 页面标题栏 -->
+    <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">订单管理系统</h1>
+                <p class="text-sm text-gray-600 mt-1">集成化S&OP与订单管理系统</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="refreshData()" class="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>刷新数据</span>
+                </button>
+                <button onclick="exportData()" class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-download"></i>
+                    <span>导出数据</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 统计卡片 -->
+    <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <!-- 待审核订单 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">待审核订单</p>
+                        <p class="text-3xl font-bold text-warning" id="pendingOrders">12</p>
+                    </div>
+                    <div class="w-12 h-12 bg-warning-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-clock text-warning text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="text-sm text-gray-500">较昨日增加</span>
+                    <span class="text-sm font-medium text-danger">+3</span>
+                </div>
+            </div>
+
+            <!-- 进行中订单 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">进行中订单</p>
+                        <p class="text-3xl font-bold text-primary" id="executingOrders">45</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-cogs text-primary text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="text-sm text-gray-500">较昨日减少</span>
+                    <span class="text-sm font-medium text-success">-5</span>
+                </div>
+            </div>
+
+            <!-- 已完成订单 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">本月完成订单</p>
+                        <p class="text-3xl font-bold text-success" id="completedOrders">128</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-check-circle text-success text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="text-sm text-gray-500">完成率</span>
+                    <span class="text-sm font-medium text-success">92.5%</span>
+                </div>
+            </div>
+
+            <!-- 总订单金额 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">本月订单金额</p>
+                        <p class="text-3xl font-bold text-purple-600" id="totalAmount">¥2.45M</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-yen-sign text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="text-sm text-gray-500">较上月增长</span>
+                    <span class="text-sm font-medium text-success">+15.2%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速操作面板 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">快速操作</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <button onclick="createOrder()" class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                    <i class="fas fa-plus text-blue-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">创建订单</span>
+                </button>
+                
+                <button onclick="batchApprove()" class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors">
+                    <i class="fas fa-check-double text-green-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">批量审核</span>
+                </button>
+                
+                <button onclick="mergeOrders()" class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors">
+                    <i class="fas fa-compress text-purple-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">订单合并</span>
+                </button>
+                
+                <button onclick="splitOrders()" class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-colors">
+                    <i class="fas fa-expand text-orange-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">订单拆解</span>
+                </button>
+                
+                <button onclick="viewReports()" class="flex flex-col items-center p-4 border border-gray-200 rounded-lg hover:border-indigo-300 hover:bg-indigo-50 transition-colors">
+                    <i class="fas fa-chart-bar text-indigo-600 text-2xl mb-2"></i>
+                    <span class="text-sm font-medium text-gray-700">订单报表</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 筛选和搜索栏 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">订单状态</label>
+                    <select id="statusFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">全部状态</option>
+                        <option value="draft">草稿</option>
+                        <option value="pending">待审核</option>
+                        <option value="approved">已审核</option>
+                        <option value="rejected">已驳回</option>
+                        <option value="executing">执行中</option>
+                        <option value="completed">已完成</option>
+                        <option value="shipped">已发货</option>
+                        <option value="delivered">已送达</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">客户名称</label>
+                    <input type="text" id="customerFilter" placeholder="请输入客户名称" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">订单号</label>
+                    <input type="text" id="orderIdFilter" placeholder="请输入订单号" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">开始日期</label>
+                    <input type="date" id="startDateFilter" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">结束日期</label>
+                    <input type="date" id="endDateFilter" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div class="flex items-end space-x-2">
+                    <button onclick="applyFilters()" class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        筛选
+                    </button>
+                    <button onclick="clearFilters()" class="flex-1 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                        清除
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 订单列表 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-800">订单列表</h2>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th class="w-12">
+                                <input type="checkbox" id="selectAll" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                            </th>
+                            <th>订单号</th>
+                            <th>客户名称</th>
+                            <th>产品类型</th>
+                            <th>订单金额</th>
+                            <th>创建时间</th>
+                            <th>预计交付</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody">
+                        <!-- 订单数据将通过JavaScript动态加载 -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 分页控件 -->
+            <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <span class="text-sm text-gray-700">每页显示</span>
+                        <select id="pageSize" class="border border-gray-300 rounded px-2 py-1">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                        </select>
+                        <span class="text-sm text-gray-700">条记录</span>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2">
+                        <button onclick="previousPage()" id="prevBtn" class="px-3 py-1 border border-gray-300 rounded text-gray-500 hover:bg-gray-50">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="text-sm text-gray-700" id="pageInfo">第 1 页，共 5 页</span>
+                        <button onclick="nextPage()" id="nextBtn" class="px-3 py-1 border border-gray-300 rounded text-gray-500 hover:bg-gray-50">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 模拟订单数据
+        let ordersData = [
+            {
+                id: 'ORD-2024-001',
+                customerName: '华为技术有限公司',
+                productType: '逆变器',
+                amount: '¥125,800',
+                createDate: '2024-10-25',
+                deliveryDate: '2024-11-15',
+                status: 'pending',
+                statusText: '待审核'
+            },
+            {
+                id: 'ORD-2024-002',
+                customerName: '比亚迪股份有限公司',
+                productType: '逆变器',
+                amount: '¥89,600',
+                createDate: '2024-10-24',
+                deliveryDate: '2024-11-10',
+                status: 'executing',
+                statusText: '执行中'
+            },
+            {
+                id: 'ORD-2024-003',
+                customerName: '宁德时代新能源科技',
+                productType: '逆变器',
+                amount: '¥203,400',
+                createDate: '2024-10-23',
+                deliveryDate: '2024-11-20',
+                status: 'approved',
+                statusText: '已审核'
+            },
+            {
+                id: 'ORD-2024-004',
+                customerName: '隆基绿能科技股份有限公司',
+                productType: '逆变器',
+                amount: '¥156,900',
+                createDate: '2024-10-22',
+                deliveryDate: '2024-11-08',
+                status: 'completed',
+                statusText: '已完成'
+            },
+            {
+                id: 'ORD-2024-005',
+                customerName: '天合光能股份有限公司',
+                productType: '逆变器',
+                amount: '¥78,500',
+                createDate: '2024-10-21',
+                deliveryDate: '2024-11-25',
+                status: 'shipped',
+                statusText: '已发货'
+            },
+            {
+                id: 'ORD-2024-006',
+                customerName: '晶科能源股份有限公司',
+                productType: '逆变器',
+                amount: '¥198,700',
+                createDate: '2024-10-20',
+                deliveryDate: '2024-11-30',
+                status: 'draft',
+                statusText: '草稿'
+            },
+            {
+                id: 'ORD-2024-007',
+                customerName: '阿特斯阳光电力集团',
+                productType: '逆变器',
+                amount: '¥134,200',
+                createDate: '2024-10-19',
+                deliveryDate: '2024-11-12',
+                status: 'delivered',
+                statusText: '已送达'
+            },
+            {
+                id: 'ORD-2024-008',
+                customerName: '正泰集团股份有限公司',
+                productType: '逆变器',
+                amount: '¥167,800',
+                createDate: '2024-10-18',
+                deliveryDate: '2024-11-05',
+                status: 'rejected',
+                statusText: '已驳回'
+            }
+        ];
+
+        let currentPage = 1;
+        let pageSize = 10;
+        let filteredData = [...ordersData];
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOrders();
+            updatePageInfo();
+            
+            // 绑定事件监听器
+            document.getElementById('selectAll').addEventListener('change', handleSelectAll);
+            document.getElementById('pageSize').addEventListener('change', handlePageSizeChange);
+        });
+
+        // 加载订单数据
+        function loadOrders() {
+            const tbody = document.getElementById('orderTableBody');
+            const startIndex = (currentPage - 1) * pageSize;
+            const endIndex = startIndex + pageSize;
+            const pageData = filteredData.slice(startIndex, endIndex);
+
+            tbody.innerHTML = pageData.map(order => `
+                <tr class="hover:bg-gray-50">
+                    <td>
+                        <input type="checkbox" class="order-checkbox rounded border-gray-300 text-blue-600 focus:ring-blue-500" data-order-id="${order.id}">
+                    </td>
+                    <td class="font-medium text-blue-600 cursor-pointer" onclick="viewOrderDetail('${order.id}')">${order.id}</td>
+                    <td>${order.customerName}</td>
+                    <td><span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">${order.productType}</span></td>
+                    <td class="font-semibold text-gray-800">${order.amount}</td>
+                    <td class="text-gray-600">${order.createDate}</td>
+                    <td class="text-gray-600">${order.deliveryDate}</td>
+                    <td>
+                        <span class="order-status-${order.status} inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">
+                            <span class="order-status-dot status-${order.status}"></span>
+                            ${order.statusText}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="editOrder('${order.id}')" class="text-blue-600 hover:text-blue-800" title="编辑订单">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteOrder('${order.id}')" class="text-red-600 hover:text-red-800" title="删除订单">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // 应用筛选条件
+        function applyFilters() {
+            const status = document.getElementById('statusFilter').value;
+            const customerName = document.getElementById('customerFilter').value.toLowerCase();
+            const orderId = document.getElementById('orderIdFilter').value.toLowerCase();
+            const startDate = document.getElementById('startDateFilter').value;
+            const endDate = document.getElementById('endDateFilter').value;
+
+            filteredData = ordersData.filter(order => {
+                const matchesStatus = !status || order.status === status;
+                const matchesCustomer = !customerName || order.customerName.toLowerCase().includes(customerName);
+                const matchesOrderId = !orderId || order.id.toLowerCase().includes(orderId);
+                const matchesStartDate = !startDate || order.createDate >= startDate;
+                const matchesEndDate = !endDate || order.createDate <= endDate;
+
+                return matchesStatus && matchesCustomer && matchesOrderId && matchesStartDate && matchesEndDate;
+            });
+
+            currentPage = 1;
+            loadOrders();
+            updatePageInfo();
+        }
+
+        // 清除筛选条件
+        function clearFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('customerFilter').value = '';
+            document.getElementById('orderIdFilter').value = '';
+            document.getElementById('startDateFilter').value = '';
+            document.getElementById('endDateFilter').value = '';
+            
+            filteredData = [...ordersData];
+            currentPage = 1;
+            loadOrders();
+            updatePageInfo();
+        }
+
+        // 全选/取消全选
+        function handleSelectAll() {
+            const selectAll = document.getElementById('selectAll');
+            const checkboxes = document.querySelectorAll('.order-checkbox');
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+        }
+
+        // 处理页面大小变化
+        function handlePageSizeChange() {
+            pageSize = parseInt(document.getElementById('pageSize').value);
+            currentPage = 1;
+            loadOrders();
+            updatePageInfo();
+        }
+
+        // 更新分页信息
+        function updatePageInfo() {
+            const totalPages = Math.ceil(filteredData.length / pageSize);
+            document.getElementById('pageInfo').textContent = `第 ${currentPage} 页，共 ${totalPages} 页`;
+            
+            // 更新分页按钮状态
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+            
+            if (currentPage === 1) {
+                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            
+            if (currentPage === totalPages) {
+                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        // 上一页
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                loadOrders();
+                updatePageInfo();
+            }
+        }
+
+        // 下一页
+        function nextPage() {
+            const totalPages = Math.ceil(filteredData.length / pageSize);
+            if (currentPage < totalPages) {
+                currentPage++;
+                loadOrders();
+                updatePageInfo();
+            }
+        }
+
+        // 查看订单详情
+        function viewOrderDetail(orderId) {
+            // 跳转到订单详情页面
+            parent.navigateToModule('order-management');
+            setTimeout(() => {
+                parent.navigateToDocumentPage('order-management', `pages/order-management/order-detail.html?id=${orderId}`, '订单详情');
+            }, 100);
+        }
+
+        // 编辑订单
+        function editOrder(orderId) {
+            // 跳转到订单编辑页面
+            parent.navigateToModule('order-management');
+            setTimeout(() => {
+                parent.navigateToDocumentPage('order-management', `pages/order-management/order-edit.html?id=${orderId}`, '编辑订单');
+            }, 100);
+        }
+
+        // 删除订单
+        function deleteOrder(orderId) {
+            if (confirm('确定要删除该订单吗？')) {
+                const index = ordersData.findIndex(order => order.id === orderId);
+                if (index > -1) {
+                    ordersData.splice(index, 1);
+                    filteredData = [...ordersData];
+                    loadOrders();
+                    updatePageInfo();
+                    alert('订单删除成功');
+                }
+            }
+        }
+
+        // 创建订单
+        function createOrder() {
+            parent.navigateToModule('order-management');
+            setTimeout(() => {
+                parent.navigateToDocumentPage('order-management', 'pages/order-management/order-create.html', '创建订单');
+            }, 100);
+        }
+
+        // 批量审核
+        function batchApprove() {
+            const selectedOrders = Array.from(document.querySelectorAll('.order-checkbox:checked'))
+                .map(checkbox => checkbox.dataset.orderId);
+            
+            if (selectedOrders.length === 0) {
+                alert('请选择要审核的订单');
+                return;
+            }
+            
+            if (confirm(`确定要审核 ${selectedOrders.length} 个订单吗？`)) {
+                // 模拟批量审核操作
+                selectedOrders.forEach(orderId => {
+                    const order = ordersData.find(o => o.id === orderId);
+                    if (order) {
+                        order.status = 'approved';
+                        order.statusText = '已审核';
+                    }
+                });
+                
+                loadOrders();
+                alert('批量审核完成');
+            }
+        }
+
+        // 订单合并
+        function mergeOrders() {
+            const selectedOrders = Array.from(document.querySelectorAll('.order-checkbox:checked'))
+                .map(checkbox => checkbox.dataset.orderId);
+            
+            if (selectedOrders.length < 2) {
+                alert('请至少选择2个订单进行合并');
+                return;
+            }
+            
+            alert('订单合并功能开发中...');
+        }
+
+        // 订单拆解
+        function splitOrders() {
+            const selectedOrders = Array.from(document.querySelectorAll('.order-checkbox:checked'))
+                .map(checkbox => checkbox.dataset.orderId);
+            
+            if (selectedOrders.length !== 1) {
+                alert('请选择一个订单进行拆解');
+                return;
+            }
+            
+            alert('订单拆解功能开发中...');
+        }
+
+        // 查看报表
+        function viewReports() {
+            alert('订单报表功能开发中...');
+        }
+
+        // 刷新数据
+        function refreshData() {
+            // 模拟数据刷新
+            alert('数据刷新完成');
+        }
+
+        // 导出数据
+        function exportData() {
+            alert('数据导出功能开发中...');
+        }
+    </script>
+</body>
+</html>

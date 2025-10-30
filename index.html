@@ -267,6 +267,11 @@
 
                             <div id="manufacturingNavDropdown" class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
                                 <div class="py-2">
+                                    <button onclick="switchModule('order-management'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-shopping-cart text-red-600"></i>
+                                        <span>订单管理</span>
+                                    </button>
+                                    <div class="border-t border-gray-100 my-1"></div>
                                     <button onclick="switchModule('planning'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-calendar-alt text-indigo-600"></i>
                                         <span>计划管理</span>
@@ -459,6 +464,18 @@
                 title: '首页',
                 url: 'pages/dashboard.html',
                 subMenus: []
+            },
+            'order-management': {
+                title: '订单管理',
+                url: 'pages/order-management.html',
+                subMenus: [
+                    { id: 'order-list', name: '订单列表', icon: 'fas fa-list', url: 'pages/order-management.html' },
+                    { id: 'order-create', name: '创建订单', icon: 'fas fa-plus', url: 'pages/order-management/order-create.html' },
+                    { id: 'order-approval', name: '订单审核', icon: 'fas fa-check-circle', url: 'pages/coming-soon.html' },
+                    { id: 'order-execution', name: '订单执行', icon: 'fas fa-cogs', url: 'pages/coming-soon.html' },
+                    { id: 'order-shipping', name: '订单发货', icon: 'fas fa-truck', url: 'pages/coming-soon.html' },
+                    { id: 'order-after-sales', name: '售后服务', icon: 'fas fa-headset', url: 'pages/coming-soon.html' }
+                ]
             },
             planning: {
                 title: '计划管理',

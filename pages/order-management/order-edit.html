@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>编辑订单</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .form-section {
+            margin-bottom: 2rem;
+        }
+        
+        .form-section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .product-row {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .file-upload-area {
+            border: 2px dashed #d1d5db;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        
+        .file-upload-area:hover {
+            border-color: #3b82f6;
+        }
+        
+        .file-upload-area.dragover {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        
+        .readonly-field {
+            background-color: #f9fafb;
+            color: #6b7280;
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-draft { background-color: #f3f4f6; color: #374151; }
+        .status-pending { background-color: #fef3c7; color: #92400e; }
+        .status-approved { background-color: #d1fae5; color: #065f46; }
+        .status-rejected { background-color: #fee2e2; color: #991b1b; }
+        .status-executing { background-color: #dbeafe; color: #1e40af; }
+        .status-completed { background-color: #e0e7ff; color: #4338ca; }
+        .status-shipped { background-color: #cffafe; color: #155e75; }
+        .status-delivered { background-color: #d1fae5; color: #065f46; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 页面标题栏 -->
+    <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">编辑订单</h1>
+                <p class="text-sm text-gray-600 mt-1">订单号：<span id="orderIdDisplay">ORD-2024-001</span></p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="goBack()" class="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>返回详情</span>
+                </button>
+                <button onclick="viewOrderList()" class="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-list"></i>
+                    <span>订单列表</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="p-6">
+        <form id="orderForm" onsubmit="submitOrder(event)">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 左侧：主要表单内容 -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- 订单基本信息 -->
+                    <div class="form-section bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="form-section-title">
+                            <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                            订单基本信息
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">订单号</label>
+                                <input type="text" id="orderId" name="orderId" readonly
+                                       class="readonly-field w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">订单状态</label>
+                                <span id="orderStatus" class="status-badge status-pending">待审核</span>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">创建时间</label>
+                                <input type="text" id="createTime" readonly
+                                       class="readonly-field w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 客户信息 -->
+                    <div class="form-section bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="form-section-title">
+                            <i class="fas fa-building text-blue-600 mr-2"></i>
+                            客户信息
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    客户名称 <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="customerName" name="customerName" required
+                                       placeholder="请输入客户名称"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    客户类型
+                                </label>
+                                <select id="customerType" name="customerType"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="enterprise">企业客户</option>
+                                    <option value="individual">个人客户</option>
+                                    <option value="distributor">经销商</option>
+                                    <option value="partner">合作伙伴</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    联系人 <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="customerContact" name="customerContact" required
+                                       placeholder="请输入联系人姓名"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    联系电话 <span class="text-red-500">*</span>
+                                </label>
+                                <input type="tel" id="customerPhone" name="customerPhone" required
+                                       placeholder="请输入联系电话"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    配送地址 <span class="text-red-500">*</span>
+                                </label>
+                                <textarea id="deliveryAddress" name="deliveryAddress" required rows="3"
+                                          placeholder="请输入详细配送地址"
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 产品信息 -->
+                    <div class="form-section bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="form-section-title">
+                            <i class="fas fa-box text-green-600 mr-2"></i>
+                            产品信息
+                        </div>
+                        
+                        <div id="productsContainer">
+                            <!-- 产品明细将通过JavaScript动态添加 -->
+                        </div>
+                        
+                        <button type="button" onclick="addProduct()" id="addProductBtn"
+                                class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-plus"></i>
+                            <span>添加产品</span>
+                        </button>
+                    </div>
+
+                    <!-- 订单配置 -->
+                    <div class="form-section bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="form-section-title">
+                            <i class="fas fa-cog text-purple-600 mr-2"></i>
+                            订单配置
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    期望交付时间 <span class="text-red-500">*</span>
+                                </label>
+                                <input type="datetime-local" id="expectedDelivery" name="expectedDelivery" required
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    付款方式
+                                </label>
+                                <select id="paymentMethod" name="paymentMethod"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="prepaid">预付款</option>
+                                    <option value="credit">赊销</option>
+                                    <option value="cod">货到付款</option>
+                                    <option value="installment">分期付款</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    运输方式
+                                </label>
+                                <select id="shippingMethod" name="shippingMethod"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="express">快递配送</option>
+                                    <option value="logistics">物流配送</option>
+                                    <option value="selfpickup">客户自提</option>
+                                    <option value="special">特殊配送</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    紧急程度
+                                </label>
+                                <select id="urgency" name="urgency"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="normal">普通</option>
+                                    <option value="urgent">紧急</option>
+                                    <option value="critical">特急</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 备注信息 -->
+                    <div class="form-section bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="form-section-title">
+                            <i class="fas fa-sticky-note text-yellow-600 mr-2"></i>
+                            备注信息
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    客户备注
+                                </label>
+                                <textarea id="customerNote" name="customerNote" rows="3"
+                                          placeholder="客户特殊要求或备注信息"
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    内部备注
+                                </label>
+                                <textarea id="internalNote" name="internalNote" rows="3"
+                                          placeholder="内部处理备注（如价格优惠、技术要求等）"
+                                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 修改历史 -->
+                    <div class="form-section bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="form-section-title">
+                            <i class="fas fa-history text-indigo-600 mr-2"></i>
+                            修改历史
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">王销售</p>
+                                        <p class="text-xs text-gray-500">2024-10-25 14:30:00</p>
+                                    </div>
+                                    <span class="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">创建订单</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-2">初始创建订单</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-medium text-gray-900">李审核员</p>
+                                        <p class="text-xs text-gray-500">2024-10-25 16:45:00</p>
+                                    </div>
+                                    <span class="text-xs text-yellow-600 bg-yellow-100 px-2 py-1 rounded">审核建议</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-2">建议调整交付时间，避开生产高峰期</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：摘要和操作面板 -->
+                <div class="space-y-6">
+                    <!-- 订单摘要 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">订单摘要</h2>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">商品总数：</span>
+                                <span class="text-sm font-medium" id="totalItems">2</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">商品金额：</span>
+                                <span class="text-sm font-medium" id="subtotal">¥125,400.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">税费：</span>
+                                <span class="text-sm font-medium" id="tax">¥400.00</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-gray-600">运费：</span>
+                                <span class="text-sm font-medium" id="shipping">¥0.00</span>
+                            </div>
+                            <div class="border-t pt-3">
+                                <div class="flex justify-between">
+                                    <span class="text-base font-semibold text-gray-900">订单总额：</span>
+                                    <span class="text-base font-bold text-blue-600" id="totalAmount">¥125,800.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 权限控制 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">编辑权限</h2>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">当前状态：</span>
+                                <span id="editStatus" class="text-sm font-medium text-blue-600">可编辑</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm text-gray-600">修改权限：</span>
+                                <span class="text-sm font-medium text-green-600">销售员</span>
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                已审核的订单部分字段不可编辑
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 快速操作 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">快速操作</h2>
+                        
+                        <div class="space-y-3">
+                            <button type="button" onclick="saveChanges()"
+                                    class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                <i class="fas fa-save"></i>
+                                <span>保存修改</span>
+                            </button>
+                            
+                            <button type="button" onclick="previewOrder()"
+                                    class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                                <i class="fas fa-eye"></i>
+                                <span>预览订单</span>
+                            </button>
+                            
+                            <button type="submit" id="submitBtn"
+                                    class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                                <i class="fas fa-check"></i>
+                                <span>提交修改</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 帮助提示 -->
+                    <div class="bg-yellow-50 rounded-lg p-4">
+                        <h3 class="text-sm font-semibold text-yellow-800 mb-2">编辑提示</h3>
+                        <ul class="text-xs text-yellow-700 space-y-1">
+                            <li>• 已审核订单只能修改部分字段</li>
+                            <li>• 产品信息修改会影响订单金额</li>
+                            <li>• 重要修改会自动记录到历史</li>
+                            <li>• 保存前请仔细检查信息准确性</li>
+                            <li>• 可使用预览功能查看最终效果</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let productCounter = 0;
+        let isReadOnly = false;
+
+        // 从URL获取订单ID
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('id') || 'ORD-2024-001';
+
+        // 产品库数据
+        const productLibrary = {
+            'PV-Inverter-5kW': { name: '光伏逆变器 5kW', price: 1500 },
+            'PV-Inverter-10kW': { name: '光伏逆变器 10kW', price: 2500 },
+            'PV-Inverter-20kW': { name: '光伏逆变器 20kW', price: 4500 },
+            'Smart-Monitor-Pro': { name: '智能监控设备 Pro版', price: 800 },
+            'Smart-Monitor-Basic': { name: '智能监控设备 基础版', price: 300 },
+            'Mounting-System': { name: '太阳能板安装系统', price: 1200 }
+        };
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOrderData();
+        });
+
+        // 加载订单数据
+        function loadOrderData() {
+            // 模拟从API获取的订单数据
+            const orderData = {
+                id: 'ORD-2024-001',
+                status: 'pending',
+                statusText: '待审核',
+                createTime: '2024-10-25 14:30:00',
+                customerName: '华为技术有限公司',
+                customerType: 'enterprise',
+                customerContact: '张经理',
+                customerPhone: '+86 138-8888-8888',
+                deliveryAddress: '广东省深圳市南山区科技园南区科技南十二路华为技术有限公司',
+                expectedDelivery: '2024-11-15T18:00',
+                paymentMethod: 'prepaid',
+                shippingMethod: 'logistics',
+                urgency: 'normal',
+                customerNote: '请确保产品符合GB/T 29364-2012标准，包装完好，需提供出厂检验报告。',
+                internalNote: 'VIP客户订单，需优先安排生产，确保按时交付。技术支持：李工，联系电话：138-0000-0000',
+                products: [
+                    {
+                        name: 'PV-Inverter-10kW',
+                        model: 'PV-Inverter-10kW',
+                        quantity: 50,
+                        price: 2500,
+                        total: 125000
+                    },
+                    {
+                        name: 'Smart-Monitor-Pro',
+                        model: 'Smart-Monitor-Pro',
+                        quantity: 50,
+                        price: 8,
+                        total: 400
+                    }
+                ]
+            };
+
+            // 根据订单状态设置编辑权限
+            isReadOnly = ['executing', 'completed', 'shipped', 'delivered'].includes(orderData.status);
+            if (isReadOnly) {
+                disableEditing();
+            }
+
+            // 填充表单数据
+            document.getElementById('orderId').value = orderData.id;
+            document.getElementById('orderIdDisplay').textContent = orderData.id;
+            document.getElementById('orderStatus').textContent = orderData.statusText;
+            document.getElementById('orderStatus').className = `status-badge status-${orderData.status}`;
+            document.getElementById('createTime').value = orderData.createTime;
+            document.getElementById('customerName').value = orderData.customerName;
+            document.getElementById('customerType').value = orderData.customerType;
+            document.getElementById('customerContact').value = orderData.customerContact;
+            document.getElementById('customerPhone').value = orderData.customerPhone;
+            document.getElementById('deliveryAddress').value = orderData.deliveryAddress;
+            document.getElementById('expectedDelivery').value = orderData.expectedDelivery;
+            document.getElementById('paymentMethod').value = orderData.paymentMethod;
+            document.getElementById('shippingMethod').value = orderData.shippingMethod;
+            document.getElementById('urgency').value = orderData.urgency;
+            document.getElementById('customerNote').value = orderData.customerNote;
+            document.getElementById('internalNote').value = orderData.internalNote;
+
+            // 加载产品信息
+            orderData.products.forEach((product, index) => {
+                addProduct();
+                const rowId = index + 1;
+                document.getElementById(`product-${rowId}-name`).value = product.name;
+                document.getElementById(`product-${rowId}-model`).value = product.model;
+                document.getElementById(`product-${rowId}-quantity`).value = product.quantity;
+                document.getElementById(`product-${rowId}-price`).value = product.price;
+                updateProductTotal(rowId);
+            });
+        }
+
+        // 禁用编辑
+        function disableEditing() {
+            const formElements = document.querySelectorAll('#orderForm input, #orderForm select, #orderForm textarea');
+            formElements.forEach(element => {
+                if (element.id !== 'orderId' && element.id !== 'createTime') {
+                    element.disabled = true;
+                    element.classList.add('readonly-field');
+                }
+            });
+
+            document.getElementById('addProductBtn').disabled = true;
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('editStatus').textContent = '只读';
+            document.getElementById('editStatus').className = 'text-sm font-medium text-gray-600';
+        }
+
+        // 添加产品行
+        function addProduct() {
+            productCounter++;
+            const container = document.getElementById('productsContainer');
+            const productRow = document.createElement('div');
+            productRow.className = 'product-row';
+            productRow.id = `product-${productCounter}`;
+            
+            productRow.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">产品名称</label>
+                        <select onchange="updateProductPrice(${productCounter})" 
+                                id="product-${productCounter}-name" 
+                                ${isReadOnly ? 'disabled' : ''}
+                                class="${isReadOnly ? 'readonly-field' : ''} w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">请选择产品</option>
+                            ${Object.entries(productLibrary).map(([code, info]) => 
+                                `<option value="${code}" data-price="${info.price}">${info.name}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">型号</label>
+                        <input type="text" id="product-${productCounter}-model" 
+                               ${isReadOnly ? 'readonly' : ''}
+                               placeholder="产品型号"
+                               class="${isReadOnly ? 'readonly-field' : ''} w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">数量</label>
+                        <input type="number" id="product-${productCounter}-quantity" 
+                               onchange="updateProductTotal(${productCounter})" 
+                               min="1" value="1" placeholder="数量"
+                               ${isReadOnly ? 'readonly' : ''}
+                               class="${isReadOnly ? 'readonly-field' : ''} w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">单价</label>
+                        <input type="number" id="product-${productCounter}-price" 
+                               onchange="updateProductTotal(${productCounter})" 
+                               step="0.01" min="0" placeholder="单价"
+                               ${isReadOnly ? 'readonly' : ''}
+                               class="${isReadOnly ? 'readonly-field' : ''} w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">小计</label>
+                        <div class="flex items-center">
+                            <span id="product-${productCounter}-total" class="text-lg font-semibold text-gray-900">¥0.00</span>
+                            ${!isReadOnly ? `
+                            <button type="button" onclick="removeProduct(${productCounter})" 
+                                    class="ml-2 text-red-600 hover:text-red-800" title="删除产品">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(productRow);
+        }
+
+        // 移除产品行
+        function removeProduct(id) {
+            if (confirm('确定要删除该产品吗？')) {
+                const productRow = document.getElementById(`product-${id}`);
+                if (productRow) {
+                    productRow.remove();
+                    updateOrderSummary();
+                }
+            }
+        }
+
+        // 更新产品价格
+        function updateProductPrice(id) {
+            const productSelect = document.getElementById(`product-${id}-name`);
+            const selectedOption = productSelect.options[productSelect.selectedIndex];
+            const price = selectedOption.getAttribute('data-price');
+            
+            if (price) {
+                document.getElementById(`product-${id}-price`).value = price;
+                updateProductTotal(id);
+            }
+        }
+
+        // 更新产品小计
+        function updateProductTotal(id) {
+            const quantity = parseInt(document.getElementById(`product-${id}-quantity`).value) || 0;
+            const price = parseFloat(document.getElementById(`product-${id}-price`).value) || 0;
+            const total = quantity * price;
+            
+            document.getElementById(`product-${id}-total`).textContent = `¥${total.toFixed(2)}`;
+            updateOrderSummary();
+        }
+
+        // 更新订单摘要
+        function updateOrderSummary() {
+            let totalItems = 0;
+            let subtotal = 0;
+            
+            document.querySelectorAll('[id^="product-"]').forEach(element => {
+                if (element.id.includes('-quantity')) {
+                    const quantity = parseInt(element.value) || 0;
+                    totalItems += quantity;
+                }
+            });
+            
+            document.querySelectorAll('[id^="product-"]').forEach(element => {
+                if (element.id.includes('-total')) {
+                    const totalText = element.textContent;
+                    const price = parseFloat(totalText.replace('¥', '')) || 0;
+                    subtotal += price;
+                }
+            });
+            
+            const tax = subtotal * 0.13; // 13% 税率
+            const shipping = subtotal > 10000 ? 0 : 500; // 满10000免运费
+            const total = subtotal + tax + shipping;
+            
+            document.getElementById('totalItems').textContent = totalItems;
+            document.getElementById('subtotal').textContent = `¥${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `¥${tax.toFixed(2)}`;
+            document.getElementById('shipping').textContent = `¥${shipping.toFixed(2)}`;
+            document.getElementById('totalAmount').textContent = `¥${total.toFixed(2)}`;
+        }
+
+        // 保存修改
+        function saveChanges() {
+            alert('订单修改已保存');
+        }
+
+        // 预览订单
+        function previewOrder() {
+            alert('订单预览功能开发中...');
+        }
+
+        // 提交修改
+        function submitOrder(event) {
+            event.preventDefault();
+            
+            if (isReadOnly) {
+                alert('当前订单状态不允许修改');
+                return;
+            }
+            
+            // 表单验证
+            if (!validateForm()) {
+                return;
+            }
+            
+            // 提交修改
+            if (confirm('确定要提交修改吗？')) {
+                alert('订单修改提交成功，正在跳转到订单详情...');
+                setTimeout(() => {
+                    goBack();
+                }, 1000);
+            }
+        }
+
+        // 表单验证
+        function validateForm() {
+            const requiredFields = ['customerName', 'customerContact', 'customerPhone', 'deliveryAddress', 'expectedDelivery'];
+            
+            for (const field of requiredFields) {
+                const element = document.getElementById(field);
+                if (!element.value.trim()) {
+                    alert('请填写完整的必填信息');
+                    element.focus();
+                    return false;
+                }
+            }
+            
+            // 检查是否至少添加了一个产品
+            const productRows = document.querySelectorAll('[id^="product-"]');
+            if (productRows.length === 0) {
+                alert('请至少添加一个产品');
+                return false;
+            }
+            
+            return true;
+        }
+
+        // 返回详情页
+        function goBack() {
+            parent.navigateToDocumentPage('order-management', `pages/order-management/order-detail.html?id=${orderId}`, '订单详情');
+        }
+
+        // 返回订单列表
+        function viewOrderList() {
+            parent.navigateToDocumentPage('order-management', 'pages/order-management.html', '订单管理');
+        }
+    </script>
+</body>
+</html>

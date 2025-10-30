@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单详情</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .order-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .status-draft { background-color: #6b7280; }
+        .status-pending { background-color: #f59e0b; }
+        .status-approved { background-color: #10b981; }
+        .status-rejected { background-color: #ef4444; }
+        .status-executing { background-color: #3b82f6; }
+        .status-completed { background-color: #8b5cf6; }
+        .status-shipped { background-color: #06b6d4; }
+        .status-delivered { background-color: #10b981; }
+        .status-cancelled { background-color: #6b7280; }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e5e7eb;
+        }
+        
+        .timeline-item:last-child::before {
+            bottom: 0;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 2px #e5e7eb;
+        }
+        
+        .timeline-dot.active {
+            background-color: #3b82f6;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 页面标题栏 -->
+    <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800" id="orderTitle">订单详情</h1>
+                <p class="text-sm text-gray-600 mt-1">订单号：<span id="orderIdDisplay">ORD-2024-001</span></p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="goBack()" class="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>返回列表</span>
+                </button>
+                <button onclick="editOrder()" class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-edit"></i>
+                    <span>编辑订单</span>
+                </button>
+                <div class="relative">
+                    <button onclick="toggleActionMenu()" class="flex items-center space-x-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                        <i class="fas fa-ellipsis-v"></i>
+                        <span>更多操作</span>
+                    </button>
+                    <div id="actionMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                        <div class="py-2">
+                            <button onclick="approveOrder()" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                <i class="fas fa-check text-green-600"></i>
+                                <span>审核通过</span>
+                            </button>
+                            <button onclick="rejectOrder()" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                <i class="fas fa-times text-red-600"></i>
+                                <span>审核驳回</span>
+                            </button>
+                            <button onclick="cancelOrder()" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                <i class="fas fa-ban text-gray-600"></i>
+                                <span>取消订单</span>
+                            </button>
+                            <button onclick="printOrder()" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                <i class="fas fa-print text-blue-600"></i>
+                                <span>打印订单</span>
+                            </button>
+                            <button onclick="exportOrder()" class="flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                <i class="fas fa-download text-purple-600"></i>
+                                <span>导出订单</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主内容区域 -->
+    <div class="p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 左侧：订单基本信息 -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- 基本信息卡片 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">基本信息</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">订单号</label>
+                                <p class="text-lg font-semibold text-gray-900" id="orderId">ORD-2024-001</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">订单状态</label>
+                                <span id="orderStatus" class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium">
+                                    <span class="order-status-dot"></span>
+                                    待审核
+                                </span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">创建时间</label>
+                                <p class="text-gray-900" id="createTime">2024-10-25 14:30:00</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">预计交付时间</label>
+                                <p class="text-gray-900" id="deliveryTime">2024-11-15 18:00:00</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">客户名称</label>
+                                <p class="text-gray-900" id="customerName">华为技术有限公司</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">客户联系人</label>
+                                <p class="text-gray-900" id="customerContact">张经理</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">联系电话</label>
+                                <p class="text-gray-900" id="customerPhone">+86 138-8888-8888</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">配送地址</label>
+                                <p class="text-gray-900" id="deliveryAddress">广东省深圳市南山区科技园南区科技南十二路华为技术有限公司</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 产品明细卡片 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">产品明细</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">产品名称</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">规格型号</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">数量</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">单价</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">小计</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">光伏逆变器</div>
+                                        <div class="text-sm text-gray-500">型号：PV-Inverter-10kW</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">PV-Inverter-10kW</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">50 台</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">¥2,500</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">¥125,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-gray-900">监控设备</div>
+                                        <div class="text-sm text-gray-500">型号：Smart-Monitor-Pro</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Smart-Monitor-Pro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">50 套</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">¥8</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">¥400</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                        <div class="flex justify-end">
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600">商品总额：</span>
+                                    <span class="text-gray-900">¥125,400</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-600">税费：</span>
+                                    <span class="text-gray-900">¥400</span>
+                                </div>
+                                <div class="flex justify-between text-lg font-semibold">
+                                    <span class="text-gray-900">订单总额：</span>
+                                    <span class="text-gray-900">¥125,800</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 订单备注卡片 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">备注信息</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">客户备注</label>
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <p class="text-gray-900">请确保产品符合GB/T 29364-2012标准，包装完好，需提供出厂检验报告。</p>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">内部备注</label>
+                                <div class="bg-blue-50 rounded-lg p-4">
+                                    <p class="text-blue-900">VIP客户订单，需优先安排生产，确保按时交付。技术支持：李工，联系电话：138-0000-0000</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 审核记录卡片 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">审核记录</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="timeline-item mb-4">
+                            <div class="timeline-dot"></div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">订单已提交</div>
+                                <div class="text-sm text-gray-500">提交人：王销售 | 2024-10-25 14:30:00</div>
+                                <div class="text-sm text-gray-600 mt-1">客户要求的产品规格和数量已确认</div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot active"></div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">待审核</div>
+                                <div class="text-sm text-gray-500">等待审核人员处理</div>
+                                <div class="text-sm text-gray-600 mt-1">请财务审核员和产品经理共同审核</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：操作面板和状态跟踪 -->
+            <div class="space-y-6">
+                <!-- 快速操作面板 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">快速操作</h2>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <button onclick="approveOrder()" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                            <i class="fas fa-check"></i>
+                            <span>审核通过</span>
+                        </button>
+                        <button onclick="rejectOrder()" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                            <i class="fas fa-times"></i>
+                            <span>审核驳回</span>
+                        </button>
+                        <button onclick="modifyOrder()" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <i class="fas fa-edit"></i>
+                            <span>修改订单</span>
+                        </button>
+                        <button onclick="cancelOrder()" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+                            <i class="fas fa-ban"></i>
+                            <span>取消订单</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 订单进度 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">订单进度</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-green-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">订单创建</div>
+                                    <div class="text-xs text-gray-500">已完成</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-clock text-yellow-600 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-900">订单审核</div>
+                                    <div class="text-xs text-gray-500">进行中</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-cogs text-gray-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-400">生产执行</div>
+                                    <div class="text-xs text-gray-400">等待开始</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-truck text-gray-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-400">物流配送</div>
+                                    <div class="text-xs text-gray-400">等待开始</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-check text-gray-400 text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-gray-400">订单完成</div>
+                                    <div class="text-xs text-gray-400">等待开始</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 联系信息 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">相关人员</h2>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user text-blue-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">王销售</div>
+                                <div class="text-xs text-gray-500">销售员</div>
+                                <div class="text-xs text-gray-500">138-0000-0001</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user-shield text-green-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">李审核员</div>
+                                <div class="text-xs text-gray-500">审核员</div>
+                                <div class="text-xs text-gray-500">138-0000-0002</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user-cog text-purple-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">张经理</div>
+                                <div class="text-xs text-gray-500">项目经理</div>
+                                <div class="text-xs text-gray-500">138-0000-0003</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 从URL获取订单ID
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('id') || 'ORD-2024-001';
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadOrderDetail();
+            
+            // 点击外部关闭操作菜单
+            document.addEventListener('click', function(event) {
+                const actionMenu = document.getElementById('actionMenu');
+                const menuButton = event.target.closest('button');
+                
+                if (!actionMenu.contains(event.target) && !menuButton) {
+                    actionMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        // 加载订单详情
+        function loadOrderDetail() {
+            // 模拟数据，实际应用中应该从API获取
+            const orderData = {
+                id: 'ORD-2024-001',
+                title: '订单详情 - ORD-2024-001',
+                status: 'pending',
+                statusText: '待审核',
+                createTime: '2024-10-25 14:30:00',
+                deliveryTime: '2024-11-15 18:00:00',
+                customerName: '华为技术有限公司',
+                customerContact: '张经理',
+                customerPhone: '+86 138-8888-8888',
+                deliveryAddress: '广东省深圳市南山区科技园南区科技南十二路华为技术有限公司',
+                totalAmount: '¥125,800'
+            };
+
+            // 更新页面内容
+            document.getElementById('orderTitle').textContent = orderData.title;
+            document.getElementById('orderIdDisplay').textContent = orderData.id;
+            document.getElementById('orderId').textContent = orderData.id;
+            document.getElementById('orderStatus').textContent = orderData.statusText;
+            document.getElementById('orderStatus').className = `inline-flex items-center px-3 py-1 rounded-full text-sm font-medium`;
+            document.getElementById('orderStatus').classList.add(`status-${orderData.status}`);
+            document.getElementById('createTime').textContent = orderData.createTime;
+            document.getElementById('deliveryTime').textContent = orderData.deliveryTime;
+            document.getElementById('customerName').textContent = orderData.customerName;
+            document.getElementById('customerContact').textContent = orderData.customerContact;
+            document.getElementById('customerPhone').textContent = orderData.customerPhone;
+            document.getElementById('deliveryAddress').textContent = orderData.deliveryAddress;
+        }
+
+        // 切换操作菜单
+        function toggleActionMenu() {
+            const menu = document.getElementById('actionMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // 返回列表
+        function goBack() {
+            parent.navigateToDocumentPage('order-management', 'pages/order-management.html', '订单管理');
+        }
+
+        // 编辑订单
+        function editOrder() {
+            parent.navigateToDocumentPage('order-management', `pages/order-management/order-edit.html?id=${orderId}`, '编辑订单');
+        }
+
+        // 审核通过
+        function approveOrder() {
+            if (confirm('确定要审核通过该订单吗？')) {
+                alert('订单审核成功，状态已更新为"已审核"');
+                loadOrderDetail();
+            }
+        }
+
+        // 审核驳回
+        function rejectOrder() {
+            const reason = prompt('请输入驳回原因：');
+            if (reason) {
+                alert(`订单已驳回，原因：${reason}`);
+                loadOrderDetail();
+            }
+        }
+
+        // 修改订单
+        function modifyOrder() {
+            editOrder();
+        }
+
+        // 取消订单
+        function cancelOrder() {
+            if (confirm('确定要取消该订单吗？此操作不可撤销。')) {
+                alert('订单已取消');
+                goBack();
+            }
+        }
+
+        // 打印订单
+        function printOrder() {
+            window.print();
+        }
+
+        // 导出订单
+        function exportOrder() {
+            alert('订单导出功能开发中...');
+        }
+    </script>
+</body>
+</html>
