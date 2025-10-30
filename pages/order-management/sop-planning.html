@@ -15,7 +15,7 @@
                     <h1 class="text-2xl font-bold text-gray-800 mb-2">S&OP计划编制</h1>
                     <p class="text-sm text-gray-600">基于数据分析结果，制定并协同评审S&OP计划</p>
                 </div>
-                <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                <button onclick="createNewPlan()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
                     <i class="fas fa-plus mr-2"></i>新建计划
                 </button>
             </div>
@@ -48,8 +48,53 @@
                         <div><span class="text-gray-600">预算:</span> <span class="font-medium">¥8.7M</span></div>
                     </div>
                     <div class="flex space-x-2">
-                        <button class="text-blue-600 hover:text-blue-800 text-sm">查看详情</button>
-                        <button class="text-yellow-600 hover:text-yellow-800 text-sm">提交审核</button>
+                        <button onclick="viewDetail('Q2')" class="text-blue-600 hover:text-blue-800 text-sm">查看详情</button>
+                        <button onclick="submitReview('Q2')" class="text-yellow-600 hover:text-yellow-800 text-sm">提交审核</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">2025年Q3生产计划</h3>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">草稿</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                        <div><span class="text-gray-600">计划目标:</span> <span class="font-medium">1200台逆变器</span></div>
+                        <div><span class="text-gray-600">预算:</span> <span class="font-medium">¥10.2M</span></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="viewDetail('Q3')" class="text-blue-600 hover:text-blue-800 text-sm">查看详情</button>
+                        <button onclick="editPlan('Q3')" class="text-gray-600 hover:text-gray-800 text-sm">编辑计划</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">2025年Q4生产计划</h3>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">草稿</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                        <div><span class="text-gray-600">计划目标:</span> <span class="font-medium">1800台逆变器</span></div>
+                        <div><span class="text-gray-600">预算:</span> <span class="font-medium">¥15.3M</span></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="viewDetail('Q4')" class="text-blue-600 hover:text-blue-800 text-sm">查看详情</button>
+                        <button onclick="editPlan('Q4')" class="text-gray-600 hover:text-gray-800 text-sm">编辑计划</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">2025年度采购计划</h3>
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">执行中</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                        <div><span class="text-gray-600">采购预算:</span> <span class="font-medium">¥25.3M</span></div>
+                        <div><span class="text-gray-600">执行进度:</span> <span class="font-medium">68%</span></div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="viewDetail('procurement')" class="text-blue-600 hover:text-blue-800 text-sm">查看详情</button>
+                        <button onclick="monitorExecution('procurement')" class="text-purple-600 hover:text-purple-800 text-sm">监控执行</button>
                     </div>
                 </div>
             </div>
@@ -86,5 +131,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function createNewPlan() {
+            alert('新建计划功能：将打开计划编制表单');
+        }
+
+        function viewDetail(planId) {
+            alert(`查看 ${planId} 计划详情`);
+        }
+
+        function submitReview(planId) {
+            if (confirm(`确定提交 ${planId} 计划进行审核？`)) {
+                alert('计划已提交审核');
+            }
+        }
+
+        function editPlan(planId) {
+            alert(`编辑 ${planId} 计划`);
+        }
+
+        function monitorExecution(planId) {
+            alert('跳转到执行监控页面');
+        }
+    </script>
 </body>
 </html>
