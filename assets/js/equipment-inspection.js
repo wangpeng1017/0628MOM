@@ -201,14 +201,34 @@ function getCurrentViewData() {
 
 function switchView(viewType) {
     currentView = viewType;
-    document.querySelectorAll('[id^="view-"]').forEach(btn => {
-        btn.classList.remove('bg-primary', 'text-white');
-        btn.classList.add('bg-white', 'text-gray-700');
+    
+    // 更新左侧导航菜单样式
+    document.querySelectorAll('[id^="nav-"]').forEach(btn => {
+        btn.classList.remove('bg-orange-50', 'text-orange-700', 'font-medium');
+        btn.classList.add('text-gray-700');
     });
-    document.getElementById(`view-${viewType}`).classList.remove('bg-white', 'text-gray-700');
-    document.getElementById(`view-${viewType}`).classList.add('bg-primary', 'text-white');
+    const activeNav = document.getElementById(`nav-${viewType}`);
+    if (activeNav) {
+        activeNav.classList.remove('text-gray-700');
+        activeNav.classList.add('bg-orange-50', 'text-orange-700', 'font-medium');
+    }
+    
+    // 更新页面标题
+    const titles = {
+        'routes': '巡检路线',
+        'plans': '巡检计划',
+        'tasks': '巡检任务',
+        'reports': '巡检报告'
+    };
+    const pageTitle = document.getElementById('page-title');
+    if (pageTitle) {
+        pageTitle.textContent = titles[viewType] || '巡检管理';
+    }
+    
+    // 切换视图内容
     document.querySelectorAll('.view-content').forEach(view => view.classList.add('hidden'));
     document.getElementById(`${viewType}-view`).classList.remove('hidden');
+    
     filteredData = getCurrentViewData();
     renderView();
 }
