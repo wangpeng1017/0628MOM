@@ -292,21 +292,21 @@
     <script>
         // 模拟订单数据
         let ordersData = [
-            { id: 'ORD-2024-001', customerName: '华为技术有限公司', productType: '逆变器', amount: '¥125,800', createDate: '2024-10-25', deliveryDate: '2024-11-15', status: 'pending', statusText: '待审核' },
-            { id: 'ORD-2024-002', customerName: '比亚迪股份有限公司', productType: '逆变器', amount: '¥89,600', createDate: '2024-10-24', deliveryDate: '2024-11-10', status: 'executing', statusText: '执行中' },
-            { id: 'ORD-2024-003', customerName: '宁德时代新能源科技', productType: '逆变器', amount: '¥203,400', createDate: '2024-10-23', deliveryDate: '2024-11-20', status: 'approved', statusText: '已审核' },
-            { id: 'ORD-2024-004', customerName: '隆基绿能科技股份有限公司', productType: '逆变器', amount: '¥156,900', createDate: '2024-10-22', deliveryDate: '2024-11-08', status: 'completed', statusText: '已完成' },
-            { id: 'ORD-2024-005', customerName: '天合光能股份有限公司', productType: '逆变器', amount: '¥78,500', createDate: '2024-10-21', deliveryDate: '2024-11-25', status: 'shipped', statusText: '已发货' },
-            { id: 'ORD-2024-006', customerName: '晶科能源股份有限公司', productType: '逆变器', amount: '¥198,700', createDate: '2024-10-20', deliveryDate: '2024-11-30', status: 'draft', statusText: '草稿' },
-            { id: 'ORD-2024-007', customerName: '阿特斯阳光电力集团', productType: '逆变器', amount: '¥134,200', createDate: '2024-10-19', deliveryDate: '2024-11-12', status: 'delivered', statusText: '已送达' },
-            { id: 'ORD-2024-008', customerName: '正泰集团股份有限公司', productType: '逆变器', amount: '¥167,800', createDate: '2024-10-18', deliveryDate: '2024-11-05', status: 'rejected', statusText: '已驳回' },
-            { id: 'ORD-2024-009', customerName: '协鑫集成科技股份', productType: '逆变器', amount: '¥145,300', createDate: '2024-10-17', deliveryDate: '2024-11-18', status: 'pending', statusText: '待审核' },
-            { id: 'ORD-2024-010', customerName: '东方日升新能源', productType: '逆变器', amount: '¥112,600', createDate: '2024-10-16', deliveryDate: '2024-11-22', status: 'executing', statusText: '执行中' },
-            { id: 'ORD-2024-011', customerName: '中国电建集团', productType: '逆变器', amount: '¥289,500', createDate: '2024-10-15', deliveryDate: '2024-11-28', status: 'approved', statusText: '已审核' },
-            { id: 'ORD-2024-012', customerName: '国家电网公司', productType: '逆变器', amount: '¥356,800', createDate: '2024-10-14', deliveryDate: '2024-11-30', status: 'completed', statusText: '已完成' },
-            { id: 'ORD-2024-013', customerName: '南方电网公司', productType: '逆变器', amount: '¥298,400', createDate: '2024-10-13', deliveryDate: '2024-11-26', status: 'shipped', statusText: '已发货' },
-            { id: 'ORD-2024-014', customerName: '中广核新能源', productType: '逆变器', amount: '¥187,900', createDate: '2024-10-12', deliveryDate: '2024-11-20', status: 'delivered', statusText: '已送达' },
-            { id: 'ORD-2024-015', customerName: '三峡新能源', productType: '逆变器', amount: '¥234,600', createDate: '2024-10-11', deliveryDate: '2024-11-24', status: 'executing', statusText: '执行中' }
+            { id: 'ORD-2024-001', customerName: '韩国现代', productType: '逆变器', amount: '￥125,800', createDate: '2024-10-25', deliveryDate: '2024-11-15', status: 'pending', statusText: '待审核' },
+            { id: 'ORD-2024-002', customerName: '国家电投', productType: '逆变器', amount: '￥89,600', createDate: '2024-10-24', deliveryDate: '2024-11-10', status: 'executing', statusText: '执行中' },
+            { id: 'ORD-2024-003', customerName: '三峡集团', productType: '逆变器', amount: '￥203,400', createDate: '2024-10-23', deliveryDate: '2024-11-20', status: 'approved', statusText: '已审核' },
+            { id: 'ORD-2024-004', customerName: '上海电气', productType: '逆变器', amount: '￥156,900', createDate: '2024-10-22', deliveryDate: '2024-11-08', status: 'completed', statusText: '已完成' },
+            { id: 'ORD-2024-005', customerName: '韩国现代', productType: '逆变器', amount: '￥78,500', createDate: '2024-10-21', deliveryDate: '2024-11-25', status: 'shipped', statusText: '已发货' },
+            { id: 'ORD-2024-006', customerName: '晶科能源股份有限公司', productType: '逆变器', amount: '￥198,700', createDate: '2024-10-20', deliveryDate: '2024-11-30', status: 'draft', statusText: '草稿' },
+            { id: 'ORD-2024-007', customerName: '阿特斯阳光电力集团', productType: '逆变器', amount: '￥134,200', createDate: '2024-10-19', deliveryDate: '2024-11-12', status: 'delivered', statusText: '已送达' },
+            { id: 'ORD-2024-008', customerName: '正泰集团股份有限公司', productType: '逆变器', amount: '￥167,800', createDate: '2024-10-18', deliveryDate: '2024-11-05', status: 'rejected', statusText: '已驳回' },
+            { id: 'ORD-2024-009', customerName: '协鑫集成科技股份', productType: '逆变器', amount: '￥145,300', createDate: '2024-10-17', deliveryDate: '2024-11-18', status: 'pending', statusText: '待审核' },
+            { id: 'ORD-2024-010', customerName: '东方日升新能源', productType: '逆变器', amount: '￥112,600', createDate: '2024-10-16', deliveryDate: '2024-11-22', status: 'executing', statusText: '执行中' },
+            { id: 'ORD-2024-011', customerName: '中国电建集团', productType: '逆变器', amount: '￥289,500', createDate: '2024-10-15', deliveryDate: '2024-11-28', status: 'approved', statusText: '已审核' },
+            { id: 'ORD-2024-012', customerName: '国家电网公司', productType: '逆变器', amount: '￥356,800', createDate: '2024-10-14', deliveryDate: '2024-11-30', status: 'completed', statusText: '已完成' },
+            { id: 'ORD-2024-013', customerName: '南方电网公司', productType: '逆变器', amount: '￥298,400', createDate: '2024-10-13', deliveryDate: '2024-11-26', status: 'shipped', statusText: '已发货' },
+            { id: 'ORD-2024-014', customerName: '中广核新能源', productType: '逆变器', amount: '￥187,900', createDate: '2024-10-12', deliveryDate: '2024-11-20', status: 'delivered', statusText: '已送达' },
+            { id: 'ORD-2024-015', customerName: '三峡新能源', productType: '逆变器', amount: '￥234,600', createDate: '2024-10-11', deliveryDate: '2024-11-24', status: 'executing', statusText: '执行中' }
         ];
 
         let currentPage = 1;
