@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备台账管理 - 设备管理 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2">设备台账管理</h1>
+            <p class="text-gray-600">基于Process.md 2.4.7流程：台账信息维护→自动更新机制→数据同步管理，实现设备全生命周期信息管理</p>
+        </div>
+
+        <!-- 设备台账管理流程状态指示器 -->
+        <div class="mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">设备台账管理流程</h3>
+                    <span class="text-sm text-gray-600">全生命周期信息管理</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">台账建立</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 100%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm font-medium text-gray-900">信息维护</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-primary" style="width: 85%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-gray-900">自动更新</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-gray-200 mx-2">
+                            <div class="h-1 bg-blue-500" style="width: 70%"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm font-medium">4</div>
+                            <span class="ml-2 text-sm text-gray-600">数据同步</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 顶部操作区域 -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <button id="createLedgerBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                <i class="fas fa-plus mr-2"></i>
+                新建台账
+            </button>
+            <button id="updateInfoBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors flex items-center">
+                <i class="fas fa-edit mr-2"></i>
+                信息维护
+            </button>
+            <button id="autoUpdateBtn" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                <i class="fas fa-sync mr-2"></i>
+                自动更新
+            </button>
+            <button id="dataSyncBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center">
+                <i class="fas fa-exchange-alt mr-2"></i>
+                数据同步
+            </button>
+            <button id="qrCodeBtn" class="bg-warning text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                <i class="fas fa-qrcode mr-2"></i>
+                二维码管理
+            </button>
+            <button class="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                <i class="fas fa-download mr-2"></i>
+                导出台账
+            </button>
+        </div>
+
+        <!-- 设备台账统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-blue-600">1,248</div>
+                        <div class="text-sm text-gray-600">设备台账</div>
+                        <div class="text-xs text-gray-500">总数量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-database text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">1,156</div>
+                        <div class="text-sm text-gray-600">在用设备</div>
+                        <div class="text-xs text-gray-500">正常运行</div>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-play-circle text-green-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-orange-600">67</div>
+                        <div class="text-sm text-gray-600">维修中</div>
+                        <div class="text-xs text-gray-500">暂停使用</div>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tools text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-purple-600">25</div>
+                        <div class="text-sm text-gray-600">闲置设备</div>
+                        <div class="text-xs text-gray-500">待处置</div>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-pause-circle text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-indigo-600">98.5%</div>
+                        <div class="text-sm text-gray-600">信息完整性</div>
+                        <div class="text-xs text-gray-500">台账质量</div>
+                    </div>
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-pie text-indigo-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="text-2xl font-bold text-red-600">15</div>
+                        <div class="text-sm text-gray-600">待更新</div>
+                        <div class="text-xs text-gray-500">信息变更</div>
+                    </div>
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 台账分类和快速操作面板 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 设备分类统计 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备分类统计</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-industry text-blue-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">生产设备</div>
+                                <div class="text-xs text-gray-500">装配线、测试设备、机器人等</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-blue-600">856台</div>
+                            <div class="text-xs text-gray-500">68.6%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-search text-green-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">检测设备</div>
+                                <div class="text-xs text-gray-500">测量仪器、检测工具等</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-green-600">245台</div>
+                            <div class="text-xs text-gray-500">19.6%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+                        <div class="flex items-center">
+                            <i class="fas fa-cogs text-purple-600 mr-3"></i>
+                            <div>
+                                <div class="text-sm font-medium text-gray-900">辅助设备</div>
+                                <div class="text-xs text-gray-500">空压机、冷却设备、输送设备等</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-semibold text-purple-600">147台</div>
+                            <div class="text-xs text-gray-500">11.8%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 台账更新提醒 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">台账更新提醒</h3>
+                <div class="space-y-4">
+                    <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-red-800">设备状态变更</div>
+                                <div class="text-xs text-gray-600">PACK产线装配线1 - 维修状态</div>
+                                <div class="text-xs text-gray-500">变更时间: 14:25:30</div>
+                            </div>
+                            <button onclick="updateEquipmentStatus('EQP001')" class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded hover:bg-red-200">
+                                更新台账
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-orange-800">保养记录更新</div>
+                                <div class="text-xs text-gray-600">PCBA测试设备 - 二级保养完成</div>
+                                <div class="text-xs text-gray-500">完成时间: 15:10:15</div>
+                            </div>
+                            <button onclick="updateMaintenanceRecord('EQP002')" class="text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded hover:bg-orange-200">
+                                更新记录
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-sm font-medium text-yellow-800">技术参数变更</div>
+                                <div class="text-xs text-gray-600">6轴机器人 - 软件版本升级</div>
+                                <div class="text-xs text-gray-500">升级时间: 15:35:45</div>
+                            </div>
+                            <button onclick="updateTechnicalParams('EQP003')" class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded hover:bg-yellow-200">
+                                更新参数
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 设备台账管理表格 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">设备台账管理</h3>
+                <div class="flex flex-wrap gap-4">
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部设备类型</option>
+                        <option>生产设备</option>
+                        <option>检测设备</option>
+                        <option>辅助设备</option>
+                        <option>办公设备</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部状态</option>
+                        <option>在用</option>
+                        <option>维修中</option>
+                        <option>闲置</option>
+                        <option>报废</option>
+                    </select>
+                    <select class="border border-gray-300 rounded-md px-3 py-2 text-sm">
+                        <option>全部车间</option>
+                        <option>PACK产线</option>
+                        <option>PCBA车间</option>
+                        <option>逆变器车间</option>
+                        <option>包装车间</option>
+                    </select>
+                    <input type="text" placeholder="搜索设备编号、名称..." class="border border-gray-300 rounded-md px-3 py-2 text-sm flex-1 min-w-64">
+                    <button class="bg-primary text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700">
+                        <i class="fas fa-search mr-1"></i>搜索
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">设备信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">技术参数</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">使用状态</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">位置信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">维护记录</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">资产信息</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">更新时间</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="ledgerTableBody">
+                        <!-- 台账数据将通过JavaScript动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 分页 -->
+            <div class="px-6 py-3 border-t border-gray-200 flex items-center justify-between">
+                <div class="text-sm text-gray-700" id="recordInfo">
+                    显示记录信息
+                </div>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">上一页</button>
+                    <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                    <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">下一页</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 基于Process.md 2.4.7的设备台账管理数据模型
+        const equipmentLedgerData = [
+            {
+                id: 'EQP001',
+                equipmentCode: 'PACK-ASM-001',
+                equipmentName: 'PACK产线装配线1',
+                equipmentType: 'production',
+                equipmentTypeName: '生产设备',
+                category: '装配设备',
+                manufacturer: '德国西门子',
+                model: 'SIMATIC S7-1500',
+                serialNumber: 'SN20240001',
+                purchaseDate: '2024-03-15',
+                installDate: '2024-04-20',
+                warrantyPeriod: '3年',
+                warrantyExpiry: '2027-04-20',
+                status: 'in_use',
+                statusName: '在用',
+                workshop: 'PACK产线',
+                location: 'A区-01工位',
+                functionalLocation: 'PACK-A-01',
+                technicalSpecs: {
+                    power: '15kW',
+                    voltage: '380V',
+                    frequency: '50Hz',
+                    capacity: '120件/小时',
+                    precision: '±0.1mm',
+                    weight: '2500kg'
+                },
+                assetInfo: {
+                    assetNumber: 'FA-2024-001',
+                    originalValue: 850000.00,
+                    currentValue: 765000.00,
+                    depreciationMethod: '直线法',
+                    depreciationRate: '10%',
+                    accumulatedDepreciation: 85000.00
+                },
+                maintenanceInfo: {
+                    lastMaintenance: '2025-01-15',
+                    nextMaintenance: '2025-01-22',
+                    maintenanceCount: 156,
+                    totalDowntime: 48.5,
+                    mtbf: 720, // 平均故障间隔时间(小时)
+                    mttr: 4.2  // 平均修复时间(小时)
+                },
+                performanceMetrics: {
+                    oee: 94.2,
+                    availability: 96.8,
+                    performance: 98.5,
+                    quality: 98.9,
+                    utilizationRate: 85.6
+                },
+                qrCode: 'QR-PACK-ASM-001',
+                rfidTag: 'RFID-001',
+                lastUpdate: '2025-01-16 14:35:30',
+                updatedBy: '系统自动',
+                notes: '设备运行正常，性能稳定'
+            },
+            {
+                id: 'EQP002',
+                equipmentCode: 'PCBA-TEST-001',
+                equipmentName: 'PCBA测试设备',
+                equipmentType: 'testing',
+                equipmentTypeName: '检测设备',
+                category: '电子测试设备',
+                manufacturer: '日本安立',
+                model: 'MT8870A',
+                serialNumber: 'SN20240002',
+                purchaseDate: '2024-05-10',
+                installDate: '2024-06-15',
+                warrantyPeriod: '2年',
+                warrantyExpiry: '2026-06-15',
+                status: 'maintenance',
+                statusName: '维修中',
+                workshop: 'PCBA车间',
+                location: 'B区-03工位',
+                functionalLocation: 'PCBA-B-03',
+                technicalSpecs: {
+                    power: '5kW',
+                    voltage: '220V',
+                    frequency: '50Hz',
+                    testRange: '0-100MHz',
+                    accuracy: '±0.01%',
+                    weight: '850kg'
+                },
+                assetInfo: {
+                    assetNumber: 'FA-2024-002',
+                    originalValue: 1200000.00,
+                    currentValue: 1080000.00,
+                    depreciationMethod: '直线法',
+                    depreciationRate: '10%',
+                    accumulatedDepreciation: 120000.00
+                },
+                maintenanceInfo: {
+                    lastMaintenance: '2025-01-10',
+                    nextMaintenance: '2025-01-24',
+                    maintenanceCount: 89,
+                    totalDowntime: 32.8,
+                    mtbf: 480,
+                    mttr: 6.5
+                },
+                performanceMetrics: {
+                    oee: 91.8,
+                    availability: 93.5,
+                    performance: 96.8,
+                    quality: 98.5,
+                    utilizationRate: 78.9
+                },
+                qrCode: 'QR-PCBA-TEST-001',
+                rfidTag: 'RFID-002',
+                lastUpdate: '2025-01-16 15:10:15',
+                updatedBy: '王工程师',
+                notes: '正在进行二级保养，预计明天完成'
+            },
+            {
+                id: 'EQP003',
+                equipmentCode: 'ROBOT-6AXIS-001',
+                equipmentName: '6轴机器人',
+                equipmentType: 'production',
+                equipmentTypeName: '生产设备',
+                category: '工业机器人',
+                manufacturer: '日本发那科',
+                model: 'FANUC M-20iD/25',
+                serialNumber: 'SN20240003',
+                purchaseDate: '2024-02-20',
+                installDate: '2024-03-25',
+                warrantyPeriod: '5年',
+                warrantyExpiry: '2029-03-25',
+                status: 'in_use',
+                statusName: '在用',
+                workshop: '逆变器车间',
+                location: 'C区-05工位',
+                functionalLocation: 'INV-C-05',
+                technicalSpecs: {
+                    power: '8kW',
+                    voltage: '380V',
+                    payload: '25kg',
+                    reach: '1811mm',
+                    repeatability: '±0.02mm',
+                    weight: '645kg'
+                },
+                assetInfo: {
+                    assetNumber: 'FA-2024-003',
+                    originalValue: 680000.00,
+                    currentValue: 578000.00,
+                    depreciationMethod: '直线法',
+                    depreciationRate: '15%',
+                    accumulatedDepreciation: 102000.00
+                },
+                maintenanceInfo: {
+                    lastMaintenance: '2025-01-12',
+                    nextMaintenance: '2025-01-19',
+                    maintenanceCount: 124,
+                    totalDowntime: 28.6,
+                    mtbf: 960,
+                    mttr: 3.8
+                },
+                performanceMetrics: {
+                    oee: 88.5,
+                    availability: 89.2,
+                    performance: 95.8,
+                    quality: 99.5,
+                    utilizationRate: 92.3
+                },
+                qrCode: 'QR-ROBOT-6AXIS-001',
+                rfidTag: 'RFID-003',
+                lastUpdate: '2025-01-16 15:35:45',
+                updatedBy: '系统自动',
+                notes: '软件版本已升级至V2.1，性能优化'
+            },
+            {
+                id: 'EQP004',
+                equipmentCode: 'AGING-ROOM-001',
+                equipmentName: '自动老化房',
+                equipmentType: 'auxiliary',
+                equipmentTypeName: '辅助设备',
+                category: '环境试验设备',
+                manufacturer: '上海一恒',
+                model: 'DHG-9420A',
+                serialNumber: 'SN20240004',
+                purchaseDate: '2024-01-15',
+                installDate: '2024-02-20',
+                warrantyPeriod: '1年',
+                warrantyExpiry: '2025-02-20',
+                status: 'fault',
+                statusName: '故障',
+                workshop: '包装车间',
+                location: 'D区-02工位',
+                functionalLocation: 'PACK-D-02',
+                technicalSpecs: {
+                    power: '12kW',
+                    voltage: '380V',
+                    tempRange: '10-200℃',
+                    humidity: '20-98%RH',
+                    volume: '1000L',
+                    weight: '1200kg'
+                },
+                assetInfo: {
+                    assetNumber: 'FA-2024-004',
+                    originalValue: 320000.00,
+                    currentValue: 256000.00,
+                    depreciationMethod: '直线法',
+                    depreciationRate: '20%',
+                    accumulatedDepreciation: 64000.00
+                },
+                maintenanceInfo: {
+                    lastMaintenance: '2025-01-08',
+                    nextMaintenance: '2025-01-18',
+                    maintenanceCount: 67,
+                    totalDowntime: 156.8,
+                    mtbf: 240,
+                    mttr: 12.5
+                },
+                performanceMetrics: {
+                    oee: 65.2,
+                    availability: 71.3,
+                    performance: 88.5,
+                    quality: 95.2,
+                    utilizationRate: 45.6
+                },
+                qrCode: 'QR-AGING-ROOM-001',
+                rfidTag: 'RFID-004',
+                lastUpdate: '2025-01-16 14:25:35',
+                updatedBy: '张操作员',
+                notes: '温控系统故障，供应商维修中'
+            }
+        ];
+
+        // 状态映射
+        const statusMap = {
+            in_use: { text: '在用', class: 'bg-green-100 text-green-800', icon: 'fas fa-play-circle' },
+            maintenance: { text: '维修中', class: 'bg-yellow-100 text-yellow-800', icon: 'fas fa-wrench' },
+            idle: { text: '闲置', class: 'bg-gray-100 text-gray-800', icon: 'fas fa-pause-circle' },
+            fault: { text: '故障', class: 'bg-red-100 text-red-800', icon: 'fas fa-exclamation-triangle' },
+            scrapped: { text: '报废', class: 'bg-black text-white', icon: 'fas fa-trash' }
+        };
+
+        // 设备类型映射
+        const equipmentTypeMap = {
+            production: { text: '生产设备', icon: 'fas fa-industry', color: 'text-blue-600' },
+            testing: { text: '检测设备', icon: 'fas fa-search', color: 'text-green-600' },
+            auxiliary: { text: '辅助设备', icon: 'fas fa-cogs', color: 'text-purple-600' },
+            office: { text: '办公设备', icon: 'fas fa-desktop', color: 'text-orange-600' }
+        };
+
+        let filteredData = [...equipmentLedgerData];
+
+        // 渲染设备台账表格
+        function renderLedgerTable(dataToRender = filteredData) {
+            const tbody = document.getElementById('ledgerTableBody');
+            tbody.innerHTML = '';
+
+            dataToRender.forEach(equipment => {
+                const status = statusMap[equipment.status];
+                const equipmentType = equipmentTypeMap[equipment.equipmentType];
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+
+                row.innerHTML = `
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="${equipmentType.icon} text-blue-600"></i>
+                            </div>
+                            <div>
+                                <div class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewLedgerDetail('${equipment.id}')">
+                                    ${equipment.equipmentCode}
+                                </div>
+                                <div class="text-sm text-gray-900">${equipment.equipmentName}</div>
+                                <div class="text-xs text-gray-500">${equipment.category}</div>
+                                <div class="text-xs text-gray-500">${equipment.manufacturer} ${equipment.model}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="space-y-1">
+                            <div class="text-xs text-gray-600">功率: ${equipment.technicalSpecs.power}</div>
+                            <div class="text-xs text-gray-600">电压: ${equipment.technicalSpecs.voltage}</div>
+                            ${equipment.technicalSpecs.capacity ? `
+                                <div class="text-xs text-gray-600">产能: ${equipment.technicalSpecs.capacity}</div>
+                            ` : ''}
+                            ${equipment.technicalSpecs.precision ? `
+                                <div class="text-xs text-gray-600">精度: ${equipment.technicalSpecs.precision}</div>
+                            ` : ''}
+                        </div>
+                        <button onclick="viewTechnicalSpecs('${equipment.id}')" class="text-xs text-blue-600 hover:underline mt-1">
+                            查看详细参数
+                        </button>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full ${status.class}">
+                            <i class="${status.icon} mr-1"></i>
+                            ${status.text}
+                        </span>
+                        <div class="mt-2 space-y-1">
+                            <div class="text-xs text-gray-600">OEE: ${equipment.performanceMetrics.oee}%</div>
+                            <div class="text-xs text-gray-600">利用率: ${equipment.performanceMetrics.utilizationRate}%</div>
+                            <div class="text-xs text-gray-600">MTBF: ${equipment.maintenanceInfo.mtbf}h</div>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${equipment.workshop}</div>
+                        <div class="text-xs text-gray-500">${equipment.location}</div>
+                        <div class="text-xs text-blue-600">${equipment.functionalLocation}</div>
+                        <div class="flex items-center mt-1">
+                            <i class="fas fa-qrcode text-gray-400 mr-1"></i>
+                            <span class="text-xs text-gray-500">${equipment.qrCode}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="space-y-1">
+                            <div class="text-xs text-gray-600">上次: ${equipment.maintenanceInfo.lastMaintenance}</div>
+                            <div class="text-xs text-gray-600">下次: ${equipment.maintenanceInfo.nextMaintenance}</div>
+                            <div class="text-xs text-gray-600">次数: ${equipment.maintenanceInfo.maintenanceCount}</div>
+                            <div class="text-xs text-gray-600">停机: ${equipment.maintenanceInfo.totalDowntime}h</div>
+                        </div>
+                        <button onclick="viewMaintenanceHistory('${equipment.id}')" class="text-xs text-green-600 hover:underline mt-1">
+                            维护历史
+                        </button>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">¥${equipment.assetInfo.currentValue.toLocaleString()}</div>
+                        <div class="text-xs text-gray-500">原值: ¥${equipment.assetInfo.originalValue.toLocaleString()}</div>
+                        <div class="text-xs text-gray-500">折旧: ¥${equipment.assetInfo.accumulatedDepreciation.toLocaleString()}</div>
+                        <div class="text-xs text-gray-500">编号: ${equipment.assetInfo.assetNumber}</div>
+                        <div class="text-xs text-gray-500">保修: ${equipment.warrantyExpiry}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${equipment.lastUpdate.split(' ')[1]}</div>
+                        <div class="text-xs text-gray-500">${equipment.lastUpdate.split(' ')[0]}</div>
+                        <div class="text-xs text-blue-600">${equipment.updatedBy}</div>
+                    </td>
+                    <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                        <div class="flex space-x-1">
+                            <button onclick="viewLedgerDetail('${equipment.id}')" class="text-blue-600 hover:text-blue-900 p-1" title="查看详情">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button onclick="editLedgerInfo('${equipment.id}')" class="text-green-600 hover:text-green-900 p-1" title="编辑信息">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="viewQRCode('${equipment.id}')" class="text-purple-600 hover:text-purple-900 p-1" title="二维码">
+                                <i class="fas fa-qrcode"></i>
+                            </button>
+                            <button onclick="syncData('${equipment.id}')" class="text-orange-600 hover:text-orange-900 p-1" title="同步数据">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                            <button onclick="exportLedger('${equipment.id}')" class="text-gray-600 hover:text-gray-900 p-1" title="导出台账">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            // 更新记录信息
+            document.getElementById('recordInfo').textContent = `显示 1-${dataToRender.length} 条，共 ${equipmentLedgerData.length} 条记录`;
+        }
+
+        // 设备台账操作函数
+        function viewLedgerDetail(equipmentId) {
+            const equipment = equipmentLedgerData.find(e => e.id === equipmentId);
+            if (equipment) {
+                let detailText = `设备台账详情：\n设备编号: ${equipment.equipmentCode}\n设备名称: ${equipment.equipmentName}\n设备类型: ${equipmentTypeMap[equipment.equipmentType].text}\n制造商: ${equipment.manufacturer}\n型号: ${equipment.model}\n序列号: ${equipment.serialNumber}\n状态: ${statusMap[equipment.status].text}`;
+
+                detailText += `\n\n位置信息:\n车间: ${equipment.workshop}\n位置: ${equipment.location}\n功能位置: ${equipment.functionalLocation}`;
+
+                detailText += `\n\n技术参数:`;
+                Object.entries(equipment.technicalSpecs).forEach(([key, value]) => {
+                    detailText += `\n${key}: ${value}`;
+                });
+
+                detailText += `\n\n资产信息:\n资产编号: ${equipment.assetInfo.assetNumber}\n原值: ¥${equipment.assetInfo.originalValue.toLocaleString()}\n现值: ¥${equipment.assetInfo.currentValue.toLocaleString()}\n累计折旧: ¥${equipment.assetInfo.accumulatedDepreciation.toLocaleString()}\n折旧方法: ${equipment.assetInfo.depreciationMethod}`;
+
+                detailText += `\n\n维护信息:\n上次维护: ${equipment.maintenanceInfo.lastMaintenance}\n下次维护: ${equipment.maintenanceInfo.nextMaintenance}\n维护次数: ${equipment.maintenanceInfo.maintenanceCount}\n总停机时间: ${equipment.maintenanceInfo.totalDowntime}小时\nMTBF: ${equipment.maintenanceInfo.mtbf}小时\nMTTR: ${equipment.maintenanceInfo.mttr}小时`;
+
+                detailText += `\n\n性能指标:\nOEE: ${equipment.performanceMetrics.oee}%\n可用率: ${equipment.performanceMetrics.availability}%\n性能率: ${equipment.performanceMetrics.performance}%\n质量率: ${equipment.performanceMetrics.quality}%\n利用率: ${equipment.performanceMetrics.utilizationRate}%`;
+
+                detailText += `\n\n标识信息:\n二维码: ${equipment.qrCode}\nRFID标签: ${equipment.rfidTag}`;
+
+                detailText += `\n\n更新信息:\n最后更新: ${equipment.lastUpdate}\n更新人: ${equipment.updatedBy}`;
+
+                if (equipment.notes) {
+                    detailText += `\n\n备注: ${equipment.notes}`;
+                }
+
+                alert(detailText);
+            }
+        }
+
+        function updateEquipmentStatus(equipmentId) {
+            if (confirm(`确认更新设备状态？\n设备ID: ${equipmentId}\n\n更新内容：\n- 设备状态变更\n- 台账信息同步\n- 相关记录更新`)) {
+                alert('设备状态已更新！\n- 台账信息已同步\n- 状态变更已记录\n- 相关系统已通知');
+            }
+        }
+
+        function updateMaintenanceRecord(equipmentId) {
+            if (confirm(`确认更新保养记录？\n设备ID: ${equipmentId}\n\n更新内容：\n- 保养记录更新\n- 下次保养计划\n- 性能指标刷新`)) {
+                alert('保养记录已更新！\n- 维护历史已记录\n- 下次保养已安排\n- 台账信息已同步');
+            }
+        }
+
+        function updateTechnicalParams(equipmentId) {
+            if (confirm(`确认更新技术参数？\n设备ID: ${equipmentId}\n\n更新内容：\n- 软件版本升级\n- 技术参数变更\n- 性能指标更新`)) {
+                alert('技术参数已更新！\n- 参数变更已记录\n- 版本信息已更新\n- 台账信息已同步');
+            }
+        }
+
+        function viewTechnicalSpecs(equipmentId) {
+            const equipment = equipmentLedgerData.find(e => e.id === equipmentId);
+            if (equipment) {
+                let specsText = `${equipment.equipmentName} - 技术参数：\n\n`;
+                Object.entries(equipment.technicalSpecs).forEach(([key, value]) => {
+                    specsText += `${key}: ${value}\n`;
+                });
+                specsText += `\n制造商: ${equipment.manufacturer}\n型号: ${equipment.model}\n序列号: ${equipment.serialNumber}`;
+                alert(specsText);
+            }
+        }
+
+        function viewMaintenanceHistory(equipmentId) {
+            const equipment = equipmentLedgerData.find(e => e.id === equipmentId);
+            if (equipment) {
+                alert(`${equipment.equipmentName} - 维护历史：\n\n维护统计:\n总维护次数: ${equipment.maintenanceInfo.maintenanceCount}\n总停机时间: ${equipment.maintenanceInfo.totalDowntime}小时\n平均故障间隔: ${equipment.maintenanceInfo.mtbf}小时\n平均修复时间: ${equipment.maintenanceInfo.mttr}小时\n\n最近维护:\n上次维护: ${equipment.maintenanceInfo.lastMaintenance}\n下次维护: ${equipment.maintenanceInfo.nextMaintenance}\n\n性能表现:\nOEE: ${equipment.performanceMetrics.oee}%\n可用率: ${equipment.performanceMetrics.availability}%`);
+            }
+        }
+
+        function editLedgerInfo(equipmentId) {
+            const equipment = equipmentLedgerData.find(e => e.id === equipmentId);
+            if (equipment) {
+                alert(`编辑台账信息：\n设备: ${equipment.equipmentName}\n\n可编辑内容：\n- 基本信息\n- 技术参数\n- 位置信息\n- 资产信息\n- 维护计划\n- 备注信息`);
+            }
+        }
+
+        function viewQRCode(equipmentId) {
+            const equipment = equipmentLedgerData.find(e => e.id === equipmentId);
+            if (equipment) {
+                alert(`设备二维码：\n设备: ${equipment.equipmentName}\n二维码: ${equipment.qrCode}\nRFID: ${equipment.rfidTag}\n\n二维码功能：\n- 设备信息查询\n- 维护记录查看\n- 操作指导获取\n- 故障报告提交`);
+            }
+        }
+
+        function syncData(equipmentId) {
+            const equipment = equipmentLedgerData.find(e => e.id === equipmentId);
+            if (equipment) {
+                if (confirm(`确认同步数据？\n设备: ${equipment.equipmentName}\n\n同步内容：\n- 运行状态数据\n- 维护记录数据\n- 性能指标数据\n- 资产信息数据`)) {
+                    equipment.lastUpdate = new Date().toLocaleString('zh-CN');
+                    equipment.updatedBy = '系统自动';
+                    renderLedgerTable();
+                    alert('数据同步完成！\n- 实时数据已更新\n- 台账信息已刷新\n- 相关系统已同步');
+                }
+            }
+        }
+
+        function exportLedger(equipmentId) {
+            const equipment = equipmentLedgerData.find(e => e.id === equipmentId);
+            if (equipment) {
+                alert(`导出设备台账：\n设备: ${equipment.equipmentName}\n\n导出内容：\n- 基本信息\n- 技术参数\n- 维护记录\n- 性能数据\n- 资产信息\n\n格式: Excel/PDF`);
+            }
+        }
+
+        // 事件监听器
+        document.addEventListener('DOMContentLoaded', function() {
+            renderLedgerTable();
+
+            // 新建台账
+            document.getElementById('createLedgerBtn').addEventListener('click', function() {
+                alert('新建台账功能：\n- 设备基本信息录入\n- 技术参数配置\n- 位置信息设定\n- 资产信息登记\n- 二维码生成');
+            });
+
+            // 信息维护
+            document.getElementById('updateInfoBtn').addEventListener('click', function() {
+                alert('信息维护功能：\n- 台账信息更新\n- 参数变更记录\n- 状态信息维护\n- 位置变更管理\n- 历史版本管理');
+            });
+
+            // 自动更新
+            document.getElementById('autoUpdateBtn').addEventListener('click', function() {
+                alert('自动更新功能：\n- 运行数据自动采集\n- 维护记录自动更新\n- 状态变更自动同步\n- 性能指标自动计算\n- 异常信息自动记录');
+            });
+
+            // 数据同步
+            document.getElementById('dataSyncBtn').addEventListener('click', function() {
+                alert('数据同步功能：\n- ERP系统同步\n- MES系统集成\n- IoT数据接入\n- 第三方系统对接\n- 实时数据更新');
+            });
+
+            // 二维码管理
+            document.getElementById('qrCodeBtn').addEventListener('click', function() {
+                alert('二维码管理功能：\n- 二维码生成\n- 标签打印\n- 扫码查询\n- 移动端支持\n- 批量管理');
+            });
+        });
+    </script>
+</body>
+</html>
