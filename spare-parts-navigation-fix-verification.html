@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>备品备件管理导航修复验证</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">
+                <i class="fas fa-check-circle text-green-600 mr-3"></i>
+                备品备件管理导航修复验证
+            </h1>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">修复说明</h2>
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                    <p class="text-gray-700">
+                        <strong>问题：</strong>备品备件管理页面使用内联切换按钮来切换视图，不符合统一的导航结构。
+                    </p>
+                </div>
+                <div class="bg-green-50 border-l-4 border-green-500 p-4">
+                    <p class="text-gray-700">
+                        <strong>解决方案：</strong>将备件台账、出入库管理、库存预警、备件分析作为三级菜单放在主导航的"设备管理 > 备品备件管理"下。
+                    </p>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">修改内容</h2>
+                <div class="space-y-4">
+                    <div class="border rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-800 mb-2">
+                            <i class="fas fa-file-code text-purple-600 mr-2"></i>
+                            1. index.html - 导航配置
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-2">在设备管理的二级菜单中，将"备品备件管理"配置为带有三级菜单的项：</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 ml-4">
+                            <li>备件台账 → pages/equipment/spare-parts-management.html?view=inventory</li>
+                            <li>出入库管理 → pages/equipment/spare-parts-management.html?view=transactions</li>
+                            <li>库存预警 → pages/equipment/spare-parts-management.html?view=alerts</li>
+                            <li>备件分析 → pages/equipment/spare-parts-management.html?view=analysis</li>
+                        </ul>
+                    </div>
+
+                    <div class="border rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-800 mb-2">
+                            <i class="fas fa-file-code text-purple-600 mr-2"></i>
+                            2. spare-parts-management.html - 移除切换按钮
+                        </h3>
+                        <p class="text-sm text-gray-600">移除了页面标题中的视图切换按钮（104-117行），改为通过主导航的子菜单切换。</p>
+                    </div>
+
+                    <div class="border rounded-lg p-4">
+                        <h3 class="font-semibold text-gray-800 mb-2">
+                            <i class="fas fa-file-code text-purple-600 mr-2"></i>
+                            3. equipment-spare-parts.js - URL参数支持
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-2">更新JavaScript逻辑：</p>
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 ml-4">
+                            <li>根据URL参数（?view=inventory/transactions/alerts/analysis）自动切换视图</li>
+                            <li>移除对切换按钮的引用</li>
+                            <li>添加initializeViewDisplay()函数初始化视图显示状态</li>
+                            <li>更新switchView()函数，移除按钮样式更新逻辑</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">验证步骤</h2>
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                        <li>打开主页面（index.html）</li>
+                        <li>点击左侧导航"设备管理"</li>
+                        <li>在二级菜单中找到"备品备件管理"</li>
+                        <li>点击"备品备件管理"，应该展开显示四个三级菜单项：
+                            <ul class="list-disc list-inside ml-6 mt-2 space-y-1">
+                                <li>备件台账</li>
+                                <li>出入库管理</li>
+                                <li>库存预警</li>
+                                <li>备件分析</li>
+                            </ul>
+                        </li>
+                        <li>点击任意三级菜单项，应该加载对应的视图</li>
+                        <li>确认页面标题中<strong>没有切换按钮</strong>，只显示当前视图的标题</li>
+                        <li>确认内容区域正确显示对应的视图内容</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">快速测试链接</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a href="index.html" class="block p-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-center">
+                        <i class="fas fa-home mr-2"></i>
+                        打开主页面
+                    </a>
+                    <a href="pages/equipment/spare-parts-management.html?view=inventory" class="block p-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-center">
+                        <i class="fas fa-boxes mr-2"></i>
+                        备件台账
+                    </a>
+                    <a href="pages/equipment/spare-parts-management.html?view=transactions" class="block p-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-center">
+                        <i class="fas fa-exchange-alt mr-2"></i>
+                        出入库管理
+                    </a>
+                    <a href="pages/equipment/spare-parts-management.html?view=alerts" class="block p-4 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-center">
+                        <i class="fas fa-bell mr-2"></i>
+                        库存预警
+                    </a>
+                    <a href="pages/equipment/spare-parts-management.html?view=analysis" class="block p-4 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-center">
+                        <i class="fas fa-chart-pie mr-2"></i>
+                        备件分析
+                    </a>
+                </div>
+            </div>
+
+            <div class="bg-gray-100 rounded-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">预期结果</h2>
+                <div class="space-y-3">
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-600 mr-3 mt-1"></i>
+                        <p class="text-gray-700">主导航中"设备管理"下的"备品备件管理"可以展开显示四个子菜单</p>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-600 mr-3 mt-1"></i>
+                        <p class="text-gray-700">点击子菜单项后，页面标题中没有切换按钮，只显示当前视图名称</p>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-600 mr-3 mt-1"></i>
+                        <p class="text-gray-700">内容区域根据选择的子菜单显示对应的视图（台账/出入库/预警/分析）</p>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-600 mr-3 mt-1"></i>
+                        <p class="text-gray-700">页面标题和内容与选择的菜单项匹配</p>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-check-circle text-green-600 mr-3 mt-1"></i>
+                        <p class="text-gray-700">导航结构与点巡检管理保持一致</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h3 class="font-semibold text-blue-800 mb-2">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    与点巡检管理的一致性
+                </h3>
+                <p class="text-sm text-blue-700">
+                    备品备件管理现在采用与点巡检管理相同的导航结构：
+                </p>
+                <ul class="list-disc list-inside text-sm text-blue-700 mt-2 ml-4 space-y-1">
+                    <li>都使用三级菜单结构</li>
+                    <li>都通过URL参数切换视图</li>
+                    <li>都移除了页面内部的切换按钮</li>
+                    <li>都使用主导航系统进行导航</li>
+                </ul>
+            </div>
+
+            <div class="mt-8 text-center text-sm text-gray-500">
+                <p>修复完成时间：2024年10月30日</p>
+                <p class="mt-2">如有问题，请检查浏览器控制台的错误信息</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

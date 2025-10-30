@@ -7,10 +7,45 @@ let filteredData = [];
 
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
+    // 从URL参数获取视图类型
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewParam = urlParams.get('view');
+    if (viewParam && ['inventory', 'transactions', 'alerts', 'analysis'].includes(viewParam)) {
+        currentView = viewParam;
+    }
+    
     initializeData();
+    
+    // 初始化视图显示状态
+    initializeViewDisplay();
+    
     renderView();
     updateStatistics();
 });
+
+// 初始化视图显示状态
+function initializeViewDisplay() {
+    // 隐藏所有视图
+    document.querySelectorAll('.view-content').forEach(view => view.classList.add('hidden'));
+    
+    // 显示当前视图
+    const currentViewElement = document.getElementById(`${currentView}-view`);
+    if (currentViewElement) {
+        currentViewElement.classList.remove('hidden');
+    }
+    
+    // 更新页面标题
+    const titles = {
+        'inventory': '备件台账',
+        'transactions': '出入库管理',
+        'alerts': '库存预警',
+        'analysis': '备件分析'
+    };
+    const pageTitle = document.getElementById('page-title');
+    if (pageTitle) {
+        pageTitle.textContent = titles[currentView] || '备件管理';
+    }
+}
 
 // 初始化样例数据
 function initializeData() {
@@ -232,14 +267,26 @@ function getCurrentViewData() {
 
 function switchView(viewType) {
     currentView = viewType;
-    document.querySelectorAll('[id^="view-"]').forEach(btn => {
-        btn.classList.remove('bg-primary', 'text-white');
-        btn.classList.add('bg-white', 'text-gray-700');
-    });
-    document.getElementById(`view-${viewType}`).classList.remove('bg-white', 'text-gray-700');
-    document.getElementById(`view-${viewType}`).classList.add('bg-primary', 'text-white');
+    
+    // 更新页面标题
+    const titles = {
+        'inventory': '备件台账',
+        'transactions': '出入库管理',
+        'alerts': '库存预警',
+        'analysis': '备件分析'
+    };
+    const pageTitle = document.getElementById('page-title');
+    if (pageTitle) {
+        pageTitle.textContent = titles[viewType] || '备件管理';
+    }
+    
+    // 切换视图内容
     document.querySelectorAll('.view-content').forEach(view => view.classList.add('hidden'));
-    document.getElementById(`${viewType}-view`).classList.remove('hidden');
+    const targetView = document.getElementById(`${viewType}-view`);
+    if (targetView) {
+        targetView.classList.remove('hidden');
+    }
+    
     filteredData = getCurrentViewData();
     renderView();
 }

@@ -105,42 +105,6 @@
 </head>
 <body class="bg-gray-50">
     <div class="flex h-screen overflow-hidden">
-        <!-- 左侧导航 -->
-        <div class="w-64 bg-white border-r flex-shrink-0">
-            <div class="p-6 border-b">
-                <h2 class="text-lg font-bold text-gray-800">点巡检管理</h2>
-                <p class="text-xs text-gray-500 mt-1">设备管理需求文档 4.4节</p>
-            </div>
-            <nav class="p-4">
-                <ul class="space-y-1">
-                    <li>
-                        <button id="nav-routes" onclick="switchView('routes')" class="w-full text-left px-4 py-3 rounded-lg bg-orange-50 text-orange-700 font-medium hover:bg-orange-100 transition-colors flex items-center">
-                            <i class="fas fa-route mr-3 w-5"></i>
-                            <span>巡检路线</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button id="nav-plans" onclick="switchView('plans')" class="w-full text-left px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center">
-                            <i class="fas fa-calendar-check mr-3 w-5"></i>
-                            <span>巡检计划</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button id="nav-tasks" onclick="switchView('tasks')" class="w-full text-left px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center">
-                            <i class="fas fa-tasks mr-3 w-5"></i>
-                            <span>巡检任务</span>
-                        </button>
-                    </li>
-                    <li>
-                        <button id="nav-reports" onclick="switchView('reports')" class="w-full text-left px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center">
-                            <i class="fas fa-chart-line mr-3 w-5"></i>
-                            <span>巡检报告</span>
-                        </button>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
         <!-- 主内容区 -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <div class="bg-white border-b p-6">

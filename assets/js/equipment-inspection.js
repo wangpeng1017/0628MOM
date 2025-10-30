@@ -7,10 +7,45 @@ let filteredData = [];
 
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
+    // 从URL参数获取视图类型
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewParam = urlParams.get('view');
+    if (viewParam && ['routes', 'plans', 'tasks', 'reports'].includes(viewParam)) {
+        currentView = viewParam;
+    }
+    
     initializeData();
+    
+    // 初始化视图显示状态
+    initializeViewDisplay();
+    
     renderView();
     updateStatistics();
 });
+
+// 初始化视图显示状态
+function initializeViewDisplay() {
+    // 隐藏所有视图
+    document.querySelectorAll('.view-content').forEach(view => view.classList.add('hidden'));
+    
+    // 显示当前视图
+    const currentViewElement = document.getElementById(`${currentView}-view`);
+    if (currentViewElement) {
+        currentViewElement.classList.remove('hidden');
+    }
+    
+    // 更新页面标题
+    const titles = {
+        'routes': '巡检路线',
+        'plans': '巡检计划',
+        'tasks': '巡检任务',
+        'reports': '巡检报告'
+    };
+    const pageTitle = document.getElementById('page-title');
+    if (pageTitle) {
+        pageTitle.textContent = titles[currentView] || '巡检管理';
+    }
+}
 
 // 初始化样例数据
 function initializeData() {
@@ -202,17 +237,6 @@ function getCurrentViewData() {
 function switchView(viewType) {
     currentView = viewType;
     
-    // 更新左侧导航菜单样式
-    document.querySelectorAll('[id^="nav-"]').forEach(btn => {
-        btn.classList.remove('bg-orange-50', 'text-orange-700', 'font-medium');
-        btn.classList.add('text-gray-700');
-    });
-    const activeNav = document.getElementById(`nav-${viewType}`);
-    if (activeNav) {
-        activeNav.classList.remove('text-gray-700');
-        activeNav.classList.add('bg-orange-50', 'text-orange-700', 'font-medium');
-    }
-    
     // 更新页面标题
     const titles = {
         'routes': '巡检路线',
@@ -227,7 +251,10 @@ function switchView(viewType) {
     
     // 切换视图内容
     document.querySelectorAll('.view-content').forEach(view => view.classList.add('hidden'));
-    document.getElementById(`${viewType}-view`).classList.remove('hidden');
+    const targetView = document.getElementById(`${viewType}-view`);
+    if (targetView) {
+        targetView.classList.remove('hidden');
+    }
     
     filteredData = getCurrentViewData();
     renderView();

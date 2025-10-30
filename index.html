@@ -592,8 +592,28 @@
                     { id: 'asset-management', name: '设备资产管理', icon: 'fas fa-database', url: 'pages/equipment/asset-management.html' },
                     { id: 'maintenance-repair', name: '维护维修管理', icon: 'fas fa-tools', url: 'pages/equipment/maintenance-repair.html' },
                     { id: 'preventive-maintenance', name: '计划性维护', icon: 'fas fa-calendar-check', url: 'pages/equipment/preventive-maintenance.html' },
-                    { id: 'inspection-management', name: '点巡检管理', icon: 'fas fa-search', url: 'pages/equipment/inspection-management.html' },
-                    { id: 'spare-parts-management', name: '备品备件管理', icon: 'fas fa-boxes', url: 'pages/equipment/spare-parts-management.html' },
+                    { 
+                        id: 'inspection-management', 
+                        name: '点巡检管理', 
+                        icon: 'fas fa-search',
+                        subItems: [
+                            { id: 'inspection-routes', name: '巡检路线', url: 'pages/equipment/inspection-management.html?view=routes' },
+                            { id: 'inspection-plans', name: '巡检计划', url: 'pages/equipment/inspection-management.html?view=plans' },
+                            { id: 'inspection-tasks', name: '巡检任务', url: 'pages/equipment/inspection-management.html?view=tasks' },
+                            { id: 'inspection-reports', name: '巡检报告', url: 'pages/equipment/inspection-management.html?view=reports' }
+                        ]
+                    },
+                    { 
+                        id: 'spare-parts-management', 
+                        name: '备品备件管理', 
+                        icon: 'fas fa-boxes',
+                        subItems: [
+                            { id: 'spare-parts-inventory', name: '备件台账', url: 'pages/equipment/spare-parts-management.html?view=inventory' },
+                            { id: 'spare-parts-transactions', name: '出入库管理', url: 'pages/equipment/spare-parts-management.html?view=transactions' },
+                            { id: 'spare-parts-alerts', name: '库存预警', url: 'pages/equipment/spare-parts-management.html?view=alerts' },
+                            { id: 'spare-parts-analysis', name: '备件分析', url: 'pages/equipment/spare-parts-management.html?view=analysis' }
+                        ]
+                    },
                     { id: 'predictive-maintenance', name: '预测性维护', icon: 'fas fa-brain', url: 'pages/equipment/predictive-maintenance.html' },
                     { id: 'knowledge-base', name: '知识库管理', icon: 'fas fa-book', url: 'pages/equipment/knowledge-base.html' },
                     { id: 'oee-analysis', name: 'OEE统计分析', icon: 'fas fa-chart-line', url: 'pages/equipment/oee-analysis.html' }
