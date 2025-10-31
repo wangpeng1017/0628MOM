@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>告警抑制与恢复 - IOT平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">告警抑制与恢复管理</h1>
+                <p class="text-gray-600">智能告警 - 抑制规则、恢复通知、升级策略</p>
+            </div>
+            <button onclick="addRule()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                <i class="fas fa-plus mr-2"></i>添加规则
+            </button>
+        </div>
+
+        <!-- 统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-danger">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">活跃告警</p>
+                        <p class="text-2xl font-bold text-danger">23</p>
+                    </div>
+                    <i class="fas fa-exclamation-triangle text-danger text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-warning">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">已抑制</p>
+                        <p class="text-2xl font-bold text-warning">45</p>
+                    </div>
+                    <i class="fas fa-ban text-warning text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-success">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">已恢复</p>
+                        <p class="text-2xl font-bold text-success">156</p>
+                    </div>
+                    <i class="fas fa-check-circle text-success text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">已升级</p>
+                        <p class="text-2xl font-bold text-purple-600">8</p>
+                    </div>
+                    <i class="fas fa-arrow-up text-purple-600 text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- 抑制规则 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                <i class="fas fa-ban text-warning-600 mr-2"></i>
+                告警抑制规则
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">时间抑制</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-sm text-gray-600">抑制时间</label>
+                            <div class="flex gap-2 mt-1">
+                                <input type="number" value="30" class="flex-1 px-3 py-2 border border-gray-300 rounded">
+                                <select class="px-3 py-2 border border-gray-300 rounded">
+                                    <option>分钟</option>
+                                    <option>小时</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 rounded p-2 text-xs">
+                            <p class="text-gray-600">30分钟内不重复发送相同告警</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">频率抑制</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-sm text-gray-600">最大次数</label>
+                            <input type="number" value="3" class="w-full px-3 py-2 border border-gray-300 rounded mt-1">
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">时间窗口</label>
+                            <div class="flex gap-2 mt-1">
+                                <input type="number" value="1" class="flex-1 px-3 py-2 border border-gray-300 rounded">
+                                <select class="px-3 py-2 border border-gray-300 rounded">
+                                    <option>小时</option>
+                                    <option>天</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="bg-yellow-50 rounded p-2 text-xs">
+                            <p class="text-gray-600">1小时内最多发送3次</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">相似告警合并</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-sm text-gray-600">相似度阈值</label>
+                            <div class="flex gap-2 mt-1">
+                                <input type="number" value="80" class="flex-1 px-3 py-2 border border-gray-300 rounded">
+                                <span class="py-2">%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">合并窗口</label>
+                            <input type="number" value="5" class="w-full px-3 py-2 border border-gray-300 rounded mt-1" placeholder="分钟">
+                        </div>
+                        <div class="bg-yellow-50 rounded p-2 text-xs">
+                            <p class="text-gray-600">相似告警合并为一条</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 恢复机制 -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                <i class="fas fa-redo text-success mr-2"></i>
+                告警恢复机制
+            </h3>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">自动恢复检测</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-sm text-gray-600">检测间隔</label>
+                            <div class="flex gap-2 mt-1">
+                                <input type="number" value="1" class="flex-1 px-3 py-2 border border-gray-300 rounded">
+                                <select class="px-3 py-2 border border-gray-300 rounded">
+                                    <option>分钟</option>
+                                    <option>秒</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">恢复条件</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded mt-1">
+                                <option>指标恢复正常</option>
+                                <option>连续N次正常</option>
+                                <option>手动确认</option>
+                            </select>
+                        </div>
+                        <div class="bg-green-50 rounded p-2 text-xs">
+                            <p class="text-gray-600">温度降至65°C以下自动恢复</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">恢复通知配置</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-sm text-gray-600">通知方式</label>
+                            <div class="space-y-2 mt-1">
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked class="mr-2">
+                                    <span class="text-sm">邮件通知</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2">
+                                    <span class="text-sm">短信通知</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" checked class="mr-2">
+                                    <span class="text-sm">系统消息</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 rounded p-2 text-xs">
+                            <p class="text-gray-600">恢复时发送通知给相关人员</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 升级策略 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                <i class="fas fa-arrow-up text-purple-600 mr-2"></i>
+                告警升级策略
+            </h3>
+            <div class="space-y-4">
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">升级规则配置</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200 bg-gray-50">
+                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">条件</th>
+                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">当前级别</th>
+                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">升级到</th>
+                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">通知方式</th>
+                                    <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                    <td class="py-3 px-4 text-sm text-gray-800">1小时未处理</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-1 bg-yellow-100 text-yellow-800 rounded text-xs">中</span></td>
+                                    <td class="py-3 px-4"><span class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs">高</span></td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">邮件 + 短信</td>
+                                    <td class="py-3 px-4">
+                                        <button class="text-primary hover:text-primary-light text-sm mr-2">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-danger hover:text-red-700 text-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                    <td class="py-3 px-4 text-sm text-gray-800">2小时未处理</td>
+                                    <td class="py-3 px-4"><span class="px-2 py-1 bg-red-100 text-red-800 rounded text-xs">高</span></td>
+                                    <td class="py-3 px-4"><span class="px-2 py-1 bg-purple-100 text-purple-800 rounded text-xs">紧急</span></td>
+                                    <td class="py-3 px-4 text-sm text-gray-600">短信 + 电话</td>
+                                    <td class="py-3 px-4">
+                                        <button class="text-primary hover:text-primary-light text-sm mr-2">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-danger hover:text-red-700 text-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">时间升级</h4>
+                        <p class="text-sm text-gray-600">超时未处理自动升级</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">级别升级</h4>
+                        <p class="text-sm text-gray-600">中 → 高 → 紧急</p>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">通知升级</h4>
+                        <p class="text-sm text-gray-600">邮件 → 短信 → 电话</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addRule() {
+            alert('添加抑制规则');
+        }
+    </script>
+</body>
+</html>
