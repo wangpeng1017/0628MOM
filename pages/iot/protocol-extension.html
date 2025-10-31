@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>协议扩展管理 - IOT平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="p-6">
+        <!-- 页面头部 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">协议扩展管理</h1>
+                <p class="text-gray-600">多协议支持 - MQTT、OPC UA、Modbus、HTTP、CoAP及自定义协议</p>
+            </div>
+            <div class="flex space-x-3">
+                <button onclick="addCustomProtocol()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                    <i class="fas fa-plus mr-2"></i>添加自定义协议
+                </button>
+            </div>
+        </div>
+
+        <!-- 协议统计 -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">MQTT</p>
+                        <p class="text-2xl font-bold text-blue-600">156</p>
+                    </div>
+                    <i class="fas fa-broadcast-tower text-blue-600 text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">OPC UA</p>
+                        <p class="text-2xl font-bold text-green-600">89</p>
+                    </div>
+                    <i class="fas fa-industry text-green-600 text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-purple-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Modbus</p>
+                        <p class="text-2xl font-bold text-purple-600">67</p>
+                    </div>
+                    <i class="fas fa-network-wired text-purple-600 text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-orange-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">HTTP/S</p>
+                        <p class="text-2xl font-bold text-orange-600">45</p>
+                    </div>
+                    <i class="fas fa-globe text-orange-600 text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-pink-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">自定义</p>
+                        <p class="text-2xl font-bold text-pink-600">12</p>
+                    </div>
+                    <i class="fas fa-code text-pink-600 text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- 支持的协议 -->
+        <div class="bg-white rounded-lg shadow-sm mb-6">
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">支持的协议类型</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                <!-- MQTT协议 -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-broadcast-tower text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">MQTT</h4>
+                            <p class="text-xs text-gray-500">消息队列遥测传输</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>轻量级发布/订阅</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>QoS 0/1/2支持</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>TLS加密传输</span>
+                        </div>
+                    </div>
+                    <button onclick="configProtocol('mqtt')" class="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+                        配置MQTT
+                    </button>
+                </div>
+
+                <!-- OPC UA协议 -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-industry text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">OPC UA</h4>
+                            <p class="text-xs text-gray-500">工业自动化标准</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>跨平台互操作</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>安全认证机制</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>丰富的数据模型</span>
+                        </div>
+                    </div>
+                    <button onclick="configProtocol('opcua')" class="w-full px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm">
+                        配置OPC UA
+                    </button>
+                </div>
+
+                <!-- Modbus协议 -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-network-wired text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Modbus TCP</h4>
+                            <p class="text-xs text-gray-500">工业通信协议</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>简单可靠</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>广泛应用</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>主从架构</span>
+                        </div>
+                    </div>
+                    <button onclick="configProtocol('modbus')" class="w-full px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 text-sm">
+                        配置Modbus
+                    </button>
+                </div>
+
+                <!-- HTTP/HTTPS协议 -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-globe text-orange-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">HTTP/HTTPS</h4>
+                            <p class="text-xs text-gray-500">Web标准协议</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>RESTful API</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>HTTPS加密</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>易于集成</span>
+                        </div>
+                    </div>
+                    <button onclick="configProtocol('http')" class="w-full px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 text-sm">
+                        配置HTTP
+                    </button>
+                </div>
+
+                <!-- CoAP协议 -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-wifi text-indigo-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">CoAP</h4>
+                            <p class="text-xs text-gray-500">受限应用协议</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>低功耗设备</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>UDP传输</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-check text-green-600 w-5"></i>
+                            <span>资源发现</span>
+                        </div>
+                    </div>
+                    <button onclick="configProtocol('coap')" class="w-full px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-sm">
+                        配置CoAP
+                    </button>
+                </div>
+
+                <!-- 自定义协议 -->
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-primary transition-colors cursor-pointer" onclick="addCustomProtocol()">
+                    <div class="flex flex-col items-center justify-center h-full text-center">
+                        <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mb-3">
+                            <i class="fas fa-plus text-gray-400 text-xl"></i>
+                        </div>
+                        <h4 class="font-semibold text-gray-800 mb-2">自定义协议</h4>
+                        <p class="text-xs text-gray-500 mb-4">添加您的专有协议</p>
+                        <button class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 text-sm">
+                            <i class="fas fa-code mr-2"></i>添加协议
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 协议转换配置 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-6">协议转换配置</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- 源协议 -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">源协议</h4>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-3">
+                        <option>Modbus TCP</option>
+                        <option>OPC UA</option>
+                        <option>HTTP</option>
+                    </select>
+                    <div class="bg-gray-50 rounded p-3 text-sm">
+                        <p class="text-gray-600 mb-2">配置示例:</p>
+                        <pre class="text-xs text-gray-700">Host: 192.168.1.100
+Port: 502
+SlaveID: 1</pre>
+                    </div>
+                </div>
+
+                <!-- 转换规则 -->
+                <div class="border border-gray-200 rounded-lg p-4 bg-blue-50">
+                    <h4 class="font-semibold text-gray-800 mb-3 text-center">
+                        <i class="fas fa-exchange-alt text-blue-600 mr-2"></i>
+                        转换规则
+                    </h4>
+                    <div class="space-y-2">
+                        <div class="bg-white rounded p-2 text-sm">
+                            <p class="text-gray-600">数据映射</p>
+                            <p class="text-xs text-gray-500">寄存器 → JSON</p>
+                        </div>
+                        <div class="bg-white rounded p-2 text-sm">
+                            <p class="text-gray-600">格式转换</p>
+                            <p class="text-xs text-gray-500">Binary → Float</p>
+                        </div>
+                        <div class="bg-white rounded p-2 text-sm">
+                            <p class="text-gray-600">单位换算</p>
+                            <p class="text-xs text-gray-500">0.1倍 → 实际值</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 目标协议 -->
+                <div class="border border-gray-200 rounded-lg p-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">目标协议</h4>
+                    <select class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-3">
+                        <option>MQTT</option>
+                        <option>HTTP</option>
+                        <option>Kafka</option>
+                    </select>
+                    <div class="bg-gray-50 rounded p-3 text-sm">
+                        <p class="text-gray-600 mb-2">配置示例:</p>
+                        <pre class="text-xs text-gray-700">Broker: mqtt://localhost
+Topic: /devices/data
+QoS: 1</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="saveConversion()" class="px-6 py-2 bg-success text-white rounded-lg hover:bg-green-700">
+                    <i class="fas fa-save mr-2"></i>保存转换配置
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function configProtocol(type) {
+            alert('配置协议: ' + type);
+        }
+        function addCustomProtocol() {
+            alert('添加自定义协议');
+        }
+        function saveConversion() {
+            alert('保存协议转换配置');
+        }
+    </script>
+</body>
+</html>

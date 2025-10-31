@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>物模型管理 - IOT平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="p-6">
+        <!-- 页面头部 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">物模型管理</h1>
+                <p class="text-gray-600">Thing Specification Language (TSL) - 设备数字孪生模型定义</p>
+            </div>
+            <div class="flex space-x-3">
+                <button onclick="createModel()" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                    <i class="fas fa-plus mr-2"></i>创建物模型
+                </button>
+                <button onclick="importModel()" class="bg-success text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                    <i class="fas fa-file-import mr-2"></i>导入模型
+                </button>
+            </div>
+        </div>
+
+        <!-- 物模型说明 -->
+        <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg shadow-sm p-6 mb-6 border border-blue-200">
+            <div class="flex items-start">
+                <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                    <i class="fas fa-cubes text-white text-xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">什么是物模型？</h3>
+                    <p class="text-sm text-gray-700 mb-3">物模型是对设备在云端的功能描述，包括设备的属性、服务和事件。通过定义物模型，可以实现设备的数字化管理和智能化控制。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-white rounded-lg p-4 border border-blue-100">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-tag text-green-600 mr-2"></i>
+                                <h4 class="font-semibold text-gray-800 text-sm">属性 (Property)</h4>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2">描述设备的运行时状态</p>
+                            <p class="text-xs text-gray-500">如：温度、湿度、开关状态</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 border border-purple-100">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-cog text-purple-600 mr-2"></i>
+                                <h4 class="font-semibold text-gray-800 text-sm">服务 (Service)</h4>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2">设备可被调用的能力</p>
+                            <p class="text-xs text-gray-500">如：设置温度、启动、停止</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 border border-orange-100">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-bell text-orange-600 mr-2"></i>
+                                <h4 class="font-semibold text-gray-800 text-sm">事件 (Event)</h4>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2">设备主动上报的通知</p>
+                            <p class="text-xs text-gray-500">如：故障告警、状态变更</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 物模型列表 -->
+        <div class="bg-white rounded-lg shadow-sm mb-6">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-800">物模型列表</h3>
+                    <div class="flex items-center space-x-3">
+                        <input type="text" placeholder="搜索物模型..." class="px-4 py-2 border border-gray-300 rounded-lg text-sm">
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg text-sm">
+                            <option>全部类别</option>
+                            <option>传感器</option>
+                            <option>执行器</option>
+                            <option>智能仪表</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                <!-- 物模型卡片1 -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="viewModel('inverter')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-bolt text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">逆变器模型</h4>
+                                <p class="text-xs text-gray-500">Inverter Model</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 bg-success bg-opacity-10 text-success text-xs rounded-full">已发布</span>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-tag text-green-600 w-5"></i>
+                            <span>属性: 12</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-cog text-purple-600 w-5"></i>
+                            <span>服务: 5</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-bell text-orange-600 w-5"></i>
+                            <span>事件: 8</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-gray-500 pt-4 border-t border-gray-100">
+                        <span>实例: 156台</span>
+                        <span>v1.2.0</span>
+                    </div>
+                </div>
+
+                <!-- 物模型卡片2 -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="viewModel('sensor')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-thermometer-half text-red-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">温度传感器</h4>
+                                <p class="text-xs text-gray-500">Temperature Sensor</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 bg-success bg-opacity-10 text-success text-xs rounded-full">已发布</span>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-tag text-green-600 w-5"></i>
+                            <span>属性: 6</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-cog text-purple-600 w-5"></i>
+                            <span>服务: 2</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-bell text-orange-600 w-5"></i>
+                            <span>事件: 3</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-gray-500 pt-4 border-t border-gray-100">
+                        <span>实例: 89台</span>
+                        <span>v1.0.5</span>
+                    </div>
+                </div>
+
+                <!-- 物模型卡片3 -->
+                <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer" onclick="viewModel('meter')">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas fa-tachometer-alt text-purple-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">智能电表</h4>
+                                <p class="text-xs text-gray-500">Smart Meter</p>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 bg-warning bg-opacity-10 text-warning text-xs rounded-full">草稿</span>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-tag text-green-600 w-5"></i>
+                            <span>属性: 15</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-cog text-purple-600 w-5"></i>
+                            <span>服务: 7</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600">
+                            <i class="fas fa-bell text-orange-600 w-5"></i>
+                            <span>事件: 10</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-gray-500 pt-4 border-t border-gray-100">
+                        <span>实例: 0台</span>
+                        <span>v0.9.0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 物模型详情 -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">
+                    <i class="fas fa-bolt text-blue-600 mr-2"></i>
+                    物模型详情 - 逆变器模型
+                </h3>
+                <div class="flex space-x-2">
+                    <button onclick="editModel()" class="px-3 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 text-sm">
+                        <i class="fas fa-edit mr-1"></i>编辑
+                    </button>
+                    <button onclick="exportModel()" class="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm">
+                        <i class="fas fa-download mr-1"></i>导出
+                    </button>
+                    <button onclick="publishModel()" class="px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 text-sm">
+                        <i class="fas fa-paper-plane mr-1"></i>发布
+                    </button>
+                </div>
+            </div>
+
+            <!-- 标签页 -->
+            <div class="border-b border-gray-200 mb-6">
+                <div class="flex">
+                    <button onclick="switchTab('properties')" id="tabProperties" class="px-4 py-3 text-sm font-medium border-b-2 border-primary text-primary">
+                        <i class="fas fa-tag mr-2"></i>属性
+                    </button>
+                    <button onclick="switchTab('services')" id="tabServices" class="px-4 py-3 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-cog mr-2"></i>服务
+                    </button>
+                    <button onclick="switchTab('events')" id="tabEvents" class="px-4 py-3 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bell mr-2"></i>事件
+                    </button>
+                    <button onclick="switchTab('json')" id="tabJSON" class="px-4 py-3 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-code mr-2"></i>JSON视图
+                    </button>
+                </div>
+            </div>
+
+            <!-- 属性标签页 -->
+            <div id="contentProperties">
+                <div class="flex items-center justify-between mb-4">
+                    <h4 class="text-md font-semibold text-gray-800">属性列表</h4>
+                    <button onclick="addProperty()" class="px-3 py-2 bg-green-600 text-white rounded text-sm hover:bg-green-700">
+                        <i class="fas fa-plus mr-1"></i>添加属性
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-200 bg-gray-50">
+                                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">属性标识符</th>
+                                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">属性名称</th>
+                                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">数据类型</th>
+                                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">取值范围</th>
+                                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">单位</th>
+                                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">读写类型</th>
+                                <th class="py-3 px-4 text-left text-sm font-medium text-gray-700">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3 px-4 text-sm font-mono text-gray-600">voltage</td>
+                                <td class="py-3 px-4 text-sm text-gray-800">电压</td>
+                                <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">float</span></td>
+                                <td class="py-3 px-4 text-sm text-gray-600">0-500</td>
+                                <td class="py-3 px-4 text-sm text-gray-600">V</td>
+                                <td class="py-3 px-4"><span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">只读</span></td>
+                                <td class="py-3 px-4">
+                                    <button class="text-primary hover:text-primary-light text-sm mr-2">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-danger hover:text-red-700 text-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                <td class="py-3 px-4 text-sm font-mono text-gray-600">temperature</td>
+                                <td class="py-3 px-4 text-sm text-gray-800">温度</td>
+                                <td class="py-3 px-4"><span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">float</span></td>
+                                <td class="py-3 px-4 text-sm text-gray-600">-20-80</td>
+                                <td class="py-3 px-4 text-sm text-gray-600">°C</td>
+                                <td class="py-3 px-4"><span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">只读</span></td>
+                                <td class="py-3 px-4">
+                                    <button class="text-primary hover:text-primary-light text-sm mr-2">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="text-danger hover:text-red-700 text-sm">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 其他标签页（隐藏） -->
+            <div id="contentServices" class="hidden">
+                <p class="text-center text-gray-500 py-8">服务配置功能</p>
+            </div>
+            <div id="contentEvents" class="hidden">
+                <p class="text-center text-gray-500 py-8">事件配置功能</p>
+            </div>
+            <div id="contentJSON" class="hidden">
+                <div class="bg-gray-900 rounded-lg p-4">
+                    <pre class="text-xs text-green-400 font-mono">{
+  "schema": "https://iot.example.com/schema/tsl/v1.0",
+  "profile": {
+    "productKey": "a1b2c3d4e5f6",
+    "deviceName": "Inverter",
+    "version": "1.2.0"
+  },
+  "properties": [
+    {
+      "identifier": "voltage",
+      "name": "电压",
+      "dataType": {"type": "float"},
+      "accessMode": "r"
+    }
+  ]
+}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            ['Properties', 'Services', 'Events', 'JSON'].forEach(t => {
+                document.getElementById('content' + t).classList.add('hidden');
+                document.getElementById('tab' + t).className = 'px-4 py-3 text-sm font-medium border-b-2 border-transparent text-gray-600 hover:text-gray-800';
+            });
+            document.getElementById('content' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.remove('hidden');
+            document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).className = 'px-4 py-3 text-sm font-medium border-b-2 border-primary text-primary';
+        }
+
+        function createModel() { alert('创建物模型'); }
+        function importModel() { alert('导入物模型'); }
+        function viewModel(id) { alert('查看物模型: ' + id); }
+        function editModel() { alert('编辑物模型'); }
+        function exportModel() { alert('导出物模型'); }
+        function publishModel() { alert('发布物模型'); }
+        function addProperty() { alert('添加属性'); }
+    </script>
+</body>
+</html>

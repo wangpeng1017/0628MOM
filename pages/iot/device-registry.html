@@ -49,7 +49,7 @@
         </div>
 
         <!-- 设备统计卡片 -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
             <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-primary">
                 <div class="flex items-center justify-between">
                     <div>
@@ -84,6 +84,54 @@
                         <p class="text-2xl font-bold text-danger">7</p>
                     </div>
                     <i class="fas fa-times-circle text-danger text-2xl"></i>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-6 border-l-4 border-indigo-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">证书认证</p>
+                        <p class="text-2xl font-bold text-indigo-600">856</p>
+                    </div>
+                    <i class="fas fa-certificate text-indigo-600 text-2xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- 认证方式说明 -->
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg shadow-sm p-6 mb-6 border border-blue-100">
+            <div class="flex items-start">
+                <div class="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
+                    <i class="fas fa-shield-alt text-white text-xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">设备认证机制</h3>
+                    <p class="text-sm text-gray-700 mb-3">平台支持两种安全认证方式，确保每个接入设备都是可信的</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white rounded-lg p-4 border border-blue-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-key text-blue-600 mr-2"></i>
+                                <h4 class="font-semibold text-gray-800">密钥认证（对称加密）</h4>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2">设备三元组：ProductKey + DeviceName + DeviceSecret</p>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• 简单高效，适用于资源受限设备</li>
+                                <li>• 支持密钥自动轮换（24小时周期）</li>
+                                <li>• HMAC-SHA256签名验证</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white rounded-lg p-4 border border-indigo-200">
+                            <div class="flex items-center mb-2">
+                                <i class="fas fa-certificate text-indigo-600 mr-2"></i>
+                                <h4 class="font-semibold text-gray-800">证书认证（非对称加密）</h4>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-2">X.509客户端证书 + 双向TLS认证</p>
+                            <ul class="text-xs text-gray-600 space-y-1">
+                                <li>• 安全级别最高，防中间人攻击</li>
+                                <li>• 支持证书签发、吊销、续期</li>
+                                <li>• 基于PKI体系的双向认证</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -458,34 +506,55 @@
                                 <option>CoAP</option>
                             </select>
                         </div>
+                        
+                        <!-- 证书认证区域 -->
+                        <div id="certAuthSection" class="hidden bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-sm font-semibold text-gray-800">
+                                    <i class="fas fa-certificate text-indigo-600 mr-2"></i>X.509证书
+                                </h4>
+                                <button onclick="generateCertificate()" class="px-3 py-1 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700">
+                                    <i class="fas fa-file-certificate mr-1"></i>签发证书
+                                </button>
+                            </div>
+                            <div class="space-y-2">
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">证书序列号</label>
+                                    <input type="text" id="certSerial" readonly class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm" value="未签发">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-600 mb-1">有效期至</label>
+                                    <input type="text" id="certExpiry" readonly class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-sm" value="-">
+                                </div>
+                                <div class="flex gap-2">
+                                    <button onclick="downloadCert()" class="flex-1 px-3 py-2 bg-white border border-indigo-300 text-indigo-700 text-xs rounded hover:bg-indigo-50">
+                                        <i class="fas fa-download mr-1"></i>下载证书
+                                    </button>
+                                    <button onclick="downloadKey()" class="flex-1 px-3 py-2 bg-white border border-indigo-300 text-indigo-700 text-xs rounded hover:bg-indigo-50">
+                                        <i class="fas fa-key mr-1"></i>下载私钥
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mt-3 text-xs text-gray-600">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                证书和私钥仅在签发时可下载一次，请妥善保管
+                            </div>
+                        </div>
+                        
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">IP地址</label>
-                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="192.168.1.100">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">设备描述</label>
+                            <textarea id="deviceDescription" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" rows="3" placeholder="请输入设备描述信息"></textarea>
                         </div>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">端口号</label>
-                            <input type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="1883">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">认证方式</label>
-                            <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                                <option>密钥认证</option>
-                                <option>证书认证</option>
-                                <option>用户名密码</option>
-                                <option>无认证</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">设备描述</label>
-                        <textarea class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" rows="3" placeholder="请输入设备描述信息"></textarea>
+                    <div class="p-6 border-t border-gray-200 flex justify-end space-x-3">
+                        <button onclick="hideAddDeviceModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                            取消
+                        </button>
+                        <button onclick="saveDevice()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700">
+                            保存
+                        </button>
                     </div>
                 </div>
-                <div class="p-6 border-t border-gray-200 flex justify-end space-x-3">
-                    <button onclick="hideAddDeviceModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
-                        取消
                     </button>
                     <button onclick="saveDevice()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700">
                         保存
