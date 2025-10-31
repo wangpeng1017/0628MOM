@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>闲置设备管理 - 设备管理 - 数字工厂一体化平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#6366f1',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2">闲置设备管理</h1>
+                    <p class="text-sm text-gray-600">盘活存量资产，实现资源最大化利用</p>
+                </div>
+                <div class="flex gap-2">
+                    <button id="view-pool" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-indigo-700 transition-colors" onclick="switchView('pool')">
+                        <i class="fas fa-warehouse mr-2"></i>闲置资源池
+                    </button>
+                    <button id="view-evaluation" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors" onclick="switchView('evaluation')">
+                        <i class="fas fa-clipboard-check mr-2"></i>设备评估
+                    </button>
+                    <button id="view-transfer" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors" onclick="switchView('transfer')">
+                        <i class="fas fa-exchange-alt mr-2"></i>调拨管理
+                    </button>
+                    <button id="view-disposal" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors" onclick="switchView('disposal')">
+                        <i class="fas fa-trash-alt mr-2"></i>处置管理
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 内容区域 -->
+        <div id="content-area">
+            <!-- 内容将通过JavaScript动态加载 -->
+        </div>
+    </div>
+
+    <script src="../../assets/js/idle-equipment.js"></script>
+</body>
+</html>

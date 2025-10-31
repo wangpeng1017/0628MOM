@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备智能体 - 设备管理 - 数字工厂一体化平台</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#6366f1',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chat-container {
+            height: calc(100vh - 280px);
+            min-height: 500px;
+        }
+        .message-bubble {
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .typing-indicator span {
+            animation: blink 1.4s infinite;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes blink {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+        .suggestion-card:hover {
+            transform: translateY(-2px);
+            transition: all 0.2s;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6">
+        <!-- 页面标题 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-robot text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">设备智能体</h1>
+                        <p class="text-sm text-gray-600">AI驱动的智能故障诊断与知识问答助手</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                        <i class="fas fa-circle text-green-500 text-xs mr-1"></i>在线
+                    </span>
+                    <button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50">
+                        <i class="fas fa-history mr-2"></i>对话历史
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 左侧：对话区域 -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 flex flex-col chat-container">
+                    <!-- 对话消息区 -->
+                    <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
+                        <!-- 欢迎消息 -->
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-robot text-white"></i>
+                            </div>
+                            <div class="message-bubble bg-gray-100 rounded-lg p-4">
+                                <div class="text-sm text-gray-800">
+                                    <p class="mb-2">👋 您好！我是设备智能体，您的AI维修助手。</p>
+                                    <p class="mb-3">我可以帮助您：</p>
+                                    <ul class="space-y-1 text-gray-700">
+                                        <li>• 诊断设备故障并提供解决方案</li>
+                                        <li>• 查询设备信息、保养周期、备件库存</li>
+                                        <li>• 推荐相关维修案例和SOP文档</li>
+                                        <li>• 分析故障图片并识别问题类型</li>
+                                    </ul>
+                                    <p class="mt-3 text-gray-600">请描述您遇到的问题，或选择下方的快捷问题开始对话。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 输入区域 -->
+                    <div class="border-t border-gray-200 p-4">
+                        <div class="flex gap-3">
+                            <button class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors" title="上传图片">
+                                <i class="fas fa-image"></i>
+                            </button>
+                            <button class="px-3 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors" title="语音输入">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <input 
+                                type="text" 
+                                id="user-input" 
+                                placeholder="描述您的问题，例如：注塑机温度控制异常..." 
+                                class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                                onkeypress="if(event.key==='Enter') sendMessage()"
+                            >
+                            <button onclick="sendMessage()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                <i class="fas fa-paper-plane mr-2"></i>发送
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：功能面板 -->
+            <div class="space-y-6">
+                <!-- 快捷场景 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-bolt text-yellow-500 mr-2"></i>快捷场景
+                    </h3>
+                    <div class="space-y-2">
+                        <button onclick="quickQuestion('注塑机温度控制异常怎么处理？')" class="w-full text-left px-4 py-3 bg-gradient-to-r from-red-50 to-orange-50 hover:from-red-100 hover:to-orange-100 rounded-lg text-sm text-gray-700 transition-all suggestion-card border border-red-100">
+                            <i class="fas fa-thermometer-half text-red-500 mr-2"></i>注塑机温度异常
+                        </button>
+                        <button onclick="quickQuestion('伺服电机定位不准如何排查？')" class="w-full text-left px-4 py-3 bg-gradient-to-r from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 rounded-lg text-sm text-gray-700 transition-all suggestion-card border border-blue-100">
+                            <i class="fas fa-cog text-blue-500 mr-2"></i>伺服电机定位不准
+                        </button>
+                        <button onclick="quickQuestion('绕线机频繁断线怎么回事？')" class="w-full text-left px-4 py-3 bg-gradient-to-r from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 rounded-lg text-sm text-gray-700 transition-all suggestion-card border border-purple-100">
+                            <i class="fas fa-cut text-purple-500 mr-2"></i>绕线机频繁断线
+                        </button>
+                        <button onclick="quickQuestion('液压系统压力不足的原因？')" class="w-full text-left px-4 py-3 bg-gradient-to-r from-cyan-50 to-teal-50 hover:from-cyan-100 hover:to-teal-100 rounded-lg text-sm text-gray-700 transition-all suggestion-card border border-cyan-100">
+                            <i class="fas fa-tint text-cyan-500 mr-2"></i>液压系统压力不足
+                        </button>
+                        <button onclick="quickQuestion('变频器报警代码E03是什么意思？')" class="w-full text-left px-4 py-3 bg-gradient-to-r from-orange-50 to-yellow-50 hover:from-orange-100 hover:to-yellow-100 rounded-lg text-sm text-gray-700 transition-all suggestion-card border border-orange-100">
+                            <i class="fas fa-exclamation-triangle text-orange-500 mr-2"></i>变频器报警代码
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 智能功能 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-magic text-purple-500 mr-2"></i>智能功能
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                            <i class="fas fa-brain text-blue-600 text-xl"></i>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-800">智能诊断</div>
+                                <div class="text-xs text-gray-600">多轮对话引导排查</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                            <i class="fas fa-search text-green-600 text-xl"></i>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-800">案例推荐</div>
+                                <div class="text-xs text-gray-600">相似案例智能匹配</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-purple-50 rounded-lg">
+                            <i class="fas fa-image text-purple-600 text-xl"></i>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-800">图像识别</div>
+                                <div class="text-xs text-gray-600">故障照片智能分析</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-3 bg-orange-50 rounded-lg">
+                            <i class="fas fa-book text-orange-600 text-xl"></i>
+                            <div class="flex-1">
+                                <div class="text-sm font-medium text-gray-800">知识问答</div>
+                                <div class="text-xs text-gray-600">实时查询设备信息</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 统计信息 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-chart-line text-teal-500 mr-2"></i>今日统计
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">对话次数</span>
+                            <span class="text-lg font-bold text-gray-800">156</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">问题解决</span>
+                            <span class="text-lg font-bold text-green-600">128</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">推荐案例</span>
+                            <span class="text-lg font-bold text-blue-600">89</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-600">满意度</span>
+                            <span class="text-lg font-bold text-purple-600">96%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/equipment-agent.js"></script>
+</body>
+</html>
