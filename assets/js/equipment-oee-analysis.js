@@ -22,6 +22,15 @@ document.addEventListener('DOMContentLoaded', function() {
     renderView();
     updateMetrics();
     initializeCharts();
+    
+    // 延迟初始化当前视图的图表，确保DOM已经渲染完成
+    setTimeout(() => {
+        if (currentView === 'trend') {
+            initializeTrendCharts();
+        } else if (currentView === 'loss') {
+            initializeLossCharts();
+        }
+    }, 100);
 });
 
 // 初始化视图显示状态
@@ -203,12 +212,14 @@ function switchView(viewType) {
     filteredData = getCurrentViewData();
     renderView();
     
-    // 重新初始化图表
-    if (viewType === 'trend') {
-        initializeTrendCharts();
-    } else if (viewType === 'loss') {
-        initializeLossCharts();
-    }
+    // 延迟初始化图表，确保DOM已经渲染完成
+    setTimeout(() => {
+        if (viewType === 'trend') {
+            initializeTrendCharts();
+        } else if (viewType === 'loss') {
+            initializeLossCharts();
+        }
+    }, 100);
 }
 
 function renderView() {
@@ -391,7 +402,9 @@ function initializeCharts() {
 
 function initializeTrendCharts() {
     // OEE历史趋势
-    const historyChart = echarts.init(document.getElementById('oee-history-chart'));
+    const historyChartDom = document.getElementById('oee-history-chart');
+    if (!historyChartDom) return;
+    const historyChart = echarts.getInstanceByDom(historyChartDom) || echarts.init(historyChartDom);
     historyChart.setOption({
         tooltip: { trigger: 'axis' },
         legend: { data: ['OEE'] },
@@ -408,7 +421,9 @@ function initializeTrendCharts() {
     });
 
     // 三要素趋势
-    const availabilityChart = echarts.init(document.getElementById('availability-trend-chart'));
+    const availabilityChartDom = document.getElementById('availability-trend-chart');
+    if (!availabilityChartDom) return;
+    const availabilityChart = echarts.getInstanceByDom(availabilityChartDom) || echarts.init(availabilityChartDom);
     availabilityChart.setOption({
         tooltip: { trigger: 'axis' },
         xAxis: { type: 'category', data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'] },
@@ -421,7 +436,9 @@ function initializeTrendCharts() {
         }]
     });
 
-    const performanceChart = echarts.init(document.getElementById('performance-trend-chart'));
+    const performanceChartDom = document.getElementById('performance-trend-chart');
+    if (!performanceChartDom) return;
+    const performanceChart = echarts.getInstanceByDom(performanceChartDom) || echarts.init(performanceChartDom);
     performanceChart.setOption({
         tooltip: { trigger: 'axis' },
         xAxis: { type: 'category', data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'] },
@@ -434,7 +451,9 @@ function initializeTrendCharts() {
         }]
     });
 
-    const qualityChart = echarts.init(document.getElementById('quality-trend-chart'));
+    const qualityChartDom = document.getElementById('quality-trend-chart');
+    if (!qualityChartDom) return;
+    const qualityChart = echarts.getInstanceByDom(qualityChartDom) || echarts.init(qualityChartDom);
     qualityChart.setOption({
         tooltip: { trigger: 'axis' },
         xAxis: { type: 'category', data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'] },
@@ -450,7 +469,9 @@ function initializeTrendCharts() {
 
 function initializeLossCharts() {
     // 损失柏拉图
-    const paretoChart = echarts.init(document.getElementById('loss-pareto-chart'));
+    const paretoChartDom = document.getElementById('loss-pareto-chart');
+    if (!paretoChartDom) return;
+    const paretoChart = echarts.getInstanceByDom(paretoChartDom) || echarts.init(paretoChartDom);
     const sortedLoss = [...lossData].sort((a, b) => b.percentage - a.percentage);
     let cumulative = 0;
     const cumulativeData = sortedLoss.map(loss => {
@@ -486,7 +507,9 @@ function initializeLossCharts() {
     });
 
     // 损失饼图
-    const pieChart = echarts.init(document.getElementById('loss-pie-chart'));
+    const pieChartDom = document.getElementById('loss-pie-chart');
+    if (!pieChartDom) return;
+    const pieChart = echarts.getInstanceByDom(pieChartDom) || echarts.init(pieChartDom);
     pieChart.setOption({
         tooltip: { trigger: 'item' },
         legend: { orient: 'vertical', left: 'left' },
