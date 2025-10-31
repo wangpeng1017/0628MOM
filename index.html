@@ -647,6 +647,28 @@
                             { id: 'oee-reports', name: '报表管理', url: 'pages/equipment/oee-analysis.html?view=reports' }
                         ]
                     },
+                    { 
+                        id: 'idle-equipment', 
+                        name: '闲置设备管理', 
+                        icon: 'fas fa-warehouse',
+                        subItems: [
+                            { id: 'idle-pool', name: '闲置资源池', url: 'pages/equipment/idle-equipment.html?view=pool' },
+                            { id: 'idle-evaluation', name: '设备评估', url: 'pages/equipment/idle-equipment.html?view=evaluation' },
+                            { id: 'idle-transfer', name: '调拨管理', url: 'pages/equipment/idle-equipment.html?view=transfer' },
+                            { id: 'idle-disposal', name: '处置管理', url: 'pages/equipment/idle-equipment.html?view=disposal' }
+                        ]
+                    },
+                    { 
+                        id: 'tech-renovation', 
+                        name: '技改管理', 
+                        icon: 'fas fa-project-diagram',
+                        subItems: [
+                            { id: 'tech-projects', name: '技改项目', url: 'pages/equipment/tech-renovation.html?view=projects' },
+                            { id: 'tech-approval', name: '审批流程', url: 'pages/equipment/tech-renovation.html?view=approval' },
+                            { id: 'tech-execution', name: '执行跟踪', url: 'pages/equipment/tech-renovation.html?view=execution' },
+                            { id: 'tech-acceptance', name: '验收评估', url: 'pages/equipment/tech-renovation.html?view=acceptance' }
+                        ]
+                    },
                     { id: 'mobile-app', name: '移动应用', icon: 'fas fa-mobile-alt', url: 'pages/equipment/mobile-app.html' }
                 ]
             },
