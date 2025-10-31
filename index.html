@@ -614,9 +614,39 @@
                             { id: 'spare-parts-analysis', name: '备件分析', url: 'pages/equipment/spare-parts-management.html?view=analysis' }
                         ]
                     },
-                    { id: 'predictive-maintenance', name: '预测性维护', icon: 'fas fa-brain', url: 'pages/equipment/predictive-maintenance.html' },
-                    { id: 'knowledge-base', name: '知识库管理', icon: 'fas fa-book', url: 'pages/equipment/knowledge-base.html' },
-                    { id: 'oee-analysis', name: 'OEE统计分析', icon: 'fas fa-chart-line', url: 'pages/equipment/oee-analysis.html' }
+                    { 
+                        id: 'predictive-maintenance', 
+                        name: '预测性维护', 
+                        icon: 'fas fa-brain',
+                        subItems: [
+                            { id: 'predictive-analysis', name: '预测分析', url: 'pages/equipment/predictive-maintenance.html?view=dashboard' },
+                            { id: 'fault-alerts', name: '故障预警', url: 'pages/equipment/predictive-maintenance.html?view=alerts' },
+                            { id: 'realtime-diagnosis', name: '实时诊断', url: 'pages/equipment/predictive-maintenance.html?view=diagnosis' },
+                            { id: 'prediction-models', name: '预测模型', url: 'pages/equipment/predictive-maintenance.html?view=models' }
+                        ]
+                    },
+                    { 
+                        id: 'knowledge-base', 
+                        name: '知识库管理', 
+                        icon: 'fas fa-book',
+                        subItems: [
+                            { id: 'knowledge-cases', name: '案例库', url: 'pages/equipment/knowledge-base.html?view=cases' },
+                            { id: 'knowledge-sop', name: 'SOP', url: 'pages/equipment/knowledge-base.html?view=sop' },
+                            { id: 'knowledge-fta', name: '故障树', url: 'pages/equipment/knowledge-base.html?view=fta' },
+                            { id: 'knowledge-expert', name: '专家库', url: 'pages/equipment/knowledge-base.html?view=expert' }
+                        ]
+                    },
+                    { 
+                        id: 'oee-analysis', 
+                        name: 'OEE统计分析', 
+                        icon: 'fas fa-chart-line',
+                        subItems: [
+                            { id: 'oee-dashboard', name: '集中看板', url: 'pages/equipment/oee-analysis.html?view=dashboard' },
+                            { id: 'oee-trend', name: '趋势分析', url: 'pages/equipment/oee-analysis.html?view=trend' },
+                            { id: 'oee-loss', name: '六大损失', url: 'pages/equipment/oee-analysis.html?view=loss' },
+                            { id: 'oee-reports', name: '报表管理', url: 'pages/equipment/oee-analysis.html?view=reports' }
+                        ]
+                    }
                 ]
             },
             ioc: {
