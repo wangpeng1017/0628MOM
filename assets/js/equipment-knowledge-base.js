@@ -537,13 +537,62 @@ function closeModal(modalId) {
 
 function saveKnowledge() {
     const type = document.getElementById('knowledge-type').value;
+    const category = document.getElementById('knowledge-category').value;
     const title = document.getElementById('knowledge-title').value;
-    if (!type || !title) {
-        alert('请填写必填项');
+    const keywords = document.getElementById('knowledge-keywords').value;
+    const reviewer = document.getElementById('knowledge-reviewer').value;
+    const content = document.getElementById('knowledge-content').value;
+    
+    // 验证必填项
+    if (!type || !category || !title || !reviewer || !content) {
+        alert('请填写所有必填项（知识类型、分类、标题、审核人、内容）');
         return;
     }
-    alert('知识保存成功！');
+    
+    // 生成知识编号
+    const knowledgeId = 'KB-' + new Date().getFullYear() + 
+                        ('0' + (new Date().getMonth() + 1)).slice(-2) + 
+                        ('0' + new Date().getDate()).slice(-2) + 
+                        '-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    
+    // 构建知识信息
+    const knowledgeInfo = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📚 知识已提交审核
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 知识编号: ${knowledgeId}
+📂 知识类型: ${getTypeText(type)}
+🏷️  分类: ${category}类
+📝 标题: ${title}
+🔑 关键词: ${keywords || '无'}
+
+━━━ 审核信息 ━━━
+👤 审核人: ${reviewer}
+📅 提交时间: ${new Date().toLocaleString('zh-CN')}
+⏳ 审核状态: 待审核
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ 知识已成功提交
+📧 系统已发送审核通知给 ${reviewer}
+📊 可在【知识管理-待审核】中查看审核进度
+    `;
+    
+    alert(knowledgeInfo);
+    
+    // 清空表单
+    document.getElementById('knowledge-form').reset();
     closeModal('knowledge-modal');
+}
+
+function getTypeText(type) {
+    const typeMap = {
+        'case': '维修案例',
+        'sop': 'SOP文档',
+        'expert': '专家知识'
+    };
+    return typeMap[type] || type;
 }
 
 function rateKnowledge(id) { alert(`为知识 ${id} 评分`); }
