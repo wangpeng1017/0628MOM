@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调度总控平台 - 资质与培训管理测试</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#06b6d4',
+                        'primary-light': '#22d3ee',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <!-- 页面标题栏 -->
+    <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="px-3 py-1 bg-cyan-100 text-cyan-700 rounded-full text-xs font-semibold">调度总控</span>
+                    <span class="text-xs text-gray-500">资质与培训管理模块测试</span>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-800">调度总控平台 - 人员管理</h1>
+                <p class="text-sm text-gray-600 mt-1">资质管理与培训管理功能验证</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <a href="pages/manufacturing/dispatch-control.html" class="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>返回主页</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab导航 -->
+    <div class="p-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+            <div class="border-b border-gray-200 px-6">
+                <nav class="flex space-x-8">
+                    <button onclick="switchTab('qualification')" id="nav-qualification" class="nav-item active py-4 px-1 border-b-2 border-cyan-600 font-medium text-sm text-cyan-600">
+                        <i class="fas fa-certificate mr-2"></i>资质管理
+                    </button>
+                    <button onclick="switchTab('training')" id="nav-training" class="nav-item py-4 px-1 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                        <i class="fas fa-graduation-cap mr-2"></i>培训管理
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Tab内容区 -->
+        <div id="content-area"></div>
+    </div>
+
+    <script src="assets/js/dispatch-control.js"></script>
+    <script>
+        // Tab切换功能
+        function switchTab(tab) {
+            // 更新导航激活状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('border-cyan-600', 'text-cyan-600');
+                item.classList.add('border-transparent', 'text-gray-500');
+            });
+            
+            const activeNav = document.getElementById('nav-' + tab);
+            if (activeNav) {
+                activeNav.classList.remove('border-transparent', 'text-gray-500');
+                activeNav.classList.add('border-cyan-600', 'text-cyan-600');
+            }
+            
+            // 加载对应内容
+            const contentArea = document.getElementById('content-area');
+            if (tab === 'qualification') {
+                contentArea.innerHTML = getQualificationMgmtContent();
+            } else if (tab === 'training') {
+                contentArea.innerHTML = getTrainingMgmtContent();
+            }
+        }
+        
+        // 页面加载时显示资质管理
+        document.addEventListener('DOMContentLoaded', function() {
+            switchTab('qualification');
+        });
+    </script>
+    
+    <style>
+        .nav-item {
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+    </style>
+</body>
+</html>

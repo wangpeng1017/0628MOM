@@ -3218,9 +3218,296 @@ function getStaffQueryContent() {
     `;
 }
 
-// 31-32. 其他人员管理模块占位
-function getQualificationMgmtContent() { return getDefaultModuleContent('qualification-mgmt'); }
-function getTrainingMgmtContent() { return getDefaultModuleContent('training-mgmt'); }
+// 31. 资质管理模块
+function getQualificationMgmtContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">资质管理</h2>
+                <p class="text-sm text-gray-600">管理调度人员的技能资质认证与过期提醒</p>
+            </div>
+            
+            <!-- 统计卡片 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">总资质数</p>
+                            <p class="text-3xl font-bold text-cyan-600">45</p>
+                        </div>
+                        <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-certificate text-cyan-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">有效资质</p>
+                            <p class="text-3xl font-bold text-green-600">38</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">即将过期</p>
+                            <p class="text-3xl font-bold text-orange-600">5</p>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">已过期</p>
+                            <p class="text-3xl font-bold text-red-600">2</p>
+                        </div>
+                        <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-times-circle text-red-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 资质列表 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-list text-cyan-600 mr-2"></i>资质列表
+                    </h2>
+                    <div class="flex gap-2">
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600 transition-colors text-sm">
+                            <i class="fas fa-plus mr-2"></i>新增资质
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">人员信息</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">资质类型</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">证书编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">有效期至</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">张三</div>
+                                    <div class="text-xs text-gray-500">工号: EMP-001</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">高价值物料操作</div>
+                                    <div class="text-xs text-gray-500">电解液配送资质</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">CERT-2023-001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2025-01-14</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
+                                        <i class="fas fa-check-circle mr-1"></i>有效
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-3" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="续期">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm font-medium text-gray-900">李四</div>
+                                    <div class="text-xs text-gray-500">工号: EMP-002</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">设备运维资质</div>
+                                    <div class="text-xs text-gray-500">AGV维护操作</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">CERT-2023-005</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2024-12-20</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-700">
+                                        <i class="fas fa-exclamation-triangle mr-1"></i>即将过期
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-3" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-orange-600 hover:text-orange-800" title="续期">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 32. 培训管理模块
+function getTrainingMgmtContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">培训管理</h2>
+                <p class="text-sm text-gray-600">规划调度业务培训计划，跟踪培训执行与考核结果</p>
+            </div>
+            
+            <!-- 统计卡片 -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">培训计划</p>
+                            <p class="text-3xl font-bold text-cyan-600">12</p>
+                        </div>
+                        <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-calendar-alt text-cyan-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">参训人次</p>
+                            <p class="text-3xl font-bold text-green-600">156</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-users text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">通过率</p>
+                            <p class="text-3xl font-bold text-blue-600">94.2%</p>
+                        </div>
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-chart-line text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">培训时长</p>
+                            <p class="text-3xl font-bold text-purple-600">328</p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-clock text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 培训计划列表 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-800">
+                        <i class="fas fa-graduation-cap text-cyan-600 mr-2"></i>培训计划列表
+                    </h2>
+                    <div class="flex gap-2">
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600 transition-colors text-sm">
+                            <i class="fas fa-plus mr-2"></i>新建计划
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">培训编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">培训主题</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">讲师</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">培训时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">参训人数</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">TRN-2024-001</td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm font-medium text-gray-900">AGV调度系统操作培训</div>
+                                    <div class="text-xs text-gray-500">智能调度系统基础操作</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">王工程师</td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">2024-11-05 14:00</div>
+                                    <div class="text-xs text-gray-500">时长: 4小时</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">15人</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
+                                        <i class="fas fa-check-circle mr-1"></i>已完成
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-3" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-green-600 hover:text-green-800" title="考核结果">
+                                        <i class="fas fa-clipboard-check"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">TRN-2024-002</td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm font-medium text-gray-900">安全操作规范培训</div>
+                                    <div class="text-xs text-gray-500">高价值物料安全操作</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">李主管</td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm text-gray-900">2024-11-08 09:00</div>
+                                    <div class="text-xs text-gray-500">时长: 3小时</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">20人</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700">
+                                        <i class="fas fa-clock mr-1"></i>进行中
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-3" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="text-orange-600 hover:text-orange-800" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
 // 33. 配送权限模块
 function getDeliveryPermissionContent() {
