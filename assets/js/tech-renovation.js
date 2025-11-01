@@ -240,7 +240,9 @@ function openProjectModal() {
 }
 
 function openBudgetModal() {
-    alert('预算管理功能：查看和管理所有项目的预算执行情况');
+    renderBudgetTable();
+    renderBudgetCharts();
+    document.getElementById('budget-modal').classList.add('show');
 }
 
 function closeModal(modalId) {
@@ -331,4 +333,260 @@ function viewBudget(id) {
 // 导出数据
 function exportData() {
     alert('导出技改项目数据...');
+}
+
+// 渲染预算表格
+function renderBudgetTable() {
+    const tbody = document.getElementById('budget-tbody');
+    if (!tbody) return;
+    
+    // 计算总览数据
+    const totalBudget = projects.reduce((sum, p) => sum + p.budget, 0);
+    const totalUsed = projects.reduce((sum, p) => sum + p.actualCost, 0);
+    const totalRemaining = totalBudget - totalUsed;
+    const totalVariance = projects.reduce((sum, p) => sum + (p.actualCost - p.budget), 0);
+    const overBudgetCount = projects.filter(p => p.actualCost > p.budget).length;
+    
+    // 更新总览卡片
+    document.getElementById('budget-total').textContent = `¥${(totalBudget / 1000).toFixed(0)}K`;
+    document.getElementById('budget-used').textContent = `¥${(totalUsed / 1000).toFixed(0)}K`;
+    document.getElementById('budget-remaining').textContent = `¥${(totalRemaining / 1000).toFixed(0)}K`;
+    document.getElementById('budget-variance').textContent = `${totalVariance >= 0 ? '+' : ''}¥${(totalVariance / 1000).toFixed(0)}K`;
+    
+    // 渲染表格
+    tbody.innerHTML = projects.map(project => {
+        const remaining = project.budget - project.actualCost;
+        const executionRate = project.budget > 0 ? ((project.actualCost / project.budget) * 100).toFixed(1) : 0;
+        const variance = project.actualCost - project.budget;
+        const isOverBudget = variance > 0;
+        
+        return `
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4">
+                    <div class="text-sm font-medium text-gray-900">${project.name}</div>
+                    <div class="text-xs text-gray-500">${project.id}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    ¥${project.budget.toLocaleString()}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    ¥${project.actualCost.toLocaleString()}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm ${remaining < 0 ? 'text-red-600 font-semibold' : 'text-gray-900'}">
+                    ¥${remaining.toLocaleString()}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                            <div class="h-2 rounded-full ${executionRate > 100 ? 'bg-red-500' : executionRate > 80 ? 'bg-yellow-500' : 'bg-green-500'}" 
+                                 style="width: ${Math.min(executionRate, 100)}%"></div>
+                        </div>
+                        <span class="text-sm font-semibold ${executionRate > 100 ? 'text-red-600' : 'text-gray-900'}">${executionRate}%</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm ${isOverBudget ? 'text-red-600 font-semibold' : 'text-green-600'}">
+                    ${variance >= 0 ? '+' : ''}¥${variance.toLocaleString()}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    ${isOverBudget ? 
+                        '<span class="badge bg-red-100 text-red-700"><i class="fas fa-exclamation-triangle"></i> 超支</span>' : 
+                        '<span class="badge bg-green-100 text-green-700"><i class="fas fa-check"></i> 正常</span>'}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <button onclick="viewBudgetDetail('${project.id}')" class="text-blue-600 hover:text-blue-800" title="查看详情">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+// 渲染预算图表
+function renderBudgetCharts() {
+    // 预算执行情况柱状图
+    const executionChart = echarts.init(document.getElementById('budget-execution-chart'));
+    executionChart.setOption({
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' }
+        },
+        legend: {
+            data: ['预算', '实际']
+        },
+        xAxis: {
+            type: 'category',
+            data: projects.map(p => p.name.length > 8 ? p.name.substring(0, 8) + '...' : p.name),
+            axisLabel: {
+                rotate: 30,
+                fontSize: 10
+            }
+        },
+        yAxis: {
+            type: 'value',
+            name: '金额(万元)',
+            axisLabel: {
+                formatter: function(value) {
+                    return (value / 10000).toFixed(0);
+                }
+            }
+        },
+        series: [
+            {
+                name: '预算',
+                type: 'bar',
+                data: projects.map(p => p.budget),
+                itemStyle: { color: '#3b82f6' }
+            },
+            {
+                name: '实际',
+                type: 'bar',
+                data: projects.map(p => p.actualCost),
+                itemStyle: { color: '#10b981' }
+            }
+        ]
+    });
+    
+    // 预算分布饼图
+    const distributionChart = echarts.init(document.getElementById('budget-distribution-chart'));
+    distributionChart.setOption({
+        tooltip: {
+            trigger: 'item',
+            formatter: '{b}: ¥{c} ({d}%)'
+        },
+        legend: {
+            orient: 'vertical',
+            right: 10,
+            top: 'center',
+            textStyle: { fontSize: 10 }
+        },
+        series: [
+            {
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    show: false
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: 14,
+                        fontWeight: 'bold'
+                    }
+                },
+                data: projects.map(p => ({
+                    value: p.budget,
+                    name: p.name.length > 10 ? p.name.substring(0, 10) + '...' : p.name
+                }))
+            }
+        ]
+    });
+}
+
+// 查看预算详情
+function viewBudgetDetail(id) {
+    const project = projects.find(p => p.id === id);
+    const variance = project.actualCost - project.budget;
+    const executionRate = project.budget > 0 ? ((project.actualCost / project.budget) * 100).toFixed(1) : 0;
+    const remaining = project.budget - project.actualCost;
+    
+    // 模拟成本明细
+    const costBreakdown = [
+        { category: '材料费', budget: project.budget * 0.5, actual: project.actualCost * 0.45 },
+        { category: '人工费', budget: project.budget * 0.3, actual: project.actualCost * 0.35 },
+        { category: '外协费', budget: project.budget * 0.15, actual: project.actualCost * 0.15 },
+        { category: '其他费用', budget: project.budget * 0.05, actual: project.actualCost * 0.05 }
+    ];
+    
+    const content = document.getElementById('budget-detail-content');
+    content.innerHTML = `
+        <div class="space-y-6">
+            <!-- 项目基本信息 -->
+            <div class="bg-gray-50 rounded-lg p-4">
+                <h4 class="font-semibold text-gray-800 mb-3">项目信息</h4>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div><span class="text-gray-600">项目编号：</span><span class="font-medium">${project.id}</span></div>
+                    <div><span class="text-gray-600">项目名称：</span><span class="font-medium">${project.name}</span></div>
+                    <div><span class="text-gray-600">项目负责人：</span><span class="font-medium">${project.manager}</span></div>
+                    <div><span class="text-gray-600">项目状态：</span>${getStatusBadge(project.status)}</div>
+                </div>
+            </div>
+            
+            <!-- 预算执行概况 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <div class="text-xs text-blue-600 mb-1">预算金额</div>
+                    <div class="text-lg font-bold text-blue-700">¥${project.budget.toLocaleString()}</div>
+                </div>
+                <div class="bg-green-50 border border-green-200 rounded-lg p-3">
+                    <div class="text-xs text-green-600 mb-1">实际花费</div>
+                    <div class="text-lg font-bold text-green-700">¥${project.actualCost.toLocaleString()}</div>
+                </div>
+                <div class="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                    <div class="text-xs text-orange-600 mb-1">剩余预算</div>
+                    <div class="text-lg font-bold ${remaining < 0 ? 'text-red-700' : 'text-orange-700'}">¥${remaining.toLocaleString()}</div>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                    <div class="text-xs text-purple-600 mb-1">预算偏差</div>
+                    <div class="text-lg font-bold ${variance > 0 ? 'text-red-700' : 'text-purple-700'}">${variance >= 0 ? '+' : ''}¥${variance.toLocaleString()}</div>
+                </div>
+            </div>
+            
+            <!-- 成本明细 -->
+            <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-gray-50 px-4 py-3 border-b">
+                    <h4 class="font-semibold text-gray-800">成本明细</h4>
+                </div>
+                <div class="p-4">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">费用类别</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">预算金额</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">实际花费</th>
+                                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500">偏差</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            ${costBreakdown.map(item => {
+                                const itemVariance = item.actual - item.budget;
+                                return `
+                                    <tr>
+                                        <td class="px-4 py-2 text-sm text-gray-900">${item.category}</td>
+                                        <td class="px-4 py-2 text-sm text-gray-900">¥${item.budget.toLocaleString()}</td>
+                                        <td class="px-4 py-2 text-sm text-gray-900">¥${item.actual.toLocaleString()}</td>
+                                        <td class="px-4 py-2 text-sm ${itemVariance > 0 ? 'text-red-600' : 'text-green-600'}">
+                                            ${itemVariance >= 0 ? '+' : ''}¥${itemVariance.toLocaleString()}
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 预算执行分析 -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h4 class="font-semibold text-blue-800 mb-2">预算执行分析</h4>
+                <div class="text-sm text-gray-700 space-y-2">
+                    <p><strong>执行率：</strong>${executionRate}%</p>
+                    <p><strong>执行进度：</strong>${project.progress}%</p>
+                    <p><strong>预算状态：</strong>${variance > 0 ? 
+                        '<span class="text-red-600 font-semibold">⚠️ 预算超支，需要关注成本控制</span>' : 
+                        '<span class="text-green-600 font-semibold">✅ 预算执行正常</span>'}</p>
+                    ${executionRate > project.progress + 10 ? 
+                        '<p class="text-orange-600"><strong>提示：</strong>成本执行率高于项目进度，建议审查成本使用情况</p>' : ''}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('budget-detail-modal').classList.add('show');
+}
+
+// 导出预算报表
+function exportBudgetReport() {
+    alert('导出预算报表功能：\n\n将生成包含以下内容的Excel报表：\n- 预算总览\n- 项目预算明细\n- 成本执行情况\n- 预算偏差分析');
 }
