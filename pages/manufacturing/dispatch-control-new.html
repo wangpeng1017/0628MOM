@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调度总控 - 智能制造 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ECharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#06b6d4',
+                        'primary-light': '#22d3ee',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- 页面标题栏 -->
+    <div class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">调度总控平台</h1>
+                <p class="text-sm text-gray-600 mt-1">数据驱动的智能调度决策，实现物流全流程自动化闭环管理</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="openBigScreen()" class="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600 transition-colors">
+                    <i class="fas fa-tv"></i>
+                    <span>大屏展示</span>
+                </button>
+                <button onclick="refreshData()" class="flex items-center space-x-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>刷新数据</span>
+                </button>
+                <button onclick="exportReport()" class="flex items-center space-x-2 px-4 py-2 bg-success text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <i class="fas fa-download"></i>
+                    <span>导出报表</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 统计卡片 -->
+    <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
+            <!-- 配送任务 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">配送任务</p>
+                        <p class="text-3xl font-bold text-cyan-600" id="metric-tasks">165</p>
+                    </div>
+                    <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tasks text-cyan-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="text-sm text-gray-500">完成率</span>
+                    <span class="text-sm font-medium text-success">94.2%</span>
+                </div>
+            </div>
+
+            <!-- 设备利用率 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">设备利用率</p>
+                        <p class="text-3xl font-bold text-green-600" id="metric-utilization">94.9%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-robot text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="text-sm text-gray-500">AGV 运行中</span>
+                    <span class="text-sm font-medium text-success">12/15</span>
+                </div>
+            </div>
+
+            <!-- 送达及时率 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">送达及时率</p>
+                        <p class="text-3xl font-bold text-blue-600" id="metric-delivery">96.2%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shipping-fast text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="text-sm text-gray-500">平均耗时</span>
+                    <span class="text-sm font-medium text-success">8.5min</span>
+                </div>
+            </div>
+
+            <!-- 呼叫应答 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">呼叫应答</p>
+                        <p class="text-3xl font-bold text-purple-600" id="metric-calls">33</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-phone-volume text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="text-sm text-gray-500">平均响应</span>
+                    <span class="text-sm font-medium text-success">2.3min</span>
+                </div>
+            </div>
+
+            <!-- 异常报警 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">异常报警</p>
+                        <p class="text-3xl font-bold text-orange-600" id="metric-alarms">5</p>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="text-sm text-gray-500">待处理</span>
+                    <span class="text-sm font-medium text-danger">3 条</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据分析图表 -->
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+            <!-- 配送任务趋势 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-chart-line text-cyan-600 mr-2"></i>配送任务趋势
+                </h3>
+                <div id="chart-tasks" style="height: 300px;"></div>
+            </div>
+
+            <!-- 设备利用率排名 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-robot text-green-600 mr-2"></i>设备利用率排名
+                </h3>
+                <div id="chart-utilization" style="height: 300px;"></div>
+            </div>
+        </div>
+
+        <!-- 任务列表 -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-gray-800">配送任务列表</h2>
+                <div class="flex gap-2">
+                    <button onclick="createTask()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600 transition-colors text-sm">
+                        <i class="fas fa-plus mr-2"></i>新建任务
+                    </button>
+                    <button onclick="batchAssign()" class="px-4 py-2 bg-success text-white rounded-lg hover:bg-green-700 transition-colors text-sm">
+                        <i class="fas fa-users mr-2"></i>批量分配
+                    </button>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">任务编号</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">物料信息</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">起点→终点</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">执行设备</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">优先级</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tasks-tbody" class="bg-white divide-y divide-gray-200">
+                        <!-- 动态生成 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/dispatch-control.js"></script>
+</body>
+</html>
