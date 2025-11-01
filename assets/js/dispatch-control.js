@@ -6,12 +6,21 @@ let chartsInstances = {};
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
     console.log('调度总控平台已加载');
+    
+    // 检查内容区是否存在
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) {
+        console.error('内容区元素未找到！');
+        return;
+    }
+    
     initializeData();
     
     // 从URL参数获取模块名称
     const urlParams = new URLSearchParams(window.location.search);
     const moduleName = urlParams.get('module') || 'delivery-stats';
     
+    console.log('加载模块:', moduleName);
     showModule(moduleName);
     startRealTimeUpdate();
 });
@@ -84,6 +93,7 @@ function initializeData() {
 
 // 模块切换
 function showModule(moduleName) {
+    console.log('showModule 被调用，模块名:', moduleName);
     currentModule = moduleName;
     
     // 更新菜单激活状态
@@ -97,10 +107,22 @@ function showModule(moduleName) {
     
     // 获取内容区
     const contentArea = document.getElementById('content-area');
+    if (!contentArea) {
+        console.error('showModule: 内容区未找到');
+        return false;
+    }
     
     // 根据模块名称加载对应内容
+    console.log('正在获取模块内容...');
     const moduleContent = getModuleContent(moduleName);
-    contentArea.innerHTML = moduleContent;
+    console.log('模块内容长度:', moduleContent ? moduleContent.length : 0);
+    
+    if (moduleContent) {
+        contentArea.innerHTML = moduleContent;
+        console.log('内容已插入到页面');
+    } else {
+        console.error('模块内容为空');
+    }
     
     // 如果是图表模块，初始化图表
     if (['delivery-stats', 'equipment-utilization', 'delivery-rate', 'call-response', 'alarm-stats'].includes(moduleName)) {
