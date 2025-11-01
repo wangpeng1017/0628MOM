@@ -78,7 +78,7 @@ function initializeData() {
     ];
 }
 
-// Tab切换（适配左侧导航）
+// Tab切换（适配顶部Tab导航）
 function switchTab(tabName) {
     currentTab = tabName;
     
@@ -89,8 +89,8 @@ function switchTab(tabName) {
     
     // 移除所有导航项的active状态
     document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active', 'text-cyan-600', 'font-semibold');
-        item.classList.add('text-gray-700');
+        item.classList.remove('active', 'border-cyan-600', 'text-cyan-600');
+        item.classList.add('border-transparent', 'text-gray-500');
     });
     
     // 显示选中的Tab内容
@@ -98,8 +98,8 @@ function switchTab(tabName) {
     
     // 激活选中的导航项
     const activeNav = document.getElementById(`nav-${tabName}`);
-    activeNav.classList.add('active', 'text-cyan-600', 'font-semibold');
-    activeNav.classList.remove('text-gray-700');
+    activeNav.classList.add('active', 'border-cyan-600', 'text-cyan-600');
+    activeNav.classList.remove('border-transparent', 'text-gray-500');
     
     // 如果切换到数据分析Tab，刷新图表
     if (tabName === 'analytics') {
