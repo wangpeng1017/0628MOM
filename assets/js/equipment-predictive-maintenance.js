@@ -549,7 +549,114 @@ function viewDeviceDetail(id) {
 }
 
 function createMaintenanceOrder(id) {
-    alert(`为设备 ${id} 创建预见性维修工单`);
+    // 获取设备信息
+    const device = devices.find(d => d.id === id);
+    if (!device) {
+        alert('无法获取设备信息');
+        return;
+    }
+
+    // 如果设备没有预警，提示用户
+    if (!device.alertType) {
+        alert('该设备运行正常，暂无需创建维修工单');
+        return;
+    }
+
+    // AI分析结果
+    const aiAnalysis = {
+        'vibration': {
+            faultPart: '轴承组件',
+            faultReason: '轴承内圈点蚀，振动频谱特征频率能量持续上升',
+            suggestedAction: '建议在' + device.rulDays + '天内安排停机维护，更换轴承',
+            priority: device.rulDays < 10 ? '紧急' : '高',
+            estimatedTime: '4小时',
+            requiredParts: ['深沟球轴承 6205-2RS', '润滑脂', '密封圈'],
+            assignTo: '机械维修班-李师傅'
+        },
+        'temperature': {
+            faultPart: '冷却系统',
+            faultReason: '冷却系统效率下降，散热器堵塞或冷却液不足',
+            suggestedAction: '立即检查冷却系统，清洁散热器，检查冷却液液位',
+            priority: '紧急',
+            estimatedTime: '2小时',
+            requiredParts: ['冷却液', '散热器清洗剂', '密封垫'],
+            assignTo: '设备维修班-王工'
+        },
+        'pressure': {
+            faultPart: '液压系统密封组件',
+            faultReason: '液压系统密封件老化，存在泄漏风险',
+            suggestedAction: '检查液压系统密封件，检查油泵性能，必要时更换',
+            priority: '高',
+            estimatedTime: '3小时',
+            requiredParts: ['O型圈 NBR-90', '液压油 HM46', '密封件套装'],
+            assignTo: '液压维修班-张师傅'
+        },
+        'current': {
+            faultPart: '主轴电机',
+            faultReason: '电机负载异常，可能存在机械卡滞或轴承磨损',
+            suggestedAction: '检查机械传动部件，检查轴承状态，进行润滑保养',
+            priority: device.rulDays < 15 ? '高' : '中',
+            estimatedTime: '3小时',
+            requiredParts: ['电机轴承', '润滑油', '碳刷'],
+            assignTo: '电气维修班-陈工'
+        }
+    };
+
+    const analysis = aiAnalysis[device.alertType];
+    if (!analysis) {
+        alert('AI分析数据不可用');
+        return;
+    }
+
+    // 生成工单编号
+    const workOrderNo = 'WO-' + new Date().getFullYear() + 
+                        ('0' + (new Date().getMonth() + 1)).slice(-2) + 
+                        ('0' + new Date().getDate()).slice(-2) + 
+                        '-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+
+    // 构建工单信息
+    const orderInfo = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🤖 智能预见性维修工单
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 工单编号: ${workOrderNo}
+🏭 设备名称: ${device.name}
+📟 设备编码: ${device.code}
+📍 设备位置: ${device.location}
+🎯 优先级: ${analysis.priority}
+📊 健康指数: ${device.healthIndex}
+
+━━━ AI 故障分析 ━━━
+🔍 故障部位: ${analysis.faultPart}
+📊 故障原因: ${analysis.faultReason}
+⏰ 剩余寿命: ${device.rul}
+⚠️  预警类型: ${getAlertTypeText(device.alertType)}
+
+━━━ 维修建议 ━━━
+💡 建议措施: ${analysis.suggestedAction}
+⏱️  预计工时: ${analysis.estimatedTime}
+🔧 所需备件: ${analysis.requiredParts.join('、')}
+
+━━━ 工单派发 ━━━
+👷 派发给: ${analysis.assignTo}
+📅 创建时间: ${new Date().toLocaleString('zh-CN')}
+📱 通知方式: 短信、APP推送
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ 工单将自动派发给维修工程师
+📊 可在【设备管理-维修管理】中查看详情
+    `;
+
+    // 显示工单信息
+    if (confirm(orderInfo + '\n\n是否确认创建此维修工单？')) {
+        // 模拟创建工单
+        alert('✅ 维修工单创建成功！\n\n工单编号: ' + workOrderNo + '\n已自动派发给: ' + analysis.assignTo + '\n\n系统已发送通知给相关维修人员');
+        
+        // 可选：跳转到维修工单页面
+        // window.location.href = 'maintenance-management.html?order=' + workOrderNo;
+    }
 }
 
 function closeModal(modalId) {
