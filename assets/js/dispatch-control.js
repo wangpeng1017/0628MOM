@@ -735,6 +735,64 @@ function getModuleContent(moduleName) {
         case 'call-tracking':
             return getCallTrackingContent();
         
+        // 二、业务执行层 - 动态监控
+        case 'material-monitor':
+            return getMaterialMonitorContent();
+        case 'equipment-monitor':
+            return getEquipmentMonitorContent();
+        case 'exception-monitor':
+            return getExceptionMonitorContent();
+        case 'bigscreen-display':
+            return getBigscreenDisplayContent();
+        
+        // 二、业务执行层 - 信息查询
+        case 'delivery-records':
+            return getDeliveryRecordsContent();
+        case 'plan-material':
+            return getPlanMaterialContent();
+        case 'route-query':
+            return getRouteQueryContent();
+        case 'alarm-query':
+            return getAlarmQueryContent();
+        
+        // 三、资源管理层 - 存放区管理
+        case 'issue-area':
+            return getIssueAreaContent();
+        case 'storage-area':
+            return getStorageAreaContent();
+        case 'waiting-area':
+            return getWaitingAreaContent();
+        case 'remaining-area':
+            return getRemainingAreaContent();
+        case 'area-change':
+            return getAreaChangeContent();
+        
+        // 三、资源管理层 - 人员管理
+        case 'staff-ledger':
+            return getStaffLedgerContent();
+        case 'staff-maintenance':
+            return getStaffMaintenanceContent();
+        case 'staff-query':
+            return getStaffQueryContent();
+        case 'qualification-mgmt':
+            return getQualificationMgmtContent();
+        case 'training-mgmt':
+            return getTrainingMgmtContent();
+        
+        // 三、资源管理层 - 基础管理
+        case 'delivery-permission':
+            return getDeliveryPermissionContent();
+        case 'material-order':
+            return getMaterialOrderContent();
+        case 'cart-mgmt':
+            return getCartMgmtContent();
+        case 'box-mgmt':
+            return getBoxMgmtContent();
+        case 'workstation-mgmt':
+            return getWorkstationMgmtContent();
+        case 'workshop-mgmt':
+            return getWorkshopMgmtContent();
+        
         // 默认
         default:
             return getDefaultModuleContent(moduleName);
@@ -942,7 +1000,7 @@ function getEquipmentUtilizationContent() {
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">
                         <i class="fas fa-clock text-blue-600 mr-2"></i>设备运行时长分布
                     </h3>
-                    <div id="chart-runtime" style="height: 350px;"></div>
+                    <div id="chart-equipment-time" style="height: 350px;"></div>
                 </div>
             </div>
 
@@ -1305,14 +1363,14 @@ function getAlarmStatsContent() {
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">
                         <i class="fas fa-chart-pie text-red-600 mr-2"></i>报警分类占比
                     </h3>
-                    <div id="chart-alarm-types" style="height: 300px;"></div>
+                    <div id="chart-alarm-type" style="height: 300px;"></div>
                 </div>
 
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4">
                         <i class="fas fa-chart-area text-orange-600 mr-2"></i>报警高发时段
                     </h3>
-                    <div id="chart-alarm-timeline" style="height: 300px;"></div>
+                    <div id="chart-alarm-time" style="height: 300px;"></div>
                 </div>
             </div>
 
@@ -2009,3 +2067,37 @@ function getAgvTrackingContent() {
 function getMaterialTrackingContent() { return getDefaultModuleContent('material-tracking'); }
 function getContainerTrackingContent() { return getDefaultModuleContent('container-tracking'); }
 function getCallTrackingContent() { return getDefaultModuleContent('call-tracking'); }
+
+// 15-18. 动态监控模块占位
+function getMaterialMonitorContent() { return getDefaultModuleContent('material-monitor'); }
+function getEquipmentMonitorContent() { return getDefaultModuleContent('equipment-monitor'); }
+function getExceptionMonitorContent() { return getDefaultModuleContent('exception-monitor'); }
+function getBigscreenDisplayContent() { return getDefaultModuleContent('bigscreen-display'); }
+
+// 19-22. 信息查询模块占位
+function getDeliveryRecordsContent() { return getDefaultModuleContent('delivery-records'); }
+function getPlanMaterialContent() { return getDefaultModuleContent('plan-material'); }
+function getRouteQueryContent() { return getDefaultModuleContent('route-query'); }
+function getAlarmQueryContent() { return getDefaultModuleContent('alarm-query'); }
+
+// 23-27. 存放区管理模块占位
+function getIssueAreaContent() { return getDefaultModuleContent('issue-area'); }
+function getStorageAreaContent() { return getDefaultModuleContent('storage-area'); }
+function getWaitingAreaContent() { return getDefaultModuleContent('waiting-area'); }
+function getRemainingAreaContent() { return getDefaultModuleContent('remaining-area'); }
+function getAreaChangeContent() { return getDefaultModuleContent('area-change'); }
+
+// 28-32. 人员管理模块占位
+function getStaffLedgerContent() { return getDefaultModuleContent('staff-ledger'); }
+function getStaffMaintenanceContent() { return getDefaultModuleContent('staff-maintenance'); }
+function getStaffQueryContent() { return getDefaultModuleContent('staff-query'); }
+function getQualificationMgmtContent() { return getDefaultModuleContent('qualification-mgmt'); }
+function getTrainingMgmtContent() { return getDefaultModuleContent('training-mgmt'); }
+
+// 33-38. 基础管理模块占位
+function getDeliveryPermissionContent() { return getDefaultModuleContent('delivery-permission'); }
+function getMaterialOrderContent() { return getDefaultModuleContent('material-order'); }
+function getCartMgmtContent() { return getDefaultModuleContent('cart-mgmt'); }
+function getBoxMgmtContent() { return getDefaultModuleContent('box-mgmt'); }
+function getWorkstationMgmtContent() { return getDefaultModuleContent('workstation-mgmt'); }
+function getWorkshopMgmtContent() { return getDefaultModuleContent('workshop-mgmt'); }
