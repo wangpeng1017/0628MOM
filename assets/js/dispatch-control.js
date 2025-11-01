@@ -2063,10 +2063,204 @@ function getAgvTrackingContent() {
     `;
 }
 
-// 12-14. 其他追溯模块占位
-function getMaterialTrackingContent() { return getDefaultModuleContent('material-tracking'); }
-function getContainerTrackingContent() { return getDefaultModuleContent('container-tracking'); }
-function getCallTrackingContent() { return getDefaultModuleContent('call-tracking'); }
+// 12. 物料配送追溯模块
+function getMaterialTrackingContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">物料配送追溯</h2>
+                <p class="text-sm text-gray-600">追踪物料从仓储到工位的全流程，实现物料配送透明化管理</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">物料编号</label>
+                        <input type="text" placeholder="输入物料编号" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">时间范围</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option>今天</option>
+                            <option>本周</option>
+                            <option>本月</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button class="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600">
+                            <i class="fas fa-search mr-2"></i>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">配送追溯记录</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">物料编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">物料名称</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">批次号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">数量</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">起点→终点</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">配送时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">MAT-001</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">电解液-A型</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">BATCH-20241101</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">200L</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">仓储A区 → 车间B-工位08</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2024-11-01 14:25</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">已送达</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 13. 料箱料车追溯模块
+function getContainerTrackingContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">料箱料车追溯</h2>
+                <p class="text-sm text-gray-600">追踪料箱、料车的使用情况和流转记录</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">料箱/料车编号</label>
+                        <input type="text" placeholder="输入编号" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">类型</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option>全部</option>
+                            <option>料箱</option>
+                            <option>料车</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button class="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600">
+                            <i class="fas fa-search mr-2"></i>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">流转记录</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">类型</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">当前位置</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">装载物料</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">使用次数</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">BOX-001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">料箱</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">车间B-工位08</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">电解液-A型</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">156次</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700">使用中</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 14. 物料呼叫追溯模块
+function getCallTrackingContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">物料呼叫追溯</h2>
+                <p class="text-sm text-gray-600">追踪工位物料呼叫记录，分析呼叫响应效率</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">工位</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option>全部工位</option>
+                            <option>车间A-工位01</option>
+                            <option>车间B-工位08</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">时间范围</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option>今天</option>
+                            <option>本周</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button class="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600">
+                            <i class="fas fa-search mr-2"></i>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">呼叫记录</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">呼叫时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">工位</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">物料</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">数量</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">响应时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">送达时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2024-11-01 14:20</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">车间B-工位08</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">电解液-A型</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">200L</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">1.5分钟</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2024-11-01 14:25</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">已完成</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
 // 15-18. 动态监控模块占位
 function getMaterialMonitorContent() { return getDefaultModuleContent('material-monitor'); }
