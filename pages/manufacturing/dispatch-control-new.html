@@ -56,7 +56,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">调度总控平台</h1>
-                <p class="text-sm text-gray-600 mt-1">数据驱动的智能调度决策，实现物流全流程自动化闭环管理</p>
+                <p class="text-sm text-gray-600 mt-1">数据驱动的智能调度决策,实现物流全流程自动化闭环管理</p>
             </div>
             <div class="flex items-center space-x-3">
                 <button onclick="openBigScreen()" class="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600 transition-colors">
@@ -75,8 +75,236 @@
         </div>
     </div>
 
-    <!-- 统计卡片 -->
-    <div class="p-6">
+    <!-- 主内容区 -->
+    <div class="flex h-[calc(100vh-88px)]">
+        <!-- 左侧菜单 -->
+        <div class="w-64 bg-white border-r border-gray-200 overflow-y-auto">
+            <div class="p-4">
+                <!-- 一、平台数据分析与展示层 -->
+                <div class="mb-4">
+                    <div class="text-xs font-semibold text-gray-500 uppercase mb-2 px-2">数据分析与展示</div>
+                    <nav class="space-y-1">
+                        <a href="#" onclick="showModule('delivery-stats')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                            <i class="fas fa-truck w-5"></i>
+                            <span>配送任务统计</span>
+                        </a>
+                        <a href="#" onclick="showModule('equipment-utilization')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                            <i class="fas fa-chart-bar w-5"></i>
+                            <span>设备利用率分析</span>
+                        </a>
+                        <a href="#" onclick="showModule('delivery-rate')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                            <i class="fas fa-shipping-fast w-5"></i>
+                            <span>送达率统计</span>
+                        </a>
+                        <a href="#" onclick="showModule('call-response')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                            <i class="fas fa-phone-volume w-5"></i>
+                            <span>呼叫应答统计</span>
+                        </a>
+                        <a href="#" onclick="showModule('alarm-stats')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                            <i class="fas fa-exclamation-triangle w-5"></i>
+                            <span>报警统计</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- 二、业务执行层 -->
+                <div class="mb-4">
+                    <div class="text-xs font-semibold text-gray-500 uppercase mb-2 px-2">业务执行</div>
+                    
+                    <!-- 任务优化配置 -->
+                    <div class="mb-3">
+                        <div class="text-xs font-medium text-gray-600 mb-1 px-2">任务优化配置</div>
+                        <nav class="space-y-1">
+                            <a href="#" onclick="showModule('task-assignment')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-tasks w-5"></i>
+                                <span>任务分配</span>
+                            </a>
+                            <a href="#" onclick="showModule('nearby-dispatch')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-map-marker-alt w-5"></i>
+                                <span>就近调配</span>
+                            </a>
+                            <a href="#" onclick="showModule('task-query')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-search w-5"></i>
+                                <span>任务查看/查询</span>
+                            </a>
+                            <a href="#" onclick="showModule('exception-handling')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-wrench w-5"></i>
+                                <span>异常处理</span>
+                            </a>
+                            <a href="#" onclick="showModule('fault-avoidance')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-shield-alt w-5"></i>
+                                <span>故障规避</span>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <!-- 物流追溯管理 -->
+                    <div class="mb-3">
+                        <div class="text-xs font-medium text-gray-600 mb-1 px-2">物流追溯管理</div>
+                        <nav class="space-y-1">
+                            <a href="#" onclick="showModule('agv-tracking')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-robot w-5"></i>
+                                <span>AGV运行追溯</span>
+                            </a>
+                            <a href="#" onclick="showModule('material-tracking')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-box w-5"></i>
+                                <span>物料配送追溯</span>
+                            </a>
+                            <a href="#" onclick="showModule('container-tracking')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-pallet w-5"></i>
+                                <span>料箱料车追溯</span>
+                            </a>
+                            <a href="#" onclick="showModule('call-tracking')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-bell w-5"></i>
+                                <span>物料呼叫追溯</span>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <!-- 动态监控 -->
+                    <div class="mb-3">
+                        <div class="text-xs font-medium text-gray-600 mb-1 px-2">动态监控</div>
+                        <nav class="space-y-1">
+                            <a href="#" onclick="showModule('material-monitor')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-eye w-5"></i>
+                                <span>物料监控</span>
+                            </a>
+                            <a href="#" onclick="showModule('equipment-monitor')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-desktop w-5"></i>
+                                <span>物流设备监控</span>
+                            </a>
+                            <a href="#" onclick="showModule('exception-monitor')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-exclamation-circle w-5"></i>
+                                <span>异常监控</span>
+                            </a>
+                            <a href="#" onclick="showModule('bigscreen-display')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-tv w-5"></i>
+                                <span>大屏展示</span>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <!-- 信息查询 -->
+                    <div class="mb-3">
+                        <div class="text-xs font-medium text-gray-600 mb-1 px-2">信息查询</div>
+                        <nav class="space-y-1">
+                            <a href="#" onclick="showModule('delivery-records')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-file-alt w-5"></i>
+                                <span>配送记录查询</span>
+                            </a>
+                            <a href="#" onclick="showModule('plan-material')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-clipboard-list w-5"></i>
+                                <span>计划物料查询</span>
+                            </a>
+                            <a href="#" onclick="showModule('route-query')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-route w-5"></i>
+                                <span>路线查询</span>
+                            </a>
+                            <a href="#" onclick="showModule('alarm-query')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-history w-5"></i>
+                                <span>异常报警查询</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- 三、资源管理层 -->
+                <div class="mb-4">
+                    <div class="text-xs font-semibold text-gray-500 uppercase mb-2 px-2">资源管理</div>
+                    
+                    <!-- 存放区管理 -->
+                    <div class="mb-3">
+                        <div class="text-xs font-medium text-gray-600 mb-1 px-2">存放区管理</div>
+                        <nav class="space-y-1">
+                            <a href="#" onclick="showModule('issue-area')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-warehouse w-5"></i>
+                                <span>发料区管理</span>
+                            </a>
+                            <a href="#" onclick="showModule('storage-area')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-layer-group w-5"></i>
+                                <span>存放区管理</span>
+                            </a>
+                            <a href="#" onclick="showModule('waiting-area')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-pause-circle w-5"></i>
+                                <span>待运位置管理</span>
+                            </a>
+                            <a href="#" onclick="showModule('remaining-area')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-border-all w-5"></i>
+                                <span>剩余区域查看</span>
+                            </a>
+                            <a href="#" onclick="showModule('area-change')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-edit w-5"></i>
+                                <span>信息变更</span>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <!-- 人员管理 -->
+                    <div class="mb-3">
+                        <div class="text-xs font-medium text-gray-600 mb-1 px-2">人员管理</div>
+                        <nav class="space-y-1">
+                            <a href="#" onclick="showModule('staff-ledger')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-users w-5"></i>
+                                <span>人员台账</span>
+                            </a>
+                            <a href="#" onclick="showModule('staff-maintenance')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-user-edit w-5"></i>
+                                <span>人员维护</span>
+                            </a>
+                            <a href="#" onclick="showModule('staff-query')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-user-search w-5"></i>
+                                <span>人员查询</span>
+                            </a>
+                            <a href="#" onclick="showModule('qualification-mgmt')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-certificate w-5"></i>
+                                <span>资质管理</span>
+                            </a>
+                            <a href="#" onclick="showModule('training-mgmt')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-graduation-cap w-5"></i>
+                                <span>培训管理</span>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <!-- 基础管理 -->
+                    <div class="mb-3">
+                        <div class="text-xs font-medium text-gray-600 mb-1 px-2">基础管理</div>
+                        <nav class="space-y-1">
+                            <a href="#" onclick="showModule('delivery-permission')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-key w-5"></i>
+                                <span>配送权限</span>
+                            </a>
+                            <a href="#" onclick="showModule('material-order')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-cubes w-5"></i>
+                                <span>物料和工单管理</span>
+                            </a>
+                            <a href="#" onclick="showModule('cart-mgmt')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-dolly w-5"></i>
+                                <span>料车管理</span>
+                            </a>
+                            <a href="#" onclick="showModule('box-mgmt')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-box-open w-5"></i>
+                                <span>料箱管理</span>
+                            </a>
+                            <a href="#" onclick="showModule('workstation-mgmt')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-industry w-5"></i>
+                                <span>工位管理</span>
+                            </a>
+                            <a href="#" onclick="showModule('workshop-mgmt')" class="menu-item flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-cyan-50 hover:text-cyan-600 transition-colors">
+                                <i class="fas fa-building w-5"></i>
+                                <span>车间管理</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧内容区 -->
+        <div class="flex-1 overflow-y-auto p-6" id="content-area">
+
+    <!-- 默认显示:配送任务统计 -->
+    <div id="module-delivery-stats">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-6">
             <!-- 配送任务 -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -216,6 +444,11 @@
                 </table>
             </div>
         </div>
+    </div>
+
+    <!-- 其他模块内容(隐藏状态) -->
+    <!-- 这里将通过JS动态加载各个模块的内容 -->
+    </div>
     </div>
 
     <script src="../../assets/js/dispatch-control.js"></script>
