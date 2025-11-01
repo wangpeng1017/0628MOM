@@ -7,7 +7,12 @@ let chartsInstances = {};
 document.addEventListener('DOMContentLoaded', function() {
     console.log('调度总控平台已加载');
     initializeData();
-    showModule('delivery-stats');
+    
+    // 从URL参数获取模块名称
+    const urlParams = new URLSearchParams(window.location.search);
+    const moduleName = urlParams.get('module') || 'delivery-stats';
+    
+    showModule(moduleName);
     startRealTimeUpdate();
 });
 
@@ -816,10 +821,309 @@ function getEquipmentUtilizationContent() {
     `;
 }
 
+// 3. 送达率统计模块
+function getDeliveryRateContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">送达率统计</h2>
+                <p class="text-sm text-gray-600">监控物料从仓储出库到产线签收的送达及时率，按物料类型、产线工位、时间段生成送达率报表</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">总送达率</h3>
+                        <i class="fas fa-shipping-fast text-blue-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-blue-600">96.8%</p>
+                    <p class="text-sm text-success mt-2">↑ 1.2% 较上周</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">按时送达</h3>
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-green-600">1,245</p>
+                    <p class="text-sm text-gray-500 mt-2">今日配送任务</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">轻微延迟</h3>
+                        <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-yellow-600">32</p>
+                    <p class="text-sm text-gray-500 mt-2">延迟 < 10分钟</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">严重延迟</h3>
+                        <i class="fas fa-exclamation-circle text-red-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-red-600">9</p>
+                    <p class="text-sm text-gray-500 mt-2">延迟 ≥ 10分钟</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-chart-pie text-blue-600 mr-2"></i>送达率分布
+                    </h3>
+                    <div id="chart-delivery" style="height: 300px;"></div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-chart-line text-green-600 mr-2"></i>送达率趋势
+                    </h3>
+                    <div id="chart-delivery-trend" style="height: 300px;"></div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">按工位送达率统计</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">工位编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">配送次数</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">按时送达</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">延迟次数</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">送达率</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">平均耗时</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">车间A-工位05</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">142</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600">138</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600">4</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="text-sm font-medium text-green-600">97.2%</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">7.8min</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 4. 呼叫应答统计模块
+function getCallResponseContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">呼叫应答统计</h2>
+                <p class="text-sm text-gray-600">分析生产缺料呼叫的发起频次、响应时长、处理完成率</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">今日呼叫</h3>
+                        <i class="fas fa-phone-volume text-purple-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-purple-600">87</p>
+                    <p class="text-sm text-gray-500 mt-2">已处理: 84 | 处理中: 3</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">平均响应</h3>
+                        <i class="fas fa-stopwatch text-blue-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-blue-600">2.3</p>
+                    <p class="text-sm text-gray-500 mt-2">分钟</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">完成率</h3>
+                        <i class="fas fa-check-double text-green-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-green-600">96.6%</p>
+                    <p class="text-sm text-success mt-2">↑ 0.8% 较昨日</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">超时呼叫</h3>
+                        <i class="fas fa-exclamation-triangle text-orange-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-orange-600">3</p>
+                    <p class="text-sm text-gray-500 mt-2">响应 > 5分钟</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-chart-bar text-purple-600 mr-2"></i>呼叫应答时效
+                    </h3>
+                    <div id="chart-calls" style="height: 300px;"></div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-list-ol text-blue-600 mr-2"></i>TOP工位呼叫排名
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <span class="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-sm mr-3">1</span>
+                                <span class="font-medium text-gray-900">车间B-工位03</span>
+                            </div>
+                            <span class="text-lg font-bold text-red-600">28次</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <span class="w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold text-sm mr-3">2</span>
+                                <span class="font-medium text-gray-900">车间A-工位12</span>
+                            </div>
+                            <span class="text-lg font-bold text-orange-600">22次</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center">
+                                <span class="w-8 h-8 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center font-bold text-sm mr-3">3</span>
+                                <span class="font-medium text-gray-900">车间C-工位08</span>
+                            </div>
+                            <span class="text-lg font-bold text-yellow-600">18次</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 5. 报警统计模块
+function getAlarmStatsContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">报警统计</h2>
+                <p class="text-sm text-gray-600">汇总设备故障、物料异常、环境超限等报警类型的发生频次、处理时长</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">总报警数</h3>
+                        <i class="fas fa-bell text-red-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-red-600">45</p>
+                    <p class="text-sm text-gray-500 mt-2">今日累计</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">设备故障</h3>
+                        <i class="fas fa-tools text-orange-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-orange-600">18</p>
+                    <p class="text-sm text-gray-500 mt-2">占比 40%</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">物料异常</h3>
+                        <i class="fas fa-box text-yellow-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-yellow-600">15</p>
+                    <p class="text-sm text-gray-500 mt-2">占比 33%</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">环境超限</h3>
+                        <i class="fas fa-temperature-high text-purple-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-purple-600">12</p>
+                    <p class="text-sm text-gray-500 mt-2">占比 27%</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">待处理</h3>
+                        <i class="fas fa-hourglass-half text-blue-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-blue-600">7</p>
+                    <p class="text-sm text-gray-500 mt-2">需立即处理</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-chart-pie text-red-600 mr-2"></i>报警分类占比
+                    </h3>
+                    <div id="chart-alarm-types" style="height: 300px;"></div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-chart-area text-orange-600 mr-2"></i>报警高发时段
+                    </h3>
+                    <div id="chart-alarm-timeline" style="height: 300px;"></div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-800">报警记录</h2>
+                    <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600 text-sm">
+                        <i class="fas fa-filter mr-2"></i>筛选
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">报警时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">报警类型</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">报警源</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">报警内容</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">处理时长</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">14:25:30</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700">设备故障</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">AGV-005</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">电量不足，需充电</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">5min</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">已处理</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-800"><i class="fas fa-eye"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 // 占位函数（待开发模块）
-function getDeliveryRateContent() { return getDefaultModuleContent('delivery-rate'); }
-function getCallResponseContent() { return getDefaultModuleContent('call-response'); }
-function getAlarmStatsContent() { return getDefaultModuleContent('alarm-stats'); }
 function getTaskAssignmentContent() { return getDefaultModuleContent('task-assignment'); }
 function getNearbyDispatchContent() { return getDefaultModuleContent('nearby-dispatch'); }
 function getTaskQueryContent() { return getDefaultModuleContent('task-query'); }
