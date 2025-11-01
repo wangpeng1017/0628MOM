@@ -183,9 +183,9 @@
                                 <p id="metric-abnormal" class="text-2xl font-bold text-red-700">3</p>
                                 <p class="text-xs text-red-500 mt-1">需要处理</p>
                             </div>
-                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                            <button onclick="showAbnormalReportModal()" class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center hover:bg-red-200 transition-all duration-200" title="一键上报异常">
                                 <i class="fas fa-exclamation-triangle text-2xl text-red-600"></i>
-                            </div>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -413,6 +413,222 @@
         </div>
     </div>
 
+    <!-- 异常一键上报模态窗口 -->
+    <div id="abnormal-report-modal" class="modal">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-auto">
+            <div class="flex items-center justify-between p-6 border-b">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold">巡检异常一键上报</h3>
+                </div>
+                <button onclick="closeModal('abnormal-report-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- 异常数据列表 -->
+            <div class="p-6">
+                <div class="mb-4 flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <span class="text-sm text-gray-600">共检测到 <span class="font-bold text-red-600">3</span> 条异常</span>
+                        <button onclick="selectAllAbnormals()" class="text-sm text-orange-600 hover:text-orange-700">
+                            <i class="fas fa-check-square mr-1"></i>全选
+                        </button>
+                    </div>
+                    <select class="px-3 py-2 border border-gray-300 rounded-lg text-sm">
+                        <option>全部异常类型</option>
+                        <option>设备故障</option>
+                        <option>参数异常</option>
+                        <option>安全隐患</option>
+                        <option>其他异常</option>
+                    </select>
+                </div>
+
+                <div class="space-y-3 max-h-96 overflow-y-auto">
+                    <!-- 异常项1 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-start">
+                            <input type="checkbox" class="abnormal-checkbox mt-1 mr-3 w-4 h-4 text-orange-600" checked>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-800">INS-2024-003</span>
+                                        <span class="ml-2 px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded-full">发现异常</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">今天 14:00</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mb-2">
+                                    <i class="fas fa-route mr-2 text-gray-400"></i>
+                                    任务: 一号车间中午巡检任务 | 执行人: 李明明
+                                </div>
+                                <div class="text-sm text-gray-700">
+                                    <i class="fas fa-info-circle mr-2 text-red-600"></i>
+                                    设备: 涂覆机-01 | 异常: 温度超过安全阈值200℃,当前温度215℃
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 异常项2 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-start">
+                            <input type="checkbox" class="abnormal-checkbox mt-1 mr-3 w-4 h-4 text-orange-600" checked>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-800">INS-2024-002</span>
+                                        <span class="ml-2 px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded-full">发现异常</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">今天 10:00</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mb-2">
+                                    <i class="fas fa-route mr-2 text-gray-400"></i>
+                                    任务: 二号车间早班巡检 | 执行人: 王师傅
+                                </div>
+                                <div class="text-sm text-gray-700">
+                                    <i class="fas fa-info-circle mr-2 text-red-600"></i>
+                                    设备: 压力机-02 | 异常: 液压系统压力不稳定,存在泄漏风险
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 异常项3 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                        <div class="flex items-start">
+                            <input type="checkbox" class="abnormal-checkbox mt-1 mr-3 w-4 h-4 text-orange-600" checked>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center">
+                                        <span class="font-medium text-gray-800">INS-2024-001</span>
+                                        <span class="ml-2 px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded-full">发现异常</span>
+                                    </div>
+                                    <span class="text-xs text-gray-500">昨天 16:30</span>
+                                </div>
+                                <div class="text-sm text-gray-600 mb-2">
+                                    <i class="fas fa-route mr-2 text-gray-400"></i>
+                                    任务: 三号车间晚班巡检 | 执行人: 陈师傅
+                                </div>
+                                <div class="text-sm text-gray-700">
+                                    <i class="fas fa-info-circle mr-2 text-red-600"></i>
+                                    设备: 传送带-03 | 异常: 电机异响,疑似轴承磨损
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 上报信息 -->
+            <div class="px-6 pb-6 space-y-4">
+                <div class="border-t border-gray-200 pt-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">上报级别</label>
+                    <div class="flex space-x-3">
+                        <label class="flex items-center">
+                            <input type="radio" name="abnormalReportLevel" value="low" class="mr-2">
+                            <span class="text-sm text-gray-700">提醒</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="abnormalReportLevel" value="medium" class="mr-2" checked>
+                            <span class="text-sm text-gray-700">警告</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="abnormalReportLevel" value="high" class="mr-2">
+                            <span class="text-sm text-gray-700">严重</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="radio" name="abnormalReportLevel" value="critical" class="mr-2">
+                            <span class="text-sm text-gray-700">致命</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">上报对象</label>
+                    <select id="abnormal-report-target" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500">
+                        <option>设备管理部门</option>
+                        <option>生产调度中心</option>
+                        <option>维修班组</option>
+                        <option>车间主管</option>
+                        <option>安全管理部门</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">备注说明</label>
+                    <textarea id="abnormal-report-notes" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500" rows="3" placeholder="请输入补充说明信息(可选)"></textarea>
+                </div>
+            </div>
+
+            <div class="p-6 border-t border-gray-200 bg-gray-50 flex justify-between items-center">
+                <div class="text-sm text-gray-600">
+                    已选择 <span id="abnormal-selected-count" class="font-bold text-orange-600">3</span> 条异常
+                </div>
+                <div class="flex space-x-3">
+                    <button onclick="closeModal('abnormal-report-modal')" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100">
+                        取消
+                    </button>
+                    <button onclick="submitAbnormalReport()" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        立即上报
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="../../assets/js/equipment-inspection.js"></script>
+    <script>
+        // 显示异常上报模态框
+        function showAbnormalReportModal() {
+            document.getElementById('abnormal-report-modal').classList.add('show');
+        }
+
+        // 全选异常
+        function selectAllAbnormals() {
+            const checkboxes = document.querySelectorAll('.abnormal-checkbox');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => cb.checked = !allChecked);
+            updateAbnormalSelectedCount();
+        }
+
+        // 更新已选择数量
+        function updateAbnormalSelectedCount() {
+            const checkboxes = document.querySelectorAll('.abnormal-checkbox');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const countElement = document.getElementById('abnormal-selected-count');
+            if (countElement) {
+                countElement.textContent = checkedCount;
+            }
+        }
+
+        // 提交异常上报
+        function submitAbnormalReport() {
+            const checkboxes = document.querySelectorAll('.abnormal-checkbox');
+            const checkedCount = Array.from(checkboxes).filter(cb => cb.checked).length;
+            
+            if (checkedCount === 0) {
+                alert('请至少选择一条异常进行上报！');
+                return;
+            }
+
+            const reportLevel = document.querySelector('input[name="abnormalReportLevel"]:checked').value;
+            const reportTarget = document.getElementById('abnormal-report-target').value;
+            const notes = document.getElementById('abnormal-report-notes').value;
+            
+            // 模拟上报成功
+            alert(`成功上报 ${checkedCount} 条巡检异常！\n上报级别: ${reportLevel}\n上报对象: ${reportTarget}`);
+            closeModal('abnormal-report-modal');
+        }
+
+        // 监听复选框变化
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('abnormal-checkbox')) {
+                updateAbnormalSelectedCount();
+            }
+        });
+    </script>
 </body>
 </html>
