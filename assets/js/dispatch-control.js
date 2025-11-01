@@ -2883,11 +2883,177 @@ function getIssueAreaContent() {
     `;
 }
 
-// 24-27. 其他存放区管理模块占位
-function getStorageAreaContent() { return getDefaultModuleContent('storage-area'); }
-function getWaitingAreaContent() { return getDefaultModuleContent('waiting-area'); }
-function getRemainingAreaContent() { return getDefaultModuleContent('remaining-area'); }
-function getAreaChangeContent() { return getDefaultModuleContent('area-change'); }
+// 24. 存放区管理模块
+function getStorageAreaContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">存放区管理</h2>
+                <p class="text-sm text-gray-600">管理物料存放区域的配置和库存情况</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">总存放区</h3>
+                    <p class="text-3xl font-bold text-gray-900">20</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">使用中</h3>
+                    <p class="text-3xl font-bold text-green-600">16</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">空闲</h3>
+                    <p class="text-3xl font-bold text-blue-600">4</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">利用率</h3>
+                    <p class="text-3xl font-bold text-purple-600">80%</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">存放区列表</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">区域编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">区域名称</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">容量</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">当前存量</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">STORE-A01</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">存放区A-01</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">1000kg</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">750kg</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">正常</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 25. 待运位置管理模块
+function getWaitingAreaContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">待运位置管理</h2>
+                <p class="text-sm text-gray-600">管理物料待运区域的配置和使用情况</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">待运位置列表</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">位置编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">位置名称</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">当前物料</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">等待时长</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WAIT-001</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">待运位-01</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">电解液-A型</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">5分钟</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-700">待运</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 26. 剩余区域查看模块
+function getRemainingAreaContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">剩余区域查看</h2>
+                <p class="text-sm text-gray-600">查看未分配和空闲的区域资源</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">未分配区域</h3>
+                    <p class="text-4xl font-bold text-blue-600 mb-2">8</p>
+                    <p class="text-sm text-gray-600">可用于新增配置</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">空闲区域</h3>
+                    <p class="text-4xl font-bold text-green-600 mb-2">12</p>
+                    <p class="text-sm text-gray-600">已配置但未使用</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">总可用</h3>
+                    <p class="text-4xl font-bold text-purple-600 mb-2">20</p>
+                    <p class="text-sm text-gray-600">剩余可用区域总数</p>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 27. 信息变更模块
+function getAreaChangeContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">信息变更</h2>
+                <p class="text-sm text-gray-600">管理区域信息的变更记录和审批流程</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">变更记录</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">变更时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">变更类型</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">变更对象</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">变更内容</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作人</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2024-11-01 14:30</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">区域配置</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">发料区A-01</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">容量调整: 500kg → 600kg</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">张三</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">已生效</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
 // 28. 人员台账模块
 function getStaffLedgerContent() {
@@ -2950,9 +3116,109 @@ function getStaffLedgerContent() {
     `;
 }
 
-// 29-32. 其他人员管理模块占位
-function getStaffMaintenanceContent() { return getDefaultModuleContent('staff-maintenance'); }
-function getStaffQueryContent() { return getDefaultModuleContent('staff-query'); }
+// 29. 人员维护模块
+function getStaffMaintenanceContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">人员维护</h2>
+                <p class="text-sm text-gray-600">维护和更新人员基本信息</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">人员信息编辑</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">工号</label>
+                        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="EMP-001">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">姓名</label>
+                        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg" value="张三">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">岗位</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option>物流调度员</option>
+                            <option>仓库管理员</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">部门</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option>物流部</option>
+                            <option>仓储部</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-6 flex gap-3">
+                    <button class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600">保存</button>
+                    <button class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">取消</button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 30. 人员查询模块
+function getStaffQueryContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">人员查询</h2>
+                <p class="text-sm text-gray-600">查询人员信息和工作记录</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">工号/姓名</label>
+                        <input type="text" placeholder="输入工号或姓名" class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">部门</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg">
+                            <option>全部部门</option>
+                            <option>物流部</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button class="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600">
+                            <i class="fas fa-search mr-2"></i>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">查询结果</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">工号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">姓名</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">岗位</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">部门</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">联系方式</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">EMP-001</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">张三</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">物流调度员</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">物流部</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">138****1234</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 31-32. 其他人员管理模块占位
 function getQualificationMgmtContent() { return getDefaultModuleContent('qualification-mgmt'); }
 function getTrainingMgmtContent() { return getDefaultModuleContent('training-mgmt'); }
 
@@ -2999,9 +3265,267 @@ function getDeliveryPermissionContent() {
     `;
 }
 
-// 34-38. 其他基础管理模块占位
-function getMaterialOrderContent() { return getDefaultModuleContent('material-order'); }
-function getCartMgmtContent() { return getDefaultModuleContent('cart-mgmt'); }
-function getBoxMgmtContent() { return getDefaultModuleContent('box-mgmt'); }
-function getWorkstationMgmtContent() { return getDefaultModuleContent('workstation-mgmt'); }
-function getWorkshopMgmtContent() { return getDefaultModuleContent('workshop-mgmt'); }
+// 34. 物料和工单管理模块
+function getMaterialOrderContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">物料和工单管理</h2>
+                <p class="text-sm text-gray-600">管理物料信息和生产工单</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">工单列表</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">工单号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">产品</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">数量</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">物料需求</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WO-2024-001</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">锂电池-A型</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">1000</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">电解液、正极材料等</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-700">进行中</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 35. 料车管理模块
+function getCartMgmtContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">料车管理</h2>
+                <p class="text-sm text-gray-600">管理料车的配置、使用和维护</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">总料车数</h3>
+                    <p class="text-3xl font-bold text-gray-900">30</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">使用中</h3>
+                    <p class="text-3xl font-bold text-green-600">22</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">空闲</h3>
+                    <p class="text-3xl font-bold text-blue-600">7</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">维修中</h3>
+                    <p class="text-3xl font-bold text-yellow-600">1</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">料车列表</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">料车编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">类型</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">当前位置</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">使用次数</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">CART-001</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">标准料车</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">车间B-工位08</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">256次</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">使用中</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 36. 料箱管理模块
+function getBoxMgmtContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">料箱管理</h2>
+                <p class="text-sm text-gray-600">管理料箱的配置、使用和维护</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">总料箱数</h3>
+                    <p class="text-3xl font-bold text-gray-900">150</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">使用中</h3>
+                    <p class="text-3xl font-bold text-green-600">120</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">空闲</h3>
+                    <p class="text-3xl font-bold text-blue-600">28</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-sm font-medium text-gray-600 mb-2">维修中</h3>
+                    <p class="text-3xl font-bold text-yellow-600">2</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">料箱列表</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">料箱编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">规格</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">当前位置</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">使用次数</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">BOX-001</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">标准料箱</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">车间B-工位08</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">156次</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">使用中</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 37. 工位管理模块
+function getWorkstationMgmtContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">工位管理</h2>
+                <p class="text-sm text-gray-600">管理生产工位的配置和状态</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">工位列表</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">工位编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">工位名称</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">所属车间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">当前任务</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">WS-B08</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">车间B-工位08</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">车间B</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">WO-2024-001</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">生产中</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 38. 车间管理模块
+function getWorkshopMgmtContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">车间管理</h2>
+                <p class="text-sm text-gray-600">管理生产车间的配置和运行状态</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">车间A</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">工位数:</span>
+                            <span class="font-medium text-gray-900">15</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">运行中:</span>
+                            <span class="font-medium text-green-600">12</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">利用率:</span>
+                            <span class="font-medium text-blue-600">80%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">车间B</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">工位数:</span>
+                            <span class="font-medium text-gray-900">20</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">运行中:</span>
+                            <span class="font-medium text-green-600">18</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">利用率:</span>
+                            <span class="font-medium text-blue-600">90%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">车间C</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">工位数:</span>
+                            <span class="font-medium text-gray-900">10</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">运行中:</span>
+                            <span class="font-medium text-green-600">7</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">利用率:</span>
+                            <span class="font-medium text-blue-600">70%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
