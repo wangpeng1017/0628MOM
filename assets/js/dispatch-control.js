@@ -234,8 +234,10 @@ function getStatusBadge(status, progress) {
 // 初始化图表
 function initializeCharts() {
     // 配送任务趋势图
-    const tasksChart = echarts.init(document.getElementById('chart-tasks'));
-    tasksChart.setOption({
+    const tasksChartEl = document.getElementById('chart-tasks');
+    if (tasksChartEl) {
+        const tasksChart = echarts.init(tasksChartEl);
+        tasksChart.setOption({
         tooltip: {
             trigger: 'axis'
         },
@@ -272,11 +274,14 @@ function initializeCharts() {
                 itemStyle: { color: '#ef4444' }
             }
         ]
-    });
-    chartsInstances.tasks = tasksChart;
+        });
+        chartsInstances.tasks = tasksChart;
+    }
 
     // 设备利用率排名
-    const utilizationChart = echarts.init(document.getElementById('chart-utilization'));
+    const utilizationChartEl = document.getElementById('chart-utilization');
+    if (utilizationChartEl) {
+        const utilizationChart = echarts.init(utilizationChartEl);
     utilizationChart.setOption({
         tooltip: {
             trigger: 'axis',
@@ -305,11 +310,14 @@ function initializeCharts() {
                 formatter: '{c}%'
             }
         }]
-    });
-    chartsInstances.utilization = utilizationChart;
+        });
+        chartsInstances.utilization = utilizationChart;
+    }
 
     // 送达率分析
-    const deliveryChart = echarts.init(document.getElementById('chart-delivery'));
+    const deliveryChartEl = document.getElementById('chart-delivery');
+    if (deliveryChartEl) {
+        const deliveryChart = echarts.init(deliveryChartEl);
     deliveryChart.setOption({
         tooltip: {
             trigger: 'item',
@@ -329,11 +337,14 @@ function initializeCharts() {
                 { value: 0.7, name: '严重延迟', itemStyle: { color: '#ef4444' } }
             ]
         }]
-    });
-    chartsInstances.delivery = deliveryChart;
+        });
+        chartsInstances.delivery = deliveryChart;
+    }
 
     // 呼叫应答时效
-    const callsChart = echarts.init(document.getElementById('chart-calls'));
+    const callsChartEl = document.getElementById('chart-calls');
+    if (callsChartEl) {
+        const callsChart = echarts.init(callsChartEl);
     callsChart.setOption({
         tooltip: {
             trigger: 'axis'
@@ -352,8 +363,9 @@ function initializeCharts() {
             data: [2.5, 2.3, 2.1, 2.4, 2.2, 1.9, 2.0],
             itemStyle: { color: '#8b5cf6' }
         }]
-    });
-    chartsInstances.calls = callsChart;
+        });
+        chartsInstances.calls = callsChart;
+    }
 }
 
 // 查看任务详情
@@ -1260,10 +1272,452 @@ function getTaskAssignmentContent() {
         </div>
     `;
 }
-function getNearbyDispatchContent() { return getDefaultModuleContent('nearby-dispatch'); }
-function getTaskQueryContent() { return getDefaultModuleContent('task-query'); }
-function getExceptionHandlingContent() { return getDefaultModuleContent('exception-handling'); }
-function getFaultAvoidanceContent() { return getDefaultModuleContent('fault-avoidance'); }
+// 7. 就近调配模块
+function getNearbyDispatchContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">就近调配</h2>
+                <p class="text-sm text-gray-600">基于设备实时位置和任务地点，智能匹配最近的可用设备，优化配送效率</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <!-- 地图区域 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-map text-blue-600 mr-2"></i>设备位置分布
+                    </h3>
+                    <div class="bg-gray-100 rounded-lg flex items-center justify-center" style="height: 400px;">
+                        <div class="text-center text-gray-500">
+                            <i class="fas fa-map-marked-alt text-6xl mb-4"></i>
+                            <p>车间地图视图</p>
+                            <p class="text-sm">显示AGV、叉车实时位置</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 调配建议 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-lightbulb text-yellow-600 mr-2"></i>智能调配建议
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-green-500 bg-green-50 p-4 rounded">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">任务 TASK-2024-178</h4>
+                                    <p class="text-sm text-gray-600">仓储B区 → 车间A-工位12</p>
+                                </div>
+                                <span class="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">推荐</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-600">推荐设备:</span>
+                                    <span class="font-medium text-gray-900">AGV-005</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">距离:</span>
+                                    <span class="font-medium text-green-600">15m</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">预计耗时:</span>
+                                    <span class="font-medium text-gray-900">2.5分钟</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">节省时间:</span>
+                                    <span class="font-medium text-green-600">↓ 3.2分钟</span>
+                                </div>
+                            </div>
+                            <button class="mt-3 w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm">
+                                <i class="fas fa-check mr-2"></i>采纳建议
+                            </button>
+                        </div>
+
+                        <div class="border-l-4 border-blue-500 bg-blue-50 p-4 rounded">
+                            <div class="flex items-start justify-between mb-2">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">任务 TASK-2024-179</h4>
+                                    <p class="text-sm text-gray-600">仓储A区 → 车间C-工位05</p>
+                                </div>
+                                <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">可选</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="text-gray-600">推荐设备:</span>
+                                    <span class="font-medium text-gray-900">AGV-008</span>
+                                </div>
+                                <div>
+                                    <span class="text-gray-600">距离:</span>
+                                    <span class="font-medium text-blue-600">28m</span>
+                                </div>
+                            </div>
+                            <button class="mt-3 w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                                <i class="fas fa-check mr-2"></i>采纳建议
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设备状态列表 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">可用设备列表</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">设备编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">类型</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">当前位置</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">电量</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AGV-005</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">AGV</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">仓储B区-通道3</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">空闲</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">85%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-location-arrow"></i> 调配
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AGV-008</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">AGV</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">车间A-工位区</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">空闲</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">92%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-location-arrow"></i> 调配
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+// 8. 任务查看/查询模块
+function getTaskQueryContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">任务查看/查询</h2>
+                <p class="text-sm text-gray-600">查询历史任务、实时任务状态，支持多维度筛选和导出</p>
+            </div>
+
+            <!-- 搜索筛选区 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">任务编号</label>
+                        <input type="text" placeholder="输入任务编号" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">任务状态</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                            <option value="">全部状态</option>
+                            <option value="pending">待执行</option>
+                            <option value="executing">执行中</option>
+                            <option value="completed">已完成</option>
+                            <option value="failed">失败</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">时间范围</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                            <option value="today">今天</option>
+                            <option value="week">本周</option>
+                            <option value="month">本月</option>
+                            <option value="custom">自定义</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button class="w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600">
+                            <i class="fas fa-search mr-2"></i>查询
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 统计概览 -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                    <div class="text-sm text-gray-600 mb-1">总任务数</div>
+                    <div class="text-2xl font-bold text-gray-900">1,245</div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                    <div class="text-sm text-gray-600 mb-1">待执行</div>
+                    <div class="text-2xl font-bold text-orange-600">23</div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                    <div class="text-sm text-gray-600 mb-1">执行中</div>
+                    <div class="text-2xl font-bold text-blue-600">45</div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                    <div class="text-sm text-gray-600 mb-1">已完成</div>
+                    <div class="text-2xl font-bold text-green-600">1,172</div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                    <div class="text-sm text-gray-600 mb-1">失败</div>
+                    <div class="text-2xl font-bold text-red-600">5</div>
+                </div>
+            </div>
+
+            <!-- 任务列表 -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-800">任务列表</h2>
+                    <button class="px-4 py-2 bg-success text-white rounded-lg hover:bg-green-700 text-sm">
+                        <i class="fas fa-download mr-2"></i>导出Excel
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">任务编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">物料信息</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">路线</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">执行设备</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">创建时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">完成时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasks-tbody" class="bg-white divide-y divide-gray-200">
+                            <!-- 动态生成 -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                    <div class="text-sm text-gray-600">显示 1-20 条，共 1,245 条</div>
+                    <div class="flex gap-2">
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">上一页</button>
+                        <button class="px-3 py-1 bg-primary text-white rounded">1</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">2</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">3</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50">下一页</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+// 9. 异常处理模块
+function getExceptionHandlingContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">异常处理</h2>
+                <p class="text-sm text-gray-600">实时监控任务异常，快速响应处理，保障物流顺畅</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border-l-4 border-red-500 p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-600">待处理异常</h3>
+                        <i class="fas fa-exclamation-circle text-red-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-red-600">8</p>
+                    <p class="text-sm text-gray-500 mt-2">需立即处理: 3</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border-l-4 border-yellow-500 p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-600">处理中</h3>
+                        <i class="fas fa-spinner text-yellow-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-yellow-600">5</p>
+                    <p class="text-sm text-gray-500 mt-2">平均处理: 12分钟</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border-l-4 border-green-500 p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-600">今日已处理</h3>
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-green-600">42</p>
+                    <p class="text-sm text-success mt-2">↑ 15% 较昨日</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border-l-4 border-blue-500 p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-sm font-medium text-gray-600">平均响应时间</h3>
+                        <i class="fas fa-clock text-blue-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-blue-600">3.5</p>
+                    <p class="text-sm text-gray-500 mt-2">分钟</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">异常列表</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">异常编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">异常类型</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">相关任务</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">设备</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">严重程度</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">发生时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">EXC-2024-089</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">路径阻塞</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">TASK-2024-156</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">AGV-003</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700">高</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-orange-100 text-orange-700">待处理</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2024-11-01 14:25</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-3">
+                                        <i class="fas fa-wrench"></i> 处理
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+// 10. 故障规避模块
+function getFaultAvoidanceContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">故障规避</h2>
+                <p class="text-sm text-gray-600">预测设备故障风险，提前规避，确保物流系统稳定运行</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">高风险设备</h3>
+                        <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-red-600">2</p>
+                    <p class="text-sm text-gray-500 mt-2">建议立即维护</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">中风险设备</h3>
+                        <i class="fas fa-exclamation-circle text-yellow-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-yellow-600">5</p>
+                    <p class="text-sm text-gray-500 mt-2">需关注监控</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">健康设备</h3>
+                        <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-green-600">18</p>
+                    <p class="text-sm text-gray-500 mt-2">运行正常</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+                <div class="px-6 py-4 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold text-gray-800">设备健康状态</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">设备编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">设备类型</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">健康评分</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">风险等级</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">预测故障</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">建议措施</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AGV-012</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">AGV</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-sm font-medium text-red-600">45分</span>
+                                        <div class="ml-2 w-24 bg-gray-200 rounded-full h-2">
+                                            <div class="bg-red-600 h-2 rounded-full" style="width: 45%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700">高风险</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700">电池老化</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">立即更换电池</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-tools"></i> 维护
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AGV-007</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">AGV</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <span class="text-sm font-medium text-yellow-600">68分</span>
+                                        <div class="ml-2 w-24 bg-gray-200 rounded-full h-2">
+                                            <div class="bg-yellow-600 h-2 rounded-full" style="width: 68%"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-700">中风险</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700">传感器异常</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">检查传感器</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-eye"></i> 查看
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
 
 // 默认模块内容（占位）
 function getDefaultModuleContent(moduleName) {
