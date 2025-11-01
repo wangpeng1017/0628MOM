@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调度总控 - 智能制造 - 数字工厂一体化平台</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ECharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#06b6d4',
+                        'primary-light': '#22d3ee',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background-color: rgba(148, 163, 184, 0.5);
+            border-radius: 9999px;
+        }
+
+        .tab-button {
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            border-bottom: 2px solid #06b6d4;
+            color: #06b6d4;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- 主内容区（全宽） -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <div class="bg-white border-b p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="px-3 py-1 bg-cyan-100 text-cyan-700 rounded-full text-xs font-semibold">调度总控</span>
+                            <span class="text-xs text-gray-500">智能制造 - 物流调度全链路管控平台</span>
+                        </div>
+                        <div class="flex items-center gap-4 mb-2">
+                            <h1 id="page-title" class="text-2xl font-bold text-gray-800">调度总控平台</h1>
+                        </div>
+                        <p class="text-sm text-gray-600">数据驱动的智能调度决策，实现物流全流程自动化闭环管理</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="openBigScreen()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600 transition-colors flex items-center">
+                            <i class="fas fa-tv mr-2"></i>大屏展示
+                        </button>
+                        <button onclick="refreshData()" class="px-4 py-2 bg-success text-white rounded-lg hover:bg-green-700 transition-colors flex items-center">
+                            <i class="fas fa-sync-alt mr-2"></i>刷新数据
+                        </button>
+                        <button onclick="exportReport()" class="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-gray-700 transition-colors flex items-center">
+                            <i class="fas fa-download mr-2"></i>导出报表
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 核心指标卡片 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
+                    <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-cyan-600 font-medium">配送任务</p>
+                                <p id="metric-tasks" class="text-2xl font-bold text-cyan-700">156</p>
+                                <p class="text-xs text-cyan-500 mt-1">完成率 94.2%</p>
+                            </div>
+                            <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-tasks text-2xl text-cyan-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-green-600 font-medium">设备利用率</p>
+                                <p id="metric-utilization" class="text-2xl font-bold text-green-700">87.5%</p>
+                                <p class="text-xs text-green-500 mt-1">AGV 运行中 12/15</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-robot text-2xl text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-blue-600 font-medium">送达及时率</p>
+                                <p id="metric-delivery" class="text-2xl font-bold text-blue-700">96.8%</p>
+                                <p class="text-xs text-blue-500 mt-1">平均耗时 8.5min</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-shipping-fast text-2xl text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-purple-600 font-medium">呼叫应答</p>
+                                <p id="metric-calls" class="text-2xl font-bold text-purple-700">28</p>
+                                <p class="text-xs text-purple-500 mt-1">平均响应 2.3min</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-phone-volume text-2xl text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-orange-600 font-medium">异常报警</p>
+                                <p id="metric-alarms" class="text-2xl font-bold text-orange-700">5</p>
+                                <p class="text-xs text-orange-500 mt-1">3 待处理</p>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-exclamation-triangle text-2xl text-orange-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab导航 -->
+            <div class="bg-white border-b px-6">
+                <div class="flex gap-6">
+                    <button onclick="switchTab('analytics')" id="tab-analytics" class="tab-button active px-4 py-3 text-sm">
+                        <i class="fas fa-chart-bar mr-2"></i>数据分析
+                    </button>
+                    <button onclick="switchTab('tasks')" id="tab-tasks" class="tab-button px-4 py-3 text-sm text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-list-check mr-2"></i>任务管理
+                    </button>
+                    <button onclick="switchTab('tracking')" id="tab-tracking" class="tab-button px-4 py-3 text-sm text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-route mr-2"></i>物流追溯
+                    </button>
+                    <button onclick="switchTab('monitoring')" id="tab-monitoring" class="tab-button px-4 py-3 text-sm text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-desktop mr-2"></i>动态监控
+                    </button>
+                    <button onclick="switchTab('resources')" id="tab-resources" class="tab-button px-4 py-3 text-sm text-gray-600 hover:text-gray-900">
+                        <i class="fas fa-cogs mr-2"></i>资源管理
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab内容区 -->
+            <div class="flex-1 overflow-auto p-6">
+                <!-- 数据分析Tab -->
+                <div id="content-analytics" class="tab-content">
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-6">
+                        <!-- 配送任务统计图表 -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-chart-line text-cyan-600 mr-2"></i>配送任务趋势
+                            </h3>
+                            <div id="chart-tasks" style="height: 300px;"></div>
+                        </div>
+
+                        <!-- 设备利用率分析 -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-robot text-green-600 mr-2"></i>设备利用率排名
+                            </h3>
+                            <div id="chart-utilization" style="height: 300px;"></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        <!-- 送达率统计 -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-shipping-fast text-blue-600 mr-2"></i>送达率分析
+                            </h3>
+                            <div id="chart-delivery" style="height: 300px;"></div>
+                        </div>
+
+                        <!-- 呼叫应答统计 -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-phone-volume text-purple-600 mr-2"></i>呼叫应答时效
+                            </h3>
+                            <div id="chart-calls" style="height: 300px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 任务管理Tab -->
+                <div id="content-tasks" class="tab-content hidden">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+                        <div class="p-6 border-b">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-semibold text-gray-800">
+                                    <i class="fas fa-list-check text-cyan-600 mr-2"></i>配送任务列表
+                                </h3>
+                                <div class="flex gap-2">
+                                    <button onclick="createTask()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600 transition-colors text-sm">
+                                        <i class="fas fa-plus mr-2"></i>新建任务
+                                    </button>
+                                    <button onclick="batchAssign()" class="px-4 py-2 bg-success text-white rounded-lg hover:bg-green-700 transition-colors text-sm">
+                                        <i class="fas fa-users mr-2"></i>批量分配
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">任务编号</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">物料信息</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">起点→终点</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">执行设备</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">优先级</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tasks-tbody" class="bg-white divide-y divide-gray-200">
+                                        <!-- 动态生成 -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 物流追溯Tab -->
+                <div id="content-tracking" class="tab-content hidden">
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-robot text-cyan-600 mr-2"></i>AGV运行追溯
+                            </h3>
+                            <div class="space-y-3">
+                                <input type="text" placeholder="输入AGV编号..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                <div id="agv-tracking-result" class="mt-4">
+                                    <!-- 追溯结果 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-box text-blue-600 mr-2"></i>物料配送追溯
+                            </h3>
+                            <div class="space-y-3">
+                                <input type="text" placeholder="输入物料编号..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500">
+                                <div id="material-tracking-result" class="mt-4">
+                                    <!-- 追溯结果 -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 动态监控Tab -->
+                <div id="content-monitoring" class="tab-content hidden">
+                    <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-6">
+                        <!-- 物料监控 -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-boxes text-blue-600 mr-2"></i>物料监控
+                            </h3>
+                            <div id="material-monitor" class="space-y-2">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 设备监控 -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-robot text-green-600 mr-2"></i>设备监控
+                            </h3>
+                            <div id="equipment-monitor" class="space-y-2">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 异常监控 -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-exclamation-triangle text-orange-600 mr-2"></i>异常监控
+                            </h3>
+                            <div id="alarm-monitor" class="space-y-2">
+                                <!-- 动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 资源管理Tab -->
+                <div id="content-resources" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-warehouse text-cyan-600 mr-2"></i>存放区管理
+                            </h3>
+                            <div class="space-y-2">
+                                <button onclick="manageArea('delivery')" class="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <i class="fas fa-truck-loading text-cyan-600 mr-2"></i>发料区管理
+                                </button>
+                                <button onclick="manageArea('storage')" class="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <i class="fas fa-boxes text-blue-600 mr-2"></i>存放区管理
+                                </button>
+                                <button onclick="manageArea('waiting')" class="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <i class="fas fa-clock text-orange-600 mr-2"></i>待运位置管理
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-users text-green-600 mr-2"></i>人员管理
+                            </h3>
+                            <div class="space-y-2">
+                                <button onclick="managePersonnel('ledger')" class="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <i class="fas fa-id-card text-green-600 mr-2"></i>人员台账
+                                </button>
+                                <button onclick="managePersonnel('qualification')" class="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <i class="fas fa-certificate text-blue-600 mr-2"></i>资质管理
+                                </button>
+                                <button onclick="managePersonnel('training')" class="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <i class="fas fa-graduation-cap text-purple-600 mr-2"></i>培训管理
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                                <i class="fas fa-cog text-purple-600 mr-2"></i>基础管理
+                            </h3>
+                            <div class="space-y-2">
+                                <button onclick="manageBasic('cart')" class="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <i class="fas fa-dolly text-cyan-600 mr-2"></i>料车管理
+                                </button>
+                                <button onclick="manageBasic('box')" class="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <i class="fas fa-box text-orange-600 mr-2"></i>料箱管理
+                                </button>
+                                <button onclick="manageBasic('station')" class="w-full text-left px-4 py-3 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <i class="fas fa-map-marker-alt text-red-600 mr-2"></i>工位管理
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../assets/js/dispatch-control.js"></script>
+</body>
+</html>
