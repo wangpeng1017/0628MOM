@@ -92,18 +92,23 @@ function initializeData() {
 }
 
 // 模块切换
-function showModule(moduleName) {
+function showModule(moduleName, event) {
     console.log('showModule 被调用，模块名:', moduleName);
     currentModule = moduleName;
     
-    // 更新菜单激活状态
-    document.querySelectorAll('.menu-item').forEach(item => {
-        item.classList.remove('bg-cyan-50', 'text-cyan-600');
-        item.classList.add('text-gray-700');
-    });
-    
-    event?.target?.closest('.menu-item')?.classList.add('bg-cyan-50', 'text-cyan-600');
-    event?.target?.closest('.menu-item')?.classList.remove('text-gray-700');
+    // 更新菜单激活状态（只在有event时执行）
+    if (event) {
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.classList.remove('bg-cyan-50', 'text-cyan-600');
+            item.classList.add('text-gray-700');
+        });
+        
+        const menuItem = event.target.closest('.menu-item');
+        if (menuItem) {
+            menuItem.classList.add('bg-cyan-50', 'text-cyan-600');
+            menuItem.classList.remove('text-gray-700');
+        }
+    }
     
     // 获取内容区
     const contentArea = document.getElementById('content-area');
