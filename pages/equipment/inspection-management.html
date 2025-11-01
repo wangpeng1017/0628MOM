@@ -453,12 +453,15 @@
                     <!-- 异常项1 -->
                     <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
                         <div class="flex items-start">
-                            <input type="checkbox" class="abnormal-checkbox mt-1 mr-3 w-4 h-4 text-orange-600" checked>
+                            <input type="checkbox" class="abnormal-checkbox mt-1 mr-3 w-4 h-4 text-orange-600" checked data-device="涂覆机-01" data-abnormal-id="INS-2024-003">
                             <div class="flex-1">
                                 <div class="flex items-center justify-between mb-2">
                                     <div class="flex items-center">
                                         <span class="font-medium text-gray-800">INS-2024-003</span>
                                         <span class="ml-2 px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded-full">发现异常</span>
+                                        <span class="ml-2 px-2 py-0.5 bg-purple-100 text-purple-800 text-xs rounded-full">
+                                            <i class="fas fa-robot mr-1"></i>高置信度
+                                        </span>
                                     </div>
                                     <span class="text-xs text-gray-500">今天 14:00</span>
                                 </div>
@@ -466,9 +469,18 @@
                                     <i class="fas fa-route mr-2 text-gray-400"></i>
                                     任务: 一号车间中午巡检任务 | 执行人: 李明明
                                 </div>
-                                <div class="text-sm text-gray-700">
+                                <div class="text-sm text-gray-700 mb-2">
                                     <i class="fas fa-info-circle mr-2 text-red-600"></i>
                                     设备: 涂覆机-01 | 异常: 温度超过安全阈值200℃,当前温度215℃
+                                </div>
+                                <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                                    <div class="text-xs text-gray-500">
+                                        <i class="fas fa-lightbulb mr-1 text-yellow-500"></i>
+                                        AI建议: 立即停机检查温控系统,更换温度传感器
+                                    </div>
+                                    <button onclick="createMaintenanceOrder('INS-2024-003', '涂覆机-01')" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+                                        <i class="fas fa-wrench mr-1"></i>创建维修工单
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -477,12 +489,15 @@
                     <!-- 异常项2 -->
                     <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
                         <div class="flex items-start">
-                            <input type="checkbox" class="abnormal-checkbox mt-1 mr-3 w-4 h-4 text-orange-600" checked>
+                            <input type="checkbox" class="abnormal-checkbox mt-1 mr-3 w-4 h-4 text-orange-600" checked data-device="压力机-02" data-abnormal-id="INS-2024-002">
                             <div class="flex-1">
                                 <div class="flex items-center justify-between mb-2">
                                     <div class="flex items-center">
                                         <span class="font-medium text-gray-800">INS-2024-002</span>
                                         <span class="ml-2 px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded-full">发现异常</span>
+                                        <span class="ml-2 px-2 py-0.5 bg-purple-100 text-purple-800 text-xs rounded-full">
+                                            <i class="fas fa-robot mr-1"></i>高置信度
+                                        </span>
                                     </div>
                                     <span class="text-xs text-gray-500">今天 10:00</span>
                                 </div>
@@ -490,9 +505,18 @@
                                     <i class="fas fa-route mr-2 text-gray-400"></i>
                                     任务: 二号车间早班巡检 | 执行人: 王师傅
                                 </div>
-                                <div class="text-sm text-gray-700">
+                                <div class="text-sm text-gray-700 mb-2">
                                     <i class="fas fa-info-circle mr-2 text-red-600"></i>
                                     设备: 压力机-02 | 异常: 液压系统压力不稳定,存在泄漏风险
+                                </div>
+                                <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                                    <div class="text-xs text-gray-500">
+                                        <i class="fas fa-lightbulb mr-1 text-yellow-500"></i>
+                                        AI建议: 检查液压油路密封件,预计需更换O型圈
+                                    </div>
+                                    <button onclick="createMaintenanceOrder('INS-2024-002', '压力机-02')" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+                                        <i class="fas fa-wrench mr-1"></i>创建维修工单
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -501,12 +525,15 @@
                     <!-- 异常项3 -->
                     <div class="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition-colors">
                         <div class="flex items-start">
-                            <input type="checkbox" class="abnormal-checkbox mt-1 mr-3 w-4 h-4 text-orange-600" checked>
+                            <input type="checkbox" class="abnormal-checkbox mt-1 mr-3 w-4 h-4 text-orange-600" checked data-device="传送带-03" data-abnormal-id="INS-2024-001">
                             <div class="flex-1">
                                 <div class="flex items-center justify-between mb-2">
                                     <div class="flex items-center">
                                         <span class="font-medium text-gray-800">INS-2024-001</span>
                                         <span class="ml-2 px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded-full">发现异常</span>
+                                        <span class="ml-2 px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs rounded-full">
+                                            <i class="fas fa-chart-line mr-1"></i>RUL预警
+                                        </span>
                                     </div>
                                     <span class="text-xs text-gray-500">昨天 16:30</span>
                                 </div>
@@ -514,9 +541,18 @@
                                     <i class="fas fa-route mr-2 text-gray-400"></i>
                                     任务: 三号车间晚班巡检 | 执行人: 陈师傅
                                 </div>
-                                <div class="text-sm text-gray-700">
+                                <div class="text-sm text-gray-700 mb-2">
                                     <i class="fas fa-info-circle mr-2 text-red-600"></i>
                                     设备: 传送带-03 | 异常: 电机异响,疑似轴承磨损
+                                </div>
+                                <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                                    <div class="text-xs text-gray-500">
+                                        <i class="fas fa-lightbulb mr-1 text-yellow-500"></i>
+                                        AI建议: 轴承剩余寿命约7天,建议提前更换6205型号轴承
+                                    </div>
+                                    <button onclick="createMaintenanceOrder('INS-2024-001', '传送带-03')" class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+                                        <i class="fas fa-wrench mr-1"></i>创建维修工单
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -632,6 +668,102 @@
                 updateAbnormalSelectedCount();
             }
         });
+
+        // 创建维修工单 - 智能工单触发
+        function createMaintenanceOrder(abnormalId, deviceName) {
+            // 获取异常信息
+            const checkbox = document.querySelector(`input[data-abnormal-id="${abnormalId}"]`);
+            if (!checkbox) {
+                alert('无法获取异常信息');
+                return;
+            }
+
+            // 模拟AI分析结果
+            const aiAnalysis = {
+                'INS-2024-003': {
+                    faultPart: '温控系统-温度传感器',
+                    faultReason: '传感器老化导致温度读数异常偏高',
+                    suggestedAction: '立即停机检查温控系统，更换温度传感器',
+                    priority: '紧急',
+                    estimatedTime: '2小时',
+                    requiredParts: ['温度传感器 PT100', '导热硅脂'],
+                    assignTo: '电气维修班-张工'
+                },
+                'INS-2024-002': {
+                    faultPart: '液压系统-密封组件',
+                    faultReason: '液压油路密封件老化，存在泄漏风险',
+                    suggestedAction: '检查液压油路密封件，预计需更换O型圈',
+                    priority: '高',
+                    estimatedTime: '4小时',
+                    requiredParts: ['O型圈 NBR-90', '液压油 HM46'],
+                    assignTo: '机械维修班-王师傅'
+                },
+                'INS-2024-001': {
+                    faultPart: '电机轴承',
+                    faultReason: '轴承磨损严重，剩余使用寿命约7天',
+                    suggestedAction: '建议提前更换6205型号轴承，避免突发故障',
+                    priority: '中',
+                    estimatedTime: '3小时',
+                    requiredParts: ['深沟球轴承 6205-2RS', '润滑脂'],
+                    assignTo: '机械维修班-李师傅',
+                    rulWarning: true,
+                    remainingLife: '7天'
+                }
+            };
+
+            const analysis = aiAnalysis[abnormalId];
+            if (!analysis) {
+                alert('AI分析数据不可用');
+                return;
+            }
+
+            // 生成工单编号
+            const workOrderNo = 'WO-' + new Date().getFullYear() + 
+                                ('0' + (new Date().getMonth() + 1)).slice(-2) + 
+                                ('0' + new Date().getDate()).slice(-2) + 
+                                '-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+
+            // 构建工单信息
+            const orderInfo = `
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🤖 智能预见性维修工单已创建
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📋 工单编号: ${workOrderNo}
+🏭 设备名称: ${deviceName}
+⚠️  异常编号: ${abnormalId}
+🎯 优先级: ${analysis.priority}
+
+━━━ AI 故障分析 ━━━
+🔍 故障部位: ${analysis.faultPart}
+📊 故障原因: ${analysis.faultReason}
+${analysis.rulWarning ? '⏰ 剩余寿命: ' + analysis.remainingLife : ''}
+
+━━━ 维修建议 ━━━
+💡 建议措施: ${analysis.suggestedAction}
+⏱️  预计工时: ${analysis.estimatedTime}
+🔧 所需备件: ${analysis.requiredParts.join('、')}
+
+━━━ 工单派发 ━━━
+👷 派发给: ${analysis.assignTo}
+📅 创建时间: ${new Date().toLocaleString('zh-CN')}
+📱 已发送通知: 短信、APP推送
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ 工单已自动派发给维修工程师
+📊 可在【设备管理-维修管理】中查看详情
+            `;
+
+            // 显示工单信息
+            if (confirm(orderInfo + '\n\n是否确认创建此维修工单？')) {
+                // 模拟创建工单
+                alert('✅ 维修工单创建成功！\n\n工单编号: ' + workOrderNo + '\n已自动派发给: ' + analysis.assignTo);
+                
+                // 可选：跳转到维修工单页面
+                // window.location.href = 'maintenance-management.html?order=' + workOrderNo;
+            }
+        }
     </script>
 </body>
 </html>
