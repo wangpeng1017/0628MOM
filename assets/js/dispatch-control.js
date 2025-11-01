@@ -78,7 +78,7 @@ function initializeData() {
     ];
 }
 
-// Tab切换
+// Tab切换（适配左侧导航）
 function switchTab(tabName) {
     currentTab = tabName;
     
@@ -87,19 +87,19 @@ function switchTab(tabName) {
         content.classList.add('hidden');
     });
     
-    // 移除所有Tab按钮的active状态
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.classList.remove('active', 'text-cyan-600', 'font-semibold');
-        button.classList.add('text-gray-600');
+    // 移除所有导航项的active状态
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active', 'text-cyan-600', 'font-semibold');
+        item.classList.add('text-gray-700');
     });
     
     // 显示选中的Tab内容
     document.getElementById(`content-${tabName}`).classList.remove('hidden');
     
-    // 激活选中的Tab按钮
-    const activeButton = document.getElementById(`tab-${tabName}`);
-    activeButton.classList.add('active', 'text-cyan-600', 'font-semibold');
-    activeButton.classList.remove('text-gray-600');
+    // 激活选中的导航项
+    const activeNav = document.getElementById(`nav-${tabName}`);
+    activeNav.classList.add('active', 'text-cyan-600', 'font-semibold');
+    activeNav.classList.remove('text-gray-700');
     
     // 如果切换到数据分析Tab，刷新图表
     if (tabName === 'analytics') {
@@ -348,17 +348,17 @@ function cancelTask(taskId) {
 
 // 创建任务
 function createTask() {
-    alert('打开新建任务表单\n\n需要填写：\n- 物料信息\n- 起点位置\n- 终点位置\n- 优先级\n- 配送要求');
+    openModal('create-task-modal');
 }
 
 // 批量分配
 function batchAssign() {
-    alert('批量任务分配\n\n系统将根据：\n- 设备状态\n- 距离优先\n- 负载均衡\n自动分配任务');
+    openModal('batch-assign-modal');
 }
 
 // 打开大屏展示
 function openBigScreen() {
-    alert('打开调度指挥中心大屏\n\n将展示：\n- 实时任务进度\n- 设备运行状态\n- 异常报警信息\n- 关键指标看板');
+    openModal('bigscreen-modal');
 }
 
 // 刷新数据
@@ -386,7 +386,8 @@ function manageArea(type) {
         'storage': '存放区管理',
         'waiting': '待运位置管理'
     };
-    alert(`${titles[type]}\n\n功能：\n- 区域规划\n- 库位分配\n- 容量管理\n- 使用统计`);
+    document.getElementById('area-modal-title').textContent = titles[type];
+    openModal('area-modal');
 }
 
 // 人员管理
@@ -396,7 +397,8 @@ function managePersonnel(type) {
         'qualification': '资质管理',
         'training': '培训管理'
     };
-    alert(`${titles[type]}\n\n功能：\n- 信息维护\n- 权限设置\n- 绩效统计\n- 培训记录`);
+    document.getElementById('personnel-modal-title').textContent = titles[type];
+    openModal('personnel-modal');
 }
 
 // 基础管理
@@ -406,8 +408,46 @@ function manageBasic(type) {
         'box': '料箱管理',
         'station': '工位管理'
     };
-    alert(`${titles[type]}\n\n功能：\n- 台账维护\n- 使用追溯\n- 周转统计\n- 维护记录`);
+    document.getElementById('basic-modal-title').textContent = titles[type];
+    openModal('basic-modal');
 }
+
+// 打开模态窗口
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.add('show');
+    }
+}
+
+// 关闭模态窗口
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('show');
+    }
+}
+
+// 关闭所有模态窗口
+function closeAllModals() {
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.classList.remove('show');
+    });
+}
+
+// ESC键关闭模态窗口
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeAllModals();
+    }
+});
+
+// 点击模态窗口背景关闭
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal')) {
+        closeAllModals();
+    }
+});
 
 // 实时数据更新
 function startRealTimeUpdate() {
