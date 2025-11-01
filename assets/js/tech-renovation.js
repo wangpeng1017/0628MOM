@@ -1,6 +1,9 @@
 // 技改管理模块 - JavaScript
 let projects = [];
 let filteredData = [];
+let projectTasks = {}; // 存储各项目的任务
+let currentProjectId = null; // 当前操作的项目ID
+let currentTaskId = null; // 当前操作的任务ID
 
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
@@ -95,6 +98,99 @@ function initializeData() {
     ];
     
     filteredData = [...projects];
+    
+    // 初始化任务数据
+    initializeTasksData();
+}
+
+// 初始化任务数据
+function initializeTasksData() {
+    projectTasks = {
+        'TR-2024-001': [
+            {
+                id: 'TASK-001-01',
+                name: '新模块采购',
+                description: '采购20通道测试模块及相关配件',
+                assignee: '采购部-张三',
+                type: 'procurement',
+                startDate: '2024-09-01',
+                endDate: '2024-09-15',
+                priority: 'high',
+                status: 'completed',
+                progress: 100,
+                records: [
+                    {
+                        date: '2024-09-05',
+                        progress: 50,
+                        content: '已完成供应商筛选，确定3家候选供应商',
+                        issues: '',
+                        attachments: []
+                    },
+                    {
+                        date: '2024-09-12',
+                        progress: 100,
+                        content: '采购订单已下达，预计9月15日到货',
+                        issues: '',
+                        attachments: []
+                    }
+                ]
+            },
+            {
+                id: 'TASK-001-02',
+                name: '电气改造',
+                description: '扩展电气控制系统，增加10个通道控制',
+                assignee: '维修团队-李师傅',
+                type: 'installation',
+                startDate: '2024-09-16',
+                endDate: '2024-10-15',
+                priority: 'high',
+                status: 'ongoing',
+                progress: 70,
+                records: [
+                    {
+                        date: '2024-09-20',
+                        progress: 30,
+                        content: '完成电气图纸设计和审核',
+                        issues: '',
+                        attachments: []
+                    },
+                    {
+                        date: '2024-10-05',
+                        progress: 70,
+                        content: '完成主控制柜改造，正在进行通道接线',
+                        issues: '部分线缆规格不符，已重新订购',
+                        attachments: ['施工照片1.jpg', '施工照片2.jpg']
+                    }
+                ]
+            },
+            {
+                id: 'TASK-001-03',
+                name: '软件调试',
+                description: '更新测试软件，支持20通道并行测试',
+                assignee: '技术部-王工',
+                type: 'debugging',
+                startDate: '2024-10-16',
+                endDate: '2024-11-15',
+                priority: 'medium',
+                status: 'pending',
+                progress: 0,
+                records: []
+            },
+            {
+                id: 'TASK-001-04',
+                name: '系统测试',
+                description: '进行全系统功能测试和稳定性测试',
+                assignee: '测试组-赵工',
+                type: 'testing',
+                startDate: '2024-11-16',
+                endDate: '2024-11-25',
+                priority: 'high',
+                status: 'pending',
+                progress: 0,
+                records: []
+            }
+        ]
+    };
 }
 
 // 渲染表格
@@ -309,16 +405,398 @@ function viewDetail(id) {
     alert(`项目详情\n\n编号: ${project.id}\n名称: ${project.name}\n类型: ${getTypeText(project.type)}\n设备: ${project.equipment}\n预算: ¥${project.budget.toLocaleString()}\n实际: ¥${project.actualCost.toLocaleString()}\n进度: ${project.progress}%\n负责人: ${project.manager}\n状态: ${project.status}\n\n背景: ${project.background}\n目标: ${project.goals}`);
 }
 
-// 更新进度
+// 更新进度 - 打开进度更新弹窗
 function updateProgress(id) {
+    currentProjectId = id;
     const project = projects.find(p => p.id === id);
-    const newProgress = prompt(`更新项目进度\n\n当前进度: ${project.progress}%\n请输入新的进度(0-100):`, project.progress);
     
-    if (newProgress !== null && !isNaN(newProgress)) {
-        const progress = Math.max(0, Math.min(100, parseInt(newProgress)));
-        alert(`✅ 进度已更新！\n\n项目: ${project.name}\n新进度: ${progress}%`);
-        // 这里可以更新数据并重新渲染
+    if (!project) {
+        alert('项目不存在');
+        return;
     }
+    
+    // 更新弹窗标题
+    document.getElementById('progress-project-name').textContent = `${project.id} - ${project.name}`;
+    
+    // 更新项目概览数据
+    updateProgressOverview(id);
+    
+    // 渲染任务列表
+    renderProgressTasks(id);
+    
+    // 渲染执行记录
+    renderProgressRecords(id);
+    
+    // 更新任务选择下拉框
+    updateTaskSelectOptions(id);
+    
+    // 切换到任务列表Tab
+    switchProgressTab('tasks');
+    
+    // 打开弹窗
+    document.getElementById('progress-update-modal').classList.add('show');
+}
+
+// 更新项目概览数据
+function updateProgressOverview(projectId) {
+    const project = projects.find(p => p.id === projectId);
+    const tasks = projectTasks[projectId] || [];
+    
+    const completedTasks = tasks.filter(t => t.status === 'completed').length;
+    const ongoingTasks = tasks.filter(t => t.status === 'ongoing').length;
+    const pendingTasks = tasks.filter(t => t.status === 'pending').length;
+    
+    document.getElementById('progress-current').textContent = project.progress + '%';
+    document.getElementById('progress-completed-tasks').textContent = completedTasks;
+    document.getElementById('progress-ongoing-tasks').textContent = ongoingTasks;
+    document.getElementById('progress-pending-tasks').textContent = pendingTasks;
+}
+
+// 切换进度更新Tab
+function switchProgressTab(tabName) {
+    // 隐藏所有Tab内容
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.add('hidden');
+    });
+    
+    // 重置所有Tab按钮样式
+    document.querySelectorAll('[id^="tab-"]').forEach(btn => {
+        btn.classList.remove('border-green-500', 'text-green-600', 'font-semibold');
+        btn.classList.add('border-transparent', 'text-gray-500');
+    });
+    
+    // 显示选中的Tab内容
+    document.getElementById(`progress-tab-${tabName}`).classList.remove('hidden');
+    
+    // 激活选中的Tab按钮
+    const activeBtn = document.getElementById(`tab-${tabName}`);
+    activeBtn.classList.remove('border-transparent', 'text-gray-500');
+    activeBtn.classList.add('border-green-500', 'text-green-600', 'font-semibold');
+}
+
+// 渲染任务列表
+function renderProgressTasks(projectId) {
+    const tasks = projectTasks[projectId] || [];
+    const tbody = document.getElementById('progress-tasks-tbody');
+    
+    if (tasks.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="px-4 py-8 text-center text-gray-500">
+                    <i class="fas fa-inbox text-4xl mb-2"></i>
+                    <p>暂无任务，请添加任务</p>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    tbody.innerHTML = tasks.map(task => `
+        <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">
+                <div class="text-sm font-medium text-gray-900">${task.name}</div>
+                <div class="text-xs text-gray-500 mt-1">${task.description.substring(0, 40)}...</div>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-900">${task.assignee}</td>
+            <td class="px-4 py-3">
+                <span class="badge ${getTaskTypeBadgeClass(task.type)}">${getTaskTypeText(task.type)}</span>
+            </td>
+            <td class="px-4 py-3 text-xs text-gray-600">
+                <div>${task.startDate}</div>
+                <div class="text-gray-400">至 ${task.endDate}</div>
+            </td>
+            <td class="px-4 py-3">
+                <div class="flex items-center">
+                    <div class="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                        <div class="h-2 rounded-full ${getProgressColor(task.progress)}" style="width: ${task.progress}%"></div>
+                    </div>
+                    <span class="text-sm font-semibold">${task.progress}%</span>
+                </div>
+            </td>
+            <td class="px-4 py-3">
+                ${getTaskStatusBadge(task.status)}
+            </td>
+            <td class="px-4 py-3">
+                <button onclick="viewTaskDetail('${task.id}')" class="text-blue-600 hover:text-blue-800 mr-2" title="查看详情">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button onclick="editTask('${task.id}')" class="text-green-600 hover:text-green-800" title="编辑">
+                    <i class="fas fa-edit"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// 获取任务类型徽章样式
+function getTaskTypeBadgeClass(type) {
+    const classMap = {
+        'procurement': 'bg-blue-100 text-blue-700',
+        'installation': 'bg-purple-100 text-purple-700',
+        'debugging': 'bg-yellow-100 text-yellow-700',
+        'testing': 'bg-green-100 text-green-700',
+        'training': 'bg-pink-100 text-pink-700',
+        'other': 'bg-gray-100 text-gray-700'
+    };
+    return classMap[type] || 'bg-gray-100 text-gray-700';
+}
+
+// 获取任务类型文本
+function getTaskTypeText(type) {
+    const textMap = {
+        'procurement': '采购',
+        'installation': '安装',
+        'debugging': '调试',
+        'testing': '测试',
+        'training': '培训',
+        'other': '其他'
+    };
+    return textMap[type] || type;
+}
+
+// 获取任务状态徽章
+function getTaskStatusBadge(status) {
+    const statusConfig = {
+        'pending': { class: 'bg-gray-100 text-gray-700', icon: 'hourglass-half', text: '待开始' },
+        'ongoing': { class: 'bg-blue-100 text-blue-700', icon: 'spinner', text: '进行中' },
+        'completed': { class: 'bg-green-100 text-green-700', icon: 'check-circle', text: '已完成' }
+    };
+    const config = statusConfig[status] || statusConfig['pending'];
+    return `<span class="status-chip ${config.class}"><i class="fas fa-${config.icon}"></i> ${config.text}</span>`;
+}
+
+// 查看任务详情
+function viewTaskDetail(taskId) {
+    const tasks = projectTasks[currentProjectId] || [];
+    const task = tasks.find(t => t.id === taskId);
+    
+    if (!task) return;
+    
+    const recordsHtml = task.records && task.records.length > 0 ? 
+        task.records.map(r => `
+            <div class="border-l-4 border-green-500 pl-3 py-2">
+                <div class="text-sm font-medium text-gray-900">${r.date} - 进度: ${r.progress}%</div>
+                <div class="text-sm text-gray-700 mt-1">${r.content}</div>
+                ${r.issues ? `<div class="text-sm text-orange-600 mt-1">问题: ${r.issues}</div>` : ''}
+                ${r.attachments && r.attachments.length > 0 ? `<div class="text-xs text-gray-500 mt-1">附件: ${r.attachments.join(', ')}</div>` : ''}
+            </div>
+        `).join('') : '<p class="text-gray-500 text-sm">暂无执行记录</p>';
+    
+    alert(`任务详情\n\n任务名称: ${task.name}\n任务描述: ${task.description}\n执行人: ${task.assignee}\n类型: ${getTaskTypeText(task.type)}\n优先级: ${task.priority}\n时间: ${task.startDate} 至 ${task.endDate}\n进度: ${task.progress}%\n状态: ${task.status}\n\n执行记录:\n${task.records ? task.records.map(r => `${r.date}: ${r.content}`).join('\n') : '暂无记录'}`);
+}
+
+// 编辑任务
+function editTask(taskId) {
+    alert('编辑任务功能：\n\n可以修改任务的基本信息、执行人、时间等');
+}
+
+// 重置添加任务表单
+function resetAddTaskForm() {
+    document.getElementById('progress-add-task-form').reset();
+}
+
+// 保存新任务
+function saveNewTask() {
+    const name = document.getElementById('new-task-name').value;
+    const type = document.getElementById('new-task-type').value;
+    const description = document.getElementById('new-task-description').value;
+    const assignee = document.getElementById('new-task-assignee').value;
+    const priority = document.getElementById('new-task-priority').value;
+    const startDate = document.getElementById('new-task-start-date').value;
+    const endDate = document.getElementById('new-task-end-date').value;
+    
+    if (!name || !type || !description || !assignee || !startDate || !endDate) {
+        alert('请填写所有必填项');
+        return;
+    }
+    
+    // 验证日期
+    if (new Date(endDate) < new Date(startDate)) {
+        alert('结束日期不能早于开始日期');
+        return;
+    }
+    
+    // 创建新任务
+    if (!projectTasks[currentProjectId]) {
+        projectTasks[currentProjectId] = [];
+    }
+    
+    const taskId = `TASK-${currentProjectId.split('-')[2]}-${(projectTasks[currentProjectId].length + 1).toString().padStart(2, '0')}`;
+    
+    const newTask = {
+        id: taskId,
+        name: name,
+        description: description,
+        assignee: assignee,
+        type: type,
+        startDate: startDate,
+        endDate: endDate,
+        priority: priority,
+        status: 'pending',
+        progress: 0,
+        records: []
+    };
+    
+    projectTasks[currentProjectId].push(newTask);
+    
+    alert(`✅ 任务添加成功！\n\n任务编号: ${taskId}\n任务名称: ${name}\n执行人: ${assignee}`);
+    
+    // 重置表单
+    resetAddTaskForm();
+    
+    // 刷新任务列表
+    renderProgressTasks(currentProjectId);
+    updateProgressOverview(currentProjectId);
+    updateTaskSelectOptions(currentProjectId);
+    
+    // 切换到任务列表Tab
+    switchProgressTab('tasks');
+}
+
+// 更新任务选择下拉框
+function updateTaskSelectOptions(projectId) {
+    const tasks = projectTasks[projectId] || [];
+    const select = document.getElementById('record-task-select');
+    
+    select.innerHTML = '<option value="">请选择任务</option>' + 
+        tasks.map(task => `<option value="${task.id}">${task.name} (${task.assignee})</option>`).join('');
+}
+
+// 渲染执行记录
+function renderProgressRecords(projectId) {
+    const tasks = projectTasks[projectId] || [];
+    const historyDiv = document.getElementById('progress-record-history');
+    
+    // 收集所有任务的记录
+    let allRecords = [];
+    tasks.forEach(task => {
+        if (task.records && task.records.length > 0) {
+            task.records.forEach(record => {
+                allRecords.push({
+                    ...record,
+                    taskName: task.name,
+                    taskId: task.id
+                });
+            });
+        }
+    });
+    
+    // 按日期倒序排序
+    allRecords.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    if (allRecords.length === 0) {
+        historyDiv.innerHTML = `
+            <div class="text-center py-8 text-gray-500">
+                <i class="fas fa-inbox text-4xl mb-2"></i>
+                <p>暂无执行记录</p>
+            </div>
+        `;
+        return;
+    }
+    
+    historyDiv.innerHTML = allRecords.map(record => `
+        <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+            <div class="flex items-start justify-between mb-2">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-sm font-semibold text-gray-800">${record.taskName}</span>
+                        <span class="badge bg-green-100 text-green-700">进度: ${record.progress}%</span>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        <i class="fas fa-calendar mr-1"></i>${record.date}
+                    </div>
+                </div>
+            </div>
+            <div class="text-sm text-gray-700 mb-2">
+                <i class="fas fa-file-alt text-cyan-600 mr-2"></i>${record.content}
+            </div>
+            ${record.issues ? `
+                <div class="text-sm text-orange-600 bg-orange-50 rounded p-2 mb-2">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>${record.issues}
+                </div>
+            ` : ''}
+            ${record.attachments && record.attachments.length > 0 ? `
+                <div class="flex flex-wrap gap-2 mt-2">
+                    ${record.attachments.map(file => `
+                        <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
+                            <i class="fas fa-paperclip mr-1"></i>${file}
+                        </span>
+                    `).join('')}
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
+}
+
+// 提交执行记录
+function submitProgressRecord() {
+    const taskId = document.getElementById('record-task-select').value;
+    const progress = parseInt(document.getElementById('progress-record-progress').value);
+    const content = document.getElementById('progress-record-content').value;
+    const issues = document.getElementById('progress-record-issues').value;
+    const attachments = document.getElementById('progress-record-attachments').files;
+    
+    if (!taskId) {
+        alert('请选择任务');
+        return;
+    }
+    
+    if (!content) {
+        alert('请填写工作内容');
+        return;
+    }
+    
+    // 查找任务
+    const tasks = projectTasks[currentProjectId] || [];
+    const task = tasks.find(t => t.id === taskId);
+    
+    if (!task) {
+        alert('任务不存在');
+        return;
+    }
+    
+    // 创建记录
+    const record = {
+        date: new Date().toISOString().split('T')[0],
+        progress: progress,
+        content: content,
+        issues: issues,
+        attachments: Array.from(attachments).map(f => f.name)
+    };
+    
+    // 添加记录到任务
+    if (!task.records) {
+        task.records = [];
+    }
+    task.records.push(record);
+    
+    // 更新任务进度和状态
+    task.progress = progress;
+    if (progress === 100) {
+        task.status = 'completed';
+    } else if (progress > 0) {
+        task.status = 'ongoing';
+    }
+    
+    // 更新项目整体进度（基于所有任务的平均进度）
+    const totalProgress = tasks.reduce((sum, t) => sum + t.progress, 0);
+    const avgProgress = Math.round(totalProgress / tasks.length);
+    const project = projects.find(p => p.id === currentProjectId);
+    if (project) {
+        project.progress = avgProgress;
+    }
+    
+    alert(`✅ 执行记录提交成功！\n\n任务: ${task.name}\n进度: ${progress}%\n\n项目整体进度已更新为: ${avgProgress}%`);
+    
+    // 重置表单
+    document.getElementById('progress-record-form').reset();
+    document.getElementById('progress-record-progress-value').textContent = '0%';
+    
+    // 刷新显示
+    renderProgressTasks(currentProjectId);
+    renderProgressRecords(currentProjectId);
+    updateProgressOverview(currentProjectId);
+    renderTable();
 }
 
 // 查看预算
