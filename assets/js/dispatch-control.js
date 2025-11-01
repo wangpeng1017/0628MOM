@@ -345,26 +345,204 @@ function initializeCharts() {
     const callsChartEl = document.getElementById('chart-calls');
     if (callsChartEl) {
         const callsChart = echarts.init(callsChartEl);
-    callsChart.setOption({
-        tooltip: {
-            trigger: 'axis'
-        },
-        xAxis: {
-            type: 'category',
-            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-        },
-        yAxis: {
-            type: 'value',
-            name: '分钟'
-        },
-        series: [{
-            name: '平均响应时间',
-            type: 'bar',
-            data: [2.5, 2.3, 2.1, 2.4, 2.2, 1.9, 2.0],
-            itemStyle: { color: '#8b5cf6' }
-        }]
+        callsChart.setOption({
+            tooltip: {
+                trigger: 'axis'
+            },
+            xAxis: {
+                type: 'category',
+                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+            },
+            yAxis: {
+                type: 'value',
+                name: '分钟'
+            },
+            series: [{
+                name: '平均响应时间',
+                type: 'bar',
+                data: [2.5, 2.3, 2.1, 2.4, 2.2, 1.9, 2.0],
+                itemStyle: { color: '#8b5cf6' }
+            }]
         });
         chartsInstances.calls = callsChart;
+    }
+
+    // 设备运行时长分布
+    const equipmentTimeChartEl = document.getElementById('chart-equipment-time');
+    if (equipmentTimeChartEl) {
+        const equipmentTimeChart = echarts.init(equipmentTimeChartEl);
+        equipmentTimeChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { type: 'shadow' }
+            },
+            legend: {
+                data: ['0-2小时', '2-4小时', '4-6小时', '6-8小时', '8小时以上']
+            },
+            xAxis: {
+                type: 'category',
+                data: ['AGV', '叉车', '输送线', '堆垛机']
+            },
+            yAxis: {
+                type: 'value',
+                name: '设备数量'
+            },
+            series: [
+                {
+                    name: '0-2小时',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [2, 1, 0, 1],
+                    itemStyle: { color: '#ef4444' }
+                },
+                {
+                    name: '2-4小时',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [3, 2, 1, 1],
+                    itemStyle: { color: '#f59e0b' }
+                },
+                {
+                    name: '4-6小时',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [2, 1, 2, 1],
+                    itemStyle: { color: '#06b6d4' }
+                },
+                {
+                    name: '6-8小时',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [2, 1, 1, 0],
+                    itemStyle: { color: '#10b981' }
+                },
+                {
+                    name: '8小时以上',
+                    type: 'bar',
+                    stack: 'total',
+                    data: [1, 0, 1, 1],
+                    itemStyle: { color: '#8b5cf6' }
+                }
+            ]
+        });
+        chartsInstances.equipmentTime = equipmentTimeChart;
+    }
+
+    // 送达率趋势
+    const deliveryTrendChartEl = document.getElementById('chart-delivery-trend');
+    if (deliveryTrendChartEl) {
+        const deliveryTrendChart = echarts.init(deliveryTrendChartEl);
+        deliveryTrendChart.setOption({
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['送达率', '目标线']
+            },
+            xAxis: {
+                type: 'category',
+                data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月']
+            },
+            yAxis: {
+                type: 'value',
+                min: 90,
+                max: 100,
+                name: '送达率(%)'
+            },
+            series: [
+                {
+                    name: '送达率',
+                    type: 'line',
+                    data: [95.2, 96.1, 95.8, 96.5, 97.2, 96.8, 97.5, 96.9, 97.8, 96.2],
+                    smooth: true,
+                    itemStyle: { color: '#10b981' },
+                    areaStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [
+                                { offset: 0, color: 'rgba(16, 185, 129, 0.3)' },
+                                { offset: 1, color: 'rgba(16, 185, 129, 0.05)' }
+                            ]
+                        }
+                    }
+                },
+                {
+                    name: '目标线',
+                    type: 'line',
+                    data: [95, 95, 95, 95, 95, 95, 95, 95, 95, 95],
+                    lineStyle: { type: 'dashed', color: '#ef4444' },
+                    itemStyle: { color: '#ef4444' }
+                }
+            ]
+        });
+        chartsInstances.deliveryTrend = deliveryTrendChart;
+    }
+
+    // 报警分类占比
+    const alarmTypeChartEl = document.getElementById('chart-alarm-type');
+    if (alarmTypeChartEl) {
+        const alarmTypeChart = echarts.init(alarmTypeChartEl);
+        alarmTypeChart.setOption({
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b}: {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                right: 10,
+                top: 'center'
+            },
+            series: [{
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                    show: true,
+                    formatter: '{b}\n{d}%'
+                },
+                data: [
+                    { value: 35, name: '路径阻塞', itemStyle: { color: '#ef4444' } },
+                    { value: 28, name: '设备故障', itemStyle: { color: '#f59e0b' } },
+                    { value: 18, name: '通信异常', itemStyle: { color: '#06b6d4' } },
+                    { value: 12, name: '电量不足', itemStyle: { color: '#8b5cf6' } },
+                    { value: 7, name: '其他', itemStyle: { color: '#6b7280' } }
+                ]
+            }]
+        });
+        chartsInstances.alarmType = alarmTypeChart;
+    }
+
+    // 报警高发时段
+    const alarmTimeChartEl = document.getElementById('chart-alarm-time');
+    if (alarmTimeChartEl) {
+        const alarmTimeChart = echarts.init(alarmTimeChartEl);
+        alarmTimeChart.setOption({
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { type: 'shadow' }
+            },
+            xAxis: {
+                type: 'category',
+                data: ['0-2时', '2-4时', '4-6时', '6-8时', '8-10时', '10-12时', 
+                       '12-14时', '14-16时', '16-18时', '18-20时', '20-22时', '22-24时']
+            },
+            yAxis: {
+                type: 'value',
+                name: '报警次数'
+            },
+            series: [{
+                name: '报警次数',
+                type: 'bar',
+                data: [2, 1, 3, 5, 12, 15, 8, 18, 14, 10, 6, 3],
+                itemStyle: {
+                    color: function(params) {
+                        return params.value > 15 ? '#ef4444' : params.value > 10 ? '#f59e0b' : '#06b6d4';
+                    }
+                }
+            }]
+        });
+        chartsInstances.alarmTime = alarmTimeChart;
     }
 }
 
@@ -546,6 +724,16 @@ function getModuleContent(moduleName) {
             return getExceptionHandlingContent();
         case 'fault-avoidance':
             return getFaultAvoidanceContent();
+        
+        // 二、业务执行层 - 物流追溯管理
+        case 'agv-tracking':
+            return getAgvTrackingContent();
+        case 'material-tracking':
+            return getMaterialTrackingContent();
+        case 'container-tracking':
+            return getContainerTrackingContent();
+        case 'call-tracking':
+            return getCallTrackingContent();
         
         // 默认
         default:
@@ -1773,3 +1961,51 @@ function getDefaultModuleContent(moduleName) {
         </div>
     `;
 }
+
+// 11. AGV运行追溯模块
+function getAgvTrackingContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">AGV运行追溯</h2>
+                <p class="text-sm text-gray-600">实时追踪AGV运行轨迹、任务执行历史，全程可视化管理</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">
+                    <i class="fas fa-route text-blue-600 mr-2"></i>运行历史记录
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">AGV编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">任务编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">起点→终点</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">耗时</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2024-11-01 14:25</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AGV-005</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600">TASK-2024-156</td>
+                                <td class="px-6 py-4 text-sm text-gray-700">仓储A区 → 车间B-工位08</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">5分32秒</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">已完成</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 12-14. 其他追溯模块占位
+function getMaterialTrackingContent() { return getDefaultModuleContent('material-tracking'); }
+function getContainerTrackingContent() { return getDefaultModuleContent('container-tracking'); }
+function getCallTrackingContent() { return getDefaultModuleContent('call-tracking'); }
