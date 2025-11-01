@@ -482,26 +482,36 @@ window.addEventListener('resize', () => {
 
 // 获取模块内容
 function getModuleContent(moduleName) {
-    const modules = {
+    // 使用switch语句进行惰性加载
+    switch(moduleName) {
         // 一、数据分析与展示层
-        'delivery-stats': getDeliveryStatsContent(),
-        'equipment-utilization': getEquipmentUtilizationContent(),
-        'delivery-rate': getDeliveryRateContent(),
-        'call-response': getCallResponseContent(),
-        'alarm-stats': getAlarmStatsContent(),
+        case 'delivery-stats':
+            return getDeliveryStatsContent();
+        case 'equipment-utilization':
+            return getEquipmentUtilizationContent();
+        case 'delivery-rate':
+            return getDeliveryRateContent();
+        case 'call-response':
+            return getCallResponseContent();
+        case 'alarm-stats':
+            return getAlarmStatsContent();
         
         // 二、业务执行层 - 任务优化配置
-        'task-assignment': getTaskAssignmentContent(),
-        'nearby-dispatch': getNearbyDispatchContent(),
-        'task-query': getTaskQueryContent(),
-        'exception-handling': getExceptionHandlingContent(),
-        'fault-avoidance': getFaultAvoidanceContent(),
+        case 'task-assignment':
+            return getTaskAssignmentContent();
+        case 'nearby-dispatch':
+            return getNearbyDispatchContent();
+        case 'task-query':
+            return getTaskQueryContent();
+        case 'exception-handling':
+            return getExceptionHandlingContent();
+        case 'fault-avoidance':
+            return getFaultAvoidanceContent();
         
-        // 其他模块占位
-        'default': getDefaultModuleContent(moduleName)
-    };
-    
-    return modules[moduleName] || modules['default'];
+        // 默认
+        default:
+            return getDefaultModuleContent(moduleName);
+    }
 }
 
 // 1. 配送任务统计模块
@@ -1123,8 +1133,106 @@ function getAlarmStatsContent() {
     `;
 }
 
-// 占位函数（待开发模块）
-function getTaskAssignmentContent() { return getDefaultModuleContent('task-assignment'); }
+// 6. 任务分配模块
+function getTaskAssignmentContent() {
+    return `
+        <div>
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-2">任务分配</h2>
+                <p class="text-sm text-gray-600">基于生产需求、设备状态、库存水位等数据，自动分配仓储下架、物流转运、车间配送任务</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">待分配任务</h3>
+                        <i class="fas fa-hourglass-start text-orange-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-orange-600">23</p>
+                    <p class="text-sm text-gray-500 mt-2">优先级高: 8</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">可用设备</h3>
+                        <i class="fas fa-robot text-green-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-green-600">15</p>
+                    <p class="text-sm text-gray-500 mt-2">AGV: 10 | 叉车: 5</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">今日已分配</h3>
+                        <i class="fas fa-check-circle text-blue-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-blue-600">187</p>
+                    <p class="text-sm text-success mt-2">↑ 12% 较昨日</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-medium text-gray-600">平均分配时长</h3>
+                        <i class="fas fa-clock text-purple-600 text-xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-purple-600">1.2</p>
+                    <p class="text-sm text-gray-500 mt-2">分钟</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+                <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-800">待分配任务列表</h2>
+                    <div class="flex gap-2">
+                        <button onclick="autoAssign()" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-cyan-600 text-sm">
+                            <i class="fas fa-magic mr-2"></i>智能分配
+                        </button>
+                        <button onclick="manualAssign()" class="px-4 py-2 bg-success text-white rounded-lg hover:bg-green-700 text-sm">
+                            <i class="fas fa-hand-pointer mr-2"></i>手动分配
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                    <input type="checkbox" class="rounded">
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">任务编号</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">物料信息</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">起点→终点</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">优先级</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">推荐设备</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4"><input type="checkbox" class="rounded"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">TASK-2024-156</td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm font-medium text-gray-900">电解液-B型</div>
+                                    <div class="text-xs text-gray-500">MAT-025 | 200L</div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700">仓储A区 → 车间B-工位08</td>
+                                <td class="px-6 py-4">
+                                    <span class="px-2 py-1 text-xs font-medium rounded-full bg-red-100 text-red-700">高</span>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-700">AGV-003 (距离最近)</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                    <button class="text-blue-600 hover:text-blue-800 mr-3">
+                                        <i class="fas fa-check-circle"></i> 分配
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    `;
+}
 function getNearbyDispatchContent() { return getDefaultModuleContent('nearby-dispatch'); }
 function getTaskQueryContent() { return getDefaultModuleContent('task-query'); }
 function getExceptionHandlingContent() { return getDefaultModuleContent('exception-handling'); }
