@@ -348,6 +348,10 @@
                                         <i class="fas fa-code text-indigo-600 w-5"></i>
                                         <span>低代码平台</span>
                                     </button>
+                                    <button onclick="switchModule('smart-assessment'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-industry text-blue-500 w-5"></i>
+                                        <span>智造能力评估</span>
+                                    </button>
                                     <button onclick="switchModule('masterdata'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-database text-gray-600 w-5"></i>
                                         <span>主数据平台</span>
@@ -873,6 +877,16 @@
                     { id: 'visual-development', name: '可视化开发', icon: 'fas fa-code', url: 'pages/coming-soon.html' },
                     { id: 'process-design', name: '流程设计', icon: 'fas fa-project-diagram', url: 'pages/coming-soon.html' },
                     { id: 'app-building', name: '应用构建', icon: 'fas fa-cubes', url: 'pages/coming-soon.html' }
+                ]
+            },
+            'smart-assessment': {
+                title: '智能制造成熟度评估',
+                url: 'pages/smart-assessment/index.html',
+                subMenus: [
+                    { id: 'assessment-dashboard', name: '评估概览', icon: 'fas fa-tachometer-alt', url: 'pages/smart-assessment/index.html' },
+                    { id: 'assessment-data', name: '数据集成与治理', icon: 'fas fa-database', url: 'pages/smart-assessment/index.html#data-integration' },
+                    { id: 'assessment-intelligence', name: '智能评估与诊断', icon: 'fas fa-chart-pie', url: 'pages/smart-assessment/index.html#assessment' },
+                    { id: 'assessment-report', name: '报告管理', icon: 'fas fa-file-alt', url: 'pages/smart-assessment/index.html#reports' }
                 ]
             },
             masterdata: {
