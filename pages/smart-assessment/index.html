@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能制造成熟度评估系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="css/assessment.css">
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- 侧边导航 -->
+        <nav class="w-64 bg-white shadow-md">
+            <div class="p-4 border-b border-gray-200">
+                <h1 class="text-xl font-bold text-gray-800">智能制造成熟度评估</h1>
+            </div>
+            <ul class="py-2">
+                <li class="px-4 py-3 hover:bg-blue-50 text-blue-600 border-l-4 border-blue-600">
+                    <a href="#" class="flex items-center">
+                        <i class="fas fa-tachometer-alt w-6"></i>
+                        <span>评估概览</span>
+                    </a>
+                </li>
+                <li class="px-4 py-3 hover:bg-gray-50">
+                    <a href="#data-integration" class="flex items-center">
+                        <i class="fas fa-database w-6"></i>
+                        <span>数据集成</span>
+                    </a>
+                </li>
+                <li class="px-4 py-3 hover:bg-gray-50">
+                    <a href="#assessment" class="flex items-center">
+                        <i class="fas fa-chart-pie w-6"></i>
+                        <span>智能评估</span>
+                    </a>
+                </li>
+                <li class="px-4 py-3 hover:bg-gray-50">
+                    <a href="#reports" class="flex items-center">
+                        <i class="fas fa-file-alt w-6"></i>
+                        <span>报告管理</span>
+                    </a>
+                </li>
+                <li class="px-4 py-3 hover:bg-gray-50">
+                    <a href="#settings" class="flex items-center">
+                        <i class="fas fa-cog w-6"></i>
+                        <span>系统设置</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- 主内容区 -->
+        <main class="flex-1 overflow-auto p-6">
+            <!-- 数据集成模块 -->
+            <section id="data-integration" class="mb-8">
+                <h2 class="text-2xl font-bold mb-4">数据集成与治理</h2>
+                
+                <!-- 数据导入卡片 -->
+                <div class="bg-white rounded-lg shadow p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">多源数据录入</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- 文件导入 -->
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                            <i class="fas fa-file-import text-4xl text-blue-500 mb-3"></i>
+                            <h4 class="font-medium mb-2">文件导入</h4>
+                            <p class="text-sm text-gray-500 mb-4">支持Excel/CSV格式的数据导入</p>
+                            <button id="importBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                选择文件
+                                <input type="file" id="fileInput" class="hidden" accept=".xlsx,.xls,.csv">
+                            </button>
+                        </div>
+                        
+                        <!-- 手动录入 -->
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                            <i class="fas fa-keyboard text-4xl text-green-500 mb-3"></i>
+                            <h4 class="font-medium mb-2">手动录入</h4>
+                            <p class="text-sm text-gray-500 mb-4">手动输入评估数据</p>
+                            <button onclick="showManualEntry()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                开始录入
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据治理 -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">数据治理</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="py-2 px-4 border">指标名称</th>
+                                    <th class="py-2 px-4 border">数据源</th>
+                                    <th class="py-2 px-4 border">状态</th>
+                                    <th class="py-2 px-4 border">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dataGovernanceTable">
+                                <!-- 数据将通过JavaScript动态加载 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 智能评估模块 -->
+            <section id="assessment" class="mb-8">
+                <h2 class="text-2xl font-bold mb-4">智能评估与诊断</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- 雷达图 -->
+                    <div class="lg:col-span-2 bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">成熟度雷达图</h3>
+                        <div id="radarChart" style="width: 100%; height: 400px;"></div>
+                    </div>
+                    
+                    <!-- 评估结果 -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold mb-4">评估结果概览</h3>
+                        <div id="assessmentResult" class="space-y-4">
+                            <!-- 评估结果将通过JavaScript动态加载 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 差距分析 -->
+                <div class="mt-6 bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">差距分析</h3>
+                    <div id="gapAnalysis" class="space-y-4">
+                        <!-- 差距分析内容将通过JavaScript动态加载 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 报告管理 -->
+            <section id="reports" class="mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">报告管理</h2>
+                    <button onclick="generateReport()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        <i class="fas fa-plus mr-2"></i>生成新报告
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <table class="min-w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">报告名称</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">生成时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reportList" class="bg-white divide-y divide-gray-200">
+                            <!-- 报告列表将通过JavaScript动态加载 -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 手动录入模态框 -->
+    <div id="manualEntryModal" class="modal hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+        <div class="modal-content relative top-20 mx-auto p-5 border w-3/4 md:w-1/2 shadow-lg rounded-md bg-white">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">手动录入评估数据</h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="manualEntryForm" class="mb-4">
+                <!-- 动态生成表单内容 -->
+            </div>
+            <div class="flex justify-end space-x-2">
+                <button onclick="closeModal()" class="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200">
+                    取消
+                </button>
+                <button onclick="submitManualEntry()" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
+                    提交评估
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/pages/smart-assessment/js/assessment.js"></script>
+</body>
+</html>
