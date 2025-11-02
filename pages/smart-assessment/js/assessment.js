@@ -5,12 +5,27 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 加载示例数据
     loadSampleData();
-    
+
     // 绑定事件监听器
     bindEventListeners();
-    
+
     // 更新评估结果
     updateAssessmentResults();
+
+    // 初始化报告列表
+    updateReportList();
+
+    // 设置初始视图
+    const initialView = getInitialViewFromLocation();
+    switchView(initialView);
+
+    // 记录更新时间
+    const updateLabel = document.getElementById('lastUpdated');
+    if (updateLabel) {
+        const now = new Date();
+        const formatted = `${now.getFullYear()}-${padZero(now.getMonth() + 1)}-${padZero(now.getDate())} ${padZero(now.getHours())}:${padZero(now.getMinutes())}`;
+        updateLabel.textContent = formatted;
+    }
 });
 
 // 初始化雷达图
@@ -143,11 +158,11 @@ function loadSampleData() {
     const tableBody = document.getElementById('dataGovernanceTable');
     if (tableBody) {
         tableBody.innerHTML = governanceData.map(item => `
-            <tr class="hover:bg-gray-50">
+            <tr class="hover:bg-gray-50" data-id="${item.id}">
                 <td class="py-2 px-4 border">${item.name}</td>
                 <td class="py-2 px-4 border">${item.source}</td>
                 <td class="py-2 px-4 border">
-                    <span class="badge ${getStatusBadgeClass(item.status)}">
+                    <span class="status badge ${getStatusBadgeClass(item.status)}">
                         ${item.status}
                     </span>
                 </td>
@@ -348,16 +363,88 @@ function bindEventListeners() {
         });
     }
     
-    // 导航菜单点击
-    document.querySelectorAll('nav a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId && targetId !== '#') {
-                scrollToSection(targetId);
-            }
+    // 视图切换
+    document.querySelectorAll('.view-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.getAttribute('data-view-target');
+            switchView(target);
+            updateURLHash(target);
         });
     });
+
+    // 监听 hash 变化（iframe 场景也能触发）
+    window.addEventListener('hashchange', () => {
+        const view = getInitialViewFromLocation();
+        switchView(view);
+    });
+}
+
+// 获取初始视图（优先 query，其次 hash）
+function getInitialViewFromLocation() {
+    const url = new URL(window.location.href);
+    const allowedViews = ['overview', 'data-integration', 'assessment', 'reports', 'management'];
+    const queryView = url.searchParams.get('view');
+
+    let hashView = null;
+    if (window.location.hash) {
+        const hash = window.location.hash.replace('#', '');
+        if (hash.startsWith('view=')) {
+            hashView = hash.split('=')[1];
+        } else {
+            hashView = hash;
+        }
+    }
+
+    const finalView = queryView || hashView || 'overview';
+    return allowedViews.includes(finalView) ? finalView : 'overview';
+}
+
+// 切换视图
+function switchView(targetView = 'overview') {
+    const sections = document.querySelectorAll('.assessment-section');
+    const tabs = document.querySelectorAll('.view-tab');
+    let resolvedView = 'overview';
+
+    sections.forEach(section => {
+        if (section.dataset.view === targetView) {
+            section.classList.remove('hidden');
+            resolvedView = targetView;
+        } else {
+            section.classList.add('hidden');
+        }
+    });
+
+    tabs.forEach(tab => {
+        if (tab.dataset.viewTarget === resolvedView) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
+        }
+    });
+
+    const currentTitle = document.getElementById('currentViewTitle');
+    const activeTab = document.querySelector(`.view-tab[data-view-target="${resolvedView}"]`);
+    if (currentTitle && activeTab) {
+        // 获取 tab 显示文本（去除图标）
+        currentTitle.textContent = activeTab.textContent.trim();
+    }
+
+    // 在切换到评估视图时，确保图表尺寸正确
+    if (resolvedView === 'assessment') {
+        setTimeout(() => initRadarChart(), 100);
+    }
+}
+
+// 更新地址栏
+function updateURLHash(view) {
+    const url = new URL(window.location.href);
+    url.searchParams.set('view', view);
+    history.replaceState(null, '', url.toString());
+}
+
+// 数字补零
+function padZero(value) {
+    return value.toString().padStart(2, '0');
 }
 
 // 处理文件上传

@@ -9,175 +9,401 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
     <link rel="stylesheet" href="css/assessment.css">
 </head>
-<body class="bg-gray-50">
-    <div class="flex h-screen">
-        <!-- 侧边导航 -->
-        <nav class="w-64 bg-white shadow-md">
-            <div class="p-4 border-b border-gray-200">
-                <h1 class="text-xl font-bold text-gray-800">智能制造成熟度评估</h1>
+<body class="bg-gray-100">
+    <div class="min-h-screen">
+        <header class="bg-white border-b border-gray-200 shadow-sm">
+            <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-start space-x-3">
+                    <span class="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100 text-blue-600">
+                        <i class="fas fa-industry text-xl"></i>
+                    </span>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">智能制造成熟度评估</h1>
+                        <p class="text-sm text-gray-500 mt-1">聚焦数据驱动、智能诊断与持续改进的综合评估方案</p>
+                    </div>
+                </div>
+                <div class="mt-4 md:mt-0 flex items-center space-x-3">
+                    <button onclick="showManualEntry()" class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-pen mr-2"></i>手动录入
+                    </button>
+                    <button onclick="generateReport()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-file-export mr-2"></i>生成最新报告
+                    </button>
+                </div>
             </div>
-            <ul class="py-2">
-                <li class="px-4 py-3 hover:bg-blue-50 text-blue-600 border-l-4 border-blue-600">
-                    <a href="#" class="flex items-center">
-                        <i class="fas fa-tachometer-alt w-6"></i>
-                        <span>评估概览</span>
-                    </a>
-                </li>
-                <li class="px-4 py-3 hover:bg-gray-50">
-                    <a href="#data-integration" class="flex items-center">
-                        <i class="fas fa-database w-6"></i>
-                        <span>数据集成</span>
-                    </a>
-                </li>
-                <li class="px-4 py-3 hover:bg-gray-50">
-                    <a href="#assessment" class="flex items-center">
-                        <i class="fas fa-chart-pie w-6"></i>
-                        <span>智能评估</span>
-                    </a>
-                </li>
-                <li class="px-4 py-3 hover:bg-gray-50">
-                    <a href="#reports" class="flex items-center">
-                        <i class="fas fa-file-alt w-6"></i>
-                        <span>报告管理</span>
-                    </a>
-                </li>
-                <li class="px-4 py-3 hover:bg-gray-50">
-                    <a href="#settings" class="flex items-center">
-                        <i class="fas fa-cog w-6"></i>
-                        <span>系统设置</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        </header>
 
-        <!-- 主内容区 -->
-        <main class="flex-1 overflow-auto p-6">
-            <!-- 数据集成模块 -->
-            <section id="data-integration" class="mb-8">
-                <h2 class="text-2xl font-bold mb-4">数据集成与治理</h2>
-                
-                <!-- 数据导入卡片 -->
-                <div class="bg-white rounded-lg shadow p-6 mb-6">
-                    <h3 class="text-lg font-semibold mb-4">多源数据录入</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- 文件导入 -->
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                            <i class="fas fa-file-import text-4xl text-blue-500 mb-3"></i>
-                            <h4 class="font-medium mb-2">文件导入</h4>
-                            <p class="text-sm text-gray-500 mb-4">支持Excel/CSV格式的数据导入</p>
-                            <button id="importBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                                选择文件
-                                <input type="file" id="fileInput" class="hidden" accept=".xlsx,.xls,.csv">
-                            </button>
+        <main class="max-w-7xl mx-auto px-6 py-6 space-y-6">
+            <div class="bg-white border border-gray-200 rounded-lg px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">当前视图</p>
+                    <h2 id="currentViewTitle" class="text-xl font-semibold text-gray-800 mt-1">评估概览</h2>
+                </div>
+                <div class="text-sm text-gray-500 mt-3 sm:mt-0">
+                    数据更新时间：<span id="lastUpdated">--</span>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+                <button class="view-tab active" data-view-target="overview"><i class="fas fa-gauge-high mr-2"></i>评估概览</button>
+                <button class="view-tab" data-view-target="data-integration"><i class="fas fa-database mr-2"></i>数据集成与治理</button>
+                <button class="view-tab" data-view-target="assessment"><i class="fas fa-chart-pie mr-2"></i>智能评估与诊断</button>
+                <button class="view-tab" data-view-target="reports"><i class="fas fa-file-alt mr-2"></i>报告管理</button>
+                <button class="view-tab" data-view-target="management"><i class="fas fa-cogs mr-2"></i>系统管理</button>
+            </div>
+
+            <section class="assessment-section space-y-6" data-view="overview">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-lg shadow-sm border border-blue-100 p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">总体成熟度等级</p>
+                                <p class="text-3xl font-bold text-blue-600 mt-2">L2.8</p>
+                            </div>
+                            <span class="inline-flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg">
+                                <i class="fas fa-gauge-high"></i>
+                            </span>
                         </div>
-                        
-                        <!-- 手动录入 -->
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                            <i class="fas fa-keyboard text-4xl text-green-500 mb-3"></i>
-                            <h4 class="font-medium mb-2">手动录入</h4>
-                            <p class="text-sm text-gray-500 mb-4">手动输入评估数据</p>
-                            <button onclick="showManualEntry()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
-                                开始录入
-                            </button>
+                        <div class="mt-4">
+                            <div class="flex items-center justify-between text-xs text-gray-500 mb-2">
+                                <span>距离L5</span>
+                                <span>56%</span>
+                            </div>
+                            <div class="w-full bg-blue-100 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width:56%"></div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-emerald-100 p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">数据覆盖率</p>
+                                <p class="text-3xl font-bold text-emerald-600 mt-2">78%</p>
+                            </div>
+                            <span class="inline-flex items-center justify-center w-10 h-10 bg-emerald-50 text-emerald-600 rounded-lg">
+                                <i class="fas fa-database"></i>
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-4">来自MES/SCADA/QMS等12个系统的数据已完成同步</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-orange-100 p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">改进项闭环率</p>
+                                <p class="text-3xl font-bold text-orange-500 mt-2">12/20</p>
+                            </div>
+                            <span class="inline-flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-500 rounded-lg">
+                                <i class="fas fa-tasks"></i>
+                            </span>
+                        </div>
+                        <div class="mt-4">
+                            <div class="w-full bg-orange-100 rounded-full h-2">
+                                <div class="bg-orange-500 h-2 rounded-full" style="width:60%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2">重点跟踪：数据标准化、供应链协同、智能排程</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-purple-100 p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">下一次综合评估</p>
+                                <p class="text-3xl font-bold text-purple-600 mt-2">2026 Q1</p>
+                            </div>
+                            <span class="inline-flex items-center justify-center w-10 h-10 bg-purple-50 text-purple-600 rounded-lg">
+                                <i class="fas fa-calendar-check"></i>
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-4">计划在2月完成数据收集，3月发布对比报告</p>
                     </div>
                 </div>
 
-                <!-- 数据治理 -->
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h3 class="text-lg font-semibold mb-4">数据治理</h3>
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    <div class="xl:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">核心能力全景</h3>
+                            <span class="text-xs text-blue-500 bg-blue-50 px-2 py-1 rounded">基于最新评估结果</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 border border-gray-100 rounded-lg bg-gray-50">
+                                <p class="text-sm text-gray-500">生产自动化</p>
+                                <div class="flex items-end justify-between mt-2">
+                                    <span class="text-2xl font-semibold text-gray-800">L3.2</span>
+                                    <span class="text-xs text-green-600">↑0.3</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">自动排程与柔性执行体系逐步完善</p>
+                            </div>
+                            <div class="p-4 border border-gray-100 rounded-lg">
+                                <p class="text-sm text-gray-500">数据集成</p>
+                                <div class="flex items-end justify-between mt-2">
+                                    <span class="text-2xl font-semibold text-gray-800">L2.8</span>
+                                    <span class="text-xs text-orange-500">待提升</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">需统一数据模型与治理机制</p>
+                            </div>
+                            <div class="p-4 border border-gray-100 rounded-lg">
+                                <p class="text-sm text-gray-500">智能决策</p>
+                                <div class="flex items-end justify-between mt-2">
+                                    <span class="text-2xl font-semibold text-gray-800">L2.5</span>
+                                    <span class="text-xs text-red-500">关键差距</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">预测性维护与AI分析仍处试点阶段</p>
+                            </div>
+                            <div class="p-4 border border-gray-100 rounded-lg">
+                                <p class="text-sm text-gray-500">供应链协同</p>
+                                <div class="flex items-end justify-between mt-2">
+                                    <span class="text-2xl font-semibold text-gray-800">L2.0</span>
+                                    <span class="text-xs text-red-500">紧急</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">需补齐可视化、协同计划与供应商画像能力</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">近期重点行动</h3>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="flex items-start space-x-3">
+                                <span class="mt-1 inline-flex items-center justify-center w-6 h-6 text-xs font-semibold text-blue-600 bg-blue-50 rounded-full">1</span>
+                                <div>
+                                    <p class="font-medium text-gray-800">搭建企业级数据模型标准库</p>
+                                    <p class="text-xs text-gray-500 mt-1">2025-11-20 | 信息中心</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start space-x-3">
+                                <span class="mt-1 inline-flex items-center justify-center w-6 h-6 text-xs font-semibold text-green-600 bg-green-50 rounded-full">2</span>
+                                <div>
+                                    <p class="font-medium text-gray-800">部署预测性维护算法模型</p>
+                                    <p class="text-xs text-gray-500 mt-1">2025-12-15 | 生产技术中心</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start space-x-3">
+                                <span class="mt-1 inline-flex items-center justify-center w-6 h-6 text-xs font-semibold text-orange-600 bg-orange-50 rounded-full">3</span>
+                                <div>
+                                    <p class="font-medium text-gray-800">上线供应商协同门户</p>
+                                    <p class="text-xs text-gray-500 mt-1">2026-01-10 | 供应链管理部</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex flex-wrap items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">改进闭环跟踪</h3>
+                        <span class="text-xs text-gray-500">系统自动同步任务完成度并推送异常预警</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                        <div class="p-4 border border-gray-100 rounded-lg bg-gray-50">
+                            <p class="text-sm text-gray-500">策略规划</p>
+                            <p class="text-lg font-semibold text-gray-800 mt-2">完成率 85%</p>
+                            <p class="text-xs text-gray-500 mt-1">评估模型固化、指标库维护</p>
+                        </div>
+                        <div class="p-4 border border-gray-100 rounded-lg">
+                            <p class="text-sm text-gray-500">数据治理</p>
+                            <p class="text-lg font-semibold text-gray-800 mt-2">完成率 62%</p>
+                            <p class="text-xs text-gray-500 mt-1">数据清洗、质量监控、主数据完善</p>
+                        </div>
+                        <div class="p-4 border border-gray-100 rounded-lg">
+                            <p class="text-sm text-gray-500">智能应用</p>
+                            <p class="text-lg font-semibold text-gray-800 mt-2">完成率 40%</p>
+                            <p class="text-xs text-gray-500 mt-1">AI诊断、预测分析、智能调度</p>
+                        </div>
+                        <div class="p-4 border border-gray-100 rounded-lg">
+                            <p class="text-sm text-gray-500">组织赋能</p>
+                            <p class="text-lg font-semibold text-gray-800 mt-2">完成率 55%</p>
+                            <p class="text-xs text-gray-500 mt-1">能力培训、专家库建设、绩效联动</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="assessment-section space-y-6 hidden" data-view="data-integration">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">多源数据录入</h3>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                <i class="fas fa-file-import text-4xl text-blue-500 mb-3"></i>
+                                <h4 class="font-medium mb-2">文件导入</h4>
+                                <p class="text-sm text-gray-500 mb-4">支持Excel/CSV格式的数据批量导入</p>
+                                <button id="importBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                    选择文件
+                                    <input type="file" id="fileInput" class="hidden" accept=".xlsx,.xls,.csv">
+                                </button>
+                            </div>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                <i class="fas fa-keyboard text-4xl text-green-500 mb-3"></i>
+                                <h4 class="font-medium mb-2">手动录入</h4>
+                                <p class="text-sm text-gray-500 mb-4">用于战略规划、流程适配等定性指标补充</p>
+                                <button onclick="showManualEntry()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                                    开始录入
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">数据标准与安全</h3>
+                        <ul class="space-y-4 text-sm text-gray-600">
+                            <li class="flex items-start space-x-3">
+                                <span class="mt-1 text-blue-500"><i class="fas fa-check-circle"></i></span>
+                                <div>
+                                    <p class="font-medium text-gray-800">模板校验</p>
+                                    <p class="text-xs text-gray-500 mt-1">系统自动校验必填指标与格式，提示缺失字段</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start space-x-3">
+                                <span class="mt-1 text-green-500"><i class="fas fa-shield-alt"></i></span>
+                                <div>
+                                    <p class="font-medium text-gray-800">敏感数据加密</p>
+                                    <p class="text-xs text-gray-500 mt-1">支持密钥上传及脱敏展示，符合企业安全要求</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start space-x-3">
+                                <span class="mt-1 text-orange-500"><i class="fas fa-exclamation-triangle"></i></span>
+                                <div>
+                                    <p class="font-medium text-gray-800">异常预警</p>
+                                    <p class="text-xs text-gray-500 mt-1">同步失败将进入待处理队列并推送告警</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">数据治理监控</h3>
+                        <span class="text-xs text-gray-500">实时查看同步状态与处理建议</span>
+                    </div>
                     <div class="overflow-x-auto">
                         <table class="min-w-full bg-white">
                             <thead>
-                                <tr class="bg-gray-100">
-                                    <th class="py-2 px-4 border">指标名称</th>
-                                    <th class="py-2 px-4 border">数据源</th>
-                                    <th class="py-2 px-4 border">状态</th>
-                                    <th class="py-2 px-4 border">操作</th>
+                                <tr class="bg-gray-100 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <th class="py-3 px-4 border">指标名称</th>
+                                    <th class="py-3 px-4 border">数据源</th>
+                                    <th class="py-3 px-4 border">状态</th>
+                                    <th class="py-3 px-4 border">操作</th>
                                 </tr>
                             </thead>
-                            <tbody id="dataGovernanceTable">
-                                <!-- 数据将通过JavaScript动态加载 -->
-                            </tbody>
+                            <tbody id="dataGovernanceTable"></tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
-            <!-- 智能评估模块 -->
-            <section id="assessment" class="mb-8">
-                <h2 class="text-2xl font-bold mb-4">智能评估与诊断</h2>
+            <section class="assessment-section space-y-6 hidden" data-view="assessment">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- 雷达图 -->
-                    <div class="lg:col-span-2 bg-white rounded-lg shadow p-6">
-                        <h3 class="text-lg font-semibold mb-4">成熟度雷达图</h3>
-                        <div id="radarChart" style="width: 100%; height: 400px;"></div>
-                    </div>
-                    
-                    <!-- 评估结果 -->
-                    <div class="bg-white rounded-lg shadow p-6">
-                        <h3 class="text-lg font-semibold mb-4">评估结果概览</h3>
-                        <div id="assessmentResult" class="space-y-4">
-                            <!-- 评估结果将通过JavaScript动态加载 -->
+                    <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800">成熟度雷达图</h3>
+                            <button onclick="initRadarChart()" class="text-sm text-blue-500 hover:text-blue-600">刷新</button>
                         </div>
+                        <div id="radarChart" class="w-full" style="height:360px;"></div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">评估结果概览</h3>
+                        <div id="assessmentResult" class="space-y-4"></div>
                     </div>
                 </div>
-                
-                <!-- 差距分析 -->
-                <div class="mt-6 bg-white rounded-lg shadow p-6">
-                    <h3 class="text-lg font-semibold mb-4">差距分析</h3>
-                    <div id="gapAnalysis" class="space-y-4">
-                        <!-- 差距分析内容将通过JavaScript动态加载 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex flex-wrap items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800">差距分析</h3>
+                        <span class="text-xs text-gray-500">对比行业平均与目标水平</span>
                     </div>
+                    <div id="gapAnalysis"></div>
                 </div>
             </section>
 
-            <!-- 报告管理 -->
-            <section id="reports" class="mb-8">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-bold">报告管理</h2>
-                    <button onclick="generateReport()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                        <i class="fas fa-plus mr-2"></i>生成新报告
-                    </button>
+            <section class="assessment-section space-y-6 hidden" data-view="reports">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-800">生成与归档</h3>
+                        <p class="text-sm text-gray-500">支持导出PDF/Word并对比历史版本</p>
+                    </div>
+                    <div class="space-x-2">
+                        <button onclick="generateReport()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            <i class="fas fa-plus mr-2"></i>生成新报告
+                        </button>
+                        <button class="px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-100">报告模板管理</button>
+                    </div>
                 </div>
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                     <table class="min-w-full">
-                        <thead class="bg-gray-50">
+                        <thead class="bg-gray-50 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">报告名称</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">生成时间</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                <th class="px-6 py-3 text-left">报告名称</th>
+                                <th class="px-6 py-3 text-left">生成时间</th>
+                                <th class="px-6 py-3 text-left">状态</th>
+                                <th class="px-6 py-3 text-left">操作</th>
                             </tr>
                         </thead>
-                        <tbody id="reportList" class="bg-white divide-y divide-gray-200">
-                            <!-- 报告列表将通过JavaScript动态加载 -->
-                        </tbody>
+                        <tbody id="reportList" class="bg-white divide-y divide-gray-200"></tbody>
                     </table>
+                </div>
+            </section>
+
+            <section class="assessment-section space-y-6 hidden" data-view="management">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">用户与权限</h3>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li><i class="fas fa-users-cog text-blue-500 mr-2"></i>系统管理员、评估专家、企业管理员等角色</li>
+                            <li><i class="fas fa-key text-blue-500 mr-2"></i>基于RBAC的菜单与数据权限配置</li>
+                            <li><i class="fas fa-user-shield text-blue-500 mr-2"></i>支持账号禁用与批量导入</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">评估模型管理</h3>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li><i class="fas fa-layer-group text-green-500 mr-2"></i>内置CMMI、IM3等模型</li>
+                            <li><i class="fas fa-sliders-h text-green-500 mr-2"></i>维度、等级、权重可调</li>
+                            <li><i class="fas fa-toggle-on text-green-500 mr-2"></i>支持模型启用/禁用与版本管理</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-3">知识与字典</h3>
+                        <ul class="space-y-2 text-sm text-gray-600">
+                            <li><i class="fas fa-book text-purple-500 mr-2"></i>改进建议库、最佳实践案例库</li>
+                            <li><i class="fas fa-database text-purple-500 mr-2"></i>行业类型、企业规模、指标单位等基础数据</li>
+                            <li><i class="fas fa-sync text-purple-500 mr-2"></i>与报告生成、评估模型联动更新</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">近期系统调整计划</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+                        <div class="p-4 border border-gray-100 rounded-lg bg-gray-50">
+                            <p class="font-medium text-gray-800">权限细粒度配置</p>
+                            <p class="mt-2 text-xs text-gray-500">引入评估步骤级权限，配合日志审计，计划12月内完成</p>
+                        </div>
+                        <div class="p-4 border border-gray-100 rounded-lg">
+                            <p class="font-medium text-gray-800">模型版本管理</p>
+                            <p class="mt-2 text-xs text-gray-500">新增模型仿真与回滚能力，支持A/B测试对比</p>
+                        </div>
+                        <div class="p-4 border border-gray-100 rounded-lg">
+                            <p class="font-medium text-gray-800">知识库联动</p>
+                            <p class="mt-2 text-xs text-gray-500">对接专家评分、改进建议模板，实现自动推荐</p>
+                        </div>
+                        <div class="p-4 border border-gray-100 rounded-lg">
+                            <p class="font-medium text-gray-800">指标字典统一</p>
+                            <p class="mt-2 text-xs text-gray-500">统一数据单位、采集频率，与主数据平台同步</p>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
     </div>
 
-    <!-- 手动录入模态框 -->
     <div id="manualEntryModal" class="modal hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-        <div class="modal-content relative top-20 mx-auto p-5 border w-3/4 md:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="modal-content relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold">手动录入评估数据</h3>
                 <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div id="manualEntryForm" class="mb-4">
-                <!-- 动态生成表单内容 -->
-            </div>
+            <div id="manualEntryForm" class="mb-4"></div>
             <div class="flex justify-end space-x-2">
-                <button onclick="closeModal()" class="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200">
-                    取消
-                </button>
-                <button onclick="submitManualEntry()" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
-                    提交评估
-                </button>
+                <button onclick="closeModal()" class="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200">取消</button>
+                <button onclick="submitManualEntry()" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">提交评估</button>
             </div>
         </div>
     </div>
