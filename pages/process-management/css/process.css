@@ -36,6 +36,15 @@
 
 /* 模态框样式 */
 .modal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
     transition: opacity 0.2s ease;
 }
 
@@ -44,6 +53,15 @@
 }
 
 .modal-content {
+    position: relative;
+    margin: auto;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-radius: 0.5rem;
+    background-color: white;
+    max-height: 90vh;
+    overflow-y: auto;
     animation: modalSlideIn 0.3s ease-out;
 }
 

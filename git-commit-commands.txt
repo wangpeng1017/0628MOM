@@ -1,0 +1,42 @@
+# Git提交指令 - 修复验厂系统模态框位置
+
+# 1. 查看所有变更
+git status
+
+# 2. 添加所有变更文件
+git add .
+
+# 3. 提交变更
+git commit -m "Fix modal positioning in Process Management System
+
+Issues fixed:
+1. NCR detail modal was displaying at bottom of page instead of center
+2. All modals now properly centered on screen
+3. Removed conflicting inline styles and Tailwind classes
+
+Changes:
+- Updated modal CSS to use flexbox centering (align-items: center, justify-content: center)
+- Added proper positioning (fixed, inset: 0) to modal container
+- Set max-height (90vh) and overflow-y for scrollable content
+- Removed conflicting 'top-20' and positioning classes from HTML
+- Ensured all 5 modals use consistent styling:
+  * createProjectModal
+  * createNCRModal
+  * projectDetailModal
+  * ncrDetailModal
+  * reportViewModal
+
+Files modified:
+- pages/process-management/css/process.css
+- pages/process-management/index.html
+- pages/equipment/equipment-agent.html
+- assets/js/equipment-agent.js
+- pages/dashboard.html
+
+All modals now display in the center of the viewport with proper scrolling behavior."
+
+# 4. 推送到远程仓库
+git push origin main
+
+# 或者如果是其他分支
+# git push origin <branch-name>

@@ -1,4 +1,4 @@
-// 设备智能体 - JavaScript (深度增强版)
+// 设备智能体 - JavaScript (深度增强版 - 集成Google Gemini)
 let chatHistory = [];
 let conversationContext = {
     currentTopic: null,
@@ -13,6 +13,33 @@ let conversationContext = {
 // 语音识别状态
 let isRecording = false;
 let recognition = null;
+
+// Google Gemini API配置
+const GEMINI_API_KEY = 'AIzaSyACaQWzNKYvYUvAFNkL4lxWtrcevqNZZ8A';
+const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+
+// 系统提示词 - 设备维修专家角色
+const SYSTEM_PROMPT = `你是一个专业的设备维修智能助手，具备以下能力：
+
+1. **设备故障诊断**：能够通过多轮对话引导用户排查设备故障
+2. **知识推荐**：根据问题推荐相关的维修案例、SOP文档和技术资料
+3. **备件建议**：推荐可能需要的备件和库存信息
+4. **专业指导**：提供专业的维修步骤和注意事项
+
+你的回复应该：
+- 简洁明了，重点突出
+- 使用中文回复
+- 包含具体的排查步骤
+- 必要时提出澄清性问题
+- 推荐相关案例和备件
+- 使用专业但易懂的语言
+
+当前可用的设备类型：注塑机、绕线机、伺服电机、液压系统、变频器、测试设备等。
+
+请根据用户的问题，提供专业的诊断和建议。`;
+
+// 固定使用真实LLM
+const USE_REAL_LLM = true;
 
 // 模拟向量数据库（RAG检索）
 const vectorDatabase = {
@@ -166,8 +193,179 @@ const knowledgeBase = {
     }
 };
 
+// 调用Google Gemini API
+async function callGeminiAPI(userMessage) {
+    try {
+        // 构建对话历史（最近5轮）
+        const recentHistory = chatHistory.slice(-10).filter(msg => msg.type !== 'system');
+        const conversationHistory = recentHistory.map(msg => ({
+            role: msg.type === 'user' ? 'user' : 'model',
+            parts: [{ text: msg.content.replace(/<[^>]*>/g, '') }] // 移除HTML标签
+        }));
+        
+        // 添加系统提示词和当前问题
+        const messages = [
+            {
+                role: 'user',
+                parts: [{ text: SYSTEM_PROMPT }]
+            },
+            {
+                role: 'model',
+                parts: [{ text: '我明白了，我是一个专业的设备维修智能助手。我会根据用户的问题提供专业的诊断和建议。' }]
+            },
+            ...conversationHistory,
+            {
+                role: 'user',
+                parts: [{ text: userMessage }]
+            }
+        ];
+        
+        // 调用Gemini API
+        const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                contents: messages,
+                generationConfig: {
+                    temperature: 0.7,
+                    topK: 40,
+                    topP: 0.95,
+                    maxOutputTokens: 1024,
+                }
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`API请求失败: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // 提取回复内容
+        if (data.candidates && data.candidates.length > 0) {
+            const aiResponse = data.candidates[0].content.parts[0].text;
+            return formatGeminiResponse(aiResponse, userMessage);
+        } else {
+            throw new Error('API返回数据格式错误');
+        }
+        
+    } catch (error) {
+        console.error('Gemini API调用失败:', error);
+        // 降级到本地知识库
+        return generateLocalResponse(userMessage);
+    }
+}
+
+// 格式化Gemini的回复
+function formatGeminiResponse(aiResponse, userMessage) {
+    // 检查是否需要添加相关案例和备件推荐
+    let formattedResponse = `<div class="space-y-3">`;
+    
+    // AI回复内容
+    formattedResponse += `<div class="text-gray-800">${aiResponse.replace(/\n/g, '<br>')}</div>`;
+    
+    // 尝试匹配知识库，添加相关案例
+    const matchedKnowledge = findMatchingKnowledge(userMessage);
+    if (matchedKnowledge) {
+        // 添加相关案例
+        if (matchedKnowledge.cases && matchedKnowledge.cases.length > 0) {
+            formattedResponse += `
+                <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
+                    <p class="font-medium text-green-900 mb-2">📚 相关案例推荐：</p>
+                    ${matchedKnowledge.cases.map(c => `
+                        <div class="flex justify-between items-center text-sm mb-1">
+                            <span class="text-green-800">• ${c.title}</span>
+                            <span class="text-green-600 font-medium">${c.similarity}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
+        // 添加备件推荐
+        if (matchedKnowledge.parts && matchedKnowledge.parts.length > 0) {
+            formattedResponse += `
+                <div class="bg-purple-50 p-3 rounded-lg border-l-4 border-purple-500">
+                    <p class="font-medium text-purple-900 mb-2">🔧 可能需要的备件：</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${matchedKnowledge.parts.map(part => `
+                            <span class="px-2 py-1 bg-purple-200 text-purple-800 rounded text-xs">${part}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    formattedResponse += `</div>`;
+    return formattedResponse;
+}
+
+// 查找匹配的知识库条目
+function findMatchingKnowledge(userMessage) {
+    for (const [key, value] of Object.entries(knowledgeBase)) {
+        if (userMessage.includes(key.split('').slice(0, 4).join('')) || 
+            userMessage.includes('温度') && key.includes('温度') ||
+            userMessage.includes('伺服') && key.includes('伺服') ||
+            userMessage.includes('液压') && key.includes('液压') ||
+            userMessage.includes('变频器') && key.includes('变频器') ||
+            userMessage.includes('绕线') && key.includes('绕线') ||
+            userMessage.includes('断线') && key.includes('断线')) {
+            return value;
+        }
+    }
+    return null;
+}
+
+// 本地知识库回复（降级方案）
+function generateLocalResponse(userMessage) {
+    let matchedKnowledge = findMatchingKnowledge(userMessage);
+    
+    if (matchedKnowledge) {
+        return `
+            <div class="space-y-3">
+                <p class="font-medium text-gray-900">🔍 ${matchedKnowledge.diagnosis}</p>
+                <div class="bg-blue-50 p-3 rounded-lg">
+                    <p class="font-medium text-blue-900 mb-2">📋 排查步骤：</p>
+                    ${matchedKnowledge.steps.map(step => `<p class="text-sm text-blue-800">${step}</p>`).join('')}
+                </div>
+                <div class="bg-green-50 p-3 rounded-lg">
+                    <p class="font-medium text-green-900 mb-2">📚 相关案例推荐：</p>
+                    ${matchedKnowledge.cases.map(c => `
+                        <div class="flex justify-between items-center text-sm mb-1">
+                            <span class="text-green-800">• ${c.title}</span>
+                            <span class="text-green-600 font-medium">${c.similarity}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="bg-purple-50 p-3 rounded-lg">
+                    <p class="font-medium text-purple-900 mb-2">🔧 可能需要的备件：</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${matchedKnowledge.parts.map(part => `
+                            <span class="px-2 py-1 bg-purple-200 text-purple-800 rounded text-xs">${part}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    return `
+        <p>我理解您的问题了。让我为您分析一下：</p>
+        <p class="mt-2">基于您的描述，我建议：</p>
+        <ol class="mt-2 space-y-1 text-sm list-decimal list-inside">
+            <li>先检查设备的基本运行参数是否正常</li>
+            <li>查看设备最近的维修保养记录</li>
+            <li>如果问题持续，建议联系专业工程师现场诊断</li>
+        </ol>
+        <p class="mt-3 text-sm text-gray-600">您能提供更多细节吗？比如设备型号、具体故障现象等。</p>
+    `;
+}
+
 // 发送消息
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById('user-input');
     const message = input.value.trim();
     
@@ -180,11 +378,18 @@ function sendMessage() {
     // 显示输入中状态
     showTypingIndicator();
     
-    // 模拟AI思考延迟
-    setTimeout(() => {
+    try {
+        // 使用真实的Gemini API
+        const response = await callGeminiAPI(message);
+        
         hideTypingIndicator();
-        generateAIResponse(message);
-    }, 1500);
+        addMessage(response, 'ai');
+        
+    } catch (error) {
+        console.error('消息发送失败:', error);
+        hideTypingIndicator();
+        addMessage('<p class="text-red-600">⚠️ 抱歉，AI服务暂时不可用，请稍后重试。</p>', 'ai');
+    }
 }
 
 // 快捷问题
@@ -801,7 +1006,8 @@ function querySparePartStock(partId) {
 
 // 页面加载完成后的初始化
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🤖 设备智能体已就绪 - 深度增强版');
+    console.log('🤖 设备智能体已就绪 - Google Gemini集成版');
+    console.log('✓ Google Gemini AI');
     console.log('✓ RAG检索引擎');
     console.log('✓ 图像识别');
     console.log('✓ 语音交互');
@@ -823,13 +1029,20 @@ document.addEventListener('DOMContentLoaded', function() {
         voiceBtn.onclick = toggleVoiceInput;
     }
     
-    // 添加保存知识按钮到页面（可选）
-    const headerButtons = document.querySelector('.flex.items-center.gap-3');
-    if (headerButtons && chatHistory.length > 0) {
-        const saveBtn = document.createElement('button');
-        saveBtn.className = 'px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700';
-        saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>保存为知识';
-        saveBtn.onclick = saveAsKnowledge;
-        // headerButtons.appendChild(saveBtn);
-    }
+    // 显示欢迎消息，说明AI功能
+    setTimeout(() => {
+        addMessage(`
+            <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-lg border-l-4 border-indigo-500">
+                <p class="font-semibold text-indigo-900 mb-2">🚀 Google Gemini AI已就绪</p>
+                <p class="text-sm text-indigo-800 mb-2">我现在由Google Gemini AI驱动，能够：</p>
+                <ul class="text-sm text-indigo-700 space-y-1 ml-4">
+                    <li>• 更智能的故障诊断和分析</li>
+                    <li>• 更自然的多轮对话</li>
+                    <li>• 更准确的解决方案推荐</li>
+                    <li>• 结合本地知识库的增强回复</li>
+                </ul>
+                <p class="text-xs text-indigo-600 mt-3">💡 请描述您遇到的设备问题，我会为您提供专业的诊断建议</p>
+            </div>
+        `, 'ai');
+    }, 1000);
 });
