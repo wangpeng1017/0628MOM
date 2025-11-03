@@ -10,8 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
     loadNCRTable();
     loadReportsTable();
     loadSupplierRanking();
-    initRadarComparison();
-    initNCRTop5Chart();
+    
+    // 延迟初始化图表，确保DOM已加载
+    setTimeout(() => {
+        initRadarComparison();
+        initNCRTop5Chart();
+    }, 100);
 
     // 根据URL参数设置初始视图
     const initialView = getQueryParam('view') || 'overview';
@@ -36,6 +40,15 @@ function switchView(viewName) {
     if (targetView) {
         targetView.classList.remove('hidden');
     }
+    
+    // 如果切换到统计分析视图，重新初始化图表
+    if (viewName === 'analytics') {
+        setTimeout(() => {
+            initRadarComparison();
+            initNCRTop5Chart();
+        }, 100);
+    }
+    
     // 无内部侧边栏时无需设置激活项；此逻辑仅在存在内部菜单时生效
     if (typeof event !== 'undefined' && event && event.target) {
         document.querySelectorAll('.sub-nav-item').forEach(item => item.classList.remove('active'));
@@ -549,8 +562,16 @@ function loadExecutionChecklist() {
     const items = [
         { id: 1, item: 'MES系统是否覆盖关键生产工序？', status: 'completed', result: '符合', evidence: '已上传照片' },
         { id: 2, item: 'ERP系统物料管理是否准确？', status: 'completed', result: '符合', evidence: '已上传照片' },
-        { id: 3, item: '是否有系统化的数据备份与恢复机制？', status: 'pending', result: '', evidence: '' },
-        { id: 4, item: '系统操作权限管理是否规范？', status: 'pending', result: '', evidence: '' }
+        { id: 3, item: '是否有系统化的数据备份与恢复机制？', status: 'completed', result: '符合', evidence: '已上传照片' },
+        { id: 4, item: '系统操作权限管理是否规范？', status: 'completed', result: '不符合', evidence: '已创建NCR-2025-001' },
+        { id: 5, item: '是否定期进行系统性能优化？', status: 'completed', result: '符合', evidence: '已上传照片' },
+        { id: 6, item: '数据安全管理政策是否明确？', status: 'completed', result: '符合', evidence: '已上传照片' },
+        { id: 7, item: '生产核心数据访问权限是否受控？', status: 'completed', result: '不符合', evidence: '已创建NCR-2025-002' },
+        { id: 8, item: '客户资料是否进行加密存储？', status: 'completed', result: '符合', evidence: '已上传照片' },
+        { id: 9, item: '是否有数据泄露应急预案？', status: 'completed', result: '符合', evidence: '已上传照片' },
+        { id: 10, item: '设备OEE数据是否实时采集？', status: 'pending', result: '', evidence: '' },
+        { id: 11, item: '是否具备产品全生命周期追溯能力？', status: 'pending', result: '', evidence: '' },
+        { id: 12, item: '生产数据看板实时性如何？', status: 'pending', result: '', evidence: '' }
     ];
     
     container.innerHTML = items.map(item => `
