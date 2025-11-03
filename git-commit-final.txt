@@ -1,0 +1,55 @@
+# Git提交指令 - 完整更新
+
+# 1. 查看所有变更
+git status
+
+# 2. 添加所有变更文件
+git add .
+
+# 3. 提交所有变更
+git commit -m "Complete updates: modal fix, checklist data, and title changes
+
+Summary of all changes:
+
+1. Modal Positioning Fix:
+   - Fixed all 5 modals to display centered on screen
+   - Updated CSS with flexbox centering
+   - Removed conflicting inline styles
+
+2. Inspection Checklist Enhancement:
+   - Expanded from 24 to 40 inspection items
+   - Added 7 categories with badges
+   - 30 completed items + 10 pending items
+   - Enhanced UI with icons and better styling
+   - Fixed auto-load issue on page initialization
+
+3. Title Changes:
+   - Changed '产业验厂管理系统' to '流程管理系统'
+   - Updated in both sidebar navigation and page header
+   - Updated page title tag
+
+4. Equipment Agent AI Integration:
+   - Integrated Google Gemini Pro API
+   - Added intelligent diagnosis capabilities
+   - Enhanced with local knowledge base fallback
+
+5. Dashboard Color Scheme:
+   - Changed homepage module cards to industrial gray tones
+   - Removed todo and notification modules
+
+Files modified:
+- index.html (sidebar title)
+- pages/process-management/index.html (page title and header)
+- pages/process-management/js/process.js (checklist data and auto-load)
+- pages/process-management/css/process.css (modal positioning)
+- pages/dashboard.html (color scheme)
+- pages/equipment/equipment-agent.html (AI integration)
+- assets/js/equipment-agent.js (Gemini API)
+
+All features tested and ready for production deployment."
+
+# 4. 推送到远程仓库
+git push origin main
+
+# 完成！
+echo "All changes committed and pushed successfully!"

@@ -55,3 +55,12 @@ git push origin main
 
 # 或者如果是其他分支
 # git push origin <branch-name>
+
+# ========================================
+# 重要修复说明
+# ========================================
+# 问题：检查项执行数据不显示
+# 原因：loadExecutionChecklist() 函数只在点击"开始验厂"按钮时调用
+# 解决：在页面加载时(DOMContentLoaded)自动调用该函数
+# 修改文件：pages/process-management/js/process.js (第14行)
+# ========================================
