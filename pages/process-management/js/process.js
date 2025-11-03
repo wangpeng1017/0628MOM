@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
     loadTodoList();
     loadProjectsTable();
     generateProjectCode();
+    loadNCRTable();
+    loadReportsTable();
+    loadSupplierRanking();
+    initRadarComparison();
+    initNCRTop5Chart();
 });
 
 // 初始化系统
@@ -518,6 +523,386 @@ function createCustomTemplate() {
     showToast('自定义模板功能开发中...', 'info');
 }
 
+// ========== 验厂执行功能 ==========
+
+// 开始验厂
+function startInspection() {
+    showToast('开始验厂执行...', 'info');
+    loadExecutionChecklist();
+}
+
+// 加载执行检查表
+function loadExecutionChecklist() {
+    const container = document.getElementById('executionChecklist');
+    if (!container) return;
+    
+    const items = [
+        { id: 1, item: 'MES系统是否覆盖关键生产工序？', status: 'completed', result: '符合', evidence: '已上传照片' },
+        { id: 2, item: 'ERP系统物料管理是否准确？', status: 'completed', result: '符合', evidence: '已上传照片' },
+        { id: 3, item: '是否有系统化的数据备份与恢复机制？', status: 'pending', result: '', evidence: '' },
+        { id: 4, item: '系统操作权限管理是否规范？', status: 'pending', result: '', evidence: '' }
+    ];
+    
+    container.innerHTML = items.map(item => `
+        <div class="border border-gray-200 rounded-lg p-4 ${item.status === 'completed' ? 'bg-green-50' : ''}">
+            <div class="flex items-start justify-between">
+                <div class="flex-1">
+                    <p class="font-medium text-gray-800">${item.item}</p>
+                    ${item.status === 'completed' ? `
+                        <div class="mt-2 flex items-center space-x-4">
+                            <span class="text-sm px-2 py-1 bg-green-100 text-green-700 rounded">${item.result}</span>
+                            <span class="text-xs text-gray-500"><i class="fas fa-camera mr-1"></i>${item.evidence}</span>
+                        </div>
+                    ` : `
+                        <div class="mt-3 flex items-center space-x-2">
+                            <button onclick="markAsCompliant(${item.id})" class="px-3 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200">符合</button>
+                            <button onclick="markAsNonCompliant(${item.id})" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200">不符合</button>
+                            <button onclick="uploadPhoto()" class="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200"><i class="fas fa-camera mr-1"></i>拍照</button>
+                        </div>
+                    `}
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 标记为符合
+function markAsCompliant(itemId) {
+    showToast(`检查项 #${itemId} 已标记为符合`, 'success');
+    loadExecutionChecklist();
+}
+
+// 标记为不符合
+function markAsNonCompliant(itemId) {
+    showToast(`检查项 #${itemId} 已标记为不符合，请创建NCR`, 'warning');
+    createNCR();
+}
+
+// 上传照片
+function uploadPhoto() {
+    showToast('照片上传功能开发中...', 'info');
+}
+
+// 保存进度
+function saveProgress() {
+    showToast('验厂进度已保存', 'success');
+}
+
+// ========== 不符合项管理功能 ==========
+
+// 加载NCR表格
+function loadNCRTable() {
+    const tbody = document.getElementById('ncrTable');
+    if (!tbody) return;
+    
+    const ncrs = [
+        {
+            id: 'NCR-2025-001',
+            description: '数据备份机制不完善',
+            severity: '中',
+            department: '信息中心',
+            status: 'pending',
+            dueDate: '2025-11-20'
+        },
+        {
+            id: 'NCR-2025-002',
+            description: '生产数据访问权限管理不规范',
+            severity: '高',
+            department: '生产部',
+            status: 'in-progress',
+            dueDate: '2025-11-15'
+        },
+        {
+            id: 'NCR-2024-098',
+            description: '设备OEE数据采集不及时',
+            severity: '低',
+            department: '设备部',
+            status: 'closed',
+            dueDate: '2024-10-30'
+        }
+    ];
+    
+    const severityColors = {
+        '高': 'bg-red-100 text-red-700',
+        '中': 'bg-orange-100 text-orange-700',
+        '低': 'bg-yellow-100 text-yellow-700'
+    };
+    
+    const statusMap = {
+        'pending': { text: '待整改', class: 'bg-red-100 text-red-700' },
+        'in-progress': { text: '整改中', class: 'bg-orange-100 text-orange-700' },
+        'verifying': { text: '待验证', class: 'bg-blue-100 text-blue-700' },
+        'closed': { text: '已关闭', class: 'bg-green-100 text-green-700' }
+    };
+    
+    tbody.innerHTML = ncrs.map(ncr => `
+        <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm font-medium text-blue-600 cursor-pointer hover:underline" onclick="viewNCRDetail('${ncr.id}')">${ncr.id}</span>
+            </td>
+            <td class="px-6 py-4">
+                <span class="text-sm text-gray-800">${ncr.description}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-xs px-2 py-1 rounded ${severityColors[ncr.severity]}">${ncr.severity}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm text-gray-600">${ncr.department}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-xs px-2 py-1 rounded ${statusMap[ncr.status].class}">${statusMap[ncr.status].text}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm text-gray-600">${ncr.dueDate}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                <button onclick="viewNCRDetail('${ncr.id}')" class="text-blue-600 hover:text-blue-900 mr-3">
+                    <i class="far fa-eye"></i> 查看
+                </button>
+                ${ncr.status !== 'closed' ? `
+                    <button onclick="updateNCR('${ncr.id}')" class="text-green-600 hover:text-green-900">
+                        <i class="far fa-edit"></i> 更新
+                    </button>
+                ` : ''}
+            </td>
+        </tr>
+    `).join('');
+}
+
+// 显示创建NCR模态框
+function showCreateNCR() {
+    showToast('创建不符合项功能开发中...', 'info');
+}
+
+// 创建NCR
+function createNCR() {
+    showCreateNCR();
+}
+
+// 查看NCR详情
+function viewNCRDetail(ncrId) {
+    showToast(`正在加载NCR ${ncrId} 详情...`, 'info');
+}
+
+// 更新NCR
+function updateNCR(ncrId) {
+    showToast(`正在更新NCR ${ncrId}...`, 'info');
+}
+
+// ========== 验厂报告功能 ==========
+
+// 加载报告表格
+function loadReportsTable() {
+    const tbody = document.getElementById('reportsTable');
+    if (!tbody) return;
+    
+    const reports = [
+        {
+            id: 'RPT-2025-001',
+            project: 'INS-2025-001',
+            supplier: '阳光电源股份有限公司',
+            date: '2025-11-10',
+            score: 85,
+            status: 'completed'
+        },
+        {
+            id: 'RPT-2024-098',
+            project: 'INS-2024-098',
+            supplier: '天合光能股份有限公司',
+            date: '2024-10-25',
+            score: 92,
+            status: 'completed'
+        }
+    ];
+    
+    tbody.innerHTML = reports.map(report => `
+        <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm font-medium text-blue-600">${report.id}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm text-gray-800">${report.project}</span>
+            </td>
+            <td class="px-6 py-4">
+                <span class="text-sm text-gray-800">${report.supplier}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm text-gray-600">${report.date}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-lg font-bold ${report.score >= 90 ? 'text-green-600' : report.score >= 80 ? 'text-blue-600' : 'text-orange-600'}">${report.score}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">已完成</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                <button onclick="viewReport('${report.id}')" class="text-blue-600 hover:text-blue-900 mr-3">
+                    <i class="far fa-eye"></i> 查看
+                </button>
+                <button onclick="downloadReport('${report.id}', 'pdf')" class="text-green-600 hover:text-green-900 mr-3">
+                    <i class="far fa-file-pdf"></i> PDF
+                </button>
+                <button onclick="downloadReport('${report.id}', 'word')" class="text-blue-800 hover:text-blue-900">
+                    <i class="far fa-file-word"></i> Word
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+// 生成验厂报告
+function generateInspectionReport() {
+    showToast('正在生成验厂报告...', 'info');
+    setTimeout(() => {
+        showToast('验厂报告生成成功', 'success');
+        loadReportsTable();
+    }, 2000);
+}
+
+// 查看报告
+function viewReport(reportId) {
+    showToast(`正在加载报告 ${reportId}...`, 'info');
+}
+
+// 下载报告
+function downloadReport(reportId, format) {
+    showToast(`正在生成${format.toUpperCase()}格式报告...`, 'info');
+}
+
+// ========== 统计分析功能 ==========
+
+// 加载供应商排名
+function loadSupplierRanking() {
+    const container = document.getElementById('supplierRanking');
+    if (!container) return;
+    
+    const suppliers = [
+        { name: '天合光能股份有限公司', score: 92, rank: 1 },
+        { name: '隆基绿能科技股份有限公司', score: 88, rank: 2 },
+        { name: '阳光电源股份有限公司', score: 85, rank: 3 },
+        { name: '宁德时代新能源科技股份有限公司', score: 82, rank: 4 },
+        { name: '比亚迪股份有限公司', score: 78, rank: 5 }
+    ];
+    
+    container.innerHTML = suppliers.map(supplier => `
+        <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 rounded-full ${supplier.rank <= 3 ? 'bg-gradient-to-r from-yellow-400 to-yellow-600' : 'bg-gray-200'} flex items-center justify-center">
+                    <span class="font-bold ${supplier.rank <= 3 ? 'text-white' : 'text-gray-600'}">${supplier.rank}</span>
+                </div>
+                <span class="font-medium text-gray-800">${supplier.name}</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="text-right">
+                    <p class="text-2xl font-bold ${supplier.score >= 90 ? 'text-green-600' : supplier.score >= 80 ? 'text-blue-600' : 'text-orange-600'}">${supplier.score}</p>
+                    <p class="text-xs text-gray-500">综合得分</p>
+                </div>
+                <div class="w-32">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${supplier.score}%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 初始化雷达图对比
+function initRadarComparison() {
+    const chartDom = document.getElementById('radarComparison');
+    if (!chartDom || typeof echarts === 'undefined') return;
+    
+    const myChart = echarts.init(chartDom);
+    const option = {
+        title: {
+            text: '供应商能力对比分析'
+        },
+        legend: {
+            data: ['天合光能', '隆基绿能', '阳光电源']
+        },
+        radar: {
+            indicator: [
+                { name: '信息化系统', max: 100 },
+                { name: '数据安全', max: 100 },
+                { name: '数字化流程', max: 100 },
+                { name: '自动化水平', max: 100 },
+                { name: '质量管理', max: 100 },
+                { name: '供应链协同', max: 100 }
+            ]
+        },
+        series: [{
+            name: '供应商能力对比',
+            type: 'radar',
+            data: [
+                {
+                    value: [95, 90, 88, 92, 94, 85],
+                    name: '天合光能'
+                },
+                {
+                    value: [88, 85, 90, 87, 89, 82],
+                    name: '隆基绿能'
+                },
+                {
+                    value: [85, 82, 85, 88, 86, 78],
+                    name: '阳光电源'
+                }
+            ]
+        }]
+    };
+    
+    myChart.setOption(option);
+    
+    window.addEventListener('resize', function() {
+        myChart.resize();
+    });
+}
+
+// 初始化不符合项TOP5图表
+function initNCRTop5Chart() {
+    const chartDom = document.getElementById('ncrTop5Chart');
+    if (!chartDom || typeof echarts === 'undefined') return;
+    
+    const myChart = echarts.init(chartDom);
+    const option = {
+        title: {
+            text: '常见不符合项统计'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value'
+        },
+        yAxis: {
+            type: 'category',
+            data: ['数据备份机制', '权限管理', 'OEE数据采集', '数据加密', '应急预案']
+        },
+        series: [{
+            name: '出现次数',
+            type: 'bar',
+            data: [15, 12, 10, 8, 6],
+            itemStyle: {
+                color: '#14b8a6'
+            }
+        }]
+    };
+    
+    myChart.setOption(option);
+    
+    window.addEventListener('resize', function() {
+        myChart.resize();
+    });
+}
+
 // 导出函数到全局作用域
 window.switchView = switchView;
 window.showCreateProject = showCreateProject;
@@ -529,3 +914,15 @@ window.deleteProject = deleteProject;
 window.selectInspectionType = selectInspectionType;
 window.toggleTemplateModule = toggleTemplateModule;
 window.createCustomTemplate = createCustomTemplate;
+window.startInspection = startInspection;
+window.markAsCompliant = markAsCompliant;
+window.markAsNonCompliant = markAsNonCompliant;
+window.uploadPhoto = uploadPhoto;
+window.saveProgress = saveProgress;
+window.showCreateNCR = showCreateNCR;
+window.createNCR = createNCR;
+window.viewNCRDetail = viewNCRDetail;
+window.updateNCR = updateNCR;
+window.generateInspectionReport = generateInspectionReport;
+window.viewReport = viewReport;
+window.downloadReport = downloadReport;
