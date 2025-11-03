@@ -132,23 +132,26 @@ body {
 
 /* Modal */
 .modal {
-    transition: opacity 0.2s ease, visibility 0.2s ease;
+    transition: opacity 0.2s ease;
+}
+
+.modal.hidden {
+    display: none;
 }
 
 .modal-content {
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    transform: translateY(20px);
-    opacity: 0;
+    animation: modalSlideIn 0.3s ease-out;
 }
 
-.modal.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.modal.active .modal-content {
-    transform: translateY(0);
-    opacity: 1;
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* Responsive Design */

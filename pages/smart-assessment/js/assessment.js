@@ -587,10 +587,20 @@ function showManualEntry() {
     }
     
     // 显示模态框
+    modal.style.display = 'flex';
     modal.classList.remove('hidden');
-    modal.classList.add('flex');
+    
+    // 强制重绘以触发动画
+    setTimeout(() => {
+        const content = modal.querySelector('.modal-content');
+        if (content) {
+            content.style.opacity = '1';
+            content.style.transform = 'translateY(0)';
+        }
+    }, 10);
     
     console.log('Modal displayed successfully');
+    console.log('Form HTML:', form.innerHTML.substring(0, 100));
 }
 
 // 关闭模态框
@@ -598,11 +608,8 @@ function closeModal() {
     const modal = document.getElementById('manualEntryModal');
     if (!modal) return;
     
-    modal.querySelector('.modal-content').classList.remove('active');
-    setTimeout(() => {
-        modal.classList.remove('flex');
-        modal.classList.add('hidden');
-    }, 300);
+    modal.style.display = 'none';
+    modal.classList.add('hidden');
 }
 
 // 提交手动录入数据
@@ -858,14 +865,14 @@ function showCapabilityDetail(capabilityType) {
         </div>
     `;
     
+    modal.style.display = 'flex';
     modal.classList.remove('hidden');
-    modal.classList.add('flex');
 }
 
 // 关闭能力详情弹窗
 function closeCapabilityDetail() {
     const modal = document.getElementById('capabilityDetailModal');
-    modal.classList.remove('flex');
+    modal.style.display = 'none';
     modal.classList.add('hidden');
 }
 
@@ -879,14 +886,14 @@ function editCapability() {
 // 显示模板管理器
 function showTemplateManager() {
     const modal = document.getElementById('templateManagerModal');
+    modal.style.display = 'flex';
     modal.classList.remove('hidden');
-    modal.classList.add('flex');
 }
 
 // 关闭模板管理器
 function closeTemplateManager() {
     const modal = document.getElementById('templateManagerModal');
-    modal.classList.remove('flex');
+    modal.style.display = 'none';
     modal.classList.add('hidden');
 }
 
