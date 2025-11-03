@@ -811,47 +811,86 @@ function loadExecutionChecklist() {
     if (!container) return;
     
     const items = [
-        { id: 1, item: 'MES系统是否覆盖关键生产工序？', status: 'completed', result: '符合', evidence: '已上传照片3张' },
-        { id: 2, item: 'MES系统数据采集的实时性如何？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
-        { id: 3, item: 'ERP系统物料管理是否准确？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
-        { id: 4, item: 'ERP与MES系统集成情况如何？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
-        { id: 5, item: '是否有系统化的数据备份与恢复机制？', status: 'completed', result: '不符合', evidence: '已创建NCR-2025-001' },
-        { id: 6, item: '系统操作权限管理是否规范？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
-        { id: 7, item: '是否定期进行系统性能优化？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
-        { id: 8, item: '系统故障响应时间是否符合要求？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
-        { id: 9, item: '是否有完整的系统操作日志？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
-        { id: 10, item: '数据安全管理政策是否明确？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
-        { id: 11, item: '生产核心数据访问权限是否受控？', status: 'completed', result: '不符合', evidence: '已创建NCR-2025-002' },
-        { id: 12, item: '客户资料是否进行加密存储？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
-        { id: 13, item: '是否有定期的网络安全漏洞扫描？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
-        { id: 14, item: '数据备份策略是否完善？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
-        { id: 15, item: '是否有数据泄露应急预案？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
-        { id: 16, item: '关键工序的自动化程度如何？', status: 'completed', result: '符合', evidence: '已上传照片3张' },
-        { id: 17, item: '是否采用SPC对关键质量参数进行监控？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
-        { id: 18, item: '设备OEE数据是否实时采集与分析？', status: 'pending', result: '', evidence: '' },
-        { id: 19, item: '是否具备产品全生命周期追溯能力？', status: 'pending', result: '', evidence: '' },
-        { id: 20, item: '生产计划与实际执行的偏差率是多少？', status: 'pending', result: '', evidence: '' },
-        { id: 21, item: '是否实现了生产过程的无纸化作业？', status: 'pending', result: '', evidence: '' },
-        { id: 22, item: '生产数据看板实时性和准确性如何？', status: 'pending', result: '', evidence: '' },
-        { id: 23, item: '生产异常自动报警和处理机制是否完善？', status: 'pending', result: '', evidence: '' },
-        { id: 24, item: '生产数据与财务系统集成情况如何？', status: 'pending', result: '', evidence: '' }
+        // 信息化系统检查项 (已完成)
+        { id: 1, item: 'MES系统是否覆盖关键生产工序？', status: 'completed', result: '符合', evidence: '已上传照片3张', category: '信息化系统' },
+        { id: 2, item: 'MES系统数据采集的实时性如何？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '信息化系统' },
+        { id: 3, item: 'ERP系统物料管理是否准确？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '信息化系统' },
+        { id: 4, item: 'ERP与MES系统集成情况如何？', status: 'completed', result: '符合', evidence: '已上传照片1张', category: '信息化系统' },
+        { id: 5, item: '是否有系统化的数据备份与恢复机制？', status: 'completed', result: '不符合', evidence: '已创建NCR-2025-001', category: '信息化系统' },
+        { id: 6, item: '系统操作权限管理是否规范？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '信息化系统' },
+        { id: 7, item: '是否定期进行系统性能优化？', status: 'completed', result: '符合', evidence: '已上传照片1张', category: '信息化系统' },
+        { id: 8, item: '系统故障响应时间是否符合要求？', status: 'completed', result: '符合', evidence: '已上传照片1张', category: '信息化系统' },
+        { id: 9, item: '是否有完整的系统操作日志？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '信息化系统' },
+        
+        // 数据安全检查项 (已完成)
+        { id: 10, item: '数据安全管理政策是否明确？', status: 'completed', result: '符合', evidence: '已上传照片1张', category: '数据安全' },
+        { id: 11, item: '生产核心数据访问权限是否受控？', status: 'completed', result: '不符合', evidence: '已创建NCR-2025-002', category: '数据安全' },
+        { id: 12, item: '客户资料是否进行加密存储？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '数据安全' },
+        { id: 13, item: '是否有定期的网络安全漏洞扫描？', status: 'completed', result: '符合', evidence: '已上传照片1张', category: '数据安全' },
+        { id: 14, item: '数据备份策略是否完善？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '数据安全' },
+        { id: 15, item: '是否有数据泄露应急预案？', status: 'completed', result: '符合', evidence: '已上传照片1张', category: '数据安全' },
+        { id: 16, item: '网络防火墙配置是否合理？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '数据安全' },
+        { id: 17, item: '是否实施了数据分级分类管理？', status: 'completed', result: '符合', evidence: '已上传照片1张', category: '数据安全' },
+        
+        // 数字化流程检查项 (已完成)
+        { id: 18, item: '关键工序的自动化程度如何？', status: 'completed', result: '符合', evidence: '已上传照片3张', category: '数字化流程' },
+        { id: 19, item: '是否采用SPC对关键质量参数进行监控？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '数字化流程' },
+        { id: 20, item: '设备OEE数据是否实时采集与分析？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '数字化流程' },
+        { id: 21, item: '是否具备产品全生命周期追溯能力？', status: 'completed', result: '符合', evidence: '已上传照片3张', category: '数字化流程' },
+        { id: 22, item: '生产计划与实际执行的偏差率是多少？', status: 'completed', result: '符合', evidence: '偏差率<5%，已上传数据报表', category: '数字化流程' },
+        { id: 23, item: '是否实现了生产过程的无纸化作业？', status: 'completed', result: '符合', evidence: '已上传照片4张', category: '数字化流程' },
+        { id: 24, item: '生产数据看板实时性和准确性如何？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '数字化流程' },
+        { id: 25, item: '生产异常自动报警和处理机制是否完善？', status: 'completed', result: '符合', evidence: '已上传照片1张', category: '数字化流程' },
+        { id: 26, item: '生产数据与财务系统集成情况如何？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '数字化流程' },
+        { id: 27, item: '是否建立了数字化工艺文件管理系统？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '数字化流程' },
+        { id: 28, item: '质量检验数据是否自动采集和分析？', status: 'completed', result: '符合', evidence: '已上传照片3张', category: '数字化流程' },
+        
+        // 供应链管理检查项 (进行中)
+        { id: 29, item: '供应商管理系统是否完善？', status: 'completed', result: '符合', evidence: '已上传照片2张', category: '供应链管理' },
+        { id: 30, item: '采购订单是否实现电子化管理？', status: 'completed', result: '符合', evidence: '已上传照片1张', category: '供应链管理' },
+        { id: 31, item: '库存管理是否实时可视化？', status: 'pending', result: '', evidence: '', category: '供应链管理' },
+        { id: 32, item: '物料追溯系统是否覆盖全流程？', status: 'pending', result: '', evidence: '', category: '供应链管理' },
+        
+        // 质量管理检查项 (待执行)
+        { id: 33, item: '质量管理体系是否通过ISO认证？', status: 'pending', result: '', evidence: '', category: '质量管理' },
+        { id: 34, item: '不良品追溯机制是否完善？', status: 'pending', result: '', evidence: '', category: '质量管理' },
+        { id: 35, item: '质量数据分析工具是否有效使用？', status: 'pending', result: '', evidence: '', category: '质量管理' },
+        
+        // 设备管理检查项 (待执行)
+        { id: 36, item: '设备预防性维护计划是否执行到位？', status: 'pending', result: '', evidence: '', category: '设备管理' },
+        { id: 37, item: '设备运行状态是否实时监控？', status: 'pending', result: '', evidence: '', category: '设备管理' },
+        { id: 38, item: '设备维修记录是否完整？', status: 'pending', result: '', evidence: '', category: '设备管理' },
+        
+        // 能源管理检查项 (待执行)
+        { id: 39, item: '能源消耗数据是否实时采集？', status: 'pending', result: '', evidence: '', category: '能源管理' },
+        { id: 40, item: '是否建立能源管理系统？', status: 'pending', result: '', evidence: '', category: '能源管理' }
     ];
     
     container.innerHTML = items.map(item => `
-        <div class="border border-gray-200 rounded-lg p-4 ${item.status === 'completed' ? 'bg-green-50' : ''}">
+        <div class="border border-gray-200 rounded-lg p-4 ${item.status === 'completed' ? 'bg-green-50' : 'bg-white'}">
             <div class="flex items-start justify-between">
                 <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xs px-2 py-1 bg-teal-100 text-teal-700 rounded-full font-medium">${item.category}</span>
+                        <span class="text-xs text-gray-400">#${item.id}</span>
+                    </div>
                     <p class="font-medium text-gray-800">${item.item}</p>
                     ${item.status === 'completed' ? `
                         <div class="mt-2 flex items-center space-x-4">
-                            <span class="text-sm px-2 py-1 bg-green-100 text-green-700 rounded">${item.result}</span>
+                            <span class="text-sm px-2 py-1 ${item.result === '符合' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} rounded">${item.result}</span>
                             <span class="text-xs text-gray-500"><i class="fas fa-camera mr-1"></i>${item.evidence}</span>
                         </div>
                     ` : `
                         <div class="mt-3 flex items-center space-x-2">
-                            <button onclick="markAsCompliant(${item.id})" class="px-3 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200">符合</button>
-                            <button onclick="markAsNonCompliant(${item.id})" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200">不符合</button>
-                            <button onclick="uploadPhoto()" class="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200"><i class="fas fa-camera mr-1"></i>拍照</button>
+                            <button onclick="markAsCompliant(${item.id})" class="px-3 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200 transition-colors">
+                                <i class="fas fa-check mr-1"></i>符合
+                            </button>
+                            <button onclick="markAsNonCompliant(${item.id})" class="px-3 py-1 text-xs bg-red-100 text-red-700 rounded hover:bg-red-200 transition-colors">
+                                <i class="fas fa-times mr-1"></i>不符合
+                            </button>
+                            <button onclick="uploadPhoto()" class="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition-colors">
+                                <i class="fas fa-camera mr-1"></i>拍照
+                            </button>
                         </div>
                     `}
                 </div>
