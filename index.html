@@ -308,24 +308,6 @@
                             </div>
                         </div>
 
-                        <!-- 验厂系统下拉菜单 -->
-                        <div class="relative">
-                            <button id="inspectionNavBtn" onclick="toggleDropdownNav('inspection')" class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
-                                <i class="fas fa-clipboard-check"></i>
-                                <span>验厂系统</span>
-                                <i id="inspectionNavIcon" class="fas fa-chevron-down text-sm transition-transform"></i>
-                            </button>
-
-                            <div id="inspectionNavDropdown" class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
-                                <div class="py-2">
-                                    <button onclick="switchModule('smart-assessment'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
-                                        <i class="fas fa-industry text-blue-500 w-5"></i>
-                                        <span>智造能力评估</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- 运营中心下拉菜单 -->
                         <div class="relative">
                             <button id="operationsNavBtn" onclick="toggleDropdownNav('operations')" class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
@@ -387,6 +369,24 @@
                                             <span class="block text-xs text-cyan-500">云端数据管理</span>
                                         </div>
                                         <i class="fas fa-external-link-alt text-xs text-cyan-500 ml-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 验厂系统下拉菜单 -->
+                        <div class="relative">
+                            <button id="inspectionNavBtn" onclick="toggleDropdownNav('inspection')" class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
+                                <i class="fas fa-clipboard-check"></i>
+                                <span>验厂系统</span>
+                                <i id="inspectionNavIcon" class="fas fa-chevron-down text-sm transition-transform"></i>
+                            </button>
+
+                            <div id="inspectionNavDropdown" class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
+                                <div class="py-2">
+                                    <button onclick="switchModule('smart-assessment'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-industry text-blue-500 w-5"></i>
+                                        <span>智造能力评估</span>
                                     </button>
                                 </div>
                             </div>
@@ -1346,7 +1346,7 @@
 
         // 下拉导航菜单控制
         function toggleDropdownNav(category) {
-            const allDropdowns = ['manufacturing', 'operations', 'platform'];
+            const allDropdowns = ['manufacturing', 'operations', 'platform', 'inspection'];
             
             allDropdowns.forEach(cat => {
                 const dropdown = document.getElementById(cat + 'NavDropdown');
@@ -1371,7 +1371,7 @@
 
         // 关闭所有下拉菜单
         function closeAllDropdowns() {
-            const allDropdowns = ['manufacturing', 'operations', 'platform'];
+            const allDropdowns = ['manufacturing', 'operations', 'platform', 'inspection'];
             allDropdowns.forEach(cat => {
                 const dropdown = document.getElementById(cat + 'NavDropdown');
                 const icon = document.getElementById(cat + 'NavIcon');
