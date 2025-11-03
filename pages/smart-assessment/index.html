@@ -44,14 +44,6 @@
                 </div>
             </div>
 
-            <div class="flex flex-wrap gap-3">
-                <button class="view-tab active" data-view-target="overview"><i class="fas fa-gauge-high mr-2"></i>评估概览</button>
-                <button class="view-tab" data-view-target="data-integration"><i class="fas fa-database mr-2"></i>数据集成与治理</button>
-                <button class="view-tab" data-view-target="assessment"><i class="fas fa-chart-pie mr-2"></i>智能评估与诊断</button>
-                <button class="view-tab" data-view-target="reports"><i class="fas fa-file-alt mr-2"></i>报告管理</button>
-                <button class="view-tab" data-view-target="management"><i class="fas fa-cogs mr-2"></i>系统管理</button>
-            </div>
-
             <section class="assessment-section space-y-6" data-view="overview">
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                     <div class="bg-white rounded-lg shadow-sm border border-blue-100 p-6">
@@ -341,15 +333,7 @@
             </section>
 
             <section class="assessment-section space-y-6 hidden" data-view="management">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3">用户与权限</h3>
-                        <ul class="space-y-2 text-sm text-gray-600">
-                            <li><i class="fas fa-users-cog text-blue-500 mr-2"></i>系统管理员、评估专家、企业管理员等角色</li>
-                            <li><i class="fas fa-key text-blue-500 mr-2"></i>基于RBAC的菜单与数据权限配置</li>
-                            <li><i class="fas fa-user-shield text-blue-500 mr-2"></i>支持账号禁用与批量导入</li>
-                        </ul>
-                    </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-3">评估模型管理</h3>
                         <ul class="space-y-2 text-sm text-gray-600">

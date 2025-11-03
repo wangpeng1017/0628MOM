@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智造能力评估 - 主数据平台</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6',
+                        'secondary': '#6b7280',
+                        'success': '#10b981',
+                        'warning': '#f59e0b',
+                        'danger': '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <div class="p-6 space-y-6">
+        <!-- 页面标题栏 -->
+        <div id="overview" class="bg-white shadow-sm border border-gray-200 rounded-lg p-6">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                        <span class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-100 text-blue-600">
+                            <i class="fas fa-industry"></i>
+                        </span>
+                        智造能力评估中心
+                    </h1>
+                    <p class="text-sm text-gray-600 mt-2">面向制造企业的智能制造成熟度评估平台，支持多模型自评、差距诊断与持续改进跟踪</p>
+                </div>
+                <div class="flex flex-wrap items-center gap-3">
+                    <button class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-file-export"></i>
+                        导出评估报告
+                    </button>
+                    <button class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-upload"></i>
+                        导入评估数据
+                    </button>
+                    <button class="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-book"></i>
+                        查看评分标准
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 指标卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">最新综合成熟度</p>
+                        <p class="text-3xl font-bold text-blue-600">L3.4</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-pie text-blue-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 text-sm text-gray-500 flex items-center justify-between">
+                    <span>目标 L4.0</span>
+                    <span class="text-success font-medium">+0.3 (季度环比)</span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">核心维度达成率</p>
+                        <p class="text-3xl font-bold text-green-600">78%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bullseye text-green-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center justify-between text-sm text-gray-500">
+                    <span>共 18 项标准</span>
+                    <span class="text-warning font-medium">主要短板：生产协同</span>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">已完成改进项</p>
+                        <p class="text-3xl font-bold text-purple-600">42</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tasks text-purple-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center justify-between text-sm text-gray-500">
+                    <span>进行中 12 项</span>
+                    <span class="text-success font-medium">完成率 77%</span>
+                </div>
+            </div>
+
+            <div class="bg白 rounded-lg shadow-sm border border-gray-200 p-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">行业对标位置</p>
+                        <p class="text-3xl font-bold text-orange-600">TOP 25%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-ranking-star text-orange-600 text-xl"></i>
+                    </div>
+                </div>
+                <div class="mt-4 flex items-center justify-between text-sm text-gray-500">
+                    <span>对标企业：45家</span>
+                    <span class="text-blue-600 font-medium">较上季提升 2 位</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 左右布局 -->
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <!-- 左侧：雷达图 + 差距分析 -->
+            <div class="xl:col-span-2 space-y-6">
+                <!-- 雷达图与维度评分 -->
+                <div id="radar" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between px-6 py-4 border-b border-gray-200 gap-4">
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">成熟度维度评分雷达图</h2>
+                            <p class="text-sm text-gray-500">自动聚合经营管理、生产执行、数字支撑、基础设施、人才组织五大维度评分</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <label class="text-sm text-gray-600">评估批次</label>
+                            <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <option>2025Q3 智能制造评估</option>
+                                <option>2025Q2 智能制造评估</option>
+                                <option>2024Q4 智能制造评估</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 p-6">
+                        <div class="lg:col-span-3 flex items-center justify-center">
+                            <div class="relative w-full max-w-xl">
+                                <!-- 雷达图实图位 -->
+                                <img src="../../assets/images/workshop-layout.svg" alt="Radar Chart Placeholder" class="w-full max-w-md mx-auto opacity-80">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <span class="px-4 py-2 bg-white/80 backdrop-blur rounded-lg text-sm text-gray-500">此处集成 ECharts 雷达图</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:col-span-2 space-y-4">
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between text-sm text-gray-600">
+                                    <span>经营管理体系</span>
+                                    <span>L3.8</span>
+                                </div>
+                                <div class="mt-2 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-blue-500 rounded-full" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between text-sm text-gray-600">
+                                    <span>生产执行协同</span>
+                                    <span>L3.1</span>
+                                </div>
+                                <div class="mt-2 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-blue-500 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between text-sm text-gray-600">
+                                    <span>数字化支撑能力</span>
+                                    <span>L3.5</span>
+                                </div>
+                                <div class="mt-2 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-blue-500 rounded满" style="width: 72%"></div>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between text-sm text-gray-600">
+                                    <span>基础设施保障</span>
+                                    <span>L3.7</span>
+                                </div>
+                                <div class="mt-2 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-blue-500 rounded满" style="width: 76%"></div>
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex items-center justify-between text-sm text-gray-600">
+                                    <span>人才与组织能力</span>
+                                    <span>L3.2</span>
+                                </div>
+                                <div class="mt-2 h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-blue-500 rounded满" style="width: 68%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 差距分析面板 -->
+                <div id="gap-analysis" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">差距分析与提升路径</h2>
+                            <p class="text-sm text-gray-500">定位与目标存在差距的评估项，提供针对性的改善动作</p>
+                        </div>
+                        <button class="flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors">
+                            <i class="fas fa-lightbulb"></i>
+                            智能推荐方案
+                        </button>
+                    </div>
+
+                    <div class="p-6 space-y-4">
+                        <div class="border border-gray-200 rounded-xl p-4">
+                            <div class="flex flex-col lg:flex-row lg:items-center lg:justify之间 gap-4">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded">差距 0.9 级</span>
+                                        <h3 class="text-lg font-semibold text-gray-800">产线数据实时采集率</h3>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mt-2">当前 65%，目标 85%。对生产异常诊断与OEE实时监控造成影响。</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-gray-50 rounded-lg p-3">
+                                        <p class="text-xs text-gray-500">责任部门</p>
+                                        <p class="text-sm font-medium text-gray-700">智能制造部</p>
+                                    </div>
+                                    <div class="bg-gray-50 rounded-lg p-3">
+                                        <p class="text-xs text-gray-500">预计达成</p>
+                                        <p class="text-sm font-medium text-gray-700">2025-12</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                                <div class="flex items-center gap-2 text-gray-600">
+                                    <i class="fas fa-network-wired text-blue-500"></i>
+                                    升级边缘采集网关，打通MES/SCADA接口
+                                </div>
+                                <div class="flex items-center gap-2 text-gray-600">
+                                    <i class="fas fa-people-carry text-blue-500"></i>
+                                    建立产线异常快响机制
+                                </div>
+                                <div class="flex items-center gap-2 text-gray-600">
+                                    <i class="fas fa-chalkboard-teacher text-blue-500"></i>
+                                    班组长培训数据填报流程
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-xl p-4">
+                            <div class="flex flex-col lg:flex-row lg:items-center lg:justify之间 gap-4">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2 py-1 bg-orange-100 text-orange-800 text-xs rounded">差距 0.7 级</span>
+                                        <h3 class="text-lg font-semibold text-gray-800">供应链协同平台接入率</h3>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mt-2">当前 52%，目标 80%。直接影响供应端交付稳定性与成本协同。</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="bg-gray-50 rounded-lg p-3">
+                                        <p class="text-xs text-gray-500">责任部门</p>
+                                        <p class="text-sm font-medium text-gray-700">运营管理中心</p>
+                                    </div>
+                                    <div class="bg-gray-50 rounded-lg p-3">
+                                        <p class="text-xs text-gray-500">预计达成</p>
+                                        <p class="text-sm font-medium text-gray-700">2025-09</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                                <div class="flex items-center gap-2 text-gray-600">
+                                    <i class="fas fa-handshake text-blue-500"></i>
+                                    推进重点供应商对接标准EDI接口
+                                </div>
+                                <div class="flex items-center gap-2 text-gray-600">
+                                    <i class="fas fa-shield-alt text-blue-500"></i>
+                                    建立供应商准入数据安全策略
+                                </div>
+                                <div class="flex items-center gap-2 text-gray-600">
+                                    <i class="fas fa-chart-line text-blue-500"></i>
+                                    每月发布供应链履约表现榜单
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：自评进度 + 对标分析 + 专家建议 -->
+            <div class="space-y-6">
+                <!-- 自评进度 -->
+                <div id="progress" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">评估批次与进度</h2>
+                        <p class="text-sm text-gray-500">管理周期内的评估任务与填报进展</p>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-500">当前批次</p>
+                                    <p class="text-base font-semibold text-gray-800">2025Q3 智能制造成熟度评估</p>
+                                </div>
+                                <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-sm">待专家复核</span>
+                            </div>
+                            <div class="mt-4">
+                                <div class="flex items-center justify之间 text-xs text-gray-500 mb-2">
+                                    <span>填报完成率 92%</span>
+                                    <span>截止时间 2025-10-30</span>
+                                </div>
+                                <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                    <div class="h-full bg-blue-500 rounded-full" style="width: 92%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">下一阶段</p>
+                                    <p class="text-sm font-medium text-gray-800">专家现场访谈：2025-11-05</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 对标分析 -->
+                <div id="benchmark" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">行业对标分析</h2>
+                            <p class="text-sm text-gray-500">与标杆企业的关键指标对比</p>
+                        </div>
+                        <button class="text-sm text-blue-600 hover:text-blue-700">查看详细榜单</button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify之间">
+                            <span class="text-sm text-gray-500">综合成熟度评分</span>
+                            <span class="text-sm font-semibold text-gray-800">我方 L3.4 / 标杆 L3.8</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">数字化支撑能力</span>
+                            <span class="text-sm font-semibold text-gray-800">我方 72% / 标杆 81%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">生产协同水平</span>
+                            <span class="text-sm font-semibold text-gray-800 text-danger">我方 68% / 标杆 83%</span>
+                        </div>
+                        <div class="flex itemscenter justify-between">
+                            <span class="text-sm text-gray-500">创新应用深度</span>
+                            <span class="text-sm font-semibold text-gray-800">我方 61% / 标杆 70%</span>
+                        </div>
+                        <div class="border-top border-gray-200 pt-4">
+                            <span class="inline-flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg text-sm">
+                                <i class="fas fa-lightbulb"></i>
+                                建议优先提升生产协同数字化能力，与标杆差距 15%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 专家建议 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                        <div>
+                            <h2 class="text-lg font-semibold text-gray-800">专家评估意见</h2>
+                            <p class="text-sm text-gray-500">来自工业和信息化部智能制造评估专家库</p>
+                        </div>
+                        <button class="text-sm text-blue-600 hover:text-blue-700">导出意见</button>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify之间">
+                                        <div>
+                                            <p class="text-sm font-semibold text-gray-800">专家：王建国</p>
+                                            <p class="text-xs text-gray-500">中国智能制造系统解决方案联盟</p>
+                                        </div>
+                                        <span class="text-xs text-gray-400">2025-10-18</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 leading-relaxed">
+                                        建议围绕“产线互联、数据驱动、业务闭环”三大主题制定改进路线图。优先补齐设备互联和数据治理短板，同时打造跨部门产供销一体化协同机制。
+                                    </p>
+                                    <div class="flex flex-wrap gap-2 text-xs">
+                                        <span class="px-2 py-1 bg-blue-50 text-blue-600 rounded">重点关注：数据治理</span>
+                                        <span class="px-2 py-1 bg-green-50 text-green-600 rounded">关联指标：产线稼动率</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="flex items-center justify之间">
+                                        <div>
+                                            <p class="text-sm font-semibold text-gray-800">专家：刘晓梅</p>
+                                            <p class="text-xs text-gray-500">工信部智造成熟度评估组</p>
+                                        </div>
+                                        <span class="text-xs text-gray-400">2025-10-11</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 leading-relaxed">
+                                        人才与组织能力需同步提升，建议建立跨部门数字化推进小组，同时完善数字化人才梯队培养，强化绩效与数据价值挂钩机制。
+                                    </p>
+                                    <div class="flex flex-wrap gap-2 text-xs">
+                                        <span class="px-2 py-1 bg-purple-50 text-purple-600 rounded">重点关注：数字人才</span>
+                                        <span class="px-2 py-1 bg-orange-50 text-orange-600 rounded">关联指标：培训覆盖率</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部：评估任务与改进闭环 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- 评估任务表 -->
+            <div id="tasks" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border灰-200 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-800">评估任务追踪</h2>
+                        <p class="text-sm text-gray-500">覆盖企业自评、专家复核、整改跟踪全流程</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button class="text-sm text-blue-600 hover:text-blue-700">新建任务</button>
+                        <button class="text-sm text-gray-500 hover:text-gray-700">导出表格</button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">任务名称</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercasetracking-wider">责任人</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">截止时间</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">进度</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 text-sm">
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">
+                                    <p class="font-medium text-gray-800">产线设备联网率数据核验</p>
+                                    <p class="text-xs text-gray-500">数据采集与治理</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="text-gray-700">李海峰</p>
+                                    <p class="text-xs text-gray-400">智能制造中心</p>
+                                </td>
+                                <td class="px-6 py-4 text-gray-600">2025-10-28</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items中心 gap-2">
+                                        <span class="w-16 h-2 rounded-full bg-gray-100 overflow-hidden">
+                                            <span class="block h-full bg-blue-500" style="width: 78%"></span>
+                                        </span>
+                                        <span class="text-xs text-gray-500">78%</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-600">进行中</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">
+                                    <p class="font-medium text-gray-800">供应商协同平台推广</p>
+                                    <p class="text-xs text-gray-500">产业链协同</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="text-gray-700">周婧</p>
+                                    <p class="text-xs text-gray-400">运营管理中心</p>
+                                </td>
+                                <td class="px-6 py-4 text-gray-600">2025-11-15</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-16 h-2 rounded满 bg-gray-100 overflow-hidden">
+                                            <span class="block h-full bg-yellow-400" style="width: 45%"></span>
+                                        </span>
+                                        <span class="text-xs text-gray-500">45%</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-50 text-yellow-600">待加速</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">
+                                    <p class="font-medium text-gray-800">数据治理操作手册更新</p>
+                                    <p class="text-xs text-gray-500">知识库管理</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="text-gray-700">陈航</p>
+                                    <p class="text-xs text-gray-400">数字基础设施部</p>
+                                </td>
+                                <td class="px-6 py-4 text-gray-600">2025-10-30</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-16 h-2 rounded满 bg-gray-100 overflow-hidden">
+                                            <span class="block h-full bg-green-500" style="width: 96%"></span>
+                                        </span>
+                                        <span class="text-xs text-gray-500">96%</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-50 text-green-600">即将完成</span>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-6 py-4">
+                                    <p class="font-medium text-gray-800">数字人才培养营 (第2期)</p>
+                                    <p class="text-xs text-gray-500">人才与组织</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="text-gray-700">王颖</p>
+                                    <p class="text-xs text-gray-400">人力资源中心</p>
+                                </td>
+                                <td class="px-6 py-4 text-gray-600">2025-12-05</td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-16 h-2 rounded满 bg-gray-100 overflow-hidden">
+                                            <span class="block h-full bg-purple-500" style="width: 32%"></span>
+                                        </span>
+                                        <span class="text-xs text-gray-500">32%</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-50 text-purple-600">计划中</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 改进闭环看板 -->
+            <div id="improvement" class="bg-white rounded-lg shadow-sm border border-gray-200">
+                <div class="px-6 py-4 border-b border-gray-200 flex items-center justify之间">
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-800">改进闭环看板</h2>
+                        <p class="text-sm text-gray-500">跟踪智能制造成熟度改进任务的闭环状态</p>
+                    </div>
+                    <button class="text-sm text-blue-600 hover:text-blue-700">配置KPI</button>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div class="flex items中心 justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500">智能联网提升专项</p>
+                            <p class="text-sm font-medium text-gray-800">达成率 82%</p>
+                        </div>
+                        <div class="w-24 h-2 rounded满 bg-gray-100 overflow-hidden">
+                            <div class="h-full bg-blue-500" style="width: 82%"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-500">供应链协同提升专项</p>
+                            <p class="text-sm font-medium text-gray-800">达成率 64%</p>
+                        </div>
+                        <div class="w-24 h-2 rounded满 bg-gray-100 overflow-hidden">
+                            <div class="h-full bg-yellow-400" style="width: 64%"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify之间">
+                        <div>
+                            <p class="text-sm text-gray-500">人才培养与组织变革</p>
+                            <p class="text-sm font-medium text-gray-800">达成率 54%</p>
+                        </div>
+                        <div class="w-24 h-2 rounded满 bg-gray-100 overflow-hidden">
+                            <div class="h-full bg-purple-500" style="width: 54%"></div>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-200 pt-4 space-y-3 text-sm text-gray-600">
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+                            风险提醒：产线数据采集改造项目存在硬件交付延迟风险
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-check-circle text-green-500"></i>
+                            成功案例：装配车间通过MES集成提高异常响应效率 35%
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-comments text-blue-500"></i>
+                            下周举行“智能制造改进复盘会”汇报阶段成果
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

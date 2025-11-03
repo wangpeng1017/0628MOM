@@ -363,14 +363,17 @@ function bindEventListeners() {
         });
     }
     
-    // 视图切换
-    document.querySelectorAll('.view-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            const target = tab.getAttribute('data-view-target');
-            switchView(target);
-            updateURLHash(target);
+    // 视图切换（如果存在标签页按钮）
+    const viewTabs = document.querySelectorAll('.view-tab');
+    if (viewTabs.length > 0) {
+        viewTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = tab.getAttribute('data-view-target');
+                switchView(target);
+                updateURLHash(target);
+            });
         });
-    });
+    }
 
     // 监听 hash 变化（iframe 场景也能触发）
     window.addEventListener('hashchange', () => {
@@ -414,19 +417,28 @@ function switchView(targetView = 'overview') {
         }
     });
 
-    tabs.forEach(tab => {
-        if (tab.dataset.viewTarget === resolvedView) {
-            tab.classList.add('active');
-        } else {
-            tab.classList.remove('active');
-        }
-    });
+    // 只在标签页存在时更新激活状态
+    if (tabs.length > 0) {
+        tabs.forEach(tab => {
+            if (tab.dataset.viewTarget === resolvedView) {
+                tab.classList.add('active');
+            } else {
+                tab.classList.remove('active');
+            }
+        });
+    }
 
+    // 更新当前视图标题
     const currentTitle = document.getElementById('currentViewTitle');
-    const activeTab = document.querySelector(`.view-tab[data-view-target="${resolvedView}"]`);
-    if (currentTitle && activeTab) {
-        // 获取 tab 显示文本（去除图标）
-        currentTitle.textContent = activeTab.textContent.trim();
+    if (currentTitle) {
+        const viewTitles = {
+            'overview': '评估概览',
+            'data-integration': '数据集成与治理',
+            'assessment': '智能评估与诊断',
+            'reports': '报告管理',
+            'management': '系统管理'
+        };
+        currentTitle.textContent = viewTitles[resolvedView] || '评估概览';
     }
 
     // 在切换到评估视图时，确保图表尺寸正确
@@ -647,3 +659,5 @@ window.generateReport = generateReport;
 window.viewReport = viewReport;
 window.downloadReport = downloadReport;
 window.handleAction = handleAction;
+window.switchView = switchView;
+window.initRadarChart = initRadarChart;

@@ -85,3 +85,85 @@ $RECYCLE.BIN/
 # 其他
 *.orig
 .sass-cache/
+
+# 项目特定敏感文件
+*.docx
+*.zip
+*.key
+*.pem
+*.p12
+*.pfx
+*.cer
+*.crt
+secrets/
+credentials/
+.secrets
+.credentials
+
+# 部署和脚本文件（包含敏感信息）
+*.bat
+*.cmd
+*.sh
+*.ps1
+deploy-to-github.ps1
+commit-*.bat
+commit-*.sh
+commit-*.cmd
+
+# 测试和验证文件（临时文件）
+*-test.html
+*-verification.html
+*-demo.html
+
+# 配置文件（可能包含敏感信息）
+extensions.json
+config.local.js
+config.local.json
+
+# 版本控制文件
+VERSION
+VERSION.txt
+
+# 需求文档和敏感数据
+# 智能制造成熟度需求评估.md  # Temporarily commented for development
+数采管理需求文档.MD
+设备管理需求文档.md
+移动应用模块说明.md
+规则引擎WHEN-IF-THEN配置说明.md
+物模型管理功能说明.md
+数据订阅与推送功能说明.md
+订单管理需求.md
+调度总控平台.md
+emsprd.md
+iot-prd.md
+parkprd.md
+process.md
+process-les.md
+
+# 包含敏感密钥的文档
+IOT平台P0-P1开发进度.md
+IOT平台开发说明.md
+IOT平台需求对比与迭代计划.md
+
+# 包含默认凭据的文档
+README.md
+DEPLOYMENT-CHECKLIST.md
+VERSION-CONTROL-BUG-FIX-SUMMARY.md
+WARP.md
+V1.3.0-FINAL-RELEASE-NOTES.md
+V1.2.0-UPGRADE-SUMMARY.md
+V1.2.0-SMART-PARK-UPGRADE-SUMMARY.md
+V1.2.0-FIX-SUMMARY.md
+RELEASE-NOTES-v1.2.0.md
+
+# 登录页面（包含硬编码凭据）
+login.html
+
+# IoT设备管理页面（包含设备认证信息）
+pages/iot/device-registry.html
+pages/iot/device-management.html
+pages/iot/device-monitoring.html
+pages/iot/thing-model.html
+
+# 包含设备认证信息的JS文件
+assets/js/dispatch-control.js
