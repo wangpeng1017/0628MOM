@@ -196,29 +196,28 @@ const knowledgeBase = {
 // 调用Google Gemini API
 async function callGeminiAPI(userMessage) {
     try {
-        // 构建对话历史（最近5轮）
-        const recentHistory = chatHistory.slice(-10).filter(msg => msg.type !== 'system');
-        const conversationHistory = recentHistory.map(msg => ({
-            role: msg.type === 'user' ? 'user' : 'model',
-            parts: [{ text: msg.content.replace(/<[^>]*>/g, '') }] // 移除HTML标签
-        }));
+        // 构建完整的用户消息（包含系统提示词）
+        const fullUserMessage = `${SYSTEM_PROMPT}\n\n用户问题：${userMessage}`;
         
-        // 添加系统提示词和当前问题
-        const messages = [
-            {
-                role: 'user',
-                parts: [{ text: SYSTEM_PROMPT }]
-            },
-            {
-                role: 'model',
-                parts: [{ text: '我明白了，我是一个专业的设备维修智能助手。我会根据用户的问题提供专业的诊断和建议。' }]
-            },
-            ...conversationHistory,
-            {
-                role: 'user',
-                parts: [{ text: userMessage }]
-            }
-        ];
+        // 构建对话历史（最近3轮，确保user和model交替）
+        const recentHistory = chatHistory.slice(-6).filter(msg => msg.type !== 'system');
+        const conversationHistory = [];
+        
+        for (let i = 0; i < recentHistory.length; i++) {
+            const msg = recentHistory[i];
+            conversationHistory.push({
+                role: msg.type === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.content.replace(/<[^>]*>/g, '') }]
+            });
+        }
+        
+        // 添加当前用户消息
+        conversationHistory.push({
+            role: 'user',
+            parts: [{ text: conversationHistory.length === 0 ? fullUserMessage : userMessage }]
+        });
+        
+        console.log('发送到Gemini API的消息:', conversationHistory);
         
         // 调用Gemini API
         const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
@@ -227,7 +226,7 @@ async function callGeminiAPI(userMessage) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                contents: messages,
+                contents: conversationHistory,
                 generationConfig: {
                     temperature: 0.7,
                     topK: 40,
@@ -238,16 +237,20 @@ async function callGeminiAPI(userMessage) {
         });
         
         if (!response.ok) {
+            const errorText = await response.text();
+            console.error('API错误响应:', errorText);
             throw new Error(`API请求失败: ${response.status}`);
         }
         
         const data = await response.json();
+        console.log('Gemini API响应:', data);
         
         // 提取回复内容
         if (data.candidates && data.candidates.length > 0) {
             const aiResponse = data.candidates[0].content.parts[0].text;
             return formatGeminiResponse(aiResponse, userMessage);
         } else {
+            console.error('API返回数据格式错误:', data);
             throw new Error('API返回数据格式错误');
         }
         
@@ -1006,8 +1009,8 @@ function querySparePartStock(partId) {
 
 // 页面加载完成后的初始化
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🤖 设备智能体已就绪 - Google Gemini集成版');
-    console.log('✓ Google Gemini AI');
+    console.log('🤖 设备智能体已就绪 - LLM大语言模型集成版');
+    console.log('✓ LLM大语言模型');
     console.log('✓ RAG检索引擎');
     console.log('✓ 图像识别');
     console.log('✓ 语音交互');
@@ -1033,8 +1036,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         addMessage(`
             <div class="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-lg border-l-4 border-indigo-500">
-                <p class="font-semibold text-indigo-900 mb-2">🚀 Google Gemini AI已就绪</p>
-                <p class="text-sm text-indigo-800 mb-2">我现在由Google Gemini AI驱动，能够：</p>
+                <p class="font-semibold text-indigo-900 mb-2">🚀 LLM大语言模型已就绪</p>
+                <p class="text-sm text-indigo-800 mb-2">我现在由LLM大语言模型驱动，能够：</p>
                 <ul class="text-sm text-indigo-700 space-y-1 ml-4">
                     <li>• 更智能的故障诊断和分析</li>
                     <li>• 更自然的多轮对话</li>
