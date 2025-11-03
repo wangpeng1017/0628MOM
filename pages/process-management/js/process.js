@@ -623,12 +623,195 @@ function loadPlanningTable() {
 
 // 查看计划详情
 function viewPlanDetail(planId) {
-    showToast(`正在加载计划 ${planId} 详情...`, 'info');
+    const modal = document.getElementById('planDetailModal');
+    const content = document.getElementById('planDetailContent');
+    
+    // 模拟获取计划数据
+    const planData = {
+        'PLAN-2025-001': {
+            id: 'PLAN-2025-001',
+            supplier: '阳光电源股份有限公司',
+            type: '储能产品',
+            scope: ['信息化系统', '数据安全'],
+            startDate: '2025-11-15',
+            endDate: '2025-11-17',
+            auditor: '张明',
+            status: 'scheduled',
+            team: ['张明', '李华', '王芳'],
+            checkpoints: ['MES系统覆盖度', '数据备份机制', '访问权限管理'],
+            remarks: '重点关注数据安全和系统集成情况'
+        },
+        'PLAN-2025-002': {
+            id: 'PLAN-2025-002',
+            supplier: '隆基绿能科技股份有限公司',
+            type: '光伏组件',
+            scope: ['信息化系统', '数字化流程'],
+            startDate: '2025-11-20',
+            endDate: '2025-11-22',
+            auditor: '李华',
+            status: 'scheduled',
+            team: ['李华', '王芳', '赵强'],
+            checkpoints: ['生产自动化程度', 'SPC质量监控', '产品追溯能力'],
+            remarks: '重点评估数字化流程成熟度'
+        }
+    };
+    
+    const plan = planData[planId] || planData['PLAN-2025-001'];
+    
+    content.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm font-medium text-gray-500">计划编号</label>
+                    <p class="mt-1 text-gray-900 font-medium">${plan.id}</p>
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-gray-500">供应商名称</label>
+                    <p class="mt-1 text-gray-900">${plan.supplier}</p>
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-gray-500">验厂类型</label>
+                    <p class="mt-1 text-gray-900">${plan.type}</p>
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-gray-500">审核范围</label>
+                    <div class="mt-2 flex flex-wrap gap-2">
+                        ${plan.scope.map(s => `<span class="px-2 py-1 bg-teal-100 text-teal-700 rounded text-sm">${s}</span>`).join('')}
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-sm font-medium text-gray-500">计划时间</label>
+                    <p class="mt-1 text-gray-900">${plan.startDate} ~ ${plan.endDate}</p>
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-gray-500">审核组长</label>
+                    <p class="mt-1 text-gray-900">${plan.auditor}</p>
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-gray-500">审核团队</label>
+                    <div class="mt-2 flex flex-wrap gap-2">
+                        ${plan.team.map(member => `<span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-sm">${member}</span>`).join('')}
+                    </div>
+                </div>
+                <div>
+                    <label class="text-sm font-medium text-gray-500">状态</label>
+                    <p class="mt-1"><span class="status-badge status-${plan.status}">${getStatusText(plan.status)}</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 pt-6 border-t border-gray-200">
+            <label class="text-sm font-medium text-gray-500">关键检查点</label>
+            <ul class="mt-2 space-y-2">
+                ${plan.checkpoints.map(cp => `<li class="flex items-center text-gray-700"><i class="fas fa-check-circle text-teal-500 mr-2"></i>${cp}</li>`).join('')}
+            </ul>
+        </div>
+        <div class="mt-6 pt-6 border-t border-gray-200">
+            <label class="text-sm font-medium text-gray-500">备注说明</label>
+            <p class="mt-2 text-gray-700">${plan.remarks}</p>
+        </div>
+    `;
+    
+    modal.classList.remove('hidden');
+}
+
+// 关闭计划详情
+function closePlanDetail() {
+    document.getElementById('planDetailModal').classList.add('hidden');
 }
 
 // 编辑计划
 function editPlan(planId) {
-    showToast(`正在编辑计划 ${planId}...`, 'info');
+    const modal = document.getElementById('editPlanModal');
+    
+    // 模拟获取计划数据
+    const planData = {
+        'PLAN-2025-001': {
+            id: 'PLAN-2025-001',
+            supplier: '阳光电源股份有限公司',
+            type: 'energy-storage',
+            scope: ['it-system', 'data-security'],
+            startDate: '2025-11-15',
+            endDate: '2025-11-17',
+            auditor: '张明',
+            remarks: '重点关注数据安全和系统集成情况'
+        },
+        'PLAN-2025-002': {
+            id: 'PLAN-2025-002',
+            supplier: '隆基绿能科技股份有限公司',
+            type: 'photovoltaic',
+            scope: ['it-system', 'digital-process'],
+            startDate: '2025-11-20',
+            endDate: '2025-11-22',
+            auditor: '李华',
+            remarks: '重点评估数字化流程成熟度'
+        },
+        'PLAN-2025-003': {
+            id: 'PLAN-2025-003',
+            supplier: '宁德时代新能源科技股份有限公司',
+            type: 'energy-storage',
+            scope: ['data-security', 'digital-process'],
+            startDate: '2025-11-25',
+            endDate: '2025-11-27',
+            auditor: '王芳',
+            remarks: '首次验厂，全面评估'
+        }
+    };
+    
+    const plan = planData[planId] || planData['PLAN-2025-001'];
+    
+    // 填充表单数据
+    document.getElementById('editPlanId').value = plan.id;
+    document.getElementById('editSupplierName').value = plan.supplier;
+    document.getElementById('editInspectionType').value = plan.type;
+    document.getElementById('editStartDate').value = plan.startDate;
+    document.getElementById('editEndDate').value = plan.endDate;
+    document.getElementById('editAuditor').value = plan.auditor;
+    document.getElementById('editRemarks').value = plan.remarks;
+    
+    // 设置审核范围复选框
+    document.querySelectorAll('.edit-scope-checkbox').forEach(checkbox => {
+        checkbox.checked = plan.scope.includes(checkbox.value);
+    });
+    
+    modal.classList.remove('hidden');
+}
+
+// 关闭编辑计划
+function closeEditPlan() {
+    document.getElementById('editPlanModal').classList.add('hidden');
+}
+
+// 提交编辑计划
+function submitEditPlan() {
+    const planId = document.getElementById('editPlanId').value;
+    const supplierName = document.getElementById('editSupplierName').value;
+    
+    if (!supplierName) {
+        showToast('请填写供应商名称', 'warning');
+        return;
+    }
+    
+    // 获取选中的审核范围
+    const selectedScopes = Array.from(document.querySelectorAll('.edit-scope-checkbox:checked'))
+        .map(cb => cb.value);
+    
+    // 模拟保存数据
+    console.log('保存计划数据:', {
+        id: planId,
+        supplier: supplierName,
+        type: document.getElementById('editInspectionType').value,
+        scope: selectedScopes,
+        startDate: document.getElementById('editStartDate').value,
+        endDate: document.getElementById('editEndDate').value,
+        auditor: document.getElementById('editAuditor').value,
+        remarks: document.getElementById('editRemarks').value
+    });
+    
+    showToast(`计划 ${planId} 已更新`, 'success');
+    closeEditPlan();
+    loadPlanningTable(); // 重新加载表格
 }
 
 // 删除计划
