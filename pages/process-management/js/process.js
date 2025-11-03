@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadRecentProjects();
     loadTodoList();
     loadProjectsTable();
+    loadPlanningTable();
     generateProjectCode();
     loadNCRTable();
     loadReportsTable();
@@ -389,6 +390,119 @@ function getToastIcon(type) {
     return icons[type] || icons.info;
 }
 
+// 加载验厂计划列表
+function loadPlanningTable() {
+    const tbody = document.getElementById('planningTable');
+    if (!tbody) return;
+    
+    const plans = [
+        {
+            id: 'PLAN-2025-001',
+            supplier: '阳光电源股份有限公司',
+            type: '储能产品',
+            scope: '信息化系统, 数据安全',
+            date: '2025-11-15 ~ 2025-11-17',
+            status: 'scheduled'
+        },
+        {
+            id: 'PLAN-2025-002',
+            supplier: '隆基绿能科技股份有限公司',
+            type: '光伏组件',
+            scope: '信息化系统, 数字化流程',
+            date: '2025-11-20 ~ 2025-11-22',
+            status: 'scheduled'
+        },
+        {
+            id: 'PLAN-2025-003',
+            supplier: '宁德时代新能源科技股份有限公司',
+            type: '储能产品',
+            scope: '数据安全, 数字化流程',
+            date: '2025-11-25 ~ 2025-11-27',
+            status: 'draft'
+        },
+        {
+            id: 'PLAN-2025-004',
+            supplier: '天合光能股份有限公司',
+            type: '光伏组件',
+            scope: '信息化系统, 数据安全, 数字化流程',
+            date: '2025-12-01 ~ 2025-12-03',
+            status: 'draft'
+        },
+        {
+            id: 'PLAN-2025-005',
+            supplier: '比亚迪股份有限公司',
+            type: '综合验厂',
+            scope: '信息化系统, 数据安全, 数字化流程',
+            date: '2025-12-05 ~ 2025-12-07',
+            status: 'draft'
+        },
+        {
+            id: 'PLAN-2024-098',
+            supplier: '晶科能源股份有限公司',
+            type: '光伏组件',
+            scope: '信息化系统, 数字化流程',
+            date: '2024-10-20 ~ 2024-10-22',
+            status: 'completed'
+        }
+    ];
+    
+    tbody.innerHTML = plans.map(plan => `
+        <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm font-medium text-blue-600 cursor-pointer hover:underline">${plan.id}</span>
+            </td>
+            <td class="px-6 py-4">
+                <span class="text-sm text-gray-800">${plan.supplier}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm text-gray-600">${plan.type}</span>
+            </td>
+            <td class="px-6 py-4">
+                <span class="text-sm text-gray-600">${plan.scope}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm text-gray-600">${plan.date}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="status-badge status-${plan.status}">${getStatusText(plan.status)}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                <button onclick="viewPlanDetail('${plan.id}')" class="text-blue-600 hover:text-blue-900 mr-3">
+                    <i class="far fa-eye"></i> 查看
+                </button>
+                ${plan.status !== 'completed' ? `
+                    <button onclick="editPlan('${plan.id}')" class="text-green-600 hover:text-green-900 mr-3">
+                        <i class="far fa-edit"></i> 编辑
+                    </button>
+                    <button onclick="deletePlan('${plan.id}')" class="text-red-600 hover:text-red-900">
+                        <i class="far fa-trash-alt"></i> 删除
+                    </button>
+                ` : ''}
+            </td>
+        </tr>
+    `).join('');
+}
+
+// 查看计划详情
+function viewPlanDetail(planId) {
+    showToast(`正在加载计划 ${planId} 详情...`, 'info');
+}
+
+// 编辑计划
+function editPlan(planId) {
+    showToast(`正在编辑计划 ${planId}...`, 'info');
+}
+
+// 删除计划
+function deletePlan(planId) {
+    if (confirm(`确定要删除计划 ${planId} 吗？`)) {
+        showToast(`计划 ${planId} 已删除`, 'success');
+        setTimeout(() => {
+            loadPlanningTable();
+        }, 500);
+    }
+}
+
 // 选择验厂类型
 function selectInspectionType(type) {
     const typeNames = {
@@ -560,18 +674,30 @@ function loadExecutionChecklist() {
     if (!container) return;
     
     const items = [
-        { id: 1, item: 'MES系统是否覆盖关键生产工序？', status: 'completed', result: '符合', evidence: '已上传照片' },
-        { id: 2, item: 'ERP系统物料管理是否准确？', status: 'completed', result: '符合', evidence: '已上传照片' },
-        { id: 3, item: '是否有系统化的数据备份与恢复机制？', status: 'completed', result: '符合', evidence: '已上传照片' },
-        { id: 4, item: '系统操作权限管理是否规范？', status: 'completed', result: '不符合', evidence: '已创建NCR-2025-001' },
-        { id: 5, item: '是否定期进行系统性能优化？', status: 'completed', result: '符合', evidence: '已上传照片' },
-        { id: 6, item: '数据安全管理政策是否明确？', status: 'completed', result: '符合', evidence: '已上传照片' },
-        { id: 7, item: '生产核心数据访问权限是否受控？', status: 'completed', result: '不符合', evidence: '已创建NCR-2025-002' },
-        { id: 8, item: '客户资料是否进行加密存储？', status: 'completed', result: '符合', evidence: '已上传照片' },
-        { id: 9, item: '是否有数据泄露应急预案？', status: 'completed', result: '符合', evidence: '已上传照片' },
-        { id: 10, item: '设备OEE数据是否实时采集？', status: 'pending', result: '', evidence: '' },
-        { id: 11, item: '是否具备产品全生命周期追溯能力？', status: 'pending', result: '', evidence: '' },
-        { id: 12, item: '生产数据看板实时性如何？', status: 'pending', result: '', evidence: '' }
+        { id: 1, item: 'MES系统是否覆盖关键生产工序？', status: 'completed', result: '符合', evidence: '已上传照片3张' },
+        { id: 2, item: 'MES系统数据采集的实时性如何？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
+        { id: 3, item: 'ERP系统物料管理是否准确？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
+        { id: 4, item: 'ERP与MES系统集成情况如何？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
+        { id: 5, item: '是否有系统化的数据备份与恢复机制？', status: 'completed', result: '不符合', evidence: '已创建NCR-2025-001' },
+        { id: 6, item: '系统操作权限管理是否规范？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
+        { id: 7, item: '是否定期进行系统性能优化？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
+        { id: 8, item: '系统故障响应时间是否符合要求？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
+        { id: 9, item: '是否有完整的系统操作日志？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
+        { id: 10, item: '数据安全管理政策是否明确？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
+        { id: 11, item: '生产核心数据访问权限是否受控？', status: 'completed', result: '不符合', evidence: '已创建NCR-2025-002' },
+        { id: 12, item: '客户资料是否进行加密存储？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
+        { id: 13, item: '是否有定期的网络安全漏洞扫描？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
+        { id: 14, item: '数据备份策略是否完善？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
+        { id: 15, item: '是否有数据泄露应急预案？', status: 'completed', result: '符合', evidence: '已上传照片1张' },
+        { id: 16, item: '关键工序的自动化程度如何？', status: 'completed', result: '符合', evidence: '已上传照片3张' },
+        { id: 17, item: '是否采用SPC对关键质量参数进行监控？', status: 'completed', result: '符合', evidence: '已上传照片2张' },
+        { id: 18, item: '设备OEE数据是否实时采集与分析？', status: 'pending', result: '', evidence: '' },
+        { id: 19, item: '是否具备产品全生命周期追溯能力？', status: 'pending', result: '', evidence: '' },
+        { id: 20, item: '生产计划与实际执行的偏差率是多少？', status: 'pending', result: '', evidence: '' },
+        { id: 21, item: '是否实现了生产过程的无纸化作业？', status: 'pending', result: '', evidence: '' },
+        { id: 22, item: '生产数据看板实时性和准确性如何？', status: 'pending', result: '', evidence: '' },
+        { id: 23, item: '生产异常自动报警和处理机制是否完善？', status: 'pending', result: '', evidence: '' },
+        { id: 24, item: '生产数据与财务系统集成情况如何？', status: 'pending', result: '', evidence: '' }
     ];
     
     container.innerHTML = items.map(item => `
@@ -942,6 +1068,9 @@ window.submitCreateProject = submitCreateProject;
 window.viewProjectDetail = viewProjectDetail;
 window.editProject = editProject;
 window.deleteProject = deleteProject;
+window.viewPlanDetail = viewPlanDetail;
+window.editPlan = editPlan;
+window.deletePlan = deletePlan;
 window.selectInspectionType = selectInspectionType;
 window.toggleTemplateModule = toggleTemplateModule;
 window.createCustomTemplate = createCustomTemplate;
