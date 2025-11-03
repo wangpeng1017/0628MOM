@@ -686,6 +686,190 @@ function scrollToSection(sectionId) {
     }
 }
 
+// 显示能力详情弹窗
+function showCapabilityDetail(capabilityType) {
+    const modal = document.getElementById('capabilityDetailModal');
+    const title = document.getElementById('capabilityDetailTitle');
+    const content = document.getElementById('capabilityDetailContent');
+    
+    const capabilityData = {
+        production: {
+            title: '生产自动化能力详情',
+            level: 'L3.2',
+            trend: '↑0.3',
+            description: '自动排程与柔性执行体系逐步完善',
+            details: [
+                { label: '自动化排程覆盖率', value: '85%', status: 'good' },
+                { label: 'MES系统集成度', value: '92%', status: 'good' },
+                { label: '柔性生产能力', value: '78%', status: 'normal' },
+                { label: '设备自动化率', value: '88%', status: 'good' }
+            ],
+            improvements: [
+                '继续推进智能排程算法优化',
+                '提升产线切换效率',
+                '加强设备互联互通'
+            ]
+        },
+        data: {
+            title: '数据集成能力详情',
+            level: 'L2.8',
+            trend: '待提升',
+            description: '需统一数据模型与治理机制',
+            details: [
+                { label: '数据源接入数量', value: '12个系统', status: 'good' },
+                { label: '数据质量得分', value: '72分', status: 'normal' },
+                { label: '实时数据同步率', value: '68%', status: 'warning' },
+                { label: '数据标准化程度', value: '65%', status: 'warning' }
+            ],
+            improvements: [
+                '建立统一数据模型标准',
+                '完善数据治理流程',
+                '提升数据质量监控能力'
+            ]
+        },
+        decision: {
+            title: '智能决策能力详情',
+            level: 'L2.5',
+            trend: '关键差距',
+            description: '预测性维护与AI分析仍处试点阶段',
+            details: [
+                { label: 'AI模型部署数量', value: '3个', status: 'warning' },
+                { label: '预测准确率', value: '75%', status: 'normal' },
+                { label: '智能决策覆盖率', value: '45%', status: 'warning' },
+                { label: '算法优化频率', value: '季度', status: 'normal' }
+            ],
+            improvements: [
+                '扩大AI应用场景覆盖',
+                '提升预测模型准确率',
+                '建立持续优化机制'
+            ]
+        },
+        supply: {
+            title: '供应链协同能力详情',
+            level: 'L2.0',
+            trend: '紧急',
+            description: '需补齐可视化、协同计划与供应商画像能力',
+            details: [
+                { label: '供应商协同平台覆盖率', value: '35%', status: 'danger' },
+                { label: '供应链可视化程度', value: '42%', status: 'warning' },
+                { label: '协同计划准确率', value: '58%', status: 'warning' },
+                { label: '供应商画像完整度', value: '30%', status: 'danger' }
+            ],
+            improvements: [
+                '上线供应商协同门户',
+                '建立供应链可视化平台',
+                '完善供应商评估体系'
+            ]
+        }
+    };
+    
+    const data = capabilityData[capabilityType];
+    if (!data) return;
+    
+    title.textContent = data.title;
+    
+    const statusColors = {
+        good: 'text-green-600 bg-green-50',
+        normal: 'text-blue-600 bg-blue-50',
+        warning: 'text-orange-600 bg-orange-50',
+        danger: 'text-red-600 bg-red-50'
+    };
+    
+    content.innerHTML = `
+        <div class="bg-gray-50 rounded-lg p-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-500">当前成熟度等级</p>
+                    <p class="text-3xl font-bold text-blue-600 mt-1">${data.level}</p>
+                </div>
+                <span class="text-lg ${data.trend.includes('↑') ? 'text-green-600' : 'text-orange-600'}">${data.trend}</span>
+            </div>
+            <p class="text-sm text-gray-600 mt-3">${data.description}</p>
+        </div>
+        
+        <div>
+            <h4 class="font-semibold text-gray-800 mb-3">关键指标</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                ${data.details.map(item => `
+                    <div class="border border-gray-200 rounded-lg p-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-600">${item.label}</span>
+                            <span class="text-xs px-2 py-1 rounded ${statusColors[item.status]}">${item.value}</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        
+        <div>
+            <h4 class="font-semibold text-gray-800 mb-3">改进建议</h4>
+            <ul class="space-y-2">
+                ${data.improvements.map((item, index) => `
+                    <li class="flex items-start space-x-2">
+                        <span class="inline-flex items-center justify-center w-5 h-5 text-xs font-semibold text-white bg-blue-500 rounded-full mt-0.5">${index + 1}</span>
+                        <span class="text-sm text-gray-600">${item}</span>
+                    </li>
+                `).join('')}
+            </ul>
+        </div>
+    `;
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+// 关闭能力详情弹窗
+function closeCapabilityDetail() {
+    const modal = document.getElementById('capabilityDetailModal');
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+}
+
+// 编辑能力评估
+function editCapability() {
+    closeCapabilityDetail();
+    showManualEntry();
+    showToast('已切换到编辑模式', 'info');
+}
+
+// 显示模板管理器
+function showTemplateManager() {
+    const modal = document.getElementById('templateManagerModal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+// 关闭模板管理器
+function closeTemplateManager() {
+    const modal = document.getElementById('templateManagerModal');
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+}
+
+// 选择模板
+function selectTemplate(templateType) {
+    const templates = {
+        standard: '标准评估报告模板',
+        executive: '高管摘要报告模板',
+        detailed: '详细技术报告模板'
+    };
+    
+    showToast(`已选择：${templates[templateType]}`, 'success');
+    
+    // 更新选中状态
+    document.querySelectorAll('#templateManagerModal .fa-check-circle, #templateManagerModal .fa-circle').forEach(icon => {
+        icon.className = 'fas fa-circle text-gray-300 text-xl';
+    });
+    
+    event.target.closest('.cursor-pointer').querySelector('i').className = 'fas fa-check-circle text-green-500 text-xl';
+}
+
+// 创建新模板
+function createNewTemplate() {
+    showToast('模板创建功能开发中...', 'info');
+    closeTemplateManager();
+}
+
 // 导出函数到全局作用域
 window.showManualEntry = showManualEntry;
 window.closeModal = closeModal;
@@ -696,3 +880,10 @@ window.downloadReport = downloadReport;
 window.handleAction = handleAction;
 window.switchView = switchView;
 window.initRadarChart = initRadarChart;
+window.showCapabilityDetail = showCapabilityDetail;
+window.closeCapabilityDetail = closeCapabilityDetail;
+window.editCapability = editCapability;
+window.showTemplateManager = showTemplateManager;
+window.closeTemplateManager = closeTemplateManager;
+window.selectTemplate = selectTemplate;
+window.createNewTemplate = createNewTemplate;
