@@ -10,57 +10,9 @@
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
 </head>
 <body class="bg-gray-50">
-    <div class="flex h-screen overflow-hidden">
-        <!-- 左侧导航 -->
-        <nav id="sidebar-nav" class="w-64 bg-white border-r border-gray-200 flex-shrink-0 overflow-y-auto">
-            <div class="p-6">
-                <div class="flex items-center space-x-3 mb-6">
-                    <i class="fas fa-clipboard-check text-2xl text-teal-600"></i>
-                    <div>
-                        <h2 id="module-title" class="text-lg font-bold text-gray-800">产业验厂管理</h2>
-                        <p class="text-xs text-gray-500">Inspection Management</p>
-                    </div>
-                </div>
-
-                <div class="space-y-1">
-                    <button onclick="switchView('overview')" class="sub-nav-item active w-full flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                        <i class="fas fa-home w-5"></i>
-                        <span>工作台</span>
-                    </button>
-                    <button onclick="switchView('projects')" class="sub-nav-item w-full flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                        <i class="fas fa-folder-open w-5"></i>
-                        <span>验厂项目</span>
-                    </button>
-                    <button onclick="switchView('planning')" class="sub-nav-item w-full flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                        <i class="fas fa-calendar-alt w-5"></i>
-                        <span>验厂策划</span>
-                    </button>
-                    <button onclick="switchView('execution')" class="sub-nav-item w-full flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                        <i class="fas fa-tasks w-5"></i>
-                        <span>验厂执行</span>
-                    </button>
-                    <button onclick="switchView('ncr')" class="sub-nav-item w-full flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                        <i class="fas fa-exclamation-triangle w-5"></i>
-                        <span>不符合项管理</span>
-                    </button>
-                    <button onclick="switchView('reports')" class="sub-nav-item w-full flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                        <i class="fas fa-file-alt w-5"></i>
-                        <span>验厂报告</span>
-                    </button>
-                    <button onclick="switchView('templates')" class="sub-nav-item w-full flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                        <i class="fas fa-clipboard-list w-5"></i>
-                        <span>SOP模板库</span>
-                    </button>
-                    <button onclick="switchView('analytics')" class="sub-nav-item w-full flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                        <i class="fas fa-chart-bar w-5"></i>
-                        <span>统计分析</span>
-                    </button>
-                </div>
-            </div>
-        </nav>
-
+    <div class="min-h-screen">
         <!-- 主内容区 -->
-        <main class="flex-1 overflow-y-auto">
+        <main class="max-w-7xl mx-auto">
             <div class="p-6">
                 <!-- 页面标题栏 -->
                 <div class="bg-gradient-to-r from-teal-500 to-cyan-600 rounded-lg shadow-sm p-6 mb-6 text-white">

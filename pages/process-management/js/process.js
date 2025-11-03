@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', function() {
     loadSupplierRanking();
     initRadarComparison();
     initNCRTop5Chart();
+
+    // 根据URL参数设置初始视图
+    const initialView = getQueryParam('view') || 'overview';
+    switchView(initialView);
 });
 
 // 初始化系统
@@ -32,12 +36,18 @@ function switchView(viewName) {
     if (targetView) {
         targetView.classList.remove('hidden');
     }
-    
-    // 更新导航激活状态
-    document.querySelectorAll('.sub-nav-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    event.target.closest('.sub-nav-item')?.classList.add('active');
+    // 无内部侧边栏时无需设置激活项；此逻辑仅在存在内部菜单时生效
+    if (typeof event !== 'undefined' && event && event.target) {
+        document.querySelectorAll('.sub-nav-item').forEach(item => item.classList.remove('active'));
+        const btn = event.target.closest('.sub-nav-item');
+        if (btn) btn.classList.add('active');
+    }
+}
+
+// 获取URL查询参数
+function getQueryParam(key) {
+    const params = new URLSearchParams(window.location.search);
+    return params.get(key);
 }
 
 // 加载近期验厂计划
