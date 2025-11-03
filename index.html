@@ -388,6 +388,10 @@
                                         <i class="fas fa-industry text-blue-500 w-5"></i>
                                         <span>智造能力评估</span>
                                     </button>
+                                    <button onclick="switchModule('process-management'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-project-diagram text-green-500 w-5"></i>
+                                        <span>流程管理系统</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -902,6 +906,20 @@
                     { id: 'assessment-intelligence', name: '智能评估与诊断', icon: 'fas fa-chart-pie', url: 'pages/smart-assessment/index.html?view=assessment' },
                     { id: 'assessment-report', name: '报告管理', icon: 'fas fa-file-alt', url: 'pages/smart-assessment/index.html?view=reports' },
                     { id: 'assessment-management', name: '系统管理', icon: 'fas fa-cog', url: 'pages/smart-assessment/index.html?view=management' }
+                ]
+            },
+            'process-management': {
+                title: '产业验厂管理系统',
+                url: 'pages/process-management/index.html',
+                subMenus: [
+                    { id: 'inspection-overview', name: '工作台', icon: 'fas fa-home', url: 'pages/process-management/index.html?view=overview' },
+                    { id: 'inspection-projects', name: '验厂项目', icon: 'fas fa-folder-open', url: 'pages/process-management/index.html?view=projects' },
+                    { id: 'inspection-planning', name: '验厂策划', icon: 'fas fa-calendar-alt', url: 'pages/process-management/index.html?view=planning' },
+                    { id: 'inspection-execution', name: '验厂执行', icon: 'fas fa-tasks', url: 'pages/process-management/index.html?view=execution' },
+                    { id: 'inspection-ncr', name: '不符合项管理', icon: 'fas fa-exclamation-triangle', url: 'pages/process-management/index.html?view=ncr' },
+                    { id: 'inspection-reports', name: '验厂报告', icon: 'fas fa-file-alt', url: 'pages/process-management/index.html?view=reports' },
+                    { id: 'inspection-templates', name: 'SOP模板库', icon: 'fas fa-clipboard-list', url: 'pages/process-management/index.html?view=templates' },
+                    { id: 'inspection-analytics', name: '统计分析', icon: 'fas fa-chart-bar', url: 'pages/process-management/index.html?view=analytics' }
                 ]
             },
             masterdata: {
