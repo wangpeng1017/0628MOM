@@ -1,8 +1,8 @@
+// 全局变量保存图表实例
+let radarChartInstance = null;
+
 // 初始化评估系统
 document.addEventListener('DOMContentLoaded', function() {
-    // 初始化图表
-    initRadarChart();
-    
     // 加载示例数据
     loadSampleData();
 
@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const formatted = `${now.getFullYear()}-${padZero(now.getMonth() + 1)}-${padZero(now.getDate())} ${padZero(now.getHours())}:${padZero(now.getMinutes())}`;
         updateLabel.textContent = formatted;
     }
+
+    // 延迟初始化雷达图，确保容器已完全渲染
+    setTimeout(() => {
+        initRadarChart();
+    }, 300);
 });
 
 // 初始化雷达图
@@ -33,7 +38,20 @@ function initRadarChart() {
     const chartDom = document.getElementById('radarChart');
     if (!chartDom) return;
     
-    const myChart = echarts.init(chartDom);
+    // 如果已存在实例，先销毁
+    if (radarChartInstance) {
+        radarChartInstance.dispose();
+    }
+    
+    // 确保容器有明确的尺寸
+    if (chartDom.offsetWidth === 0 || chartDom.offsetHeight === 0) {
+        console.warn('Chart container has no size, retrying...');
+        setTimeout(() => initRadarChart(), 100);
+        return;
+    }
+    
+    radarChartInstance = echarts.init(chartDom);
+    const myChart = radarChartInstance;
     
     const option = {
         title: {
@@ -139,8 +157,17 @@ function initRadarChart() {
     
     // 响应式调整
     window.addEventListener('resize', function() {
-        myChart.resize();
+        if (radarChartInstance) {
+            radarChartInstance.resize();
+        }
     });
+    
+    // 立即调整一次大小，确保正确显示
+    setTimeout(() => {
+        if (radarChartInstance) {
+            radarChartInstance.resize();
+        }
+    }, 100);
 }
 
 // 加载示例数据
@@ -443,7 +470,15 @@ function switchView(targetView = 'overview') {
 
     // 在切换到评估视图时，确保图表尺寸正确
     if (resolvedView === 'assessment') {
-        setTimeout(() => initRadarChart(), 100);
+        setTimeout(() => {
+            initRadarChart();
+            // 再次调整大小以确保正确显示
+            setTimeout(() => {
+                if (radarChartInstance) {
+                    radarChartInstance.resize();
+                }
+            }, 200);
+        }, 100);
     }
 }
 
