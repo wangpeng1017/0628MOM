@@ -338,8 +338,145 @@ function submitCreateProject() {
 
 // 查看项目详情
 function viewProjectDetail(projectId) {
-    showToast(`正在加载项目 ${projectId} 详情...`, 'info');
-    console.log('查看项目详情:', projectId);
+    const modal = document.getElementById('projectDetailModal');
+    const content = document.getElementById('projectDetailContent');
+    
+    if (!modal || !content) return;
+    
+    // 模拟项目详情数据
+    const projectData = {
+        'INS-2025-001': {
+            id: 'INS-2025-001',
+            supplier: '阳光电源股份有限公司',
+            type: '储能产品验厂',
+            status: 'scheduled',
+            startDate: '2025-11-15',
+            endDate: '2025-11-17',
+            auditor: '张明',
+            team: ['张明', '李华', '王芳'],
+            scope: ['信息化系统运行评估', '数据安全审计', '生产流程数字化检测'],
+            address: '安徽省合肥市高新区习友路3666号',
+            contact: '刘经理',
+            phone: '0551-65658888'
+        },
+        'INS-2025-002': {
+            id: 'INS-2025-002',
+            supplier: '隆基绿能科技股份有限公司',
+            type: '光伏组件验厂',
+            status: 'in-progress',
+            startDate: '2025-11-10',
+            endDate: '2025-11-12',
+            auditor: '李华',
+            team: ['李华', '王芳', '刘强'],
+            scope: ['信息化系统运行评估', '生产流程数字化检测'],
+            address: '陕西省西安市经济技术开发区尚稷路8369号',
+            contact: '张经理',
+            phone: '029-81566666'
+        }
+    };
+    
+    const project = projectData[projectId] || projectData['INS-2025-001'];
+    
+    content.innerHTML = `
+        <div class="grid grid-cols-2 gap-6">
+            <div class="space-y-4">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-gray-700 mb-3">基本信息</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">项目编号：</span>
+                            <span class="font-medium text-gray-800">${project.id}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">供应商名称：</span>
+                            <span class="font-medium text-gray-800">${project.supplier}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">验厂类型：</span>
+                            <span class="font-medium text-gray-800">${project.type}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">项目状态：</span>
+                            <span class="status-badge status-${project.status}">${getStatusText(project.status)}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-gray-700 mb-3">时间安排</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">开始日期：</span>
+                            <span class="font-medium text-gray-800">${project.startDate}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">结束日期：</span>
+                            <span class="font-medium text-gray-800">${project.endDate}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-gray-700 mb-3">审核团队</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">审核组长：</span>
+                            <span class="font-medium text-gray-800">${project.auditor}</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">团队成员：</span>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                ${project.team.map(member => `
+                                    <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">${member}</span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-gray-700 mb-3">联系信息</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">联系人：</span>
+                            <span class="font-medium text-gray-800">${project.contact}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">联系电话：</span>
+                            <span class="font-medium text-gray-800">${project.phone}</span>
+                        </div>
+                        <div>
+                            <span class="text-gray-600">地址：</span>
+                            <p class="font-medium text-gray-800 mt-1">${project.address}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gray-50 p-4 rounded-lg mt-4">
+            <h4 class="font-semibold text-gray-700 mb-3">审核范围</h4>
+            <div class="flex flex-wrap gap-2">
+                ${project.scope.map(item => `
+                    <span class="px-3 py-1 bg-teal-100 text-teal-700 rounded text-sm">${item}</span>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    modal.style.display = 'flex';
+    modal.classList.remove('hidden');
+}
+
+// 关闭项目详情
+function closeProjectDetail() {
+    const modal = document.getElementById('projectDetailModal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+    }
 }
 
 // 编辑项目
@@ -826,9 +963,90 @@ function loadNCRTable() {
     `).join('');
 }
 
+// 生成NCR编号
+function generateNCRCode() {
+    const year = new Date().getFullYear();
+    const randomNum = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `NCR-${year}-${randomNum}`;
+}
+
 // 显示创建NCR模态框
 function showCreateNCR() {
-    showToast('创建不符合项功能开发中...', 'info');
+    const modal = document.getElementById('createNCRModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        modal.classList.remove('hidden');
+        
+        // 生成NCR编号
+        const ncrCodeInput = document.getElementById('ncrCode');
+        if (ncrCodeInput) {
+            ncrCodeInput.value = generateNCRCode();
+        }
+        
+        // 设置默认截止日期（7天后）
+        const dueDateInput = document.getElementById('ncrDueDate');
+        if (dueDateInput) {
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + 7);
+            dueDateInput.value = dueDate.toISOString().split('T')[0];
+        }
+    }
+}
+
+// 关闭创建NCR模态框
+function closeCreateNCR() {
+    const modal = document.getElementById('createNCRModal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+        
+        // 清空表单
+        document.getElementById('ncrProject').value = '';
+        document.getElementById('ncrDescription').value = '';
+        document.getElementById('ncrSeverity').value = '';
+        document.getElementById('ncrDepartment').value = '';
+        document.getElementById('ncrRequirement').value = '';
+    }
+}
+
+// 提交创建NCR
+function submitCreateNCR() {
+    const project = document.getElementById('ncrProject')?.value;
+    const description = document.getElementById('ncrDescription')?.value;
+    const severity = document.getElementById('ncrSeverity')?.value;
+    const department = document.getElementById('ncrDepartment')?.value;
+    const dueDate = document.getElementById('ncrDueDate')?.value;
+    
+    // 表单验证
+    if (!project) {
+        showToast('请选择关联项目', 'warning');
+        return;
+    }
+    if (!description || description.trim() === '') {
+        showToast('请输入问题描述', 'warning');
+        return;
+    }
+    if (!severity) {
+        showToast('请选择严重程度', 'warning');
+        return;
+    }
+    if (!department || department.trim() === '') {
+        showToast('请输入责任部门', 'warning');
+        return;
+    }
+    if (!dueDate) {
+        showToast('请选择整改截止日期', 'warning');
+        return;
+    }
+    
+    const ncrCode = document.getElementById('ncrCode')?.value;
+    showToast(`不符合项 ${ncrCode} 创建成功`, 'success');
+    closeCreateNCR();
+    
+    // 刷新NCR列表
+    setTimeout(() => {
+        loadNCRTable();
+    }, 500);
 }
 
 // 创建NCR
@@ -838,12 +1056,155 @@ function createNCR() {
 
 // 查看NCR详情
 function viewNCRDetail(ncrId) {
-    showToast(`正在加载NCR ${ncrId} 详情...`, 'info');
+    const modal = document.getElementById('ncrDetailModal');
+    const content = document.getElementById('ncrDetailContent');
+    
+    if (!modal || !content) return;
+    
+    // 模拟NCR详情数据
+    const ncrData = {
+        id: ncrId,
+        project: 'INS-2025-001',
+        supplier: '阳光电源股份有限公司',
+        description: '数据备份机制不完善，缺少异地备份和定期恢复演练',
+        severity: '中',
+        department: '信息中心',
+        status: 'in-progress',
+        createDate: '2025-11-01',
+        dueDate: '2025-11-20',
+        requirement: '1. 建立完整的数据备份策略\n2. 实施异地备份方案\n3. 每月进行恢复演练\n4. 保留备份日志记录',
+        progress: '已完成备份策略制定，正在实施异地备份方案',
+        timeline: [
+            { date: '2025-11-01', action: '创建NCR', user: '张明', status: 'completed' },
+            { date: '2025-11-05', action: '责任部门确认', user: '李经理', status: 'completed' },
+            { date: '2025-11-10', action: '提交整改方案', user: '李经理', status: 'completed' },
+            { date: '2025-11-15', action: '整改实施中', user: '信息中心', status: 'in-progress' }
+        ]
+    };
+    
+    const severityColors = {
+        '高': 'bg-red-100 text-red-700',
+        '中': 'bg-orange-100 text-orange-700',
+        '低': 'bg-yellow-100 text-yellow-700'
+    };
+    
+    const statusMap = {
+        'pending': { text: '待整改', class: 'bg-red-100 text-red-700' },
+        'in-progress': { text: '整改中', class: 'bg-orange-100 text-orange-700' },
+        'verifying': { text: '待验证', class: 'bg-blue-100 text-blue-700' },
+        'closed': { text: '已关闭', class: 'bg-green-100 text-green-700' }
+    };
+    
+    content.innerHTML = `
+        <div class="grid grid-cols-2 gap-6">
+            <div class="space-y-4">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-gray-700 mb-3">基本信息</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">NCR编号：</span>
+                            <span class="font-medium text-gray-800">${ncrData.id}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">关联项目：</span>
+                            <span class="font-medium text-blue-600">${ncrData.project}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">供应商：</span>
+                            <span class="font-medium text-gray-800">${ncrData.supplier}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">严重程度：</span>
+                            <span class="px-2 py-1 rounded text-xs ${severityColors[ncrData.severity]}">${ncrData.severity}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">当前状态：</span>
+                            <span class="px-2 py-1 rounded text-xs ${statusMap[ncrData.status].class}">${statusMap[ncrData.status].text}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-gray-700 mb-3">时间信息</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">创建日期：</span>
+                            <span class="font-medium text-gray-800">${ncrData.createDate}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">截止日期：</span>
+                            <span class="font-medium text-red-600">${ncrData.dueDate}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">责任部门：</span>
+                            <span class="font-medium text-gray-800">${ncrData.department}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-gray-700 mb-3">问题描述</h4>
+                    <p class="text-sm text-gray-800">${ncrData.description}</p>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-gray-700 mb-3">整改要求</h4>
+                    <p class="text-sm text-gray-800 whitespace-pre-line">${ncrData.requirement}</p>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-blue-700 mb-2">整改进度</h4>
+                    <p class="text-sm text-gray-800">${ncrData.progress}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gray-50 p-4 rounded-lg mt-4">
+            <h4 class="font-semibold text-gray-700 mb-3">处理时间线</h4>
+            <div class="space-y-3">
+                ${ncrData.timeline.map(item => `
+                    <div class="flex items-start space-x-3">
+                        <div class="w-2 h-2 rounded-full mt-2 ${item.status === 'completed' ? 'bg-green-500' : 'bg-orange-500'}"></div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-gray-800">${item.action}</span>
+                                <span class="text-xs text-gray-500">${item.date}</span>
+                            </div>
+                            <p class="text-xs text-gray-600 mt-1">操作人：${item.user}</p>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    modal.style.display = 'flex';
+    modal.classList.remove('hidden');
+}
+
+// 关闭NCR详情
+function closeNCRDetail() {
+    const modal = document.getElementById('ncrDetailModal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+    }
+}
+
+// 从详情页更新NCR
+function updateNCRFromDetail() {
+    showToast('NCR状态更新成功', 'success');
+    closeNCRDetail();
+    setTimeout(() => {
+        loadNCRTable();
+    }, 500);
 }
 
 // 更新NCR
 function updateNCR(ncrId) {
-    showToast(`正在更新NCR ${ncrId}...`, 'info');
+    viewNCRDetail(ncrId);
 }
 
 // ========== 验厂报告功能 ==========
@@ -918,12 +1279,171 @@ function generateInspectionReport() {
 
 // 查看报告
 function viewReport(reportId) {
-    showToast(`正在加载报告 ${reportId}...`, 'info');
+    const modal = document.getElementById('reportViewModal');
+    const content = document.getElementById('reportViewContent');
+    
+    if (!modal || !content) return;
+    
+    // 模拟报告数据
+    const reportData = {
+        id: reportId,
+        project: 'INS-2025-001',
+        supplier: '阳光电源股份有限公司',
+        date: '2025-11-10',
+        auditor: '张明',
+        score: 85,
+        summary: '该供应商在信息化系统和数字化流程方面表现良好，但在数据安全管理方面存在一定不足，需要加强数据备份和权限管理。',
+        scores: [
+            { category: '信息化系统运行评估', score: 90, total: 100 },
+            { category: '数据安全审计', score: 75, total: 100 },
+            { category: '生产流程数字化检测', score: 88, total: 100 }
+        ],
+        strengths: [
+            'MES系统覆盖全面，数据采集实时准确',
+            'ERP系统运行稳定，物料管理规范',
+            '生产自动化程度高，关键工序实现智能化',
+            'SPC质量控制体系完善'
+        ],
+        weaknesses: [
+            '数据备份机制不完善，缺少异地备份',
+            '生产数据访问权限管理不够严格',
+            '部分设备OEE数据采集不及时'
+        ],
+        ncrs: [
+            { id: 'NCR-2025-001', description: '数据备份机制不完善', severity: '中' },
+            { id: 'NCR-2025-002', description: '生产核心数据访问权限管理不规范', severity: '高' }
+        ]
+    };
+    
+    content.innerHTML = `
+        <div class="bg-gradient-to-r from-teal-50 to-cyan-50 p-6 rounded-lg mb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">${reportData.supplier}</h2>
+                    <p class="text-gray-600">验厂报告 - ${reportData.id}</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-5xl font-bold text-teal-600">${reportData.score}</div>
+                    <p class="text-sm text-gray-600 mt-1">综合得分</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-6 mb-6">
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-gray-700 mb-3">基本信息</h4>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">报告编号：</span>
+                        <span class="font-medium text-gray-800">${reportData.id}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">关联项目：</span>
+                        <span class="font-medium text-blue-600">${reportData.project}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">生成日期：</span>
+                        <span class="font-medium text-gray-800">${reportData.date}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">审核组长：</span>
+                        <span class="font-medium text-gray-800">${reportData.auditor}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-gray-700 mb-3">各模块得分</h4>
+                <div class="space-y-3">
+                    ${reportData.scores.map(item => `
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-700">${item.category}</span>
+                                <span class="font-semibold ${item.score >= 85 ? 'text-green-600' : item.score >= 70 ? 'text-blue-600' : 'text-orange-600'}">${item.score}/${item.total}</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${item.score}%"></div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+            <h4 class="font-semibold text-gray-700 mb-3">综合评价</h4>
+            <p class="text-sm text-gray-800 leading-relaxed">${reportData.summary}</p>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-6 mb-6">
+            <div class="bg-green-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-green-700 mb-3"><i class="fas fa-check-circle mr-2"></i>优势项</h4>
+                <ul class="space-y-2">
+                    ${reportData.strengths.map(item => `
+                        <li class="text-sm text-gray-800 flex items-start">
+                            <i class="fas fa-check text-green-600 mr-2 mt-1"></i>
+                            <span>${item}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+            
+            <div class="bg-orange-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-orange-700 mb-3"><i class="fas fa-exclamation-triangle mr-2"></i>改进项</h4>
+                <ul class="space-y-2">
+                    ${reportData.weaknesses.map(item => `
+                        <li class="text-sm text-gray-800 flex items-start">
+                            <i class="fas fa-times text-orange-600 mr-2 mt-1"></i>
+                            <span>${item}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>
+        </div>
+        
+        <div class="bg-red-50 p-4 rounded-lg">
+            <h4 class="font-semibold text-red-700 mb-3"><i class="fas fa-clipboard-list mr-2"></i>不符合项（NCR）</h4>
+            <div class="space-y-2">
+                ${reportData.ncrs.map(ncr => `
+                    <div class="bg-white p-3 rounded border border-red-200">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-medium text-blue-600">${ncr.id}</span>
+                            <span class="text-xs px-2 py-1 rounded ${ncr.severity === '高' ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700'}">${ncr.severity}</span>
+                        </div>
+                        <p class="text-sm text-gray-800 mt-1">${ncr.description}</p>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    modal.style.display = 'flex';
+    modal.classList.remove('hidden');
+}
+
+// 关闭报告查看
+function closeReportView() {
+    const modal = document.getElementById('reportViewModal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.add('hidden');
+    }
+}
+
+// 从查看页下载报告
+function downloadReportFromView(format) {
+    showToast(`正在生成${format.toUpperCase()}格式报告...`, 'info');
+    setTimeout(() => {
+        showToast(`${format.toUpperCase()}报告下载成功`, 'success');
+    }, 1500);
 }
 
 // 下载报告
 function downloadReport(reportId, format) {
     showToast(`正在生成${format.toUpperCase()}格式报告...`, 'info');
+    setTimeout(() => {
+        showToast(`${format.toUpperCase()}报告下载成功`, 'success');
+    }, 1500);
 }
 
 // ========== 统计分析功能 ==========
@@ -1066,6 +1586,7 @@ window.showCreateProject = showCreateProject;
 window.closeCreateProject = closeCreateProject;
 window.submitCreateProject = submitCreateProject;
 window.viewProjectDetail = viewProjectDetail;
+window.closeProjectDetail = closeProjectDetail;
 window.editProject = editProject;
 window.deleteProject = deleteProject;
 window.viewPlanDetail = viewPlanDetail;
@@ -1080,9 +1601,15 @@ window.markAsNonCompliant = markAsNonCompliant;
 window.uploadPhoto = uploadPhoto;
 window.saveProgress = saveProgress;
 window.showCreateNCR = showCreateNCR;
+window.closeCreateNCR = closeCreateNCR;
+window.submitCreateNCR = submitCreateNCR;
 window.createNCR = createNCR;
 window.viewNCRDetail = viewNCRDetail;
+window.closeNCRDetail = closeNCRDetail;
+window.updateNCRFromDetail = updateNCRFromDetail;
 window.updateNCR = updateNCR;
 window.generateInspectionReport = generateInspectionReport;
 window.viewReport = viewReport;
+window.closeReportView = closeReportView;
+window.downloadReportFromView = downloadReportFromView;
 window.downloadReport = downloadReport;
