@@ -361,6 +361,163 @@ function getToastIcon(type) {
     return icons[type] || icons.info;
 }
 
+// 选择验厂类型
+function selectInspectionType(type) {
+    const typeNames = {
+        'photovoltaic': '光伏组件验厂',
+        'energy-storage': '储能产品验厂',
+        'epc': '电站EPC验厂'
+    };
+    
+    showToast(`已选择：${typeNames[type]}`, 'info');
+    
+    // 自动填充验厂类型并打开创建项目模态框
+    setTimeout(() => {
+        showCreateProject();
+        const typeSelect = document.getElementById('inspectionType');
+        if (typeSelect) {
+            typeSelect.value = type;
+        }
+    }, 300);
+}
+
+// 切换模板模块展开/收起
+function toggleTemplateModule(moduleId) {
+    const content = document.getElementById(`${moduleId}-content`);
+    const icon = document.getElementById(`${moduleId}-icon`);
+    
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        icon.style.transform = 'rotate(180deg)';
+    } else {
+        content.classList.add('hidden');
+        icon.style.transform = 'rotate(0deg)';
+    }
+}
+
+// 加载SOP模板
+function loadSOPTemplates() {
+    loadITSystemChecklist();
+    loadDataSecurityChecklist();
+    loadDigitalProcessChecklist();
+}
+
+// 加载工厂信息化系统检查表
+function loadITSystemChecklist() {
+    const container = document.getElementById('itSystemChecklist');
+    if (!container) return;
+    
+    const checklist = [
+        { id: 1, item: 'MES系统是否覆盖关键生产工序？', category: 'MES系统', required: true },
+        { id: 2, item: 'MES系统数据采集的实时性如何？', category: 'MES系统', required: true },
+        { id: 3, item: 'ERP系统物料管理是否准确？', category: 'ERP系统', required: true },
+        { id: 4, item: 'ERP与MES系统集成情况如何？', category: 'ERP系统', required: false },
+        { id: 5, item: '是否有系统化的数据备份与恢复机制？', category: '数据管理', required: true },
+        { id: 6, item: '系统操作权限管理是否规范？', category: '权限管理', required: true },
+        { id: 7, item: '是否定期进行系统性能优化？', category: '系统维护', required: false },
+        { id: 8, item: '系统故障响应时间是否符合要求？', category: '系统维护', required: true },
+        { id: 9, item: '是否有完整的系统操作日志？', category: '日志管理', required: true },
+        { id: 10, item: '系统用户培训是否到位？', category: '培训管理', required: false },
+        { id: 11, item: 'WMS仓储管理系统运行情况', category: 'WMS系统', required: false },
+        { id: 12, item: 'QMS质量管理系统数据完整性', category: 'QMS系统', required: true },
+        { id: 13, item: '生产计划系统APS运行效率', category: 'APS系统', required: false },
+        { id: 14, item: '设备管理系统EAM维护记录', category: 'EAM系统', required: false },
+        { id: 15, item: '系统间数据接口稳定性', category: '系统集成', required: true }
+    ];
+    
+    container.innerHTML = checklist.map(item => `
+        <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+            <input type="checkbox" class="mt-1 form-checkbox text-blue-600">
+            <div class="flex-1">
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium text-gray-800">${item.item}</span>
+                    ${item.required ? '<span class="text-xs px-2 py-0.5 bg-red-100 text-red-600 rounded">必填</span>' : ''}
+                </div>
+                <p class="text-xs text-gray-500 mt-1">类别：${item.category}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 加载数据安全审计检查表
+function loadDataSecurityChecklist() {
+    const container = document.getElementById('dataSecurityChecklist');
+    if (!container) return;
+    
+    const checklist = [
+        { id: 1, item: '是否制定了明确的数据安全管理政策？', category: '政策制度', required: true },
+        { id: 2, item: '生产核心数据（如工艺参数）的访问权限是否受控？', category: '访问控制', required: true },
+        { id: 3, item: '客户资料等敏感信息是否进行加密存储？', category: '数据加密', required: true },
+        { id: 4, item: '是否有定期的网络安全漏洞扫描和渗透测试？', category: '安全测试', required: true },
+        { id: 5, item: '数据备份策略是否完善？', category: '数据备份', required: true },
+        { id: 6, item: '是否有数据泄露应急预案？', category: '应急管理', required: true },
+        { id: 7, item: '员工数据安全意识培训是否定期开展？', category: '安全培训', required: false },
+        { id: 8, item: '第三方供应商数据访问是否受控？', category: '第三方管理', required: true },
+        { id: 9, item: '是否通过ISO27001等信息安全认证？', category: '认证体系', required: false },
+        { id: 10, item: '数据删除和销毁流程是否规范？', category: '数据生命周期', required: false },
+        { id: 11, item: '是否有完整的安全审计日志？', category: '审计追溯', required: true },
+        { id: 12, item: '移动设备和远程访问安全策略', category: '移动安全', required: false }
+    ];
+    
+    container.innerHTML = checklist.map(item => `
+        <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+            <input type="checkbox" class="mt-1 form-checkbox text-orange-600">
+            <div class="flex-1">
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium text-gray-800">${item.item}</span>
+                    ${item.required ? '<span class="text-xs px-2 py-0.5 bg-red-100 text-red-600 rounded">必填</span>' : ''}
+                </div>
+                <p class="text-xs text-gray-500 mt-1">类别：${item.category}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 加载生产流程数字化检查表
+function loadDigitalProcessChecklist() {
+    const container = document.getElementById('digitalProcessChecklist');
+    if (!container) return;
+    
+    const checklist = [
+        { id: 1, item: '关键工序（如焊接、层压）的自动化程度如何？', category: '自动化水平', required: true },
+        { id: 2, item: '是否采用SPC（统计过程控制）对关键质量参数进行监控？', category: '质量控制', required: true },
+        { id: 3, item: '设备OEE（综合效率）数据是否实时采集与分析？', category: '设备管理', required: true },
+        { id: 4, item: '是否具备产品全生命周期的追溯能力（从原材料到成品）？', category: '追溯管理', required: true },
+        { id: 5, item: '生产计划与实际执行的偏差率是多少？', category: '计划管理', required: true },
+        { id: 6, item: '是否实现了生产过程的无纸化作业？', category: '数字化作业', required: false },
+        { id: 7, item: 'AGV/AMR等智能物流设备应用情况', category: '智能物流', required: false },
+        { id: 8, item: '机器视觉检测系统覆盖率', category: '智能检测', required: false },
+        { id: 9, item: '生产数据看板实时性和准确性', category: '数据可视化', required: true },
+        { id: 10, item: '预测性维护系统应用情况', category: '设备维护', required: false },
+        { id: 11, item: '能源管理系统（EMS）运行状况', category: '能源管理', required: false },
+        { id: 12, item: '工艺参数自动调整和优化能力', category: '智能优化', required: false },
+        { id: 13, item: '生产异常自动报警和处理机制', category: '异常管理', required: true },
+        { id: 14, item: '产线换型时间和柔性生产能力', category: '柔性制造', required: false },
+        { id: 15, item: '数字孪生技术应用情况', category: '数字孪生', required: false },
+        { id: 16, item: 'AI/ML在质量预测中的应用', category: '人工智能', required: false },
+        { id: 17, item: '供应链协同平台集成度', category: '供应链协同', required: false },
+        { id: 18, item: '生产数据与财务系统集成情况', category: '系统集成', required: true }
+    ];
+    
+    container.innerHTML = checklist.map(item => `
+        <div class="flex items-start space-x-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50">
+            <input type="checkbox" class="mt-1 form-checkbox text-green-600">
+            <div class="flex-1">
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm font-medium text-gray-800">${item.item}</span>
+                    ${item.required ? '<span class="text-xs px-2 py-0.5 bg-red-100 text-red-600 rounded">必填</span>' : ''}
+                </div>
+                <p class="text-xs text-gray-500 mt-1">类别：${item.category}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 创建自定义模板
+function createCustomTemplate() {
+    showToast('自定义模板功能开发中...', 'info');
+}
+
 // 导出函数到全局作用域
 window.switchView = switchView;
 window.showCreateProject = showCreateProject;
@@ -369,3 +526,6 @@ window.submitCreateProject = submitCreateProject;
 window.viewProjectDetail = viewProjectDetail;
 window.editProject = editProject;
 window.deleteProject = deleteProject;
+window.selectInspectionType = selectInspectionType;
+window.toggleTemplateModule = toggleTemplateModule;
+window.createCustomTemplate = createCustomTemplate;
