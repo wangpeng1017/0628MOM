@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadNCRTable();
     loadReportsTable();
     loadSupplierRanking();
+    loadExecutionChecklist(); // 加载检查项执行数据
     
     // 延迟初始化图表，确保DOM已加载
     setTimeout(() => {
