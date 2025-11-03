@@ -515,60 +515,82 @@ function handleFileUpload(file) {
 // 显示手动录入模态框
 function showManualEntry() {
     const modal = document.getElementById('manualEntryModal');
-    if (!modal) return;
+    if (!modal) {
+        console.error('Modal not found');
+        return;
+    }
     
     // 生成动态表单
     const form = document.getElementById('manualEntryForm');
-    if (form) {
-        form.innerHTML = `
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">评估维度</label>
-                    <select class="form-input">
-                        <option value="">选择评估维度</option>
-                        <option value="production">生产自动化</option>
-                        <option value="data">数据集成</option>
-                        <option value="decision">智能决策</option>
-                        <option value="equipment">设备联网</option>
-                        <option value="quality">质量管理</option>
-                        <option value="supply">供应链协同</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">成熟度等级</label>
-                    <select class="form-input">
-                        <option value="">选择成熟度等级</option>
-                        <option value="1">L1 - 初始级</option>
-                        <option value="2">L2 - 可重复</option>
-                        <option value="3">L3 - 已定义</option>
-                        <option value="4">L4 - 可预测</option>
-                        <option value="5">L5 - 优化级</option>
-                    </select>
-                </div>
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">评估说明</label>
-                    <textarea class="form-input h-24" placeholder="请填写评估依据和说明..."></textarea>
-                </div>
-                <div class="md:col-span-2">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">上传附件</label>
-                    <div class="mt-1 flex items-center">
-                        <label class="cursor-pointer bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            选择文件
-                            <input type="file" class="sr-only">
-                        </label>
-                        <span class="ml-3 text-sm text-gray-500">支持PDF、JPG、PNG格式</span>
-                    </div>
-                </div>
+    if (!form) {
+        console.error('Form container not found');
+        return;
+    }
+    
+    form.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">评估维度</label>
+                <select id="dimensionSelect" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">选择评估维度</option>
+                    <option value="production">生产自动化</option>
+                    <option value="data">数据集成</option>
+                    <option value="decision">智能决策</option>
+                    <option value="equipment">设备联网</option>
+                    <option value="quality">质量管理</option>
+                    <option value="supply">供应链协同</option>
+                </select>
             </div>
-        `;
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">成熟度等级</label>
+                <select id="levelSelect" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">选择成熟度等级</option>
+                    <option value="1">L1 - 初始级</option>
+                    <option value="2">L2 - 可重复</option>
+                    <option value="3">L3 - 已定义</option>
+                    <option value="4">L4 - 可预测</option>
+                    <option value="5">L5 - 优化级</option>
+                </select>
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2">评估说明</label>
+                <textarea id="descriptionText" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-24" placeholder="请填写评估依据和说明..."></textarea>
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2">评估得分</label>
+                <input type="number" id="scoreInput" min="0" max="5" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="请输入0-5之间的分数">
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2">上传附件</label>
+                <div class="mt-1 flex items-center">
+                    <label class="cursor-pointer bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                        <i class="fas fa-upload mr-2"></i>选择文件
+                        <input type="file" id="fileUpload" class="hidden" accept=".pdf,.jpg,.jpeg,.png">
+                    </label>
+                    <span class="ml-3 text-sm text-gray-500">支持PDF、JPG、PNG格式</span>
+                </div>
+                <div id="fileNameDisplay" class="mt-2 text-sm text-gray-600"></div>
+            </div>
+        </div>
+    `;
+    
+    // 添加文件选择事件监听
+    const fileInput = document.getElementById('fileUpload');
+    if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name;
+            const display = document.getElementById('fileNameDisplay');
+            if (fileName && display) {
+                display.innerHTML = `<i class="fas fa-file mr-2 text-blue-500"></i>已选择: ${fileName}`;
+            }
+        });
     }
     
     // 显示模态框
     modal.classList.remove('hidden');
     modal.classList.add('flex');
-    setTimeout(() => {
-        modal.querySelector('.modal-content').classList.add('active');
-    }, 10);
+    
+    console.log('Modal displayed successfully');
 }
 
 // 关闭模态框
@@ -585,7 +607,29 @@ function closeModal() {
 
 // 提交手动录入数据
 function submitManualEntry() {
-    // 这里可以添加表单验证和提交逻辑
+    // 获取表单数据
+    const dimension = document.getElementById('dimensionSelect')?.value;
+    const level = document.getElementById('levelSelect')?.value;
+    const description = document.getElementById('descriptionText')?.value;
+    const score = document.getElementById('scoreInput')?.value;
+    
+    // 验证表单
+    if (!dimension) {
+        showToast('请选择评估维度', 'warning');
+        return;
+    }
+    
+    if (!level && !score) {
+        showToast('请选择成熟度等级或输入评估得分', 'warning');
+        return;
+    }
+    
+    if (!description) {
+        showToast('请填写评估说明', 'warning');
+        return;
+    }
+    
+    // 显示提交成功
     showToast('评估数据已提交', 'success');
     closeModal();
     
