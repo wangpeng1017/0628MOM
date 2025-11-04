@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <defs>
+    <style><![CDATA[
+      .title { font: 700 22px "Microsoft YaHei", sans-serif; fill: #111; }
+      .lane-label { font: 600 14px "Microsoft YaHei", sans-serif; fill: #333; }
+      .step { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; rx: 8; }
+      .decision { fill: #fff3e0; stroke: #f57c00; stroke-width: 2; }
+      .end { fill: #e8f5e9; stroke: #388e3c; stroke-width: 2; rx: 8; }
+      .step-text { font: 12px "Microsoft YaHei", sans-serif; fill: #000; text-anchor: middle; }
+      .arrow { stroke: #555; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .lane { fill: #fafafa; stroke: #ddd; stroke-width: 1; }
+      .note { font: 11px "Microsoft YaHei", sans-serif; fill: #666; }
+    ]]></style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+
+  <text x="700" y="35" class="title" text-anchor="middle">设备管理 - 故障报修到验收关闭全流程（泳道图）</text>
+
+  <!-- Swim lanes -->
+  <rect x="150" y="60" width="1200" height="160" class="lane"/>
+  <rect x="150" y="220" width="1200" height="160" class="lane"/>
+  <rect x="150" y="380" width="1200" height="160" class="lane"/>
+  <rect x="150" y="540" width="1200" height="160" class="lane"/>
+  <rect x="150" y="700" width="1200" height="160" class="lane"/>
+
+  <!-- Lane labels -->
+  <text x="70" y="145" class="lane-label">操作员</text>
+  <text x="55" y="305" class="lane-label">维修主管</text>
+  <text x="40" y="465" class="lane-label">维修工程师</text>
+  <text x="55" y="625" class="lane-label">生产班长</text>
+  <text x="70" y="785" class="lane-label">系统</text>
+
+  <!-- Flow: 操作员 -->
+  <rect x="180" y="100" width="140" height="60" class="step"/>
+  <text x="250" y="128" class="step-text">
+    <tspan x="250">扫码报修</tspan>
+    <tspan x="250" dy="16">(移动端)</tspan>
+  </text>
+
+  <!-- Flow: 维修主管 -->
+  <rect x="400" y="260" width="140" height="60" class="step"/>
+  <text x="470" y="288" class="step-text">
+    <tspan x="470">收到报修</tspan>
+    <tspan x="470" dy="16">查看工作台</tspan>
+  </text>
+
+  <rect x="590" y="260" width="140" height="60" class="step"/>
+  <text x="660" y="288" class="step-text">
+    <tspan x="660">智能派单</tspan>
+    <tspan x="660" dy="16">生成工单</tspan>
+  </text>
+
+  <!-- Flow: 维修工程师 -->
+  <rect x="780" y="420" width="140" height="60" class="step"/>
+  <text x="850" y="448" class="step-text">
+    <tspan x="850">接单</tspan>
+    <tspan x="850" dy="16">(移动端)</tspan>
+  </text>
+
+  <rect x="970" y="420" width="140" height="60" class="step"/>
+  <text x="1040" y="448" class="step-text">
+    <tspan x="1040">开始维修</tspan>
+    <tspan x="1040" dy="16">扫码领料</tspan>
+  </text>
+
+  <rect x="1160" y="420" width="140" height="60" class="step"/>
+  <text x="1230" y="448" class="step-text">
+    <tspan x="1230">完成维修</tspan>
+    <tspan x="1230" dy="16">填写报告</tspan>
+  </text>
+
+  <!-- Flow: 生产班长 -->
+  <rect x="1160" y="580" width="140" height="60" class="step"/>
+  <text x="1230" y="608" class="step-text">
+    <tspan x="1230">验收</tspan>
+    <tspan x="1230" dy="16">评价</tspan>
+  </text>
+
+  <!-- Flow: 系统 -->
+  <rect x="180" y="740" width="140" height="60" class="end"/>
+  <text x="250" y="768" class="step-text">
+    <tspan x="250">工单关闭</tspan>
+    <tspan x="250" dy="16">知识沉淀</tspan>
+  </text>
+
+  <!-- Arrows -->
+  <path d="M 250 160 L 250 220 L 470 220 L 470 260" class="arrow"/>
+  <path d="M 540 290 L 590 290" class="arrow"/>
+  <path d="M 730 290 L 850 290 L 850 420" class="arrow"/>
+  <path d="M 920 450 L 970 450" class="arrow"/>
+  <path d="M 1110 450 L 1160 450" class="arrow"/>
+  <path d="M 1230 480 L 1230 580" class="arrow"/>
+  <path d="M 1160 610 L 250 610 L 250 740" class="arrow"/>
+
+  <!-- Annotations -->
+  <text x="260" y="190" class="note">选择故障类型</text>
+  <text x="260" y="205" class="note">上传照片/视频</text>
+  
+  <text x="480" y="340" class="note">推送消息通知</text>
+  
+  <text x="860" y="400" class="note">查看设备信息</text>
+  <text x="860" y="415" class="note">和历史维修</text>
+  
+  <text x="1050" y="500" class="note">根本原因分析</text>
+  <text x="1050" y="515" class="note">自动关联备件</text>
+  
+  <text x="1100" y="560" class="note">验收通过</text>
+  
+  <text x="260" y="820" class="note">记录履历、沉淀案例</text>
+
+  <text x="150" y="880" class="note" text-anchor="start">业务场景：贴片机吸嘴故障报修 → 派单 → 现场维修 → 更换传感器 → 验收通过 → 闭环</text>
+</svg>

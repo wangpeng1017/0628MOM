@@ -318,7 +318,7 @@ function submitCreateProject() {
     const inspectionType = document.getElementById('inspectionType')?.value;
     
     if (!supplierName) {
-        showToast('请输入供应商名称', 'warning');
+        showToast('请输入客户名称', 'warning');
         return;
     }
     
@@ -389,7 +389,7 @@ function viewProjectDetail(projectId) {
                             <span class="font-medium text-gray-800">${project.id}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-600">供应商名称：</span>
+                            <span class="text-gray-600">客户名称：</span>
                             <span class="font-medium text-gray-800">${project.supplier}</span>
                         </div>
                         <div class="flex justify-between">
@@ -666,7 +666,7 @@ function viewPlanDetail(planId) {
                     <p class="mt-1 text-gray-900 font-medium">${plan.id}</p>
                 </div>
                 <div>
-                    <label class="text-sm font-medium text-gray-500">供应商名称</label>
+                    <label class="text-sm font-medium text-gray-500">客户名称</label>
                     <p class="mt-1 text-gray-900">${plan.supplier}</p>
                 </div>
                 <div>
@@ -789,7 +789,7 @@ function submitEditPlan() {
     const supplierName = document.getElementById('editSupplierName').value;
     
     if (!supplierName) {
-        showToast('请填写供应商名称', 'warning');
+        showToast('请填写客户名称', 'warning');
         return;
     }
     
@@ -915,7 +915,7 @@ function loadDataSecurityChecklist() {
         { id: 5, item: '数据备份策略是否完善？', category: '数据备份', required: true },
         { id: 6, item: '是否有数据泄露应急预案？', category: '应急管理', required: true },
         { id: 7, item: '员工数据安全意识培训是否定期开展？', category: '安全培训', required: false },
-        { id: 8, item: '第三方供应商数据访问是否受控？', category: '第三方管理', required: true },
+        { id: 8, item: '第三方合作伙伴数据访问是否受控？', category: '第三方管理', required: true },
         { id: 9, item: '是否通过ISO27001等信息安全认证？', category: '认证体系', required: false },
         { id: 10, item: '数据删除和销毁流程是否规范？', category: '数据生命周期', required: false },
         { id: 11, item: '是否有完整的安全审计日志？', category: '审计追溯', required: true },
@@ -1026,7 +1026,7 @@ function loadExecutionChecklist() {
         { id: 26, item: '生产数据与财务系统集成情况如何？', status: 'pending', result: '', evidence: '', category: '数字化流程' },
         { id: 27, item: '是否建立了数字化工艺文件管理系统？', status: 'pending', result: '', evidence: '', category: '数字化流程' },
         { id: 28, item: '质量检验数据是否自动采集和分析？', status: 'pending', result: '', evidence: '', category: '数字化流程' },
-        { id: 29, item: '供应商管理系统是否完善？', status: 'pending', result: '', evidence: '', category: '供应链管理' },
+        { id: 29, item: '合作伙伴管理系统是否完善？', status: 'pending', result: '', evidence: '', category: '供应链管理' },
         { id: 30, item: '采购订单是否实现电子化管理？', status: 'pending', result: '', evidence: '', category: '供应链管理' },
         { id: 31, item: '库存管理是否实时可视化？', status: 'pending', result: '', evidence: '', category: '供应链管理' },
         { id: 32, item: '物料追溯系统是否覆盖全流程？', status: 'pending', result: '', evidence: '', category: '供应链管理' },
@@ -1323,7 +1323,7 @@ function viewNCRDetail(ncrId) {
                             <span class="font-medium text-blue-600">${ncrData.project}</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-gray-600">供应商：</span>
+                            <span class="text-gray-600">客户：</span>
                             <span class="font-medium text-gray-800">${ncrData.supplier}</span>
                         </div>
                         <div class="flex justify-between">
@@ -1505,7 +1505,7 @@ function viewReport(reportId) {
         date: '2025-11-10',
         auditor: '张明',
         score: 85,
-        summary: '该供应商在信息化系统和数字化流程方面表现良好，但在数据安全管理方面存在一定不足，需要加强数据备份和权限管理。',
+        summary: '该客户在信息化系统和数字化流程方面表现良好，但在数据安全管理方面存在一定不足，需要加强数据备份和权限管理。',
         scores: [
             { category: '信息化系统运行评估', score: 90, total: 100 },
             { category: '数据安全审计', score: 75, total: 100 },
@@ -1661,7 +1661,7 @@ function downloadReport(reportId, format) {
 
 // ========== 统计分析功能 ==========
 
-// 加载供应商排名
+// 加载客户排名
 function loadSupplierRanking() {
     const container = document.getElementById('supplierRanking');
     if (!container) return;
@@ -1705,7 +1705,7 @@ function initRadarComparison() {
     const myChart = echarts.init(chartDom);
     const option = {
         title: {
-            text: '供应商能力对比分析'
+            text: '客户能力对比分析'
         },
         legend: {
             data: ['天合光能', '隆基绿能', '阳光电源']
@@ -1721,7 +1721,7 @@ function initRadarComparison() {
             ]
         },
         series: [{
-            name: '供应商能力对比',
+            name: '客户能力对比',
             type: 'radar',
             data: [
                 {

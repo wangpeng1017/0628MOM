@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1400" viewBox="0 0 1800 1400">
+  <defs>
+    <style><![CDATA[
+      .title { font: 700 26px "Microsoft YaHei", sans-serif; fill: #111; }
+      .layer-title { font: 700 18px "Microsoft YaHei", sans-serif; fill: #fff; }
+      .box { fill: #ffffff; stroke: #666; stroke-width: 1.5; rx: 6; }
+      .box-title { font: 600 14px "Microsoft YaHei", sans-serif; fill: #1a1a1a; }
+      .box-text { font: 12px "Microsoft YaHei", sans-serif; fill: #444; }
+      .layer-bg { stroke: #ccc; stroke-width: 2; }
+      .layer1 { fill: #667eea; }
+      .layer2 { fill: #4fd1c5; }
+      .layer3 { fill: #f6ad55; }
+      .layer4 { fill: #fc8181; }
+      .layer5 { fill: #63b3ed; }
+      .arrow { stroke: #888; stroke-width: 2; fill: none; marker-end: url(#arrowhead); stroke-dasharray: 5,3; }
+    ]]></style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#888"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="900" y="40" class="title" text-anchor="middle">MOM系统 - 五层技术架构</text>
+
+  <!-- Layer 1: Presentation Layer -->
+  <rect x="40" y="80" width="1720" height="200" class="layer-bg layer1" rx="10"/>
+  <text x="60" y="110" class="layer-title">第一层：表现层（Presentation Layer）</text>
+  
+  <rect x="70" y="130" width="520" height="130" class="box"/>
+  <text x="90" y="155" class="box-title">PC Web端（B/S架构）</text>
+  <text x="90" y="178" class="box-text">
+    <tspan x="90" dy="0">• 前端技术栈：Vue 3.x + Element Plus</tspan>
+    <tspan x="90" dy="18">• 功能：管理驾驶舱、业务操作界面</tspan>
+    <tspan x="90" dy="18">• 报表分析工具、数据可视化</tspan>
+    <tspan x="90" dy="18">• 响应式设计，支持多浏览器</tspan>
+  </text>
+
+  <rect x="630" y="130" width="520" height="130" class="box"/>
+  <text x="650" y="155" class="box-title">移动端（原生/混合APP）</text>
+  <text x="650" y="178" class="box-text">
+    <tspan x="650" dy="0">• 支持平台：Android + iOS</tspan>
+    <tspan x="650" dy="18">• 功能：扫码报修、点巡检任务</tspan>
+    <tspan x="650" dy="18">• 工单接收执行、备件查询领用</tspan>
+    <tspan x="650" dy="18">• 离线缓存、消息推送</tspan>
+  </text>
+
+  <rect x="1190" y="130" width="540" height="130" class="box"/>
+  <text x="1210" y="155" class="box-title">大屏可视化（数据看板）</text>
+  <text x="1210" y="178" class="box-text">
+    <tspan x="1210" dy="0">• 面向：生产车间 + 管理层</tspan>
+    <tspan x="1210" dy="18">• 实时展示：设备OEE、产线状态、告警</tspan>
+    <tspan x="1210" dy="18">• 技术：DataV / ECharts / WebGL</tspan>
+    <tspan x="1210" dy="18">• 支持多屏联动、大屏投影</tspan>
+  </text>
+
+  <!-- Arrow 1 to 2 -->
+  <path d="M 900 280 L 900 310" class="arrow"/>
+
+  <!-- Layer 2: Application Layer -->
+  <rect x="40" y="310" width="1720" height="240" class="layer-bg layer2" rx="10"/>
+  <text x="60" y="340" class="layer-title">第二层：应用层（Application Layer）</text>
+
+  <rect x="70" y="360" width="380" height="170" class="box"/>
+  <text x="90" y="385" class="box-title">API网关（Gateway）</text>
+  <text x="90" y="408" class="box-text">
+    <tspan x="90" dy="0">• 统一入口：Spring Cloud Gateway</tspan>
+    <tspan x="90" dy="18">• 请求路由 + 负载均衡</tspan>
+    <tspan x="90" dy="18">• 身份认证（JWT）+ 权限校验</tspan>
+    <tspan x="90" dy="18">• 流量控制、熔断限流</tspan>
+    <tspan x="90" dy="18">• 协议转换（HTTP/WebSocket/gRPC）</tspan>
+  </text>
+
+  <rect x="490" y="360" width="1240" height="170" class="box"/>
+  <text x="510" y="385" class="box-title">核心业务微服务集群（Microservices）</text>
+  <text x="510" y="408" class="box-text">
+    <tspan x="510" dy="0">• 资产管理服务（设备台账、履历、二维码、自定义字段）</tspan>
+    <tspan x="510" dy="18">• 维保管理服务（报修、工单、保养计划、巡检、SLA）</tspan>
+    <tspan x="510" dy="18">• 备件管理服务（库存、出入库、盘点、预警、ABC分析）</tspan>
+    <tspan x="510" dy="18">• 预测性维护服务（健康指数、异常检测、RUL预测）</tspan>
+    <tspan x="510" dy="18">• 统计分析服务（OEE计算、六大损失、报表生成）</tspan>
+    <tspan x="510" dy="18">• 系统管理服务（用户、角色、权限、配置、审计日志）</tspan>
+  </text>
+
+  <!-- Arrow 2 to 3 -->
+  <path d="M 900 550 L 900 580" class="arrow"/>
+
+  <!-- Layer 3: Platform Service Layer -->
+  <rect x="40" y="580" width="1720" height="280" class="layer-bg layer3" rx="10"/>
+  <text x="60" y="610" class="layer-title">第三层：平台服务层（Platform Service Layer）</text>
+
+  <rect x="70" y="630" width="400" height="210" class="box"/>
+  <text x="90" y="655" class="box-title">低代码开发平台</text>
+  <text x="90" y="678" class="box-text">
+    <tspan x="90" dy="0">• 表单设计器：拖拽式界面</tspan>
+    <tspan x="90" dy="18">• 流程引擎：审批工作流（Camunda）</tspan>
+    <tspan x="90" dy="18">• 报表工具：自定义报表设计</tspan>
+    <tspan x="90" dy="18">• 规则引擎：业务规则配置</tspan>
+    <tspan x="90" dy="18">• 支持二次开发、快速迭代</tspan>
+  </text>
+
+  <rect x="510" y="630" width="400" height="210" class="box"/>
+  <text x="530" y="655" class="box-title">物联网/数据接入平台</text>
+  <text x="530" y="678" class="box-text">
+    <tspan x="530" dy="0">• 数据源：PLC、SCADA、传感器</tspan>
+    <tspan x="530" dy="18">• 协议支持：MQTT、OPC-UA、</tspan>
+    <tspan x="540" dy="18">Modbus、Profinet等20+</tspan>
+    <tspan x="530" dy="18">• 边缘网关：数据采集 + 预处理</tspan>
+    <tspan x="530" dy="18">• 设备管理：注册、认证、状态监控</tspan>
+  </text>
+
+  <rect x="950" y="630" width="370" height="210" class="box"/>
+  <text x="970" y="655" class="box-title">大数据平台</text>
+  <text x="970" y="678" class="box-text">
+    <tspan x="970" dy="0">• 数据仓库 + 数据湖</tspan>
+    <tspan x="970" dy="18">• 实时处理：Flink流计算</tspan>
+    <tspan x="970" dy="18">• 离线处理：Spark批处理</tspan>
+    <tspan x="970" dy="18">• AI/ML支持：特征工程、</tspan>
+    <tspan x="980" dy="18">模型训练、预测服务</tspan>
+  </text>
+
+  <rect x="1360" y="630" width="370" height="210" class="box"/>
+  <text x="1380" y="655" class="box-title">微服务治理框架</text>
+  <text x="1380" y="678" class="box-text">
+    <tspan x="1380" dy="0">• 服务注册发现：Nacos</tspan>
+    <tspan x="1380" dy="18">• 配置中心：Nacos Config</tspan>
+    <tspan x="1380" dy="18">• 服务调用：OpenFeign + gRPC</tspan>
+    <tspan x="1380" dy="18">• 熔断降级：Resilience4j</tspan>
+    <tspan x="1380" dy="18">• 分布式事务：Seata</tspan>
+    <tspan x="1380" dy="18">• 链路追踪：Skywalking</tspan>
+  </text>
+
+  <!-- Arrow 3 to 4 -->
+  <path d="M 900 860 L 900 890" class="arrow"/>
+
+  <!-- Layer 4: Data Layer -->
+  <rect x="40" y="890" width="1720" height="280" class="layer-bg layer4" rx="10"/>
+  <text x="60" y="920" class="layer-title">第四层：数据层（Data Layer）</text>
+
+  <rect x="70" y="940" width="400" height="210" class="box"/>
+  <text x="90" y="965" class="box-title">关系型数据库（RDBMS）</text>
+  <text x="90" y="988" class="box-text">
+    <tspan x="90" dy="0">• 数据库：PostgreSQL / MySQL</tspan>
+    <tspan x="90" dy="18">• 存储：核心业务交易数据</tspan>
+    <tspan x="90" dy="18">  - 设备台账、工单、保养记录</tspan>
+    <tspan x="90" dy="18">  - 备件库存、用户权限配置</tspan>
+    <tspan x="90" dy="18">• 架构：主从热备（高可用）</tspan>
+    <tspan x="90" dy="18">• 分库分表：支持水平扩展</tspan>
+  </text>
+
+  <rect x="510" y="940" width="400" height="210" class="box"/>
+  <text x="530" y="965" class="box-title">时序数据库（TSDB）</text>
+  <text x="530" y="988" class="box-text">
+    <tspan x="530" dy="0">• 数据库：InfluxDB / TDengine</tspan>
+    <tspan x="530" dy="18">• 存储：设备运行时序数据</tspan>
+    <tspan x="530" dy="18">  - 传感器数据、工艺参数</tspan>
+    <tspan x="530" dy="18">  - 能耗数据、振动温度</tspan>
+    <tspan x="530" dy="18">• 性能：百万点/秒写入</tspan>
+    <tspan x="530" dy="18">• 特性：高压缩率、快速聚合</tspan>
+  </text>
+
+  <rect x="950" y="940" width="370" height="210" class="box"/>
+  <text x="970" y="965" class="box-title">文档/对象存储</text>
+  <text x="970" y="988" class="box-text">
+    <tspan x="970" dy="0">• MongoDB：非结构化文档</tspan>
+    <tspan x="970" dy="18">  - 设备图纸、SOP文档</tspan>
+    <tspan x="970" dy="18">• MinIO/OSS：对象存储</tspan>
+    <tspan x="970" dy="18">  - 图片、视频、固件包</tspan>
+    <tspan x="970" dy="18">• 支持：版本控制、权限管理</tspan>
+  </text>
+
+  <rect x="1360" y="940" width="370" height="210" class="box"/>
+  <text x="1380" y="965" class="box-title">缓存数据库（Cache）</text>
+  <text x="1380" y="988" class="box-text">
+    <tspan x="1380" dy="0">• 数据库：Redis Cluster</tspan>
+    <tspan x="1380" dy="18">• 用途：缓存热点数据</tspan>
+    <tspan x="1380" dy="18">  - 设备最新状态快照</tspan>
+    <tspan x="1380" dy="18">  - 用户会话、权限缓存</tspan>
+    <tspan x="1380" dy="18">• 性能：毫秒级响应</tspan>
+    <tspan x="1380" dy="18">• 特性：持久化、主从复制</tspan>
+  </text>
+
+  <!-- Arrow 4 to 5 -->
+  <path d="M 900 1170 L 900 1200" class="arrow"/>
+
+  <!-- Layer 5: Infrastructure Layer -->
+  <rect x="40" y="1200" width="1720" height="180" class="layer-bg layer5" rx="10"/>
+  <text x="60" y="1230" class="layer-title">第五层：基础设施层（Infrastructure Layer）</text>
+
+  <rect x="70" y="1250" width="520" height="110" class="box"/>
+  <text x="90" y="1275" class="box-title">容器化平台（Container Platform）</text>
+  <text x="90" y="1298" class="box-text">
+    <tspan x="90" dy="0">• 容器运行时：Docker</tspan>
+    <tspan x="90" dy="18">• 编排调度：Kubernetes（K8S）</tspan>
+    <tspan x="90" dy="18">• 特性：资源弹性调度、故障自愈、滚动更新</tspan>
+  </text>
+
+  <rect x="630" y="1250" width="520" height="110" class="box"/>
+  <text x="650" y="1275" class="box-title">服务器/虚拟化（Compute）</text>
+  <text x="650" y="1298" class="box-text">
+    <tspan x="650" dy="0">• 物理服务器：x86架构（Intel/AMD）</tspan>
+    <tspan x="650" dy="18">• 虚拟化平台：VMware vSphere / KVM</tspan>
+    <tspan x="650" dy="18">• 支持：私有云、混合云部署</tspan>
+  </text>
+
+  <rect x="1190" y="1250" width="540" height="110" class="box"/>
+  <text x="1210" y="1275" class="box-title">网络与存储（Network & Storage）</text>
+  <text x="1210" y="1298" class="box-text">
+    <tspan x="1210" dy="0">• 网络：千兆/万兆以太网、VLAN隔离、负载均衡</tspan>
+    <tspan x="1210" dy="18">• 存储：SAN/NAS、分布式存储（Ceph）</tspan>
+    <tspan x="1210" dy="18">• 备份：定期快照、异地容灾</tspan>
+  </text>
+
+  <!-- Bidirectional arrows between layers -->
+  <path d="M 250 280 L 250 300 M 250 310 L 250 330" class="arrow"/>
+  <path d="M 1550 280 L 1550 300 M 1550 310 L 1550 330" class="arrow"/>
+  
+  <path d="M 250 550 L 250 570 M 250 580 L 250 600" class="arrow"/>
+  <path d="M 1550 550 L 1550 570 M 1550 580 L 1550 600" class="arrow"/>
+  
+  <path d="M 250 860 L 250 880 M 250 890 L 250 910" class="arrow"/>
+  <path d="M 1550 860 L 1550 880 M 1550 890 L 1550 910" class="arrow"/>
+  
+  <path d="M 250 1170 L 250 1190 M 250 1200 L 250 1220" class="arrow"/>
+  <path d="M 1550 1170 L 1550 1190 M 1550 1200 L 1550 1220" class="arrow"/>
+
+  <!-- Bottom note -->
+  <text x="900" y="1390" text-anchor="middle" style="font: 11px 'Microsoft YaHei', sans-serif; fill: #666;">
+    架构特点：微服务化、容器化、分布式、高可用、弹性伸缩、数据驱动、AI赋能
+  </text>
+</svg>

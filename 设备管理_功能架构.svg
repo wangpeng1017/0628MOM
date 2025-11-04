@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">
+  <defs>
+    <style><![CDATA[
+      .title { font: 700 24px "Microsoft YaHei", Segoe UI, Arial, sans-serif; fill: #111; }
+      .subtitle { font: 600 14px "Microsoft YaHei", Segoe UI, Arial, sans-serif; fill: #333; }
+      .layer { fill: #f6f8fa; stroke: #d0d7de; stroke-width: 1; }
+      .box { fill: #ffffff; stroke: #c7c7c7; stroke-width: 1.2; rx: 8; ry: 8; }
+      .box-title { font: 700 14px "Microsoft YaHei", Segoe UI, Arial, sans-serif; fill: #0d1117; }
+      .box-text { font: 12px "Microsoft YaHei", Segoe UI, Arial, sans-serif; fill: #444; }
+      .note { font: 12px "Microsoft YaHei", Segoe UI, Arial, sans-serif; fill: #555; }
+      .arrow { stroke: #666; stroke-width: 1.5; marker-end: url(#arrow); }
+      .chip { fill: #eef6ff; stroke: #90c2ff; }
+    ]]></style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="40" y="48" class="title">设备管理 - 功能架构图（符合现有业务）</text>
+
+  <!-- Layers background -->
+  <rect x="20" y="70" width="1560" height="170" class="layer" />
+  <rect x="20" y="270" width="1560" height="380" class="layer" />
+  <rect x="20" y="670" width="1560" height="390" class="layer" />
+
+  <text x="32" y="92" class="subtitle">客户端</text>
+  <text x="32" y="292" class="subtitle">后端微服务</text>
+  <text x="32" y="692" class="subtitle">数据与基础设施</text>
+
+  <!-- Client: PC -->
+  <rect x="40" y="110" width="730" height="110" class="box" />
+  <text x="60" y="135" class="box-title">PC端</text>
+  <text x="60" y="158" class="box-text">
+    <tspan x="60" dy="0">• 设备台账（树/列表/详情/表单生成器）</tspan>
+    <tspan x="60" dy="18">• 维修工作台（看板/工单列表/工单详情）</tspan>
+    <tspan x="60" dy="18">• 保养管理（基准库、策略、日历）/ 巡检管理（路线、计划）</tspan>
+    <tspan x="60" dy="18">• 统计分析（OEE驾驶舱、趋势/对比/六大损失）/ 技改管理 / 知识库门户 / 系统管理</tspan>
+  </text>
+
+  <!-- Client: Mobile -->
+  <rect x="840" y="110" width="720" height="110" class="box" />
+  <text x="860" y="135" class="box-title">移动端 APP</text>
+  <text x="860" y="158" class="box-text">
+    <tspan x="860" dy="0">• 扫码报修 / 工单执行（接受-出发-维修-暂停-完工-验收）</tspan>
+    <tspan x="860" dy="18">• 点巡检（路线、签到、检查表、异常上报/转报修）</tspan>
+    <tspan x="860" dy="18">• 保养Checklist / 扫码领料 / 信息查询（台账、履历、SOP）/ 消息通知</tspan>
+  </text>
+
+  <!-- Arrows Clients -> Services -->
+  <path d="M 405 220 L 405 255 L 220 255 L 220 310" class="arrow" fill="none" />
+  <path d="M 1200 220 L 1200 255 L 1390 255 L 1390 310" class="arrow" fill="none" />
+
+  <!-- Services grid positions -->
+  <!-- row1 -->
+  <rect x="40" y="310" width="360" height="110" class="box" />
+  <text x="60" y="332" class="box-title">资产管理服务</text>
+  <text x="60" y="354" class="box-text">
+    <tspan x="60" dy="0">• 设备台账 CRUD、编码规则、状态机</tspan>
+    <tspan x="60" dy="18">• 多维树（位置/类别/系统）/ 履历日志 / 自定义字段</tspan>
+    <tspan x="60" dy="18">• 二维码/RFID 绑定与查询 / 附件关联</tspan>
+  </text>
+
+  <rect x="430" y="310" width="360" height="110" class="box" />
+  <text x="450" y="332" class="box-title">维保管理服务</text>
+  <text x="450" y="354" class="box-text">
+    <tspan x="450" dy="0">• 报修/工单全生命周期（派单、执行、验收、关闭）</tspan>
+    <tspan x="450" dy="18">• SLA 计算 / 派单规则 / 日志时间轴 / 评价</tspan>
+  </text>
+
+  <rect x="820" y="310" width="360" height="110" class="box" />
+  <text x="840" y="332" class="box-title">备件管理服务</text>
+  <text x="840" y="354" class="box-text">
+    <tspan x="840" dy="0">• 备件台账 / 库存 / 出入库 / 盘点 / 物料条码</tspan>
+    <tspan x="840" dy="18">• 工单领料关联成本 / 安全库存预警 / ABC/呆滞分析</tspan>
+  </text>
+
+  <rect x="1210" y="310" width="360" height="110" class="box" />
+  <text x="1230" y="332" class="box-title">系统管理服务</text>
+  <text x="1230" y="354" class="box-text">
+    <tspan x="1230" dy="0">• 组织/用户/角色与权限（RBAC）</tspan>
+    <tspan x="1230" dy="18">• 参数配置 / 数据字典 / 日志审计</tspan>
+  </text>
+
+  <!-- row2 -->
+  <rect x="40" y="440" width="360" height="110" class="box" />
+  <text x="60" y="462" class="box-title">统计分析服务（OEE）</text>
+  <text x="60" y="484" class="box-text">
+    <tspan x="60" dy="0">• OEE 三因子与结果计算、趋势/对比/六大损失</tspan>
+    <tspan x="60" dy="18">• 报表生成与自定义报表</tspan>
+  </text>
+
+  <rect x="430" y="440" width="360" height="110" class="box" />
+  <text x="450" y="462" class="box-title">预测性维护服务</text>
+  <text x="450" y="484" class="box-text">
+    <tspan x="450" dy="0">• 健康指数/异常检测/故障模式识别/RUL</tspan>
+    <tspan x="450" dy="18">• 预见性工单触发 / 备件联动</tspan>
+  </text>
+
+  <rect x="820" y="440" width="360" height="110" class="box" />
+  <text x="840" y="462" class="box-title">知识库管理服务</text>
+  <text x="840" y="484" class="box-text">
+    <tspan x="840" dy="0">• 维修案例 / SOP / FTA / 审核 / 评价</tspan>
+    <tspan x="840" dy="18">• 搜索与推荐 / 版本管理</tspan>
+  </text>
+
+  <rect x="1210" y="440" width="360" height="110" class="box" />
+  <text x="1230" y="462" class="box-title">技改管理服务</text>
+  <text x="1230" y="484" class="box-text">
+    <tspan x="1230" dy="0">• 立项/审批/任务分解/预算与成本/验收评估</tspan>
+    <tspan x="1230" dy="18">• 与资产/备件联动更新与归集</tspan>
+  </text>
+
+  <!-- row3 -->
+  <rect x="40" y="570" width="360" height="60" class="box" />
+  <text x="60" y="592" class="box-title">通知服务</text>
+  <text x="60" y="614" class="box-text">
+    <tspan x="60" dy="0">• 飞书/短信/邮件/APP 推送/API 回调</tspan>
+  </text>
+
+  <rect x="430" y="570" width="360" height="60" class="box" />
+  <text x="450" y="592" class="box-title">设备智能体服务（Agent）</text>
+  <text x="450" y="614" class="box-text">
+    <tspan x="450" dy="0">• 对话/诊断引导/RAG 检索/知识沉淀</tspan>
+  </text>
+
+  <rect x="820" y="570" width="360" height="60" class="box" />
+  <text x="840" y="592" class="box-title">物联网/数据接入服务</text>
+  <text x="840" y="614" class="box-text">
+    <tspan x="840" dy="0">• IoT 平台/时序数据接入（与数采平台集成）</tspan>
+  </text>
+
+  <rect x="1210" y="570" width="360" height="60" class="box" />
+  <text x="1230" y="592" class="box-title">文件存储服务</text>
+  <text x="1230" y="614" class="box-text">
+    <tspan x="1230" dy="0">• 文档/图片/视频上传下载与鉴权</tspan>
+  </text>
+
+  <!-- Arrows Services -> Data layer -->
+  <path d="M 220 420 L 220 450 L 50 450 L 50 720" class="arrow" fill="none" />
+  <path d="M 605 550 L 605 580 L 725 580 L 725 720" class="arrow" fill="none" />
+  <path d="M 985 550 L 985 580 L 1055 580 L 1055 720" class="arrow" fill="none" />
+  <path d="M 1390 550 L 1390 670 L 1385 670 L 1385 720" class="arrow" fill="none" />
+
+  <!-- Data layer boxes -->
+  <rect x="40" y="720" width="500" height="320" class="box" />
+  <text x="60" y="742" class="box-title">关系型数据库（RDBMS）</text>
+  <text x="60" y="764" class="box-text">
+    <tspan x="60" dy="0">• 设备主表/履历/自定义字段/附件索引</tspan>
+    <tspan x="60" dy="18">• 维修工单/操作日志/耗用备件</tspan>
+    <tspan x="60" dy="18">• 保养基准/项目/策略/工单/记录</tspan>
+    <tspan x="60" dy="18">• 巡检路线/计划/任务记录/异常</tspan>
+    <tspan x="60" dy="18">• 备件主数据/库存/出入库/设备BOM</tspan>
+    <tspan x="60" dy="18">• OEE 结果/损失记录/报表缓存</tspan>
+    <tspan x="60" dy="18">• 技改项目/任务/成本/审批历史</tspan>
+    <tspan x="60" dy="18">• 用户/角色/权限 / 参数配置 / 审计日志</tspan>
+  </text>
+
+  <rect x="560" y="720" width="330" height="180" class="box" />
+  <text x="580" y="742" class="box-title">时序数据库（TSDB，如 InfluxDB）</text>
+  <text x="580" y="764" class="box-text">
+    <tspan x="580" dy="0">• 传感器/运行参数/能耗等时序数据</tspan>
+    <tspan x="580" dy="18">• 预测性维护模型特征数据</tspan>
+  </text>
+
+  <rect x="910" y="720" width="290" height="180" class="box" />
+  <text x="930" y="742" class="box-title">对象存储（MinIO/OSS）</text>
+  <text x="930" y="764" class="box-text">
+    <tspan x="930" dy="0">• 技术文档/SOP/图纸/图片/视频</tspan>
+    <tspan x="930" dy="18">• 现场照片/验收单/调试报告</tspan>
+  </text>
+
+  <rect x="1220" y="720" width="330" height="180" class="box" />
+  <text x="1240" y="742" class="box-title">向量数据库（知识向量索引）</text>
+  <text x="1240" y="764" class="box-text">
+    <tspan x="1240" dy="0">• 维修案例/SOP/图谱片段向量化</tspan>
+    <tspan x="1240" dy="18">• Agent RAG 检索与推荐</tspan>
+  </text>
+
+  <rect x="560" y="920" width="330" height="120" class="box" />
+  <text x="580" y="942" class="box-title">日志与可观测性（ELK）</text>
+  <text x="580" y="964" class="box-text">
+    <tspan x="580" dy="0">• 微服务运行日志/错误日志集中检索</tspan>
+  </text>
+
+  <!-- IoT and Agent to Data layer -->
+  <path d="M 1000 630 L 1000 660 L 860 660 L 860 720" class="arrow" fill="none" />
+  <path d="M 610 630 L 610 660 L 645 660 L 645 720" class="arrow" fill="none" />
+
+  <!-- Notification channels chip -->
+  <rect x="1210" y="250" width="360" height="40" class="chip" rx="8" ry="8" />
+  <text x="1228" y="275" class="box-text">通知渠道：飞书 / 短信 / 邮件 / APP 推送 / Webhook</text>
+  <path d="M 220 630 L 220 650 L 1595 650 L 1595 270 L 1570 270" class="arrow" fill="none" />
+
+  <!-- Notes -->
+  <text x="40" y="1070" class="note">说明：本图覆盖设备台账、维修、计划性维护、点巡检、备件、预测性维护、知识库、OEE、技改、系统管理、通知与数据层，完全对应《设备管理需求文档》所述业务与技术架构。</text>
+</svg>

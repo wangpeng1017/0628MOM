@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1000" viewBox="0 0 1400 1000">
+  <defs>
+    <style><![CDATA[
+      .title { font: 700 22px "Microsoft YaHei", sans-serif; fill: #111; }
+      .subtitle { font: 600 13px "Microsoft YaHei", sans-serif; fill: #2c5282; }
+      .step { fill: #ebf8ff; stroke: #2b6cb0; stroke-width: 2; rx: 8; }
+      .edge { fill: #e6fffa; stroke: #319795; stroke-width: 2; rx: 8; }
+      .cloud { fill: #fef5e7; stroke: #d68910; stroke-width: 2; rx: 8; }
+      .app { fill: #f0fff4; stroke: #38a169; stroke-width: 2; rx: 8; }
+      .step-text { font: 12px "Microsoft YaHei", sans-serif; fill: #1a202c; text-anchor: middle; }
+      .arrow { stroke: #4a5568; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .data-arrow { stroke: #2563eb; stroke-width: 2.5; fill: none; marker-end: url(#bluearrow); stroke-dasharray: 5,5; }
+      .note { font: 11px "Microsoft YaHei", sans-serif; fill: #718096; }
+      .layer-label { font: 600 14px "Microsoft YaHei", sans-serif; fill: #2d3748; }
+    ]]></style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#4a5568"/>
+    </marker>
+    <marker id="bluearrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <text x="700" y="35" class="title" text-anchor="middle">数采管理 - 数据采集与处理全流程</text>
+
+  <!-- Layer 1: Device -->
+  <rect x="50" y="70" width="300" height="180" style="fill:#fafafa; stroke:#cbd5e0; stroke-width:1;"/>
+  <text x="60" y="92" class="layer-label">设备层</text>
+  
+  <rect x="80" y="110" width="240" height="60" class="step"/>
+  <text x="200" y="145" class="step-text">
+    <tspan x="200">工业设备</tspan>
+    <tspan x="200" dy="14">(PLC/DCS/传感器)</tspan>
+  </text>
+
+  <rect x="80" y="180" width="240" height="50" class="note" style="fill:#fff; stroke:#e2e8f0; stroke-width:1;"/>
+  <text x="200" y="210" class="step-text" style="font-size:11px;">
+    <tspan x="200">输出：模拟量/数字量/脉冲</tspan>
+  </text>
+
+  <!-- Layer 2: Edge -->
+  <rect x="410" y="70" width="480" height="370" style="fill:#f7fafc; stroke:#cbd5e0; stroke-width:1;"/>
+  <text x="420" y="92" class="layer-label">边缘层（Edge Gateway）</text>
+
+  <rect x="440" y="110" width="200" height="60" class="edge"/>
+  <text x="540" y="145" class="step-text">
+    <tspan x="540">协议解析</tspan>
+    <tspan x="540" dy="14">(Modbus/OPC UA/...)</tspan>
+  </text>
+
+  <rect x="440" y="190" width="200" height="60" class="edge"/>
+  <text x="540" y="225" class="step-text">
+    <tspan x="540">数据清洗转换</tspan>
+    <tspan x="540" dy="14">(工程值/标准化)</tspan>
+  </text>
+
+  <rect x="440" y="270" width="200" height="60" class="edge"/>
+  <text x="540" y="305" class="step-text">
+    <tspan x="540">边缘聚合压缩</tspan>
+    <tspan x="540" dy="14">(降低60%带宽)</tspan>
+  </text>
+
+  <rect x="660" y="190" width="200" height="140" class="edge"/>
+  <text x="760" y="230" class="step-text">
+    <tspan x="760">MQTT加密上报</tspan>
+    <tspan x="760" dy="16">(TLS 1.3)</tspan>
+    <tspan x="760" dy="20">频率：</tspan>
+    <tspan x="760" dy="16">关键参数 ≤100ms</tspan>
+    <tspan x="760" dy="16">设备状态 ≤1s</tspan>
+  </text>
+
+  <rect x="440" y="350" width="420" height="70" class="note" style="fill:#fff; stroke:#e2e8f0; stroke-width:1;"/>
+  <text x="650" y="380" class="step-text" style="font-size:11px;">
+    <tspan x="650">边缘能力：100ms高频采集、异常剔除、本地缓存</tspan>
+    <tspan x="650" dy="14">精度保证：模拟量≤±0.5%，数字量响应≤50ms</tspan>
+  </text>
+
+  <!-- Layer 3: Cloud Platform -->
+  <rect x="950" y="70" width="420" height="520" style="fill:#fffaf0; stroke:#cbd5e0; stroke-width:1;"/>
+  <text x="960" y="92" class="layer-label">云端平台层</text>
+
+  <rect x="980" y="110" width="160" height="50" class="cloud"/>
+  <text x="1060" y="140" class="step-text">MQTT Broker</text>
+
+  <rect x="980" y="175" width="160" height="50" class="cloud"/>
+  <text x="1060" y="205" class="step-text">设备认证鉴权</text>
+
+  <rect x="980" y="240" width="160" height="60" class="cloud"/>
+  <text x="1060" y="275" class="step-text">
+    <tspan x="1060">流处理引擎</tspan>
+    <tspan x="1060" dy="14">(Apache Flink)</tspan>
+  </text>
+
+  <rect x="1160" y="175" width="180" height="60" class="cloud"/>
+  <text x="1250" y="210" class="step-text">
+    <tspan x="1250">规则引擎</tspan>
+    <tspan x="1250" dy="14">告警触发</tspan>
+  </text>
+
+  <rect x="980" y="315" width="160" height="50" class="cloud"/>
+  <text x="1060" y="345" class="step-text">数据存储</text>
+
+  <rect x="1160" y="250" width="180" height="50" class="cloud"/>
+  <text x="1250" y="280" class="step-text">实时缓存(Redis)</text>
+
+  <rect x="980" y="380" width="360" height="70" class="cloud"/>
+  <text x="1160" y="420" class="step-text">
+    <tspan x="1160">数据服务层（API/Kafka）</tspan>
+  </text>
+
+  <rect x="980" y="465" width="360" height="110" class="note" style="fill:#fff; stroke:#e2e8f0; stroke-width:1;"/>
+  <text x="1160" y="495" class="step-text" style="font-size:10.5px;">
+    <tspan x="1160">• 窗口聚合计算（5分钟平均/最大/最小）</tspan>
+    <tspan x="1160" dy="14">• 多流关联分析（产线设备联动）</tspan>
+    <tspan x="1160" dy="14">• 复杂事件处理CEP（连续3次启停→异常）</tspan>
+    <tspan x="1160" dy="14">• 时序数据库高性能存储（InfluxDB）</tspan>
+    <tspan x="1160" dy="14">• 冷热数据分层（30天热数据/自动归档压缩）</tspan>
+  </text>
+
+  <!-- Layer 4: Applications -->
+  <rect x="50" y="650" width="1320" height="280" style="fill:#f0fff4; stroke:#cbd5e0; stroke-width:1;"/>
+  <text x="60" y="672" class="layer-label">上层应用消费层</text>
+
+  <rect x="80" y="700" width="180" height="80" class="app"/>
+  <text x="170" y="745" class="step-text">
+    <tspan x="170">设备管理系统</tspan>
+    <tspan x="170" dy="14">(预测性维护)</tspan>
+  </text>
+
+  <rect x="290" y="700" width="180" height="80" class="app"/>
+  <text x="380" y="745" class="step-text">
+    <tspan x="380">MES系统</tspan>
+    <tspan x="380" dy="14">(OEE计算)</tspan>
+  </text>
+
+  <rect x="500" y="700" width="180" height="80" class="app"/>
+  <text x="590" y="745" class="step-text">
+    <tspan x="590">能源管理</tspan>
+    <tspan x="590" dy="14">(单位能耗分析)</tspan>
+  </text>
+
+  <rect x="710" y="700" width="180" height="80" class="app"/>
+  <text x="800" y="745" class="step-text">
+    <tspan x="800">质量系统</tspan>
+    <tspan x="800" dy="14">(工艺参数追溯)</tspan>
+  </text>
+
+  <rect x="920" y="700" width="180" height="80" class="app"/>
+  <text x="1010" y="745" class="step-text">
+    <tspan x="1010">BI报表</tspan>
+    <tspan x="1010" dy="14">(数据分析大屏)</tspan>
+  </text>
+
+  <rect x="1130" y="700" width="210" height="80" class="app"/>
+  <text x="1235" y="745" class="step-text">
+    <tspan x="1235">第三方系统</tspan>
+    <tspan x="1235" dy="14">(Webhook/API)</tspan>
+  </text>
+
+  <rect x="80" y="800" width="1260" height="110" class="note" style="fill:#fff; stroke:#e2e8f0; stroke-width:1;"/>
+  <text x="710" y="830" class="step-text" style="font-size:11px;">
+    <tspan x="710">数据消费方式：</tspan>
+    <tspan x="710" dy="16">1️⃣ RESTful API：实时快照查询（300ms）、历史数据查询（时间范围/聚合/降采样）</tspan>
+    <tspan x="710" dy="16">2️⃣ Kafka订阅：实时数据流Topic推送（ms级延迟）</tspan>
+    <tspan x="710" dy="16">3️⃣ Webhook：事件触发推送（状态变更/阈值告警）</tspan>
+  </text>
+
+  <!-- Arrows - Main flow -->
+  <path d="M 320 140 L 380 140 L 380 100 L 440 100 L 440 110" class="arrow" fill="none" />
+  <path d="M 540 170 L 540 190" class="arrow" fill="none" />
+  <path d="M 540 250 L 540 270" class="arrow" fill="none" />
+  <path d="M 640 300 L 660 300" class="arrow" fill="none" />
+  <path d="M 860 260 L 920 260 L 920 135 L 980 135" class="arrow" fill="none" />
+  <path d="M 1060 160 L 1060 175" class="arrow" fill="none" />
+  <path d="M 1060 225 L 1060 240" class="arrow" fill="none" />
+  <path d="M 1060 300 L 1060 315" class="arrow" fill="none" />
+  
+  <!-- Data flow to cache and rules -->
+  <path d="M 1140 270 L 1160 205" class="arrow" fill="none" />
+  <path d="M 1140 275 L 1160 275" class="arrow" fill="none" />
+  <path d="M 1250 235 L 1250 250" class="arrow" fill="none" />
+  
+  <!-- To API layer -->
+  <path d="M 1060 365 L 1060 380" class="arrow" fill="none" />
+  
+  <!-- To applications -->
+  <path d="M 980 415 L 70 415 L 70 630 L 170 630 L 170 700" class="data-arrow" fill="none" />
+  <path d="M 1000 415 L 380 415 L 380 700" class="data-arrow" fill="none" />
+  <path d="M 1020 415 L 1020 480 L 590 480 L 590 700" class="data-arrow" fill="none" />
+  <path d="M 1040 415 L 1040 500 L 800 500 L 800 700" class="data-arrow" fill="none" />
+  <path d="M 1160 415 L 1385 415 L 1385 630 L 1010 630 L 1010 700" class="data-arrow" fill="none" />
+  <path d="M 1180 415 L 1400 415 L 1400 670 L 1235 670 L 1235 700" class="data-arrow" fill="none" />
+
+  <!-- Notes at bottom -->
+  <text x="50" y="960" class="note">业务场景示例：涂覆机温度传感器 → 边缘网关100ms采集+转换 → MQTT上报 → Flink实时分析 → 温度>200℃触发告警 → 推送设备管理系统+飞书通知班组长</text>
+  <text x="50" y="980" class="note">技术特点：边云协同、协议全覆盖、高精度采集、流式处理、冷热分层存储、多模式数据服务、全链路加密、ms级实时性</text>
+</svg>

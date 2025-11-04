@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <defs>
+    <style><![CDATA[
+      .title { font: 700 24px "Microsoft YaHei", sans-serif; fill: #111; }
+      .subtitle { font: 600 14px "Microsoft YaHei", sans-serif; fill: #333; }
+      .layer { fill: #f0f4f8; stroke: #cbd5e0; stroke-width: 1; }
+      .box { fill: #ffffff; stroke: #a0aec0; stroke-width: 1.5; rx: 8; }
+      .box-title { font: 700 13px "Microsoft YaHei", sans-serif; fill: #1a202c; }
+      .box-text { font: 11.5px "Microsoft YaHei", sans-serif; fill: #2d3748; }
+      .note { font: 11px "Microsoft YaHei", sans-serif; fill: #4a5568; }
+      .arrow { stroke: #718096; stroke-width: 2; marker-end: url(#arrow); }
+      .edge-box { fill: #e6fffa; stroke: #38b2ac; stroke-width: 2; }
+    ]]></style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#718096"/>
+    </marker>
+  </defs>
+
+  <text x="40" y="45" class="title">数采管理（工业物联网平台）- 功能架构图</text>
+
+  <!-- Edge layer -->
+  <rect x="20" y="80" width="1560" height="200" class="layer"/>
+  <text x="32" y="100" class="subtitle">边缘层（Edge）</text>
+
+  <rect x="50" y="120" width="480" height="140" class="edge-box"/>
+  <text x="70" y="142" class="box-title">工业智能网关（边缘节点）</text>
+  <text x="70" y="164" class="box-text">
+    <tspan x="70" dy="0">• 南向驱动：Modbus RTU/TCP, OPC UA, Profinet, EtherNet/IP,</tspan>
+    <tspan x="90" dy="16">CANopen, MTConnect, Focas, IEC 61850, DLT645...</tspan>
+    <tspan x="70" dy="16">• 自定义协议扩展（Lua/Python SDK）</tspan>
+    <tspan x="70" dy="16">• 边缘预处理：工程值转换、异常剔除、数据聚合压缩</tspan>
+    <tspan x="70" dy="16">• 北向通信：MQTT/TLS 加密上云</tspan>
+  </text>
+
+  <rect x="570" y="120" width="480" height="140" class="edge-box"/>
+  <text x="590" y="142" class="box-title">设备接入（多网络）</text>
+  <text x="590" y="164" class="box-text">
+    <tspan x="590" dy="0">• 有线以太网（标准TCP/IP）</tspan>
+    <tspan x="590" dy="16">• 无线网络（Wi-Fi 802.11ac/ax, 5G工业模组）</tspan>
+    <tspan x="590" dy="16">• LPWAN（LoRa, NB-IoT）用于低功耗分散设备</tspan>
+    <tspan x="590" dy="16">• 协议转换与物模型映射</tspan>
+  </text>
+
+  <rect x="1090" y="120" width="480" height="140" class="edge-box"/>
+  <text x="1110" y="142" class="box-title">设备注册与认证</text>
+  <text x="1110" y="164" class="box-text">
+    <tspan x="1110" dy="0">• 预注册（三元组：ProductKey/DeviceName/DeviceSecret）</tspan>
+    <tspan x="1110" dy="16">• 动态注册（设备首次上电自动获取凭证）</tspan>
+    <tspan x="1110" dy="16">• 一机一密：密钥认证 / X.509证书双向TLS认证</tspan>
+    <tspan x="1110" dy="16">• 生命周期管理：激活/禁用/注销/密钥轮换</tspan>
+  </text>
+
+  <!-- Platform layer -->
+  <rect x="20" y="300" width="1560" height="480" class="layer"/>
+  <text x="32" y="320" class="subtitle">云端平台层（Cloud Platform）</text>
+
+  <!-- Row 1 -->
+  <rect x="50" y="340" width="350" height="120" class="box"/>
+  <text x="70" y="360" class="box-title">设备连接管理服务</text>
+  <text x="70" y="380" class="box-text">
+    <tspan x="70" dy="0">• MQTT Broker 集群（高可用/负载均衡）</tspan>
+    <tspan x="70" dy="16">• 设备状态监控（在线/离线/心跳超时）</tspan>
+    <tspan x="70" dy="16">• 设备影子（Device Shadow）缓存最新状态</tspan>
+    <tspan x="70" dy="16">• 上下线事件日志与原因分析</tspan>
+  </text>
+
+  <rect x="430" y="340" width="350" height="120" class="box"/>
+  <text x="450" y="360" class="box-title">数据接入与流处理服务</text>
+  <text x="450" y="380" class="box-text">
+    <tspan x="450" dy="0">• 实时数据流接入（MQTT订阅/解析）</tspan>
+    <tspan x="450" dy="16">• 流处理引擎（Apache Flink）：窗口计算、多流关联</tspan>
+    <tspan x="450" dy="16">• 复杂事件处理（CEP）：模式识别与预警</tspan>
+    <tspan x="450" dy="16">• 数据标准化与标签（Tag）管理</tspan>
+  </text>
+
+  <rect x="810" y="340" width="350" height="120" class="box"/>
+  <text x="830" y="360" class="box-title">物模型管理服务</text>
+  <text x="830" y="380" class="box-text">
+    <tspan x="830" dy="0">• TSL（Thing Specification Language）定义</tspan>
+    <tspan x="830" dy="16">• 属性（Property）/ 服务（Service）/ 事件（Event）</tspan>
+    <tspan x="830" dy="16">• 可视化建模器、模型继承与复用</tspan>
+    <tspan x="830" dy="16">• 数字孪生实例化与版本管理</tspan>
+  </text>
+
+  <rect x="1190" y="340" width="370" height="120" class="box"/>
+  <text x="1210" y="360" class="box-title">规则引擎与告警服务</text>
+  <text x="1210" y="380" class="box-text">
+    <tspan x="1210" dy="0">• 可视化拖拽式规则配置（WHEN-IF-THEN）</tspan>
+    <tspan x="1210" dy="16">• 告警等级/抑制/恢复/时序告警</tspan>
+    <tspan x="1210" dy="16">• 多渠道通知：短信/邮件/飞书/钉钉/Webhook</tspan>
+    <tspan x="1210" dy="16">• 告警事件记录与追溯</tspan>
+  </text>
+
+  <!-- Row 2 -->
+  <rect x="50" y="480" width="350" height="120" class="box"/>
+  <text x="70" y="500" class="box-title">数据查询服务（API）</text>
+  <text x="70" y="520" class="box-text">
+    <tspan x="70" dy="0">• 实时数据快照查询（Redis缓存，300ms响应）</tspan>
+    <tspan x="70" dy="16">• 历史数据查询（时间范围、聚合、降采样）</tspan>
+    <tspan x="70" dy="16">• RESTful API：批量查询/分页/多维度过滤</tspan>
+  </text>
+
+  <rect x="430" y="480" width="350" height="120" class="box"/>
+  <text x="450" y="500" class="box-title">数据订阅与推送服务</text>
+  <text x="450" y="520" class="box-text">
+    <tspan x="450" dy="0">• 服务端订阅（Kafka Topic 发布）</tspan>
+    <tspan x="450" dy="16">• Webhook 事件推送（设备状态变更/阈值触发）</tspan>
+    <tspan x="450" dy="16">• 实时数据流推送至上层应用（MES/设备管理）</tspan>
+  </text>
+
+  <rect x="810" y="480" width="350" height="120" class="box"/>
+  <text x="830" y="500" class="box-title">设备远程控制服务（可选）</text>
+  <text x="830" y="520" class="box-text">
+    <tspan x="830" dy="0">• 指令下发（调用设备服务/修改属性）</tspan>
+    <tspan x="830" dy="16">• 远程配置/诊断/固件OTA升级</tspan>
+    <tspan x="830" dy="16">• 指令队列与执行状态跟踪</tspan>
+  </text>
+
+  <rect x="1190" y="480" width="370" height="120" class="box"/>
+  <text x="1210" y="500" class="box-title">系统管理服务</text>
+  <text x="1210" y="520" class="box-text">
+    <tspan x="1210" dy="0">• 用户/组织/角色与权限（RBAC）</tspan>
+    <tspan x="1210" dy="16">• 参数配置/数据字典/审计日志</tspan>
+    <tspan x="1210" dy="16">• 安全策略：密钥管理/访问控制/合规审计</tspan>
+  </text>
+
+  <!-- Row 3 (智能分析扩展) -->
+  <rect x="50" y="620" width="730" height="120" class="box"/>
+  <text x="70" y="640" class="box-title">智能分析服务（数据赋能上层应用）</text>
+  <text x="70" y="660" class="box-text">
+    <tspan x="70" dy="0">• 设备健康度评估模型（集成预测性维护算法）</tspan>
+    <tspan x="70" dy="16">• OEE 自动计算引擎（采集设备状态/运行时间/产量）</tspan>
+    <tspan x="70" dy="16">• 能耗分析模型（单位产品能耗/异常识别）</tspan>
+    <tspan x="70" dy="16">• 数据接口提供给设备管理系统、MES、能源管理系统</tspan>
+  </text>
+
+  <rect x="810" y="620" width="750" height="120" class="box"/>
+  <text x="830" y="640" class="box-title">可观测性与运维</text>
+  <text x="830" y="660" class="box-text">
+    <tspan x="830" dy="0">• 平台监控大屏：设备在线率/数据吞吐量/告警统计/网关状态</tspan>
+    <tspan x="830" dy="16">• 日志集中管理（ELK）：微服务运行日志/错误追踪</tspan>
+    <tspan x="830" dy="16">• 性能监控：API 响应时间/数据库性能/网络质量</tspan>
+  </text>
+
+  <!-- Data layer -->
+  <rect x="20" y="800" width="1560" height="340" class="layer"/>
+  <text x="32" y="820" class="subtitle">数据与存储层</text>
+
+  <rect x="50" y="840" width="370" height="140" class="box"/>
+  <text x="70" y="860" class="box-title">时序数据库（InfluxDB/TDengine）</text>
+  <text x="70" y="880" class="box-text">
+    <tspan x="70" dy="0">• 存储设备实时状态、工艺参数、能耗数据</tspan>
+    <tspan x="70" dy="16">• 高性能写入（数十万点/秒）</tspan>
+    <tspan x="70" dy="16">• 秒级聚合查询（亿级数据点）</tspan>
+    <tspan x="70" dy="16">• 数据压缩率 90%，冷热分层存储</tspan>
+  </text>
+
+  <rect x="450" y="840" width="370" height="140" class="box"/>
+  <text x="470" y="860" class="box-title">关系型数据库（PostgreSQL）</text>
+  <text x="470" y="880" class="box-text">
+    <tspan x="470" dy="0">• 设备元数据（物模型/设备信息）</tspan>
+    <tspan x="470" dy="16">• 事件数据（告警记录/上下线日志）</tspan>
+    <tspan x="470" dy="16">• 配置数据（规则/用户/角色/权限）</tspan>
+  </text>
+
+  <rect x="850" y="840" width="340" height="140" class="box"/>
+  <text x="870" y="860" class="box-title">缓存层（Redis）</text>
+  <text x="870" y="880" class="box-text">
+    <tspan x="870" dy="0">• 设备最新状态快照</tspan>
+    <tspan x="870" dy="16">• 设备影子（Device Shadow）</tspan>
+    <tspan x="870" dy="16">• 实时查询加速（300ms响应）</tspan>
+  </text>
+
+  <rect x="1220" y="840" width="340" height="140" class="box"/>
+  <text x="1240" y="860" class="box-title">对象存储/文件系统</text>
+  <text x="1240" y="880" class="box-text">
+    <tspan x="1240" dy="0">• 设备固件包/配置文件</tspan>
+    <tspan x="1240" dy="16">• 曲线文件（力-位移/测试数据）</tspan>
+    <tspan x="1240" dy="16">• 日志归档</tspan>
+  </text>
+
+  <rect x="50" y="1000" width="730" height="120" class="box"/>
+  <text x="70" y="1020" class="box-title">消息队列（Kafka）</text>
+  <text x="70" y="1040" class="box-text">
+    <tspan x="70" dy="0">• 实时数据流 Topic 分发（设备状态流/工艺数据流/告警事件流）</tspan>
+    <tspan x="70" dy="16">• 解耦数据生产与消费，支持上层应用订阅（MES/设备管理/能源管理）</tspan>
+    <tspan x="70" dy="16">• 高吞吐量（百万级消息/秒）、可持久化、可回溯</tspan>
+  </text>
+
+  <rect x="810" y="1000" width="750" height="120" class="box"/>
+  <text x="830" y="1020" class="box-title">数据湖/数据仓库（可选，用于深度分析）</text>
+  <text x="830" y="1040" class="box-text">
+    <tspan x="830" dy="0">• 历史数据归档与长期存储（冷数据）</tspan>
+    <tspan x="830" dy="16">• 用于机器学习模型训练、大数据分析、BI报表</tspan>
+    <tspan x="830" dy="16">• ETL 数据抽取与预处理</tspan>
+  </text>
+
+  <!-- Arrows from Edge to Platform -->
+  <path d="M 290 260 L 290 300 L 225 300 L 225 340" class="arrow" fill="none" />
+  <path d="M 810 260 L 810 300 L 985 300 L 985 340" class="arrow" fill="none" />
+  <path d="M 1330 260 L 1330 300 L 1375 300 L 1375 340" class="arrow" fill="none" />
+  
+  <!-- Arrows within Platform layer -->
+  <path d="M 225 460 L 225 480" class="arrow" fill="none" />
+  <path d="M 415 740 L 415 780 L 225 780 L 225 840" class="arrow" fill="none" />
+  <path d="M 605 740 L 605 780 L 635 780 L 635 840" class="arrow" fill="none" />
+  <path d="M 1160 740 L 1160 780 L 1020 780 L 1020 840" class="arrow" fill="none" />
+  <path d="M 1375 740 L 1375 780 L 1375 840" class="arrow" fill="none" />
+
+  <!-- Notes -->
+  <text x="40" y="1170" class="note">说明：本架构覆盖设备接入、认证、数据采集、实时处理、存储、查询、订阅、告警、智能分析、安全等全链路功能，完全对应《数采管理需求文档》。</text>
+  <text x="40" y="1190" class="note">支持 Modbus/OPC UA/Profinet 等20+协议，边缘预处理+云端Flink流计算，时序数据库高性能存储，API/Kafka多模式数据服务，满足精度≤±0.5%、采集频率≤100ms要求。</text>
+</svg>
