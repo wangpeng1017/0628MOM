@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" width="1400" height="900">
+  <defs>
+    <!-- 定义渐变色 -->
+    <linearGradient id="platformGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e40af;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="templateGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="visionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#7c3aed;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- 箭头标记 -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#3b82f6" />
+    </marker>
+    
+    <marker id="arrowheadGreen" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#10b981" />
+    </marker>
+    
+    <marker id="arrowheadPurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#a855f7" />
+    </marker>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1400" height="900" fill="#f8fafc"/>
+  
+  <!-- 标题 -->
+  <text x="700" y="40" font-family="Microsoft YaHei, Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#1e293b">
+    多基地复制能力设计逻辑图
+  </text>
+  <text x="700" y="70" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#64748b">
+    一个平台 · 一套母版 · 三步复制 · 全球协同
+  </text>
+  
+  <!-- ==================== 第三层：战略愿景（顶部） ==================== -->
+  
+  <!-- 全球制造协同体大框 -->
+  <rect x="200" y="100" width="1000" height="180" rx="12" fill="url(#visionGradient)" opacity="0.1" stroke="#a855f7" stroke-width="2"/>
+  
+  <!-- 指挥中心图标 -->
+  <circle cx="700" cy="150" r="35" fill="#a855f7" opacity="0.2"/>
+  <circle cx="700" cy="150" r="28" fill="#a855f7" opacity="0.3"/>
+  <circle cx="700" cy="150" r="20" fill="#a855f7"/>
+  <text x="700" y="158" font-family="Microsoft YaHei" font-size="20" font-weight="bold" text-anchor="middle" fill="white">🏢</text>
+  
+  <!-- 全球制造协同体标题 -->
+  <text x="700" y="220" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="bold" text-anchor="middle" fill="#7c3aed">
+    全球制造协同体
+  </text>
+  
+  <!-- 指挥中心文字 -->
+  <text x="700" y="248" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="600" text-anchor="middle" fill="#6b21a8">
+    集团全局运营指挥中心
+  </text>
+  
+  <!-- 能力标签 -->
+  <rect x="450" y="255" width="90" height="22" rx="11" fill="#f3e8ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="495" y="270" font-family="Microsoft YaHei" font-size="11" text-anchor="middle" fill="#7c3aed">全局可视</text>
+  
+  <rect x="555" y="255" width="90" height="22" rx="11" fill="#f3e8ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="600" y="270" font-family="Microsoft YaHei" font-size="11" text-anchor="middle" fill="#7c3aed">统一管控</text>
+  
+  <rect x="660" y="255" width="90" height="22" rx="11" fill="#f3e8ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="705" y="270" font-family="Microsoft YaHei" font-size="11" text-anchor="middle" fill="#7c3aed">协同决策</text>
+  
+  <rect x="765" y="255" width="90" height="22" rx="11" fill="#f3e8ff" stroke="#a855f7" stroke-width="1"/>
+  <text x="810" y="270" font-family="Microsoft YaHei" font-size="11" text-anchor="middle" fill="#7c3aed">数据驱动</text>
+  
+  <!-- ==================== 第二层：核心循环（中部） ==================== -->
+  
+  <!-- 上海标杆工厂 -->
+  <rect x="100" y="360" width="260" height="140" rx="8" fill="white" stroke="#3b82f6" stroke-width="2.5"/>
+  <rect x="100" y="360" width="260" height="45" rx="8" fill="#3b82f6"/>
+  <text x="230" y="388" font-family="Microsoft YaHei" font-size="18" font-weight="bold" text-anchor="middle" fill="white">
+    🏭 上海松江标杆工厂
+  </text>
+  
+  <text x="120" y="435" font-family="Microsoft YaHei" font-size="13" fill="#475569">• 深度实践数字化转型</text>
+  <text x="120" y="458" font-family="Microsoft YaHei" font-size="13" fill="#475569">• 验证业务流程与系统</text>
+  <text x="120" y="481" font-family="Microsoft YaHei" font-size="13" fill="#475569">• 积累最佳实践经验</text>
+  
+  <!-- 箭头1：实践提炼固化 -->
+  <line x1="380" y1="430" x2="510" y2="430" stroke="#3b82f6" stroke-width="4" marker-end="url(#arrowhead)"/>
+  <text x="445" y="418" font-family="Microsoft YaHei" font-size="14" font-weight="600" text-anchor="middle" fill="#3b82f6">
+    实践 · 提炼 · 固化
+  </text>
+  
+  <!-- 数字化工厂母版（核心） -->
+  <rect x="530" y="335" width="340" height="190" rx="10" fill="white" stroke="#10b981" stroke-width="3"/>
+  <rect x="530" y="335" width="340" height="50" rx="10" fill="url(#templateGradient)"/>
+  
+  <text x="700" y="357" font-family="Microsoft YaHei" font-size="18" font-weight="bold" text-anchor="middle" fill="white">
+    📦 数字化工厂母版
+  </text>
+  <text x="700" y="377" font-family="Microsoft YaHei" font-size="13" text-anchor="middle" fill="white">
+    (核心数字资产)
+  </text>
+  
+  <!-- 母版内容 -->
+  <g transform="translate(550, 405)">
+    <rect x="0" y="0" width="145" height="38" rx="5" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+    <text x="72.5" y="13" font-family="Microsoft YaHei" font-size="12" font-weight="600" text-anchor="middle" fill="#065f46">业务流程模板</text>
+    <text x="72.5" y="28" font-family="Microsoft YaHei" font-size="10" text-anchor="middle" fill="#047857">标准化工艺流程</text>
+    
+    <rect x="155" y="0" width="145" height="38" rx="5" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+    <text x="227.5" y="13" font-family="Microsoft YaHei" font-size="12" font-weight="600" text-anchor="middle" fill="#065f46">统一数据模型</text>
+    <text x="227.5" y="28" font-family="Microsoft YaHei" font-size="10" text-anchor="middle" fill="#047857">主数据规范</text>
+    
+    <rect x="0" y="48" width="145" height="38" rx="5" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+    <text x="72.5" y="61" font-family="Microsoft YaHei" font-size="12" font-weight="600" text-anchor="middle" fill="#065f46">应用配置模板</text>
+    <text x="72.5" y="76" font-family="Microsoft YaHei" font-size="10" text-anchor="middle" fill="#047857">系统参数配置</text>
+    
+    <rect x="155" y="48" width="145" height="38" rx="5" fill="#d1fae5" stroke="#10b981" stroke-width="1"/>
+    <text x="227.5" y="61" font-family="Microsoft YaHei" font-size="12" font-weight="600" text-anchor="middle" fill="#065f46">标准集成接口</text>
+    <text x="227.5" y="76" font-family="Microsoft YaHei" font-size="10" text-anchor="middle" fill="#047857">API规范标准</text>
+  </g>
+  
+  <!-- 箭头2：三步法复制 -->
+  <line x1="890" y1="430" x2="1020" y2="430" stroke="#10b981" stroke-width="4" marker-end="url(#arrowheadGreen)"/>
+  <text x="955" y="418" font-family="Microsoft YaHei" font-size="14" font-weight="600" text-anchor="middle" fill="#10b981">
+    "三步法"快速复制
+  </text>
+  
+  <!-- 三步法说明 -->
+  <g transform="translate(895, 450)">
+    <circle cx="5" cy="5" r="10" fill="#10b981"/>
+    <text x="5" y="10" font-family="Microsoft YaHei" font-size="11" font-weight="bold" text-anchor="middle" fill="white">1</text>
+    <text x="22" y="10" font-family="Microsoft YaHei" font-size="12" fill="#047857">环境克隆</text>
+    
+    <circle cx="5" cy="28" r="10" fill="#10b981"/>
+    <text x="5" y="33" font-family="Microsoft YaHei" font-size="11" font-weight="bold" text-anchor="middle" fill="white">2</text>
+    <text x="22" y="33" font-family="Microsoft YaHei" font-size="12" fill="#047857">母版实例化</text>
+    
+    <circle cx="5" cy="51" r="10" fill="#10b981"/>
+    <text x="5" y="56" font-family="Microsoft YaHei" font-size="11" font-weight="bold" text-anchor="middle" fill="white">3</text>
+    <text x="22" y="56" font-family="Microsoft YaHei" font-size="12" fill="#047857">本地化配置</text>
+  </g>
+  
+  <!-- 泰国及未来工厂 -->
+  <rect x="1040" y="360" width="260" height="140" rx="8" fill="white" stroke="#10b981" stroke-width="2.5"/>
+  <rect x="1040" y="360" width="260" height="45" rx="8" fill="#10b981"/>
+  <text x="1170" y="388" font-family="Microsoft YaHei" font-size="18" font-weight="bold" text-anchor="middle" fill="white">
+    🌏 泰国及全球工厂
+  </text>
+  
+  <text x="1060" y="435" font-family="Microsoft YaHei" font-size="13" fill="#475569">• 快速部署上线</text>
+  <text x="1060" y="458" font-family="Microsoft YaHei" font-size="13" fill="#475569">• 降低实施风险</text>
+  <text x="1060" y="481" font-family="Microsoft YaHei" font-size="13" fill="#475569">• 保持一致性标准</text>
+  
+  <!-- 向上汇聚箭头 - 从上海到协同体 -->
+  <line x1="230" y1="360" x2="230" y2="320" stroke="#a855f7" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrowheadPurple)"/>
+  <line x1="230" y1="320" x2="650" y2="290" stroke="#a855f7" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrowheadPurple)"/>
+  
+  <!-- 向上汇聚箭头 - 从泰国到协同体 -->
+  <line x1="1170" y1="360" x2="1170" y2="320" stroke="#a855f7" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrowheadPurple)"/>
+  <line x1="1170" y1="320" x2="750" y2="290" stroke="#a855f7" stroke-width="3" stroke-dasharray="5,5" marker-end="url(#arrowheadPurple)"/>
+  
+  <text x="350" y="305" font-family="Microsoft YaHei" font-size="12" fill="#7c3aed">数据上报</text>
+  <text x="1050" y="305" font-family="Microsoft YaHei" font-size="12" fill="#7c3aed">数据上报</text>
+  
+  <!-- ==================== 第一层：技术基础（底部） ==================== -->
+  
+  <!-- 平台基础大框 -->
+  <rect x="100" y="590" width="1200" height="220" rx="10" fill="white" stroke="#1e40af" stroke-width="3"/>
+  <rect x="100" y="590" width="1200" height="55" rx="10" fill="url(#platformGradient)"/>
+  
+  <text x="700" y="618" font-family="Microsoft YaHei" font-size="22" font-weight="bold" text-anchor="middle" fill="white">
+    🏗️ 企业级数字化制造核心平台
+  </text>
+  <text x="700" y="638" font-family="Microsoft YaHei" font-size="14" text-anchor="middle" fill="white">
+    统一技术底座 · 多组织/多租户 · 安全合规 · 全球部署
+  </text>
+  
+  <!-- 平台特性标签 -->
+  <g transform="translate(150, 670)">
+    <!-- 云原生架构 -->
+    <rect x="0" y="0" width="250" height="100" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="125" y="25" font-family="Microsoft YaHei" font-size="15" font-weight="bold" text-anchor="middle" fill="#1e40af">☁️ 云原生架构</text>
+    <text x="15" y="48" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 容器化部署</text>
+    <text x="15" y="68" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 微服务架构</text>
+    <text x="15" y="88" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 弹性伸缩</text>
+    
+    <!-- 多组织/多租户 -->
+    <rect x="270" y="0" width="250" height="100" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="395" y="25" font-family="Microsoft YaHei" font-size="15" font-weight="bold" text-anchor="middle" fill="#1e40af">🏢 多组织/多租户</text>
+    <text x="285" y="48" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 数据隔离</text>
+    <text x="285" y="68" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 权限分级</text>
+    <text x="285" y="88" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 独立配置</text>
+    
+    <!-- 安全合规 -->
+    <rect x="540" y="0" width="250" height="100" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="665" y="25" font-family="Microsoft YaHei" font-size="15" font-weight="bold" text-anchor="middle" fill="#1e40af">🔒 安全合规</text>
+    <text x="555" y="48" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 数据加密</text>
+    <text x="555" y="68" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 审计日志</text>
+    <text x="555" y="88" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 合规认证</text>
+    
+    <!-- 统一技术底座 -->
+    <rect x="810" y="0" width="250" height="100" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+    <text x="935" y="25" font-family="Microsoft YaHei" font-size="15" font-weight="bold" text-anchor="middle" fill="#1e40af">⚙️ 统一技术底座</text>
+    <text x="825" y="48" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 标准化API</text>
+    <text x="825" y="68" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 统一监控</text>
+    <text x="825" y="88" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 版本管理</text>
+  </g>
+  
+  <!-- 底部说明文字 -->
+  <text x="700" y="860" font-family="Microsoft YaHei" font-size="13" text-anchor="middle" fill="#64748b" font-style="italic">
+    核心价值：降低70%实施周期 · 提升90%业务一致性 · 实现全球协同制造
+  </text>
+  
+</svg>

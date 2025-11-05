@@ -73,7 +73,7 @@ function loadRecentProjects() {
     const projects = [
         {
             id: 'INS-2025-001',
-            supplier: '阳光电源股份有限公司',
+            supplier: '韩国现代汽车集团',
             type: '储能产品',
             date: '2025-11-15',
             status: 'scheduled',
@@ -82,7 +82,7 @@ function loadRecentProjects() {
         },
         {
             id: 'INS-2025-002',
-            supplier: '隆基绿能科技股份有限公司',
+            supplier: '国家电力投资集团',
             type: '光伏组件',
             date: '2025-11-20',
             status: 'in-progress',
@@ -91,7 +91,7 @@ function loadRecentProjects() {
         },
         {
             id: 'INS-2025-003',
-            supplier: '宁德时代新能源科技股份有限公司',
+            supplier: '中国三峡集团',
             type: '储能产品',
             date: '2025-11-25',
             status: 'scheduled',
@@ -194,7 +194,7 @@ function loadProjectsTable() {
     const projects = [
         {
             id: 'INS-2025-001',
-            supplier: '阳光电源股份有限公司',
+            supplier: '韩国现代汽车集团',
             type: '储能产品',
             date: '2025-11-15 ~ 2025-11-17',
             status: 'scheduled',
@@ -202,7 +202,7 @@ function loadProjectsTable() {
         },
         {
             id: 'INS-2025-002',
-            supplier: '隆基绿能科技股份有限公司',
+            supplier: '国家电力投资集团',
             type: '光伏组件',
             date: '2025-11-10 ~ 2025-11-12',
             status: 'in-progress',
@@ -210,7 +210,7 @@ function loadProjectsTable() {
         },
         {
             id: 'INS-2024-098',
-            supplier: '天合光能股份有限公司',
+            supplier: '中国华电集团',
             type: '光伏组件',
             date: '2024-10-20 ~ 2024-10-22',
             status: 'completed',
@@ -218,7 +218,7 @@ function loadProjectsTable() {
         },
         {
             id: 'INS-2024-097',
-            supplier: '比亚迪股份有限公司',
+            supplier: '上海电气集团',
             type: '储能产品',
             date: '2024-10-15 ~ 2024-10-17',
             status: 'completed',
@@ -226,7 +226,7 @@ function loadProjectsTable() {
         },
         {
             id: 'INS-2025-003',
-            supplier: '宁德时代新能源科技股份有限公司',
+            supplier: '中国三峡集团',
             type: '综合验厂',
             date: '2025-11-25 ~ 2025-11-27',
             status: 'draft',
@@ -348,7 +348,7 @@ function viewProjectDetail(projectId) {
     const projectData = {
         'INS-2025-001': {
             id: 'INS-2025-001',
-            supplier: '阳光电源股份有限公司',
+            supplier: '韩国现代汽车集团',
             type: '储能产品验厂',
             status: 'scheduled',
             startDate: '2025-11-15',
@@ -362,7 +362,7 @@ function viewProjectDetail(projectId) {
         },
         'INS-2025-002': {
             id: 'INS-2025-002',
-            supplier: '隆基绿能科技股份有限公司',
+            supplier: '国家电力投资集团',
             type: '光伏组件验厂',
             status: 'in-progress',
             startDate: '2025-11-10',
@@ -536,7 +536,7 @@ function loadPlanningTable() {
     const plans = [
         {
             id: 'PLAN-2025-001',
-            supplier: '阳光电源股份有限公司',
+            supplier: '韩国现代汽车集团',
             type: '储能产品',
             scope: '信息化系统, 数据安全',
             date: '2025-11-15 ~ 2025-11-17',
@@ -544,7 +544,7 @@ function loadPlanningTable() {
         },
         {
             id: 'PLAN-2025-002',
-            supplier: '隆基绿能科技股份有限公司',
+            supplier: '国家电力投资集团',
             type: '光伏组件',
             scope: '信息化系统, 数字化流程',
             date: '2025-11-20 ~ 2025-11-22',
@@ -552,7 +552,7 @@ function loadPlanningTable() {
         },
         {
             id: 'PLAN-2025-003',
-            supplier: '宁德时代新能源科技股份有限公司',
+            supplier: '中国三峡集团',
             type: '储能产品',
             scope: '数据安全, 数字化流程',
             date: '2025-11-25 ~ 2025-11-27',
@@ -560,7 +560,7 @@ function loadPlanningTable() {
         },
         {
             id: 'PLAN-2025-004',
-            supplier: '天合光能股份有限公司',
+            supplier: '中国华电集团',
             type: '光伏组件',
             scope: '信息化系统, 数据安全, 数字化流程',
             date: '2025-12-01 ~ 2025-12-03',
@@ -568,7 +568,7 @@ function loadPlanningTable() {
         },
         {
             id: 'PLAN-2025-005',
-            supplier: '比亚迪股份有限公司',
+            supplier: '上海电气集团',
             type: '综合验厂',
             scope: '信息化系统, 数据安全, 数字化流程',
             date: '2025-12-05 ~ 2025-12-07',
@@ -576,7 +576,7 @@ function loadPlanningTable() {
         },
         {
             id: 'PLAN-2024-098',
-            supplier: '晶科能源股份有限公司',
+            supplier: '中国大唐集团',
             type: '光伏组件',
             scope: '信息化系统, 数字化流程',
             date: '2024-10-20 ~ 2024-10-22',
@@ -630,7 +630,7 @@ function viewPlanDetail(planId) {
     const planData = {
         'PLAN-2025-001': {
             id: 'PLAN-2025-001',
-            supplier: '阳光电源股份有限公司',
+            supplier: '韩国现代汽车集团',
             type: '储能产品',
             scope: ['信息化系统', '数据安全'],
             startDate: '2025-11-15',
@@ -643,7 +643,7 @@ function viewPlanDetail(planId) {
         },
         'PLAN-2025-002': {
             id: 'PLAN-2025-002',
-            supplier: '隆基绿能科技股份有限公司',
+            supplier: '国家电力投资集团',
             type: '光伏组件',
             scope: ['信息化系统', '数字化流程'],
             startDate: '2025-11-20',
@@ -729,7 +729,7 @@ function editPlan(planId) {
     const planData = {
         'PLAN-2025-001': {
             id: 'PLAN-2025-001',
-            supplier: '阳光电源股份有限公司',
+            supplier: '韩国现代汽车集团',
             type: 'energy-storage',
             scope: ['it-system', 'data-security'],
             startDate: '2025-11-15',
@@ -739,7 +739,7 @@ function editPlan(planId) {
         },
         'PLAN-2025-002': {
             id: 'PLAN-2025-002',
-            supplier: '隆基绿能科技股份有限公司',
+            supplier: '国家电力投资集团',
             type: 'photovoltaic',
             scope: ['it-system', 'digital-process'],
             startDate: '2025-11-20',
@@ -749,7 +749,7 @@ function editPlan(planId) {
         },
         'PLAN-2025-003': {
             id: 'PLAN-2025-003',
-            supplier: '宁德时代新能源科技股份有限公司',
+            supplier: '中国三峡集团',
             type: 'energy-storage',
             scope: ['data-security', 'digital-process'],
             startDate: '2025-11-25',
@@ -1278,7 +1278,7 @@ function viewNCRDetail(ncrId) {
     const ncrData = {
         id: ncrId,
         project: 'INS-2025-001',
-        supplier: '阳光电源股份有限公司',
+        supplier: '韩国现代汽车集团',
         description: '数据备份机制不完善，缺少异地备份和定期恢复演练',
         severity: '中',
         department: '信息中心',
@@ -1431,7 +1431,7 @@ function loadReportsTable() {
         {
             id: 'RPT-2025-001',
             project: 'INS-2025-001',
-            supplier: '阳光电源股份有限公司',
+            supplier: '韩国现代汽车集团',
             date: '2025-11-10',
             score: 85,
             status: 'completed'
@@ -1439,7 +1439,7 @@ function loadReportsTable() {
         {
             id: 'RPT-2024-098',
             project: 'INS-2024-098',
-            supplier: '天合光能股份有限公司',
+            supplier: '中国华电集团',
             date: '2024-10-25',
             score: 92,
             status: 'completed'
@@ -1501,7 +1501,7 @@ function viewReport(reportId) {
     const reportData = {
         id: reportId,
         project: 'INS-2025-001',
-        supplier: '阳光电源股份有限公司',
+        supplier: '韩国现代汽车集团',
         date: '2025-11-10',
         auditor: '张明',
         score: 85,
@@ -1667,11 +1667,11 @@ function loadSupplierRanking() {
     if (!container) return;
     
     const suppliers = [
-        { name: '天合光能股份有限公司', score: 92, rank: 1 },
-        { name: '隆基绿能科技股份有限公司', score: 88, rank: 2 },
-        { name: '阳光电源股份有限公司', score: 85, rank: 3 },
-        { name: '宁德时代新能源科技股份有限公司', score: 82, rank: 4 },
-        { name: '比亚迪股份有限公司', score: 78, rank: 5 }
+        { name: '韩国现代汽车集团', score: 92, rank: 1 },
+        { name: '国家电力投资集团', score: 88, rank: 2 },
+        { name: '中国三峡集团', score: 85, rank: 3 },
+        { name: '上海电气集团', score: 82, rank: 4 },
+        { name: '中国华能集团', score: 78, rank: 5 }
     ];
     
     container.innerHTML = suppliers.map(supplier => `
@@ -1708,7 +1708,7 @@ function initRadarComparison() {
             text: '客户能力对比分析'
         },
         legend: {
-            data: ['天合光能', '隆基绿能', '阳光电源']
+            data: ['韩国现代', '国家电投', '三峡集团']
         },
         radar: {
             indicator: [
@@ -1726,15 +1726,15 @@ function initRadarComparison() {
             data: [
                 {
                     value: [95, 90, 88, 92, 94, 85],
-                    name: '天合光能'
+                    name: '韩国现代'
                 },
                 {
                     value: [88, 85, 90, 87, 89, 82],
-                    name: '隆基绿能'
+                    name: '国家电投'
                 },
                 {
                     value: [85, 82, 85, 88, 86, 78],
-                    name: '阳光电源'
+                    name: '三峡集团'
                 }
             ]
         }]

@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200">
+  <defs>
+    <!-- 渐变色定义 -->
+    <linearGradient id="qmsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="systemGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#60a5fa;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- 箭头标记 - 数据流入QMS -->
+    <marker id="arrowIn" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#10b981" />
+    </marker>
+    
+    <!-- 箭头标记 - 数据流出QMS -->
+    <marker id="arrowOut" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#f59e0b" />
+    </marker>
+    
+    <!-- 双向箭头标记 -->
+    <marker id="arrowBoth" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#8b5cf6" />
+    </marker>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1600" height="1200" fill="#f8fafc"/>
+  
+  <!-- 标题 -->
+  <text x="800" y="45" font-family="Microsoft YaHei, Arial, sans-serif" font-size="32" font-weight="bold" text-anchor="middle" fill="#1e293b">
+    质量管理系统（QMS）集成架构图
+  </text>
+  <text x="800" y="75" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" text-anchor="middle" fill="#64748b">
+    数据驱动的全流程质量管控 · 实时监控 · 闭环改进
+  </text>
+  
+  <!-- 图例 -->
+  <g transform="translate(1300, 100)">
+    <rect x="0" y="0" width="250" height="110" rx="8" fill="white" stroke="#cbd5e1" stroke-width="1.5"/>
+    <text x="125" y="25" font-family="Microsoft YaHei" font-size="14" font-weight="bold" text-anchor="middle" fill="#334155">数据流向说明</text>
+    
+    <line x1="20" y1="45" x2="70" y2="45" stroke="#10b981" stroke-width="3" marker-end="url(#arrowIn)"/>
+    <text x="85" y="50" font-family="Microsoft YaHei" font-size="12" fill="#334155">数据流入QMS</text>
+    
+    <line x1="20" y1="70" x2="70" y2="70" stroke="#f59e0b" stroke-width="3" marker-end="url(#arrowOut)"/>
+    <text x="85" y="75" font-family="Microsoft YaHei" font-size="12" fill="#334155">QMS反馈输出</text>
+    
+    <line x1="20" y1="95" x2="70" y2="95" stroke="#8b5cf6" stroke-width="3" marker-end="url(#arrowBoth)"/>
+    <text x="85" y="100" font-family="Microsoft YaHei" font-size="12" fill="#334155">双向数据交互</text>
+  </g>
+  
+  <!-- ==================== 中心：QMS质量管理系统 ==================== -->
+  <g id="qms-center">
+    <!-- 外圈光晕 -->
+    <circle cx="800" cy="600" r="180" fill="#1e3a8a" opacity="0.05"/>
+    <circle cx="800" cy="600" r="160" fill="#1e3a8a" opacity="0.08"/>
+    <circle cx="800" cy="600" r="140" fill="#1e3a8a" opacity="0.12"/>
+    
+    <!-- QMS核心圆形 -->
+    <circle cx="800" cy="600" r="120" fill="url(#qmsGradient)" stroke="#1e3a8a" stroke-width="3"/>
+    
+    <!-- QMS图标和文字 -->
+    <text x="800" y="560" font-family="Microsoft YaHei" font-size="48" text-anchor="middle" fill="white">🎯</text>
+    <text x="800" y="605" font-family="Microsoft YaHei" font-size="24" font-weight="bold" text-anchor="middle" fill="white">QMS</text>
+    <text x="800" y="630" font-family="Microsoft YaHei" font-size="15" text-anchor="middle" fill="white">质量管理系统</text>
+    <text x="800" y="650" font-family="Microsoft YaHei" font-size="12" text-anchor="middle" fill="#bfdbfe">Quality Management System</text>
+    
+    <!-- QMS核心功能标签 -->
+    <g transform="translate(660, 665)">
+      <rect x="0" y="0" width="68" height="20" rx="10" fill="#bfdbfe"/>
+      <text x="34" y="14" font-family="Microsoft YaHei" font-size="10" text-anchor="middle" fill="#1e3a8a">质量规划</text>
+      
+      <rect x="73" y="0" width="68" height="20" rx="10" fill="#bfdbfe"/>
+      <text x="107" y="14" font-family="Microsoft YaHei" font-size="10" text-anchor="middle" fill="#1e3a8a">质量控制</text>
+      
+      <rect x="146" y="0" width="68" height="20" rx="10" fill="#bfdbfe"/>
+      <text x="180" y="14" font-family="Microsoft YaHei" font-size="10" text-anchor="middle" fill="#1e3a8a">质量保证</text>
+      
+      <rect x="219" y="0" width="68" height="20" rx="10" fill="#bfdbfe"/>
+      <text x="253" y="14" font-family="Microsoft YaHei" font-size="10" text-anchor="middle" fill="#1e3a8a">质量改进</text>
+    </g>
+  </g>
+  
+  <!-- ==================== 周边系统（8个） ==================== -->
+  
+  <!-- 1. 生产计划与执行系统（上方） -->
+  <g id="production-system">
+    <rect x="640" y="180" width="320" height="130" rx="10" fill="white" stroke="#3b82f6" stroke-width="2.5"/>
+    <rect x="640" y="180" width="320" height="45" rx="10" fill="url(#systemGradient)"/>
+    <text x="800" y="210" font-family="Microsoft YaHei" font-size="18" font-weight="bold" text-anchor="middle" fill="white">🏭 生产计划与执行系统</text>
+    
+    <text x="660" y="250" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 生产订单信息</text>
+    <text x="660" y="270" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 生产进度数据</text>
+    <text x="660" y="290" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 工序缺陷记录</text>
+    
+    <!-- 数据流入QMS -->
+    <path d="M 800 310 Q 800 400 800 480" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowIn)"/>
+    <text x="820" y="390" font-family="Microsoft YaHei" font-size="11" fill="#10b981">生产数据</text>
+    
+    <!-- QMS反馈 -->
+    <path d="M 780 480 Q 770 400 770 310" stroke="#f59e0b" stroke-width="3" fill="none" marker-end="url(#arrowOut)"/>
+    <text x="720" y="390" font-family="Microsoft YaHei" font-size="11" fill="#f59e0b">质量异常/计划调整</text>
+  </g>
+  
+  <!-- 2. 设备管理系统（右上） -->
+  <g id="equipment-system">
+    <rect x="1100" y="260" width="280" height="130" rx="10" fill="white" stroke="#3b82f6" stroke-width="2.5"/>
+    <rect x="1100" y="260" width="280" height="45" rx="10" fill="url(#systemGradient)"/>
+    <text x="1240" y="290" font-family="Microsoft YaHei" font-size="18" font-weight="bold" text-anchor="middle" fill="white">⚙️ 设备管理系统</text>
+    
+    <text x="1120" y="330" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 设备运行状态</text>
+    <text x="1120" y="350" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 维护保养记录</text>
+    <text x="1120" y="370" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 参数监控数据</text>
+    
+    <!-- 数据流入QMS -->
+    <path d="M 1100 350 Q 950 450 920 560" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowIn)"/>
+    <text x="1000" y="440" font-family="Microsoft YaHei" font-size="11" fill="#10b981">设备状态</text>
+    
+    <!-- QMS反馈 -->
+    <path d="M 910 550 Q 940 440 1090 340" stroke="#f59e0b" stroke-width="3" fill="none" marker-end="url(#arrowOut)"/>
+    <text x="950" y="470" font-family="Microsoft YaHei" font-size="11" fill="#f59e0b">预防性维护建议</text>
+  </g>
+  
+  <!-- 3. IOT物联网系统（右侧） -->
+  <g id="iot-system">
+    <rect x="1150" y="520" width="280" height="130" rx="10" fill="white" stroke="#3b82f6" stroke-width="2.5"/>
+    <rect x="1150" y="520" width="280" height="45" rx="10" fill="url(#systemGradient)"/>
+    <text x="1290" y="550" font-family="Microsoft YaHei" font-size="18" font-weight="bold" text-anchor="middle" fill="white">📡 IOT物联网系统</text>
+    
+    <text x="1170" y="590" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 传感器实时数据</text>
+    <text x="1170" y="610" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 环境参数监控</text>
+    <text x="1170" y="630" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 质量指标采集</text>
+    
+    <!-- 数据流入QMS -->
+    <path d="M 1150 585 L 920 585" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowIn)"/>
+    <text x="1020" y="575" font-family="Microsoft YaHei" font-size="11" fill="#10b981">实时监测数据</text>
+    
+    <!-- QMS反馈 -->
+    <path d="M 920 600 L 1150 600" stroke="#f59e0b" stroke-width="3" fill="none" marker-end="url(#arrowOut)"/>
+    <text x="1020" y="618" font-family="Microsoft YaHei" font-size="11" fill="#f59e0b">质量预警/阈值设定</text>
+  </g>
+  
+  <!-- 4. 仓储一体化管理系统（右下） -->
+  <g id="warehouse-system">
+    <rect x="1100" y="780" width="280" height="130" rx="10" fill="white" stroke="#3b82f6" stroke-width="2.5"/>
+    <rect x="1100" y="780" width="280" height="45" rx="10" fill="url(#systemGradient)"/>
+    <text x="1240" y="810" font-family="Microsoft YaHei" font-size="18" font-weight="bold" text-anchor="middle" fill="white">📦 仓储一体化管理</text>
+    
+    <text x="1120" y="850" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 原材料入库信息</text>
+    <text x="1120" y="870" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 在库质量状态</text>
+    <text x="1120" y="890" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 成品出库记录</text>
+    
+    <!-- 数据流入QMS -->
+    <path d="M 1100 850 Q 950 720 920 640" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowIn)"/>
+    <text x="1000" y="760" font-family="Microsoft YaHei" font-size="11" fill="#10b981">库存质量信息</text>
+    
+    <!-- QMS反馈 -->
+    <path d="M 910 650 Q 940 730 1090 860" stroke="#f59e0b" stroke-width="3" fill="none" marker-end="url(#arrowOut)"/>
+    <text x="950" y="730" font-family="Microsoft YaHei" font-size="11" fill="#f59e0b">检验指令/质检结果</text>
+  </g>
+  
+  <!-- 5. 车间及仓储调度总控（下方） -->
+  <g id="scheduling-system">
+    <rect x="640" y="900" width="320" height="130" rx="10" fill="white" stroke="#3b82f6" stroke-width="2.5"/>
+    <rect x="640" y="900" width="320" height="45" rx="10" fill="url(#systemGradient)"/>
+    <text x="800" y="930" font-family="Microsoft YaHei" font-size="18" font-weight="bold" text-anchor="middle" fill="white">🚦 车间仓储调度总控</text>
+    
+    <text x="660" y="970" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 调度任务信息</text>
+    <text x="660" y="990" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 物流路径规划</text>
+    <text x="660" y="1010" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 资源协调状态</text>
+    
+    <!-- 双向数据交互 -->
+    <path d="M 800 900 L 800 720" stroke="#8b5cf6" stroke-width="3" fill="none" marker-end="url(#arrowBoth)"/>
+    <text x="820" y="810" font-family="Microsoft YaHei" font-size="11" fill="#8b5cf6">质量约束/响应质量事件</text>
+  </g>
+  
+  <!-- 6. 订单管理系统（左下） -->
+  <g id="order-system">
+    <rect x="220" y="780" width="280" height="130" rx="10" fill="white" stroke="#3b82f6" stroke-width="2.5"/>
+    <rect x="220" y="780" width="280" height="45" rx="10" fill="url(#systemGradient)"/>
+    <text x="360" y="810" font-family="Microsoft YaHei" font-size="18" font-weight="bold" text-anchor="middle" fill="white">📋 订单管理系统</text>
+    
+    <text x="240" y="850" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 客户质量要求</text>
+    <text x="240" y="870" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 订单规格标准</text>
+    <text x="240" y="890" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 客户质量投诉</text>
+    
+    <!-- 数据流入QMS -->
+    <path d="M 500 850 Q 650 720 680 640" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowIn)"/>
+    <text x="600" y="760" font-family="Microsoft YaHei" font-size="11" fill="#10b981">订单质量标准</text>
+    
+    <!-- QMS反馈 -->
+    <path d="M 690 650 Q 660 730 510 860" stroke="#f59e0b" stroke-width="3" fill="none" marker-end="url(#arrowOut)"/>
+    <text x="560" y="730" font-family="Microsoft YaHei" font-size="11" fill="#f59e0b">质量符合性报告</text>
+  </g>
+  
+  <!-- 7. 能源管理系统（左侧） -->
+  <g id="energy-system">
+    <rect x="170" y="520" width="280" height="130" rx="10" fill="white" stroke="#3b82f6" stroke-width="2.5"/>
+    <rect x="170" y="520" width="280" height="45" rx="10" fill="url(#systemGradient)"/>
+    <text x="310" y="550" font-family="Microsoft YaHei" font-size="18" font-weight="bold" text-anchor="middle" fill="white">⚡ 能源管理系统</text>
+    
+    <text x="190" y="590" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 温湿度监控</text>
+    <text x="190" y="610" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 能耗参数数据</text>
+    <text x="190" y="630" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 环境控制状态</text>
+    
+    <!-- 数据流入QMS -->
+    <path d="M 450 585 L 680 585" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowIn)"/>
+    <text x="540" y="575" font-family="Microsoft YaHei" font-size="11" fill="#10b981">环境参数</text>
+    
+    <!-- QMS反馈 -->
+    <path d="M 680 600 L 450 600" stroke="#f59e0b" stroke-width="3" fill="none" marker-end="url(#arrowOut)"/>
+    <text x="540" y="618" font-family="Microsoft YaHei" font-size="11" fill="#f59e0b">环境质量要求</text>
+  </g>
+  
+  <!-- 8. 第三方检测系统（左上） -->
+  <g id="inspection-system">
+    <rect x="220" y="260" width="280" height="130" rx="10" fill="white" stroke="#3b82f6" stroke-width="2.5"/>
+    <rect x="220" y="260" width="280" height="45" rx="10" fill="url(#systemGradient)"/>
+    <text x="360" y="290" font-family="Microsoft YaHei" font-size="18" font-weight="bold" text-anchor="middle" fill="white">🔬 第三方检测系统</text>
+    
+    <text x="240" y="330" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 外部检测报告</text>
+    <text x="240" y="350" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 认证证书数据</text>
+    <text x="240" y="370" font-family="Microsoft YaHei" font-size="12" fill="#475569">• 供应商质量档案</text>
+    
+    <!-- 数据流入QMS -->
+    <path d="M 500 350 Q 650 450 680 560" stroke="#10b981" stroke-width="3" fill="none" marker-end="url(#arrowIn)"/>
+    <text x="600" y="440" font-family="Microsoft YaHei" font-size="11" fill="#10b981">检测数据</text>
+    
+    <!-- QMS反馈 -->
+    <path d="M 690 550 Q 660 440 510 340" stroke="#f59e0b" stroke-width="3" fill="none" marker-end="url(#arrowOut)"/>
+    <text x="560" y="470" font-family="Microsoft YaHei" font-size="11" fill="#f59e0b">送检任务/标准</text>
+  </g>
+  
+  <!-- ==================== 底部说明区域 ==================== -->
+  <g transform="translate(100, 1090)">
+    <rect x="0" y="0" width="1400" height="80" rx="8" fill="white" stroke="#cbd5e1" stroke-width="2"/>
+    
+    <text x="700" y="25" font-family="Microsoft YaHei" font-size="16" font-weight="bold" text-anchor="middle" fill="#1e293b">
+      QMS核心价值
+    </text>
+    
+    <g transform="translate(50, 35)">
+      <circle cx="8" cy="8" r="6" fill="#10b981"/>
+      <text x="22" y="13" font-family="Microsoft YaHei" font-size="13" fill="#475569">实时数据采集：从8大系统获取全流程质量数据</text>
+      
+      <circle cx="380" cy="8" r="6" fill="#f59e0b"/>
+      <text x="394" y="13" font-family="Microsoft YaHei" font-size="13" fill="#475569">智能反馈控制：质量异常自动触发预警和流程调整</text>
+      
+      <circle cx="780" cy="8" r="6" fill="#8b5cf6"/>
+      <text x="794" y="13" font-family="Microsoft YaHei" font-size="13" fill="#475569">闭环质量改进：持续优化产品质量和过程能力</text>
+      
+      <circle cx="1150" cy="8" r="6" fill="#1e3a8a"/>
+      <text x="1164" y="13" font-family="Microsoft YaHei" font-size="13" fill="#475569">全局质量可视：集团级质量大数据分析</text>
+    </g>
+  </g>
+  
+  <!-- 版本信息 -->
+  <text x="800" y="1190" font-family="Microsoft YaHei" font-size="11" text-anchor="middle" fill="#94a3b8" font-style="italic">
+    数字化制造核心平台 · 质量管理系统集成架构 v2.0
+  </text>
+  
+</svg>
