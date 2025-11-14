@@ -209,7 +209,22 @@
                         <button onclick="applyFilters()" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors">
                             <i class="fas fa-search mr-2"></i>查询
                         </button>
-                        <button onclick="resetFilters()" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-col            <!-- 设备列表 / 拓扑视图 -->
+                        <button onclick="resetFilters()" class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                            <i class="fas fa-redo mr-2"></i>重置
+                        </button>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="asset-view-list-btn" onclick="switchAssetView('list')" class="px-3 py-1 text-xs bg-primary text-white rounded border border-primary flex items-center">
+                            <i class="fas fa-list-ul mr-1"></i>台账列表
+                        </button>
+                        <button id="asset-view-topology-btn" onclick="switchAssetView('topology')" class="px-3 py-1 text-xs bg-white text-gray-700 rounded border border-gray-300 hover:bg-gray-50 flex items-center">
+                            <i class="fas fa-project-diagram mr-1"></i>拓扑视图
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设备列表 / 拓扑视图 -->
             <div class="flex-1 overflow-auto p-6">
                 <div id="asset-list-view" class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="p-4 border-b flex items-center justify-between">
