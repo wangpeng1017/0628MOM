@@ -5,6 +5,7 @@
 let currentTreeView = 'location'; // location 或 category
 let selectedEquipment = null;
 let equipmentData = [];
+let currentAssetView = 'list'; // list 或 topology
 
 // ==================== 初始化 ====================
 document.addEventListener('DOMContentLoaded', function() {
@@ -33,6 +34,37 @@ function switchTreeView(viewType) {
         categoryBtn.classList.remove('bg-gray-200', 'text-gray-700');
         locationBtn.classList.remove('bg-primary', 'text-white');
         locationBtn.classList.add('bg-gray-200', 'text-gray-700');
+    }
+}
+
+// ==================== 视图切换：台账列表 / 拓扑视图 ====================
+function switchAssetView(viewType) {
+    currentAssetView = viewType;
+    const listView = document.getElementById('asset-list-view');
+    const topoView = document.getElementById('asset-topology-view');
+    const listBtn = document.getElementById('asset-view-list-btn');
+    const topoBtn = document.getElementById('asset-view-topology-btn');
+
+    if (!listView || !topoView || !listBtn || !topoBtn) return;
+
+    if (viewType === 'topology') {
+        listView.style.display = 'none';
+        topoView.style.display = 'block';
+
+        topoBtn.classList.add('bg-primary', 'text-white', 'border-primary');
+        topoBtn.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+
+        listBtn.classList.remove('bg-primary', 'text-white', 'border-primary');
+        listBtn.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-300');
+    } else {
+        listView.style.display = 'block';
+        topoView.style.display = 'none';
+
+        listBtn.classList.add('bg-primary', 'text-white', 'border-primary');
+        listBtn.classList.remove('bg-white', 'text-gray-700', 'border-gray-300');
+
+        topoBtn.classList.remove('bg-primary', 'text-white', 'border-primary');
+        topoBtn.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-300');
     }
 }
 
@@ -518,3 +550,4 @@ window.deleteAttachment = deleteAttachment;
 window.applyFilters = applyFilters;
 window.resetFilters = resetFilters;
 window.exportData = exportData;
+window.switchAssetView = switchAssetView;
