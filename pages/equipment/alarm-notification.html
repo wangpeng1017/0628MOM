@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>告警与通知管理 - 设备管理 - 数字工厂一体化平台</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#f97316',
+                        'primary-light': '#fdba74',
+                        'secondary': '#6b7280',
+                        'success': '#16a34a',
+                        'warning': '#f59e0b',
+                        'danger': '#dc2626'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .severity-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .severity-attention {
+            background-color: #eff6ff;
+            color: #1d4ed8;
+        }
+        .severity-warning {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .severity-serious {
+            background-color: #ffedd5;
+            color: #9a3412;
+        }
+        .severity-danger {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- 主内容区 -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- 顶部标题与视图切换 -->
+            <div class="bg-white border-b p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-xs font-semibold">告警与通知管理</span>
+                            <span class="text-xs text-gray-500">设备管理需求文档 4.11 节 多级预警与联动</span>
+                        </div>
+                        <div class="flex items-center gap-4 mb-2">
+                            <h1 class="text-2xl font-bold text-gray-800">告警中心与通知策略</h1>
+                            <div class="flex gap-1 border rounded-lg p-1">
+                                <button class="px-3 py-1 text-xs bg-primary text-white rounded">告警中心</button>
+                                <button class="px-3 py-1 text-xs bg-white text-gray-700 rounded">通知策略</button>
+                                <button class="px-3 py-1 text-xs bg-white text-gray-700 rounded">规则配置</button>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600">统一管理注意 / 警告 / 严重 / 危险四级预警，并通过飞书、短信、邮件、APP 精准通知相关角色，实现自动工单联动。</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center text-sm">
+                            <i class="fas fa-bell mr-2"></i>模拟触发一条严重告警
+                        </button>
+                        <button class="px-4 py-2 bg-white text-gray-700 border rounded-lg hover:bg-gray-50 transition-colors flex items-center text-sm">
+                            <i class="fas fa-sliders-h mr-2"></i>打开规则配置示意
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 关键指标卡片 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div class="bg-rose-50 border border-rose-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-rose-600 font-medium">当前未关闭告警</p>
+                                <p class="text-2xl font-bold text-rose-700">18</p>
+                                <p class="text-xs text-rose-500 mt-1">含注意/警告/严重/危险全部级别</p>
+                            </div>
+                            <div class="w-12 h-12 bg-rose-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-bell text-xl text-rose-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-yellow-700 font-medium">未确认告警</p>
+                                <p class="text-2xl font-bold text-yellow-700">6</p>
+                                <p class="text-xs text-yellow-600 mt-1">需要值班工程师确认接收</p>
+                            </div>
+                            <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-user-clock text-xl text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-red-600 font-medium">严重/危险告警</p>
+                                <p class="text-2xl font-bold text-red-700">3</p>
+                                <p class="text-xs text-red-500 mt-1">均已自动生成维修工单</p>
+                            </div>
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-triangle-exclamation text-xl text-red-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-green-600 font-medium">通知送达率(24h)</p>
+                                <p class="text-2xl font-bold text-green-700">99.2%</p>
+                                <p class="text-xs text-green-500 mt-1">飞书/短信/邮件/APP 综合统计</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-paper-plane text-xl text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 筛选区 -->
+            <div class="bg-white border-b px-6 py-4">
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex-1 min-w-[200px]">
+                        <input type="text" placeholder="搜索设备、告警内容..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                    </div>
+                    <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                        <option>全部级别</option>
+                        <option>注意</option>
+                        <option>警告</option>
+                        <option>严重</option>
+                        <option>危险</option>
+                    </select>
+                    <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                        <option>全部来源</option>
+                        <option>预测性维护</option>
+                        <option>点巡检</option>
+                        <option>计划维护</option>
+                        <option>备件库存</option>
+                        <option>IoT设备自诊断</option>
+                    </select>
+                    <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
+                        <option>全部状态</option>
+                        <option>新建</option>
+                        <option>已通知</option>
+                        <option>处理中</option>
+                        <option>已关闭</option>
+                    </select>
+                    <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-orange-600 transition-colors text-sm">
+                        <i class="fas fa-search mr-2"></i>查询
+                    </button>
+                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm">
+                        <i class="fas fa-redo mr-2"></i>重置
+                    </button>
+                </div>
+            </div>
+
+            <!-- 主内容区：左侧告警中心，右侧策略与规则示意 -->
+            <div class="flex-1 overflow-auto p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- 告警中心列表 -->
+                    <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-200">
+                        <div class="px-5 py-4 border-b bg-gray-50 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <h3 class="text-sm font-semibold text-gray-800 flex items-center">
+                                    <i class="fas fa-bell mr-2 text-rose-500"></i>实时告警中心
+                                </h3>
+                                <span class="text-xs text-gray-500">示例数据，用于演示多级预警展示效果</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-xs text-gray-500">
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-500"></span>注意</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-yellow-500"></span>警告</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-orange-500"></span>严重</span>
+                                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-red-500"></span>危险</span>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-sm">
+                                <thead class="bg-gray-50 border-b">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-gray-700 font-semibold">告警时间</th>
+                                        <th class="px-4 py-2 text-left text-gray-700 font-semibold">设备</th>
+                                        <th class="px-4 py-2 text-left text-gray-700 font-semibold">来源</th>
+                                        <th class="px-4 py-2 text-left text-gray-700 font-semibold">级别</th>
+                                        <th class="px-4 py-2 text-left text-gray-700 font-semibold">告警内容</th>
+                                        <th class="px-4 py-2 text-left text-gray-700 font-semibold">状态</th>
+                                        <th class="px-4 py-2 text-left text-gray-700 font-semibold">关联工单</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y">
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-2 text-gray-700">2024-07-01 09:21:35</td>
+                                        <td class="px-4 py-2 text-gray-700">主轴电机 M-01</td>
+                                        <td class="px-4 py-2 text-gray-700">预测性维护</td>
+                                        <td class="px-4 py-2">
+                                            <span class="severity-chip severity-serious">
+                                                <span class="w-2 h-2 rounded-full bg-orange-500"></span>严重
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-2 text-gray-700">振动频谱异常，疑似轴承内圈点蚀，RUL 20 天</td>
+                                        <td class="px-4 py-2">
+                                            <span class="px-2 py-1 rounded-full text-xs bg-yellow-50 text-yellow-700">已通知，待处理</span>
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            <span class="text-blue-600 cursor-pointer">WO-20240701-003</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-2 text-gray-700">2024-07-01 08:56:10</td>
+                                        <td class="px-4 py-2 text-gray-700">贴片机 SMT-02</td>
+                                        <td class="px-4 py-2 text-gray-700">点巡检</td>
+                                        <td class="px-4 py-2">
+                                            <span class="severity-chip severity-warning">
+                                                <span class="w-2 h-2 rounded-full bg-yellow-500"></span>警告
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-2 text-gray-700">巡检发现安全光幕前有油渍，存在滑倒风险</td>
+                                        <td class="px-4 py-2">
+                                            <span class="px-2 py-1 rounded-full text-xs bg-blue-50 text-blue-700">处理中</span>
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            <span class="text-blue-600 cursor-pointer">WO-20240701-002</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-2 text-gray-700">2024-07-01 08:30:02</td>
+                                        <td class="px-4 py-2 text-gray-700">三相老化测试台 AG-03</td>
+                                        <td class="px-4 py-2 text-gray-700">备件库存</td>
+                                        <td class="px-4 py-2">
+                                            <span class="severity-chip severity-attention">
+                                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>注意
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-2 text-gray-700">关键继电器库存低于安全库存，建议提前补货</td>
+                                        <td class="px-4 py-2">
+                                            <span class="px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-600">已通知</span>
+                                        </td>
+                                        <td class="px-4 py-2 text-gray-400 text-xs">无（仅库存预警）</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-2 text-gray-700">2024-07-01 07:45:19</td>
+                                        <td class="px-4 py-2 text-gray-700">注塑机 IMM-05</td>
+                                        <td class="px-4 py-2 text-gray-700">IoT自诊断</td>
+                                        <td class="px-4 py-2">
+                                            <span class="severity-chip severity-danger">
+                                                <span class="w-2 h-2 rounded-full bg-red-500"></span>危险
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-2 text-gray-700">液压系统压力异常，存在设备损坏风险，已建议停机</td>
+                                        <td class="px-4 py-2">
+                                            <span class="px-2 py-1 rounded-full text-xs bg-red-50 text-red-700">已通知，应急处理中</span>
+                                        </td>
+                                        <td class="px-4 py-2">
+                                            <span class="text-blue-600 cursor-pointer">WO-20240701-001</span>
+                                        </td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-2 text-gray-700">2024-07-01 07:30:00</td>
+                                        <td class="px-4 py-2 text-gray-700">包装线机器人 RB-02</td>
+                                        <td class="px-4 py-2 text-gray-700">预测性维护</td>
+                                        <td class="px-4 py-2">
+                                            <span class="severity-chip severity-attention">
+                                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>注意
+                                            </span>
+                                        </td>
+                                        <td class="px-4 py-2 text-gray-700">关节轴温度略高于历史基线，建议关注冷却系统</td>
+                                        <td class="px-4 py-2">
+                                            <span class="px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-600">新建</span>
+                                        </td>
+                                        <td class="px-4 py-2 text-gray-400 text-xs">待工程师确认是否生成工单</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 通知策略与规则示意 -->
+                    <div class="space-y-6">
+                        <!-- 通知策略卡片 -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-sm font-semibold text-gray-800 flex items-center">
+                                    <i class="fas fa-paper-plane mr-2 text-primary"></i>通知策略示意
+                                </h3>
+                                <span class="text-xs text-gray-500">按级别 × 来源 × 角色配置</span>
+                            </div>
+                            <div class="space-y-3 text-sm text-gray-700">
+                                <div class="flex items-start gap-2">
+                                    <span class="severity-chip severity-attention mt-0.5">
+                                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>注意
+                                    </span>
+                                    <div>
+                                        <p class="font-medium">飞书 + APP 推送 → 设备工程师 / 值班人员</p>
+                                        <p class="text-xs text-gray-500">不触发短信，仅在告警中心和移动端提醒，用于早期趋势关注。</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <span class="severity-chip severity-warning mt-0.5">
+                                        <span class="w-2 h-2 rounded-full bg-yellow-500"></span>警告
+                                    </span>
+                                    <div>
+                                        <p class="font-medium">飞书 + APP 推送 → 责任班组 + 车间设备工程师</p>
+                                        <p class="text-xs text-gray-500">30 分钟内未确认自动升级通知设备主管。</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <span class="severity-chip severity-serious mt-0.5">
+                                        <span class="w-2 h-2 rounded-full bg-orange-500"></span>严重
+                                    </span>
+                                    <div>
+                                        <p class="font-medium">飞书 + 短信 + APP → 班组长 / 设备主管</p>
+                                        <p class="text-xs text-gray-500">自动生成维修工单，携带预测的故障部位、原因和建议措施。</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <span class="severity-chip severity-danger mt-0.5">
+                                        <span class="w-2 h-2 rounded-full bg-red-500"></span>危险
+                                    </span>
+                                    <div>
+                                        <p class="font-medium">飞书 + 短信 + 电话(外部系统) → 设备/生产/EHS 管理层</p>
+                                        <p class="text-xs text-gray-500">可联动停机或应急预案，确保安全风险快速闭环。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 规则引擎与联动示意 -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 flex items-center mb-3">
+                                <i class="fas fa-diagram-project mr-2 text-secondary"></i>告警规则与联动示意
+                            </h3>
+                            <div class="space-y-3 text-xs text-gray-700">
+                                <div class="flex items-start gap-2">
+                                    <span class="mt-1 text-gray-400"><i class="fas fa-1"></i></span>
+                                    <p><span class="font-semibold">预测性维护：</span> 当健康指数 HI &lt; 60 且振动/温度异常满足模型条件时 → 触发严重级预警，自动创建“预见性维修工单”，并检查关键备件库存。</p>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <span class="mt-1 text-gray-400"><i class="fas fa-2"></i></span>
+                                    <p><span class="font-semibold">点巡检：</span> 巡检项标记为“异常”且勾选“需要维修” → 触发警告级预警，可一键升级为维修工单。</p>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <span class="mt-1 text-gray-400"><i class="fas fa-3"></i></span>
+                                    <p><span class="font-semibold">备件库存：</span> 库存 &lt; 安全库存 → 触发注意级预警；库存 = 0 且存在未关闭严重/危险告警 → 触发警告级预警并生成补货建议。</p>
+                                </div>
+                                <div class="flex items-start gap-2">
+                                    <span class="mt-1 text-gray-400"><i class="fas fa-4"></i></span>
+                                    <p><span class="font-semibold">SLA 超时：</span> 严重/危险级关联工单在响应/修复 SLA 内未从“待响应/进行中”流转 → 触发升级告警并通知上级管理者。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 与设备智能体联动提示 -->
+                        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+                            <h3 class="text-sm font-semibold text-gray-800 flex items-center mb-3">
+                                <i class="fas fa-robot mr-2 text-indigo-500"></i>与设备智能体联动
+                            </h3>
+                            <p class="text-xs text-gray-600 leading-5">
+                                当工程师在移动端收到告警通知时，可直接在“设备智能体”中输入告警编号或故障现象，智能体会基于告警上下文
+                                自动检索知识库、推荐相似案例，并给出排查建议，进一步缩短从“告警”到“解决”的时间。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
