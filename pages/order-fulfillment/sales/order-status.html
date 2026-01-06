@@ -7,7 +7,6 @@
     <title>订单状态管理 - 订单履约</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
@@ -40,6 +39,59 @@
         .status-step.active::after {
             background: linear-gradient(to right, #10b981, #e5e7eb);
         }
+
+        .modal-backdrop {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-enter {
+            animation: modalEnter 0.3s ease-out;
+        }
+
+        @keyframes modalEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast {
+            animation: toastSlide 0.3s ease-out;
+        }
+
+        @keyframes toastSlide {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
     </style>
 </head>
 
@@ -61,12 +113,12 @@
                 <p class="text-gray-500 mt-1">订单全生命周期跟踪与状态流转管理</p>
             </div>
             <div class="flex space-x-3">
-                <button
-                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm">
+                <button onclick="handleExport()"
+                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm transition-colors">
                     <i class="fas fa-download mr-2"></i>导出
                 </button>
-                <button
-                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm">
+                <button onclick="openFilterPanel()"
+                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm transition-colors">
                     <i class="fas fa-filter mr-2"></i>高级筛选
                 </button>
             </div>
@@ -74,34 +126,35 @@
 
         <!-- 状态统计卡片 -->
         <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
-            <div
-                class="glass-card rounded-xl p-4 text-center cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all">
-                <div class="text-2xl font-bold text-gray-800">1,286</div>
+            <div onclick="filterByStatus('')"
+                class="glass-card rounded-xl p-4 text-center cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all"
+                id="card-all">
+                <div class="text-2xl font-bold text-gray-800" id="count-all">7</div>
                 <div class="text-sm text-gray-500">全部订单</div>
             </div>
-            <div
+            <div onclick="filterByStatus('草稿')"
                 class="glass-card rounded-xl p-4 text-center cursor-pointer hover:ring-2 hover:ring-gray-400 transition-all">
-                <div class="text-2xl font-bold text-gray-400">23</div>
+                <div class="text-2xl font-bold text-gray-400" id="count-draft">1</div>
                 <div class="text-sm text-gray-500">草稿</div>
             </div>
-            <div
+            <div onclick="filterByStatus('待审核')"
                 class="glass-card rounded-xl p-4 text-center cursor-pointer hover:ring-2 hover:ring-orange-500 transition-all">
-                <div class="text-2xl font-bold text-orange-500">45</div>
+                <div class="text-2xl font-bold text-orange-500" id="count-pending">2</div>
                 <div class="text-sm text-gray-500">待审核</div>
             </div>
-            <div
+            <div onclick="filterByStatus('生产中')"
                 class="glass-card rounded-xl p-4 text-center cursor-pointer hover:ring-2 hover:ring-blue-500 transition-all">
-                <div class="text-2xl font-bold text-blue-500">128</div>
+                <div class="text-2xl font-bold text-blue-500" id="count-production">2</div>
                 <div class="text-sm text-gray-500">生产中</div>
             </div>
-            <div
+            <div onclick="filterByStatus('已发货')"
                 class="glass-card rounded-xl p-4 text-center cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all">
-                <div class="text-2xl font-bold text-purple-500">89</div>
+                <div class="text-2xl font-bold text-purple-500" id="count-shipped">1</div>
                 <div class="text-sm text-gray-500">已发货</div>
             </div>
-            <div
+            <div onclick="filterByStatus('已完成')"
                 class="glass-card rounded-xl p-4 text-center cursor-pointer hover:ring-2 hover:ring-green-500 transition-all">
-                <div class="text-2xl font-bold text-green-500">1,001</div>
+                <div class="text-2xl font-bold text-green-500" id="count-completed">1</div>
                 <div class="text-sm text-gray-500">已完成</div>
             </div>
         </div>
@@ -110,234 +163,577 @@
         <div class="glass-card rounded-xl p-4 mb-6">
             <div class="flex flex-wrap items-center gap-4">
                 <div class="relative flex-1 min-w-64">
-                    <input type="text" placeholder="搜索订单号、客户名称..."
-                        class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm">
+                    <input type="text" id="searchInput" placeholder="搜索订单号、客户名称..."
+                        class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"
+                        oninput="handleSearch()">
                     <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
-                <input type="date" class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600">
+                <input type="date" id="startDate"
+                    class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600">
                 <span class="text-gray-400">至</span>
-                <input type="date" class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600">
-                <button class="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm">查询</button>
+                <input type="date" id="endDate"
+                    class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600">
+                <button onclick="handleSearch()"
+                    class="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors">查询</button>
+                <button onclick="resetSearch()"
+                    class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm transition-colors">重置</button>
             </div>
         </div>
 
         <!-- 订单列表 -->
-        <div class="space-y-4">
-            <!-- 订单卡片1 -->
-            <div class="glass-card rounded-xl p-6">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="flex items-center">
-                        <div class="mr-4">
-                            <div class="font-semibold text-blue-600 text-lg">SO-2026010601</div>
-                            <div class="text-sm text-gray-500">韩国现代电气 · CPS SCA100KTL × 500台</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-lg font-bold text-gray-800">¥14,000,000</div>
-                        <div class="text-sm text-gray-500">交货日期：2026-01-15</div>
-                    </div>
-                </div>
-                <!-- 状态流程 -->
-                <div class="flex items-center justify-between mb-4 px-8">
-                    <div class="status-step completed flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-green-500 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative">
-                            <i class="fas fa-check text-white text-xs"></i>
-                        </div>
-                        <div class="text-xs text-green-600">创建订单</div>
-                        <div class="text-xs text-gray-400">01-06 09:00</div>
-                    </div>
-                    <div class="status-step completed flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-green-500 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative">
-                            <i class="fas fa-check text-white text-xs"></i>
-                        </div>
-                        <div class="text-xs text-green-600">审核通过</div>
-                        <div class="text-xs text-gray-400">01-06 10:30</div>
-                    </div>
-                    <div class="status-step active flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-blue-500 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative animate-pulse">
-                            <i class="fas fa-cog text-white text-xs"></i>
-                        </div>
-                        <div class="text-xs text-blue-600 font-medium">生产中</div>
-                        <div class="text-xs text-gray-400">进度 45%</div>
-                    </div>
-                    <div class="status-step flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-gray-200 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative">
-                            <i class="fas fa-truck text-gray-400 text-xs"></i>
-                        </div>
-                        <div class="text-xs text-gray-400">待发货</div>
-                    </div>
-                    <div class="flex-1 text-center">
-                        <div class="w-6 h-6 bg-gray-200 rounded-full mx-auto mb-1 flex items-center justify-center">
-                            <i class="fas fa-check-double text-gray-400 text-xs"></i>
-                        </div>
-                        <div class="text-xs text-gray-400">已完成</div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <div class="flex items-center space-x-4 text-sm text-gray-500">
-                        <span><i class="fas fa-user mr-1"></i>销售：李薇</span>
-                        <span><i class="fas fa-clock mr-1"></i>剩余9天</span>
-                        <span class="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs">预计准时</span>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="px-3 py-1.5 text-blue-600 hover:bg-blue-50 rounded text-sm"><i
-                                class="fas fa-eye mr-1"></i>详情</button>
-                        <button class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded text-sm"><i
-                                class="fas fa-history mr-1"></i>日志</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 订单卡片2 -->
-            <div class="glass-card rounded-xl p-6">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="flex items-center">
-                        <div class="mr-4">
-                            <div class="font-semibold text-blue-600 text-lg">SO-2026010602</div>
-                            <div class="text-sm text-gray-500">国家电投集团 · CPS SCE125KTL-T × 200台</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-lg font-bold text-gray-800">¥6,400,000</div>
-                        <div class="text-sm text-gray-500">交货日期：2026-01-20</div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between mb-4 px-8">
-                    <div class="status-step completed flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-green-500 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative">
-                            <i class="fas fa-check text-white text-xs"></i>
-                        </div>
-                        <div class="text-xs text-green-600">创建订单</div>
-                    </div>
-                    <div class="status-step active flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-orange-500 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative">
-                            <i class="fas fa-hourglass-half text-white text-xs"></i>
-                        </div>
-                        <div class="text-xs text-orange-600 font-medium">待审核</div>
-                    </div>
-                    <div class="status-step flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-gray-200 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative">
-                            <i class="fas fa-cog text-gray-400 text-xs"></i>
-                        </div>
-                        <div class="text-xs text-gray-400">生产</div>
-                    </div>
-                    <div class="status-step flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-gray-200 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative">
-                            <i class="fas fa-truck text-gray-400 text-xs"></i>
-                        </div>
-                        <div class="text-xs text-gray-400">发货</div>
-                    </div>
-                    <div class="flex-1 text-center">
-                        <div class="w-6 h-6 bg-gray-200 rounded-full mx-auto mb-1 flex items-center justify-center">
-                            <i class="fas fa-check-double text-gray-400 text-xs"></i>
-                        </div>
-                        <div class="text-xs text-gray-400">完成</div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <div class="flex items-center space-x-4 text-sm text-gray-500">
-                        <span><i class="fas fa-user mr-1"></i>销售：张明</span>
-                        <span><i class="fas fa-clock mr-1"></i>剩余14天</span>
-                        <span class="px-2 py-0.5 bg-orange-100 text-orange-700 rounded text-xs">待审核</span>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="px-3 py-1.5 bg-blue-600 text-white rounded text-sm"><i
-                                class="fas fa-check mr-1"></i>审核</button>
-                        <button class="px-3 py-1.5 text-blue-600 hover:bg-blue-50 rounded text-sm"><i
-                                class="fas fa-eye mr-1"></i>详情</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 订单卡片3 -->
-            <div class="glass-card rounded-xl p-6">
-                <div class="flex items-start justify-between mb-4">
-                    <div class="flex items-center">
-                        <div class="mr-4">
-                            <div class="font-semibold text-blue-600 text-lg">SO-2025123156</div>
-                            <div class="text-sm text-gray-500">日本丸红株式会社 · CPS SCA225KTL × 150台</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-lg font-bold text-gray-800">¥5,850,000</div>
-                        <div class="text-sm text-gray-500">交货日期：2026-01-10</div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between mb-4 px-8">
-                    <div class="status-step completed flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-green-500 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative">
-                            <i class="fas fa-check text-white text-xs"></i>
-                        </div>
-                        <div class="text-xs text-green-600">创建</div>
-                    </div>
-                    <div class="status-step completed flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-green-500 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative">
-                            <i class="fas fa-check text-white text-xs"></i>
-                        </div>
-                        <div class="text-xs text-green-600">审核</div>
-                    </div>
-                    <div class="status-step completed flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-green-500 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative">
-                            <i class="fas fa-check text-white text-xs"></i>
-                        </div>
-                        <div class="text-xs text-green-600">生产</div>
-                    </div>
-                    <div class="status-step completed flex-1 text-center">
-                        <div
-                            class="w-6 h-6 bg-green-500 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative">
-                            <i class="fas fa-check text-white text-xs"></i>
-                        </div>
-                        <div class="text-xs text-green-600">发货</div>
-                    </div>
-                    <div class="flex-1 text-center">
-                        <div class="w-6 h-6 bg-green-500 rounded-full mx-auto mb-1 flex items-center justify-center">
-                            <i class="fas fa-check text-white text-xs"></i>
-                        </div>
-                        <div class="text-xs text-green-600">已完成</div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                    <div class="flex items-center space-x-4 text-sm text-gray-500">
-                        <span><i class="fas fa-user mr-1"></i>销售：王强</span>
-                        <span class="px-2 py-0.5 bg-orange-100 text-orange-700 rounded text-xs">延迟2天交付</span>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="px-3 py-1.5 text-blue-600 hover:bg-blue-50 rounded text-sm"><i
-                                class="fas fa-eye mr-1"></i>详情</button>
-                        <button class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded text-sm"><i
-                                class="fas fa-history mr-1"></i>日志</button>
-                    </div>
-                </div>
-            </div>
+        <div id="orderList" class="space-y-4">
+            <!-- 订单卡片将通过JavaScript动态渲染 -->
         </div>
 
         <!-- 分页 -->
         <div class="glass-card rounded-xl p-4 mt-6 flex items-center justify-between">
-            <div class="text-sm text-gray-500">共 <span class="font-medium">1,286</span> 条订单</div>
-            <div class="flex items-center space-x-2">
-                <button class="px-3 py-1 border border-gray-200 rounded text-gray-500 text-sm"><i
-                        class="fas fa-chevron-left"></i></button>
-                <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
-                <button class="px-3 py-1 border border-gray-200 rounded text-gray-600 text-sm">2</button>
-                <button class="px-3 py-1 border border-gray-200 rounded text-gray-600 text-sm">3</button>
-                <span class="text-gray-400">...</span>
-                <button class="px-3 py-1 border border-gray-200 rounded text-gray-600 text-sm">65</button>
-                <button class="px-3 py-1 border border-gray-200 rounded text-gray-500 text-sm"><i
-                        class="fas fa-chevron-right"></i></button>
+            <div class="text-sm text-gray-500">共 <span id="totalOrders" class="font-medium">7</span> 条订单</div>
+            <div class="flex items-center space-x-2" id="pagination">
+                <!-- 分页将通过JavaScript动态渲染 -->
             </div>
         </div>
     </div>
+
+    <!-- 订单详情模态框 -->
+    <div id="detailModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="closeDetailModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="modal-enter bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-800">订单详情</h3>
+                    <button onclick="closeDetailModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                <div class="p-6 overflow-y-auto max-h-[calc(90vh-80px)]" id="detailContent">
+                    <!-- 详情内容将动态渲染 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 审核模态框 -->
+    <div id="approveModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop absolute inset-0" onclick="closeApproveModal()"></div>
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="modal-enter bg-white rounded-2xl shadow-2xl w-full max-w-md">
+                <div class="px-6 py-4 border-b border-gray-100">
+                    <h3 class="text-lg font-semibold text-gray-800">订单审核</h3>
+                </div>
+                <div class="p-6">
+                    <div id="approveOrderInfo" class="mb-4 p-4 bg-gray-50 rounded-lg"></div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">审核意见</label>
+                        <textarea id="approveComment" rows="3" placeholder="请输入审核意见（可选）"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+                </div>
+                <div class="px-6 py-4 border-t border-gray-100 flex justify-end space-x-3">
+                    <button onclick="rejectOrder()"
+                        class="px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 text-sm transition-colors">
+                        <i class="fas fa-times mr-1"></i>驳回
+                    </button>
+                    <button onclick="approveOrder()"
+                        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm transition-colors">
+                        <i class="fas fa-check mr-1"></i>通过
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 操作日志侧边栏 -->
+    <div id="logPanel" class="fixed inset-y-0 right-0 w-96 bg-white shadow-2xl z-50 hidden">
+        <div class="slide-in h-full flex flex-col">
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-800">操作日志</h3>
+                <button onclick="closeLogPanel()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6" id="logContent">
+                <!-- 日志内容将动态渲染 -->
+            </div>
+        </div>
+    </div>
+    <div id="logBackdrop" class="fixed inset-0 bg-black/30 z-40 hidden" onclick="closeLogPanel()"></div>
+
+    <!-- 高级筛选侧边栏 -->
+    <div id="filterPanel" class="fixed inset-y-0 right-0 w-80 bg-white shadow-2xl z-50 hidden">
+        <div class="slide-in h-full flex flex-col">
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-800">高级筛选</h3>
+                <button onclick="closeFilterPanel()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">客户</label>
+                    <select id="filterCustomer" class="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm">
+                        <option value="">全部客户</option>
+                        <option value="韩国现代电气">韩国现代电气</option>
+                        <option value="国家电投集团">国家电投集团</option>
+                        <option value="三峡新能源">三峡新能源</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">销售人员</label>
+                    <select id="filterSales" class="w-full px-4 py-2 border border-gray-200 rounded-lg text-sm">
+                        <option value="">全部</option>
+                        <option value="李薇">李薇</option>
+                        <option value="张明">张明</option>
+                        <option value="王强">王强</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">金额范围</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" id="filterMinAmount" placeholder="最小"
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm">
+                        <span class="text-gray-400">-</span>
+                        <input type="number" id="filterMaxAmount" placeholder="最大"
+                            class="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">交货状态</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="checkbox" value="onTime" class="mr-2 rounded">
+                            预计准时</label>
+                        <label class="flex items-center"><input type="checkbox" value="delayed" class="mr-2 rounded">
+                            存在延迟</label>
+                        <label class="flex items-center"><input type="checkbox" value="risk" class="mr-2 rounded">
+                            延迟风险</label>
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-4 border-t border-gray-100 flex space-x-3">
+                <button onclick="resetAdvancedFilter()"
+                    class="flex-1 px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-sm">重置</button>
+                <button onclick="applyAdvancedFilter()"
+                    class="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm">应用</button>
+            </div>
+        </div>
+    </div>
+    <div id="filterBackdrop" class="fixed inset-0 bg-black/30 z-40 hidden" onclick="closeFilterPanel()"></div>
+
+    <!-- Toast 提示 -->
+    <div id="toast" class="fixed top-4 right-4 z-50 hidden">
+        <div class="toast bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span id="toastMessage">操作成功</span>
+        </div>
+    </div>
+
+    <script>
+        // 模拟订单数据
+        let orders = [
+            { id: 'SO-2026010601', customer: '韩国现代电气', product: 'CPS SCA100KTL', qty: 500, amount: 14000000, deliveryDate: '2026-01-15', status: '生产中', progress: 45, sales: '李薇', daysLeft: 9, deliveryStatus: '预计准时', createTime: '2026-01-06 09:00' },
+            { id: 'SO-2026010602', customer: '国家电投集团', product: 'CPS SCE125KTL-T', qty: 200, amount: 6400000, deliveryDate: '2026-01-20', status: '待审核', progress: 0, sales: '张明', daysLeft: 14, deliveryStatus: '待审核', createTime: '2026-01-06 10:00' },
+            { id: 'SO-2025123156', customer: '日本丸红株式会社', product: 'CPS SCA225KTL', qty: 150, amount: 5850000, deliveryDate: '2026-01-10', status: '已完成', progress: 100, sales: '王强', daysLeft: 0, deliveryStatus: '延迟2天', createTime: '2025-12-31 14:00' },
+            { id: 'SO-2026010603', customer: '三峡新能源', product: 'CPS SCA100KTL', qty: 300, amount: 8400000, deliveryDate: '2026-01-25', status: '生产中', progress: 68, sales: '李薇', daysLeft: 19, deliveryStatus: '预计准时', createTime: '2026-01-06 11:00' },
+            { id: 'SO-2026010604', customer: '巴西Solar Tech', product: 'CPS SCA50KTL-DO', qty: 400, amount: 5600000, deliveryDate: '2026-02-01', status: '待审核', progress: 0, sales: '张明', daysLeft: 26, deliveryStatus: '待审核', createTime: '2026-01-06 14:00' },
+            { id: 'SO-2026010605', customer: '上海电气风电', product: 'CPS SCA225KTL', qty: 100, amount: 3900000, deliveryDate: '2026-01-18', status: '已发货', progress: 100, sales: '王强', daysLeft: 12, deliveryStatus: '预计准时', createTime: '2026-01-05 09:00' },
+            { id: 'SO-2026010606', customer: '华能集团', product: 'CPS SCE125KTL-T', qty: 80, amount: 2560000, deliveryDate: '2026-01-28', status: '草稿', progress: 0, sales: '李薇', daysLeft: 22, deliveryStatus: '-', createTime: '2026-01-06 16:00' }
+        ];
+
+        let filteredOrders = [...orders];
+        let currentStatusFilter = '';
+        let currentApproveOrderId = null;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function () {
+            renderOrders();
+            updateCounts();
+        });
+
+        // 渲染订单列表
+        function renderOrders() {
+            const container = document.getElementById('orderList');
+            if (filteredOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="glass-card rounded-xl p-12 text-center">
+                        <i class="fas fa-inbox text-5xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500">暂无符合条件的订单</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredOrders.map(order => renderOrderCard(order)).join('');
+            document.getElementById('totalOrders').textContent = filteredOrders.length;
+        }
+
+        // 渲染单个订单卡片
+        function renderOrderCard(order) {
+            const statusSteps = getStatusSteps(order.status, order.progress);
+            const deliveryBadge = getDeliveryBadge(order.deliveryStatus);
+
+            return `
+                <div class="glass-card rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="mr-4">
+                                <div class="font-semibold text-blue-600 text-lg cursor-pointer hover:underline" onclick="viewDetail('${order.id}')">${order.id}</div>
+                                <div class="text-sm text-gray-500">${order.customer} · ${order.product} × ${order.qty}台</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-bold text-gray-800">¥${formatNumber(order.amount)}</div>
+                            <div class="text-sm text-gray-500">交货日期：${order.deliveryDate}</div>
+                        </div>
+                    </div>
+                    <!-- 状态流程 -->
+                    <div class="flex items-center justify-between mb-4 px-8">
+                        ${statusSteps}
+                    </div>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+                        <div class="flex items-center space-x-4 text-sm text-gray-500">
+                            <span><i class="fas fa-user mr-1"></i>销售：${order.sales}</span>
+                            ${order.daysLeft > 0 ? `<span><i class="fas fa-clock mr-1"></i>剩余${order.daysLeft}天</span>` : ''}
+                            ${deliveryBadge}
+                        </div>
+                        <div class="flex space-x-2">
+                            ${order.status === '待审核' ? `<button onclick="openApproveModal('${order.id}')" class="px-3 py-1.5 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors"><i class="fas fa-check mr-1"></i>审核</button>` : ''}
+                            <button onclick="viewDetail('${order.id}')" class="px-3 py-1.5 text-blue-600 hover:bg-blue-50 rounded text-sm transition-colors"><i class="fas fa-eye mr-1"></i>详情</button>
+                            <button onclick="viewLog('${order.id}')" class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded text-sm transition-colors"><i class="fas fa-history mr-1"></i>日志</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 获取状态步骤HTML
+        function getStatusSteps(status, progress) {
+            const steps = ['创建', '审核', '生产', '发货', '完成'];
+            const statusIndex = { '草稿': 0, '待审核': 1, '生产中': 2, '已发货': 3, '已完成': 4 };
+            const currentIndex = statusIndex[status] || 0;
+
+            return steps.map((step, index) => {
+                let stepClass = 'status-step flex-1 text-center';
+                let iconClass = 'w-6 h-6 rounded-full mx-auto mb-1 flex items-center justify-center z-10 relative';
+                let textClass = 'text-xs';
+                let icon = '';
+
+                if (index < currentIndex || (status === '已完成' && index === 4)) {
+                    stepClass += ' completed';
+                    iconClass += ' bg-green-500';
+                    textClass += ' text-green-600';
+                    icon = '<i class="fas fa-check text-white text-xs"></i>';
+                } else if (index === currentIndex && status !== '草稿') {
+                    stepClass += ' active';
+                    iconClass += status === '待审核' ? ' bg-orange-500' : ' bg-blue-500 animate-pulse';
+                    textClass += status === '待审核' ? ' text-orange-600 font-medium' : ' text-blue-600 font-medium';
+                    icon = status === '待审核' ? '<i class="fas fa-hourglass-half text-white text-xs"></i>' : '<i class="fas fa-cog text-white text-xs"></i>';
+                } else {
+                    iconClass += ' bg-gray-200';
+                    textClass += ' text-gray-400';
+                    const icons = ['<i class="fas fa-check text-gray-400 text-xs"></i>', '<i class="fas fa-check text-gray-400 text-xs"></i>', '<i class="fas fa-cog text-gray-400 text-xs"></i>', '<i class="fas fa-truck text-gray-400 text-xs"></i>', '<i class="fas fa-check-double text-gray-400 text-xs"></i>'];
+                    icon = icons[index];
+                }
+
+                return `<div class="${stepClass}"><div class="${iconClass}">${icon}</div><div class="${textClass}">${step}</div>${status === '生产中' && index === 2 ? `<div class="text-xs text-gray-400">进度${progress}%</div>` : ''}</div>`;
+            }).join('');
+        }
+
+        // 获取交货状态标签
+        function getDeliveryBadge(status) {
+            const badges = {
+                '预计准时': '<span class="px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs">预计准时</span>',
+                '待审核': '<span class="px-2 py-0.5 bg-orange-100 text-orange-700 rounded text-xs">待审核</span>',
+                '延迟2天': '<span class="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs">延迟2天</span>',
+                '-': ''
+            };
+            return badges[status] || '';
+        }
+
+        // 更新统计数量
+        function updateCounts() {
+            const counts = { draft: 0, pending: 0, production: 0, shipped: 0, completed: 0 };
+            orders.forEach(o => {
+                if (o.status === '草稿') counts.draft++;
+                else if (o.status === '待审核') counts.pending++;
+                else if (o.status === '生产中') counts.production++;
+                else if (o.status === '已发货') counts.shipped++;
+                else if (o.status === '已完成') counts.completed++;
+            });
+            document.getElementById('count-all').textContent = orders.length;
+            document.getElementById('count-draft').textContent = counts.draft;
+            document.getElementById('count-pending').textContent = counts.pending;
+            document.getElementById('count-production').textContent = counts.production;
+            document.getElementById('count-shipped').textContent = counts.shipped;
+            document.getElementById('count-completed').textContent = counts.completed;
+        }
+
+        // 按状态筛选
+        function filterByStatus(status) {
+            currentStatusFilter = status;
+            if (status) {
+                filteredOrders = orders.filter(o => o.status === status);
+            } else {
+                filteredOrders = [...orders];
+            }
+            renderOrders();
+        }
+
+        // 搜索
+        function handleSearch() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            filteredOrders = orders.filter(o => {
+                const matchKeyword = !keyword || o.id.toLowerCase().includes(keyword) || o.customer.toLowerCase().includes(keyword);
+                const matchStatus = !currentStatusFilter || o.status === currentStatusFilter;
+                return matchKeyword && matchStatus;
+            });
+            renderOrders();
+        }
+
+        // 重置搜索
+        function resetSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('startDate').value = '';
+            document.getElementById('endDate').value = '';
+            currentStatusFilter = '';
+            filteredOrders = [...orders];
+            renderOrders();
+        }
+
+        // 查看详情
+        function viewDetail(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            document.getElementById('detailContent').innerHTML = `
+                <div class="flex items-start justify-between mb-6">
+                    <div>
+                        <h4 class="text-xl font-bold text-blue-600">${order.id}</h4>
+                        <p class="text-gray-500">${order.customer}</p>
+                    </div>
+                    <span class="px-3 py-1 ${getStatusBadgeClass(order.status)} rounded-full text-sm">${order.status}</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm text-gray-500 mb-1">产品型号</div>
+                        <div class="font-medium">${order.product}</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm text-gray-500 mb-1">订单数量</div>
+                        <div class="font-medium">${order.qty} 台</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm text-gray-500 mb-1">订单金额</div>
+                        <div class="font-medium text-blue-600">¥${formatNumber(order.amount)}</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm text-gray-500 mb-1">交货日期</div>
+                        <div class="font-medium">${order.deliveryDate}</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm text-gray-500 mb-1">销售负责人</div>
+                        <div class="font-medium">${order.sales}</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="text-sm text-gray-500 mb-1">创建时间</div>
+                        <div class="font-medium">${order.createTime}</div>
+                    </div>
+                </div>
+                ${order.status === '生产中' ? `
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">生产进度</span>
+                        <span class="text-sm text-blue-600">${order.progress}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="bg-blue-600 h-3 rounded-full transition-all" style="width: ${order.progress}%"></div>
+                    </div>
+                </div>
+                ` : ''}
+            `;
+            document.getElementById('detailModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // 获取状态标签样式
+        function getStatusBadgeClass(status) {
+            const classes = {
+                '草稿': 'bg-gray-100 text-gray-600',
+                '待审核': 'bg-orange-100 text-orange-700',
+                '生产中': 'bg-blue-100 text-blue-700',
+                '已发货': 'bg-purple-100 text-purple-700',
+                '已完成': 'bg-green-100 text-green-700'
+            };
+            return classes[status] || 'bg-gray-100 text-gray-600';
+        }
+
+        // 审核弹窗
+        function openApproveModal(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            currentApproveOrderId = orderId;
+
+            document.getElementById('approveOrderInfo').innerHTML = `
+                <div class="font-medium text-gray-800">${order.id}</div>
+                <div class="text-sm text-gray-500">${order.customer} · ${order.product} × ${order.qty}台</div>
+                <div class="text-sm text-blue-600 mt-1">¥${formatNumber(order.amount)}</div>
+            `;
+            document.getElementById('approveComment').value = '';
+            document.getElementById('approveModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeApproveModal() {
+            document.getElementById('approveModal').classList.add('hidden');
+            document.body.style.overflow = '';
+            currentApproveOrderId = null;
+        }
+
+        // 通过审核
+        function approveOrder() {
+            if (!currentApproveOrderId) return;
+            const order = orders.find(o => o.id === currentApproveOrderId);
+            if (order) {
+                order.status = '生产中';
+                order.deliveryStatus = '预计准时';
+            }
+            closeApproveModal();
+            filterByStatus(currentStatusFilter);
+            updateCounts();
+            showToast('订单已审核通过', 'success');
+        }
+
+        // 驳回
+        function rejectOrder() {
+            if (!currentApproveOrderId) return;
+            const order = orders.find(o => o.id === currentApproveOrderId);
+            if (order) {
+                order.status = '草稿';
+                order.deliveryStatus = '-';
+            }
+            closeApproveModal();
+            filterByStatus(currentStatusFilter);
+            updateCounts();
+            showToast('订单已驳回', 'warning');
+        }
+
+        // 查看日志
+        function viewLog(orderId) {
+            document.getElementById('logContent').innerHTML = `
+                <div class="text-center text-gray-500 mb-4">
+                    <span class="font-medium text-blue-600">${orderId}</span> 操作日志
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                            <i class="fas fa-check text-green-600 text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-800">订单创建</div>
+                            <div class="text-sm text-gray-500">系统自动创建订单</div>
+                            <div class="text-xs text-gray-400 mt-1">2026-01-06 09:00 · 系统</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                            <i class="fas fa-edit text-blue-600 text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-800">订单提交</div>
+                            <div class="text-sm text-gray-500">订单提交审核</div>
+                            <div class="text-xs text-gray-400 mt-1">2026-01-06 09:30 · 李薇</div>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                            <i class="fas fa-user-check text-orange-600 text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-800">审核通过</div>
+                            <div class="text-sm text-gray-500">订单审核通过，进入生产</div>
+                            <div class="text-xs text-gray-400 mt-1">2026-01-06 10:30 · 张明</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('logPanel').classList.remove('hidden');
+            document.getElementById('logBackdrop').classList.remove('hidden');
+        }
+
+        function closeLogPanel() {
+            document.getElementById('logPanel').classList.add('hidden');
+            document.getElementById('logBackdrop').classList.add('hidden');
+        }
+
+        // 高级筛选
+        function openFilterPanel() {
+            document.getElementById('filterPanel').classList.remove('hidden');
+            document.getElementById('filterBackdrop').classList.remove('hidden');
+        }
+
+        function closeFilterPanel() {
+            document.getElementById('filterPanel').classList.add('hidden');
+            document.getElementById('filterBackdrop').classList.add('hidden');
+        }
+
+        function applyAdvancedFilter() {
+            const customer = document.getElementById('filterCustomer').value;
+            const sales = document.getElementById('filterSales').value;
+
+            filteredOrders = orders.filter(o => {
+                const matchCustomer = !customer || o.customer === customer;
+                const matchSales = !sales || o.sales === sales;
+                return matchCustomer && matchSales;
+            });
+
+            closeFilterPanel();
+            renderOrders();
+            showToast('筛选条件已应用');
+        }
+
+        function resetAdvancedFilter() {
+            document.getElementById('filterCustomer').value = '';
+            document.getElementById('filterSales').value = '';
+            document.getElementById('filterMinAmount').value = '';
+            document.getElementById('filterMaxAmount').value = '';
+        }
+
+        // 导出
+        function handleExport() {
+            showToast('正在生成导出文件...');
+            setTimeout(() => {
+                showToast('已导出 ' + filteredOrders.length + ' 条订单数据');
+            }, 1500);
+        }
+
+        // Toast提示
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastDiv = toast.querySelector('div');
+            document.getElementById('toastMessage').textContent = message;
+            toastDiv.className = `toast ${type === 'success' ? 'bg-green-500' : type === 'warning' ? 'bg-orange-500' : 'bg-red-500'} text-white px-6 py-3 rounded-lg shadow-lg flex items-center`;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 3000);
+        }
+
+        // 辅助函数
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        // ESC键关闭
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closeDetailModal();
+                closeApproveModal();
+                closeLogPanel();
+                closeFilterPanel();
+            }
+        });
+    </script>
 </body>
 
 </html>
