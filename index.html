@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,29 +38,34 @@
     <style>
         /* 隐藏滚动条但保持滚动功能 */
         .scrollbar-hide {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
         }
+
         .scrollbar-hide::-webkit-scrollbar {
-            display: none;  /* Chrome, Safari and Opera */
+            display: none;
+            /* Chrome, Safari and Opera */
         }
 
         /* 更多导航下拉菜单样式 */
         #moreNavDropdown {
             animation: dropdownFadeIn 0.2s ease-out;
         }
-        
+
         @keyframes dropdownFadeIn {
             from {
                 opacity: 0;
                 transform: translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-        
+
         /* 导航按钮紧凑样式优化 */
         .module-nav-item:hover {
             background-color: rgba(59, 130, 246, 0.1);
@@ -187,38 +193,38 @@
         .compact-header {
             min-height: 60px;
         }
-        
+
         /* 导航按钮紧凑样式 */
         .module-nav-item {
             white-space: nowrap;
             transition: all 0.2s ease;
         }
-        
+
         /* 小屏幕下的调整 */
         @media (max-width: 1024px) {
             .compact-header .flex {
                 gap: 0.5rem;
             }
-            
+
             .module-nav-item span {
                 font-size: 0.75rem;
             }
-            
+
             .module-nav-item {
                 padding-left: 0.5rem;
                 padding-right: 0.5rem;
             }
         }
-        
+
         @media (max-width: 768px) {
             #platformDescription {
                 display: none;
             }
-            
+
             .module-nav-item span {
                 display: none;
             }
-            
+
             .module-nav-item {
                 padding-left: 0.75rem;
                 padding-right: 0.75rem;
@@ -226,6 +232,7 @@
         }
     </style>
 </head>
+
 <body class="bg-gray-50 font-sans">
     <!-- 主容器 -->
     <div class="flex flex-col h-screen">
@@ -241,7 +248,8 @@
                         </div>
                         <div>
                             <h1 id="platformTitle" class="text-lg font-bold text-gray-800 leading-tight">数字工厂一体化平台</h1>
-                            <p id="platformDescription" class="text-xs text-gray-500 leading-none">Digital Factory Platform</p>
+                            <p id="platformDescription" class="text-xs text-gray-500 leading-none">Digital Factory
+                                Platform</p>
                         </div>
                     </div>
 
@@ -249,7 +257,7 @@
                     <nav class="flex items-center space-x-2 flex-1 ml-6 mr-4">
                         <!-- 首页按钮 -->
                         <button onclick="switchModule('dashboard')"
-                                class="module-nav-item active flex items-center space-x-2 px-4 py-2 border-b-2 border-primary text-primary font-medium text-sm">
+                            class="module-nav-item active flex items-center space-x-2 px-4 py-2 border-b-2 border-primary text-primary font-medium text-sm">
                             <i class="fas fa-home"></i>
                             <span>首页</span>
                         </button>
@@ -259,48 +267,60 @@
 
                         <!-- 智能制造下拉菜单 -->
                         <div class="relative">
-                            <button id="manufacturingNavBtn" onclick="toggleDropdownNav('manufacturing')" class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
+                            <button id="manufacturingNavBtn" onclick="toggleDropdownNav('manufacturing')"
+                                class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
                                 <i class="fas fa-rocket"></i>
                                 <span>智能制造</span>
-                                <i id="manufacturingNavIcon" class="fas fa-chevron-down text-sm transition-transform"></i>
+                                <i id="manufacturingNavIcon"
+                                    class="fas fa-chevron-down text-sm transition-transform"></i>
                             </button>
 
-                            <div id="manufacturingNavDropdown" class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
+                            <div id="manufacturingNavDropdown"
+                                class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
                                 <div class="py-2">
-                                    <button onclick="switchModule('order-management'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('order-management'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-shopping-cart text-red-600"></i>
                                         <span>订单管理</span>
                                     </button>
-                                    <button onclick="switchModule('dispatch-control'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('dispatch-control'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-route text-cyan-600"></i>
                                         <span>调度总控</span>
                                     </button>
                                     <div class="border-t border-gray-100 my-1"></div>
-                                    <button onclick="switchModule('planning'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('planning'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-calendar-alt text-indigo-600"></i>
                                         <span>计划管理</span>
                                     </button>
-                                    <button onclick="switchModule('production'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('production'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-cogs text-blue-600"></i>
                                         <span>生产管理</span>
                                     </button>
-                                    <button onclick="switchModule('inventory'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('inventory'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-boxes text-purple-600"></i>
                                         <span>仓储管理</span>
                                     </button>
-                                    <button onclick="switchModule('logistics'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('logistics'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-truck text-teal-600"></i>
                                         <span>厂内物流</span>
                                     </button>
-                                    <button onclick="switchModule('quality'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('quality'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-check-circle text-green-600"></i>
                                         <span>质量管理</span>
                                     </button>
-                                    <button onclick="switchModule('equipment'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('equipment'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-tools text-orange-600"></i>
                                         <span>设备管理</span>
                                     </button>
-                                    <button onclick="switchModule('energy-park'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('energy-park'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-bolt text-yellow-600"></i>
                                         <span>能源管理</span>
                                     </button>
@@ -310,19 +330,23 @@
 
                         <!-- 运营中心下拉菜单 -->
                         <div class="relative">
-                            <button id="operationsNavBtn" onclick="toggleDropdownNav('operations')" class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
+                            <button id="operationsNavBtn" onclick="toggleDropdownNav('operations')"
+                                class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
                                 <i class="fas fa-chart-line"></i>
                                 <span>运营中心</span>
                                 <i id="operationsNavIcon" class="fas fa-chevron-down text-sm transition-transform"></i>
                             </button>
 
-                            <div id="operationsNavDropdown" class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
+                            <div id="operationsNavDropdown"
+                                class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
                                 <div class="py-2">
-                                    <button onclick="switchModule('operations'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('operations'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-chart-bar text-red-600"></i>
                                         <span>数据看板</span>
                                     </button>
-                                    <button onclick="switchModule('digitaltwin'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('digitaltwin'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-cube text-violet-600"></i>
                                         <span>数字孪生</span>
                                     </button>
@@ -332,29 +356,36 @@
 
                         <!-- 基础平台下拉菜单 -->
                         <div class="relative">
-                            <button id="platformNavBtn" onclick="toggleDropdownNav('platform')" class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
+                            <button id="platformNavBtn" onclick="toggleDropdownNav('platform')"
+                                class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
                                 <i class="fas fa-layer-group"></i>
                                 <span>基础平台</span>
                                 <i id="platformNavIcon" class="fas fa-chevron-down text-sm transition-transform"></i>
                             </button>
 
-                            <div id="platformNavDropdown" class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
+                            <div id="platformNavDropdown"
+                                class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
                                 <div class="py-2">
-                                    <button onclick="switchModule('iot'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('iot'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-wifi text-cyan-600 w-5"></i>
                                         <span>IOT平台</span>
                                     </button>
-                                    <button onclick="switchModule('lowcode'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('lowcode'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-code text-indigo-600 w-5"></i>
                                         <span>低代码平台</span>
                                     </button>
-                                    <button onclick="switchModule('masterdata'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('masterdata'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-database text-gray-600 w-5"></i>
                                         <span>主数据平台</span>
                                     </button>
                                     <!-- 外部链接按钮增加视觉区分 -->
                                     <div class="border-t border-gray-100 my-1"></div>
-                                    <button onclick="window.open('https://imap.iimake.com/index/#/home', '_blank'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-blue-50 w-full text-left transition-colors">
+                                    <button
+                                        onclick="window.open('https://imap.iimake.com/index/#/home', '_blank'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-blue-50 w-full text-left transition-colors">
                                         <i class="fas fa-exchange-alt text-blue-600 w-5"></i>
                                         <div class="flex-1">
                                             <span>数据集成平台</span>
@@ -362,7 +393,9 @@
                                         </div>
                                         <i class="fas fa-external-link-alt text-xs text-blue-500 ml-2"></i>
                                     </button>
-                                    <button onclick="window.open('https://imap.iimake.com/index/#/home', '_blank'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-cyan-50 w-full text-left transition-colors">
+                                    <button
+                                        onclick="window.open('https://imap.iimake.com/index/#/home', '_blank'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-cyan-50 w-full text-left transition-colors">
                                         <i class="fas fa-cloud-upload-alt text-cyan-600 w-5"></i>
                                         <div class="flex-1">
                                             <span>慧图云平台</span>
@@ -376,21 +409,67 @@
 
                         <!-- 验厂系统下拉菜单 -->
                         <div class="relative">
-                            <button id="inspectionNavBtn" onclick="toggleDropdownNav('inspection')" class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
+                            <button id="inspectionNavBtn" onclick="toggleDropdownNav('inspection')"
+                                class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
                                 <i class="fas fa-clipboard-check"></i>
                                 <span>验厂系统</span>
                                 <i id="inspectionNavIcon" class="fas fa-chevron-down text-sm transition-transform"></i>
                             </button>
 
-                            <div id="inspectionNavDropdown" class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
+                            <div id="inspectionNavDropdown"
+                                class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-48">
                                 <div class="py-2">
-                                    <button onclick="switchModule('smart-assessment'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('smart-assessment'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-industry text-blue-500 w-5"></i>
                                         <span>智造能力评估</span>
                                     </button>
-                                    <button onclick="switchModule('process-management'); closeAllDropdowns();" class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                    <button onclick="switchModule('process-management'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
                                         <i class="fas fa-project-diagram text-green-500 w-5"></i>
                                         <span>流程管理系统</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 订单履约下拉菜单 -->
+                        <div class="relative">
+                            <button id="orderFulfillmentNavBtn" onclick="toggleDropdownNav('orderFulfillment')"
+                                class="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-800 font-medium text-sm border-b-2 border-transparent hover:border-gray-300 transition-colors">
+                                <i class="fas fa-file-contract"></i>
+                                <span>订单履约</span>
+                                <i id="orderFulfillmentNavIcon"
+                                    class="fas fa-chevron-down text-sm transition-transform"></i>
+                            </button>
+
+                            <div id="orderFulfillmentNavDropdown"
+                                class="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden min-w-56">
+                                <div class="py-2">
+                                    <button onclick="switchModule('master-data'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-database text-blue-500 w-5"></i>
+                                        <span>主数据管理</span>
+                                    </button>
+                                    <button onclick="switchModule('sales-management'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-shopping-cart text-green-500 w-5"></i>
+                                        <span>销售管理</span>
+                                    </button>
+                                    <button onclick="switchModule('delivery-management'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-truck text-orange-500 w-5"></i>
+                                        <span>交货单管理</span>
+                                    </button>
+                                    <button onclick="switchModule('sop-planning'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-calendar-alt text-purple-500 w-5"></i>
+                                        <span>S&OP计划</span>
+                                    </button>
+                                    <button onclick="switchModule('report-analysis'); closeAllDropdowns();"
+                                        class="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 w-full text-left">
+                                        <i class="fas fa-chart-bar text-cyan-500 w-5"></i>
+                                        <span>报表分析</span>
                                     </button>
                                 </div>
                             </div>
@@ -424,7 +503,8 @@
         <!-- 主内容区域 -->
         <div class="flex flex-1 overflow-hidden">
             <!-- 左侧二级导航 -->
-            <nav id="sidebar-nav" class="w-64 bg-white shadow-sm border-r border-gray-200 flex flex-col" style="display: none;">
+            <nav id="sidebar-nav" class="w-64 bg-white shadow-sm border-r border-gray-200 flex flex-col"
+                style="display: none;">
                 <div class="p-4 border-b border-gray-100">
                     <h3 id="module-title" class="text-lg font-semibold text-gray-800">首页</h3>
                 </div>
@@ -450,10 +530,8 @@
 
                 <!-- 内容iframe -->
                 <div class="flex-1 p-6">
-                    <iframe id="content-frame"
-                            src="pages/dashboard.html"
-                            class="w-full h-full border-0 rounded-lg shadow-sm bg-white"
-                            frameborder="0">
+                    <iframe id="content-frame" src="pages/dashboard.html"
+                        class="w-full h-full border-0 rounded-lg shadow-sm bg-white" frameborder="0">
                     </iframe>
                 </div>
             </main>
@@ -462,13 +540,13 @@
 
     <script>
         // 全局函数，用于从iframe中调用
-        window.navigateToModule = function(moduleId) {
+        window.navigateToModule = function (moduleId) {
             console.log('navigateToModule called with:', moduleId);
             switchModule(moduleId);
         };
 
         // 全局函数，用于AI助手导航到具体页面
-        window.navigateToDocumentPage = function(moduleId, url, title) {
+        window.navigateToDocumentPage = function (moduleId, url, title) {
             console.log('navigateToDocumentPage called with:', { moduleId, url, title });
 
             // 首先切换到对应模块
@@ -662,9 +740,9 @@
                     { id: 'asset-management', name: '设备资产管理', icon: 'fas fa-database', url: 'pages/equipment/asset-management.html' },
                     { id: 'maintenance-repair', name: '维护维修管理', icon: 'fas fa-tools', url: 'pages/equipment/maintenance-repair.html' },
                     { id: 'preventive-maintenance', name: '计划性维护', icon: 'fas fa-calendar-check', url: 'pages/equipment/preventive-maintenance.html' },
-                    { 
-                        id: 'inspection-management', 
-                        name: '点巡检管理', 
+                    {
+                        id: 'inspection-management',
+                        name: '点巡检管理',
                         icon: 'fas fa-search',
                         subItems: [
                             { id: 'inspection-routes', name: '巡检路线', url: 'pages/equipment/inspection-management.html?view=routes' },
@@ -673,9 +751,9 @@
                             { id: 'inspection-reports', name: '巡检报告', url: 'pages/equipment/inspection-management.html?view=reports' }
                         ]
                     },
-                    { 
-                        id: 'spare-parts-management', 
-                        name: '备品备件管理', 
+                    {
+                        id: 'spare-parts-management',
+                        name: '备品备件管理',
                         icon: 'fas fa-boxes',
                         subItems: [
                             { id: 'spare-parts-inventory', name: '备件台账', url: 'pages/equipment/spare-parts-management.html?view=inventory' },
@@ -684,9 +762,9 @@
                             { id: 'spare-parts-analysis', name: '备件分析', url: 'pages/equipment/spare-parts-management.html?view=analysis' }
                         ]
                     },
-                    { 
-                        id: 'predictive-maintenance', 
-                        name: '预测性维护', 
+                    {
+                        id: 'predictive-maintenance',
+                        name: '预测性维护',
                         icon: 'fas fa-brain',
                         subItems: [
                             { id: 'predictive-analysis', name: '预测分析', url: 'pages/equipment/predictive-maintenance.html?view=dashboard' },
@@ -695,9 +773,9 @@
                             { id: 'prediction-models', name: '预测模型', url: 'pages/equipment/predictive-maintenance.html?view=models' }
                         ]
                     },
-                    { 
-                        id: 'knowledge-base', 
-                        name: '知识库管理', 
+                    {
+                        id: 'knowledge-base',
+                        name: '知识库管理',
                         icon: 'fas fa-book',
                         subItems: [
                             { id: 'knowledge-cases', name: '案例库', url: 'pages/equipment/knowledge-base.html?view=cases' },
@@ -706,9 +784,9 @@
                             { id: 'knowledge-expert', name: '专家库', url: 'pages/equipment/knowledge-base.html?view=expert' }
                         ]
                     },
-                    { 
-                        id: 'oee-analysis', 
-                        name: 'OEE统计分析', 
+                    {
+                        id: 'oee-analysis',
+                        name: 'OEE统计分析',
                         icon: 'fas fa-chart-line',
                         subItems: [
                             { id: 'oee-dashboard', name: '集中看板', url: 'pages/equipment/oee-analysis.html?view=dashboard' },
@@ -717,9 +795,9 @@
                             { id: 'oee-reports', name: '报表管理', url: 'pages/equipment/oee-analysis.html?view=reports' }
                         ]
                     },
-                    { 
-                        id: 'idle-equipment', 
-                        name: '闲置设备管理', 
+                    {
+                        id: 'idle-equipment',
+                        name: '闲置设备管理',
                         icon: 'fas fa-warehouse',
                         subItems: [
                             { id: 'idle-pool', name: '闲置资源池', url: 'pages/equipment/idle-equipment.html?view=pool' },
@@ -728,9 +806,9 @@
                             { id: 'idle-disposal', name: '处置管理', url: 'pages/equipment/idle-equipment.html?view=disposal' }
                         ]
                     },
-                    { 
-                        id: 'tech-renovation', 
-                        name: '技改管理', 
+                    {
+                        id: 'tech-renovation',
+                        name: '技改管理',
                         icon: 'fas fa-project-diagram',
                         subItems: [
                             { id: 'tech-projects', name: '技改项目', url: 'pages/equipment/tech-renovation.html?view=projects' },
@@ -951,6 +1029,64 @@
                     { id: '3d-modeling', name: '3D建模与仿真', icon: 'fas fa-cubes', url: 'pages/coming-soon.html' },
                     { id: 'data-integration', name: '数据集成与同步', icon: 'fas fa-sync', url: 'pages/coming-soon.html' },
                     { id: 'simulation-prediction', name: '仿真与预测', icon: 'fas fa-chart-line', url: 'pages/coming-soon.html' }
+                ]
+            },
+            // 订单履约模块
+            'order-fulfillment': {
+                title: '订单履约',
+                url: 'pages/order-fulfillment/index.html',
+                subMenus: [
+                    { id: 'order-overview', name: '履约概览', icon: 'fas fa-tachometer-alt', url: 'pages/order-fulfillment/index.html' }
+                ]
+            },
+            'master-data': {
+                title: '主数据管理',
+                url: 'pages/order-fulfillment/master-data/organization.html',
+                subMenus: [
+                    { id: 'organization', name: '组织管理', icon: 'fas fa-sitemap', url: 'pages/order-fulfillment/master-data/organization.html' },
+                    { id: 'warehouse', name: '仓库管理', icon: 'fas fa-warehouse', url: 'pages/order-fulfillment/master-data/warehouse.html' },
+                    { id: 'product', name: '货品管理', icon: 'fas fa-box', url: 'pages/order-fulfillment/master-data/product.html' },
+                    { id: 'service-provider', name: '服务商管理', icon: 'fas fa-truck', url: 'pages/order-fulfillment/master-data/service-provider.html' },
+                    { id: 'customer', name: '客户管理', icon: 'fas fa-users', url: 'pages/order-fulfillment/master-data/customer.html' },
+                    { id: 'contract', name: '合同管理', icon: 'fas fa-file-contract', url: 'pages/order-fulfillment/master-data/contract.html' },
+                    { id: 'order-type', name: '订单类型', icon: 'fas fa-tags', url: 'pages/order-fulfillment/master-data/order-type.html' },
+                    { id: 'consignee', name: '收货人', icon: 'fas fa-address-card', url: 'pages/order-fulfillment/master-data/consignee.html' }
+                ]
+            },
+            'sales-management': {
+                title: '销售管理',
+                url: 'pages/order-fulfillment/sales/order-entry.html',
+                subMenus: [
+                    { id: 'order-entry', name: '订单录入', icon: 'fas fa-edit', url: 'pages/order-fulfillment/sales/order-entry.html' },
+                    { id: 'order-split', name: '订单拆分', icon: 'fas fa-cut', url: 'pages/order-fulfillment/sales/order-split.html' },
+                    { id: 'order-status', name: '订单状态', icon: 'fas fa-tasks', url: 'pages/order-fulfillment/sales/order-status.html' }
+                ]
+            },
+            'delivery-management': {
+                title: '交货单管理',
+                url: 'pages/order-fulfillment/delivery/delivery-create.html',
+                subMenus: [
+                    { id: 'delivery-create', name: '交货单创建', icon: 'fas fa-plus-circle', url: 'pages/order-fulfillment/delivery/delivery-create.html' },
+                    { id: 'delivery-tracking', name: '交货单追溯', icon: 'fas fa-search', url: 'pages/order-fulfillment/delivery/delivery-tracking.html' }
+                ]
+            },
+            'sop-planning': {
+                title: 'S&OP计划',
+                url: 'pages/order-fulfillment/sop/data-collection.html',
+                subMenus: [
+                    { id: 'data-collection', name: '数据收集', icon: 'fas fa-database', url: 'pages/order-fulfillment/sop/data-collection.html' },
+                    { id: 'demand-planning', name: '需求计划', icon: 'fas fa-chart-line', url: 'pages/order-fulfillment/sop/demand-planning.html' },
+                    { id: 'coordination', name: '协调计划', icon: 'fas fa-handshake', url: 'pages/order-fulfillment/sop/coordination-planning.html' },
+                    { id: 'execution', name: '执行跟踪', icon: 'fas fa-rocket', url: 'pages/order-fulfillment/sop/execution-tracking.html' }
+                ]
+            },
+            'report-analysis': {
+                title: '报表分析',
+                url: 'pages/order-fulfillment/reports/query-analysis.html',
+                subMenus: [
+                    { id: 'template', name: '模板管理', icon: 'fas fa-file-alt', url: 'pages/order-fulfillment/reports/template-management.html' },
+                    { id: 'query', name: '报表查询', icon: 'fas fa-search', url: 'pages/order-fulfillment/reports/query-analysis.html' },
+                    { id: 'ot-report', name: 'OT表报表', icon: 'fas fa-clock', url: 'pages/order-fulfillment/reports/ot-report.html' }
                 ]
             }
         };
@@ -1187,7 +1323,7 @@
         // 移除所有登录相关函数
 
         // 初始化
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // 移除登录检查，直接初始化系统
             updateTime();
             setInterval(updateTime, 1000);
@@ -1354,7 +1490,7 @@
 
         // 修改原有的toggleSubItems函数，在收起状态下禁用三级菜单展开
         const originalToggleSubItems = toggleSubItems;
-        toggleSubItems = function(menuId) {
+        toggleSubItems = function (menuId) {
             // 如果侧边栏收起，不允许展开三级菜单
             if (sidebarCollapsed) {
                 return;
@@ -1364,12 +1500,12 @@
 
         // 下拉导航菜单控制
         function toggleDropdownNav(category) {
-            const allDropdowns = ['manufacturing', 'operations', 'platform', 'inspection'];
-            
+            const allDropdowns = ['manufacturing', 'operations', 'platform', 'inspection', 'orderFulfillment'];
+
             allDropdowns.forEach(cat => {
                 const dropdown = document.getElementById(cat + 'NavDropdown');
                 const icon = document.getElementById(cat + 'NavIcon');
-                
+
                 if (cat === category) {
                     const isHidden = dropdown.classList.contains('hidden');
                     if (isHidden) {
@@ -1389,7 +1525,7 @@
 
         // 关闭所有下拉菜单
         function closeAllDropdowns() {
-            const allDropdowns = ['manufacturing', 'operations', 'platform', 'inspection'];
+            const allDropdowns = ['manufacturing', 'operations', 'platform', 'inspection', 'orderFulfillment'];
             allDropdowns.forEach(cat => {
                 const dropdown = document.getElementById(cat + 'NavDropdown');
                 const icon = document.getElementById(cat + 'NavIcon');
@@ -1397,12 +1533,12 @@
                 icon.style.transform = 'rotate(0deg)';
             });
         }
-        
+
         // 点击外部关闭下拉菜单
         function closeDropdownOnOutsideClick(event) {
-            const allNavBtns = ['manufacturingNavBtn', 'operationsNavBtn', 'platformNavBtn', 'inspectionNavBtn'];
-            const allDropdowns = ['manufacturingNavDropdown', 'operationsNavDropdown', 'platformNavDropdown', 'inspectionNavDropdown'];
-            
+            const allNavBtns = ['manufacturingNavBtn', 'operationsNavBtn', 'platformNavBtn', 'inspectionNavBtn', 'orderFulfillmentNavBtn'];
+            const allDropdowns = ['manufacturingNavDropdown', 'operationsNavDropdown', 'platformNavDropdown', 'inspectionNavDropdown', 'orderFulfillmentNavDropdown'];
+
             let clickedInside = false;
             allNavBtns.forEach((btnId, index) => {
                 const btn = document.getElementById(btnId);
@@ -1411,19 +1547,19 @@
                     clickedInside = true;
                 }
             });
-            
+
             if (!clickedInside) {
                 closeAllDropdowns();
             }
         }
 
         // 在页面加载完成后初始化侧边栏状态和下拉导航功能
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // 延迟初始化，确保所有元素都已加载
             setTimeout(() => {
                 initSidebarState();
             }, 100);
-            
+
             // 添加全局点击事件监听器
             document.addEventListener('click', closeDropdownOnOutsideClick);
         });
@@ -1432,4 +1568,5 @@
     <!-- AI助手脚本 -->
     <script src="assets/js/ai-assistant.js"></script>
 </body>
+
 </html>
