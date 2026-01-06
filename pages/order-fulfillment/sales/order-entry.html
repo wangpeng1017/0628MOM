@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单录入与创建 - 订单履约</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-section {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="p-6">
+        <!-- 面包屑导航 -->
+        <div class="mb-4">
+            <nav class="flex items-center text-sm text-gray-500">
+                <a href="../index.html" class="hover:text-blue-600">订单履约</a>
+                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                <a href="#" class="hover:text-blue-600">销售管理</a>
+                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                <span class="text-gray-800 font-medium">订单录入与创建</span>
+            </nav>
+        </div>
+
+        <!-- 页面标题 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">订单录入与创建</h1>
+                <p class="text-gray-500 mt-1">支持手动录入、API接口、Excel导入等多种方式创建销售订单</p>
+            </div>
+            <div class="flex space-x-3">
+                <button
+                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm"
+                    onclick="showImportModal()">
+                    <i class="fas fa-file-excel mr-2 text-green-600"></i>Excel导入
+                </button>
+                <button
+                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm">
+                    <i class="fas fa-history mr-2"></i>历史订单
+                </button>
+            </div>
+        </div>
+
+        <!-- 创建方式选择 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+            <div class="glass-card rounded-xl p-5 border-2 border-blue-500 cursor-pointer">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-edit text-blue-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800">手动录入</h3>
+                        <p class="text-sm text-gray-500">逐条填写订单信息</p>
+                    </div>
+                    <i class="fas fa-check-circle text-blue-600 ml-auto"></i>
+                </div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border border-gray-200 cursor-pointer hover:border-blue-300">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-file-excel text-green-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800">Excel批量导入</h3>
+                        <p class="text-sm text-gray-500">批量导入订单数据</p>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border border-gray-200 cursor-pointer hover:border-blue-300">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                        <i class="fas fa-plug text-purple-600 text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800">API接口同步</h3>
+                        <p class="text-sm text-gray-500">从SAP等系统自动同步</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 订单表单 -->
+        <form class="space-y-6">
+            <!-- 基本信息 -->
+            <div class="glass-card rounded-xl p-6 form-section">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-blue-600 font-bold text-sm">1</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800">基本信息</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">订单编号 <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" value="SO-2026010606"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg bg-gray-100 text-gray-500"
+                            readonly>
+                        <p class="text-xs text-gray-400 mt-1">系统自动生成</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">订单类型 <span
+                                class="text-red-500">*</span></label>
+                        <select
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option value="">请选择订单类型</option>
+                            <option value="standard">标准销售订单</option>
+                            <option value="framework">框架协议订单</option>
+                            <option value="urgent">紧急订单</option>
+                            <option value="sample">样品订单</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">订单日期 <span
+                                class="text-red-500">*</span></label>
+                        <input type="date" value="2026-01-06"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 客户信息 -->
+            <div class="glass-card rounded-xl p-6 form-section">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-blue-600 font-bold text-sm">2</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800">客户信息</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">客户名称 <span
+                                class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <input type="text" placeholder="输入客户名称搜索..."
+                                class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <button type="button"
+                                class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-blue-600">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">联系人</label>
+                        <input type="text" placeholder="请输入联系人姓名"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">联系电话</label>
+                        <input type="tel" placeholder="请输入联系电话"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">收货地址 <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" placeholder="请输入详细收货地址"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">客户要求交货日期 <span
+                                class="text-red-500">*</span></label>
+                        <input type="date"
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 产品明细 -->
+            <div class="glass-card rounded-xl p-6 form-section">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                            <span class="text-blue-600 font-bold text-sm">3</span>
+                        </div>
+                        <h3 class="font-semibold text-gray-800">产品明细</h3>
+                    </div>
+                    <button type="button" class="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg text-sm"
+                        onclick="addProductLine()">
+                        <i class="fas fa-plus mr-2"></i>添加产品
+                    </button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm" id="productTable">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="text-left py-3 px-4 font-medium text-gray-600">序号</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-600">产品型号 <span
+                                        class="text-red-500">*</span></th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-600">产品名称</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-600">规格</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-600">数量 <span
+                                        class="text-red-500">*</span></th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-600">单位</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-600">单价(¥)</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-600">金额(¥)</th>
+                                <th class="text-left py-3 px-4 font-medium text-gray-600">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100" id="productTableBody">
+                            <tr>
+                                <td class="py-3 px-4">1</td>
+                                <td class="py-3 px-4">
+                                    <select
+                                        class="w-full px-3 py-1.5 border border-gray-200 rounded text-sm focus:ring-2 focus:ring-blue-500">
+                                        <option value="">选择产品</option>
+                                        <option value="CPS-SCA100KTL">CPS SCA100KTL</option>
+                                        <option value="CPS-SCA225KTL">CPS SCA225KTL</option>
+                                        <option value="CPS-SCE125KTL-T">CPS SCE125KTL-T</option>
+                                        <option value="CPS-SCA50KTL-DO">CPS SCA50KTL-DO</option>
+                                    </select>
+                                </td>
+                                <td class="py-3 px-4 text-gray-500">100kW组串式逆变器</td>
+                                <td class="py-3 px-4 text-gray-500">三相/380V</td>
+                                <td class="py-3 px-4">
+                                    <input type="number" value="100" min="1"
+                                        class="w-20 px-2 py-1.5 border border-gray-200 rounded text-sm focus:ring-2 focus:ring-blue-500">
+                                </td>
+                                <td class="py-3 px-4 text-gray-500">台</td>
+                                <td class="py-3 px-4">
+                                    <input type="number" value="28000"
+                                        class="w-24 px-2 py-1.5 border border-gray-200 rounded text-sm focus:ring-2 focus:ring-blue-500">
+                                </td>
+                                <td class="py-3 px-4 font-medium text-gray-800">2,800,000</td>
+                                <td class="py-3 px-4">
+                                    <button type="button" class="text-red-500 hover:text-red-700"><i
+                                            class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="bg-gray-50">
+                            <tr>
+                                <td colspan="7" class="text-right py-3 px-4 font-medium text-gray-600">订单总金额：</td>
+                                <td class="py-3 px-4 font-bold text-xl text-blue-600">¥2,800,000</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 其他信息 -->
+            <div class="glass-card rounded-xl p-6 form-section">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-blue-600 font-bold text-sm">4</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-800">其他信息</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">备注</label>
+                        <textarea rows="3" placeholder="请输入订单备注信息..."
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">附件上传</label>
+                        <div
+                            class="border-2 border-dashed border-gray-200 rounded-lg p-6 text-center hover:border-blue-400 transition-colors cursor-pointer">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                            <p class="text-sm text-gray-500">点击或拖拽文件到此处上传</p>
+                            <p class="text-xs text-gray-400 mt-1">支持 PDF、Excel、Word 格式，单个文件不超过10MB</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="flex justify-end space-x-4">
+                <button type="button"
+                    class="px-6 py-2.5 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 font-medium">
+                    取消
+                </button>
+                <button type="button"
+                    class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium">
+                    <i class="fas fa-save mr-2"></i>保存草稿
+                </button>
+                <button type="submit"
+                    class="px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                    <i class="fas fa-paper-plane mr-2"></i>提交订单
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function addProductLine() {
+            const tbody = document.getElementById('productTableBody');
+            const rowCount = tbody.rows.length + 1;
+            const newRow = `
+                <tr>
+                    <td class="py-3 px-4">${rowCount}</td>
+                    <td class="py-3 px-4">
+                        <select class="w-full px-3 py-1.5 border border-gray-200 rounded text-sm focus:ring-2 focus:ring-blue-500">
+                            <option value="">选择产品</option>
+                            <option value="CPS-SCA100KTL">CPS SCA100KTL</option>
+                            <option value="CPS-SCA225KTL">CPS SCA225KTL</option>
+                        </select>
+                    </td>
+                    <td class="py-3 px-4 text-gray-500">-</td>
+                    <td class="py-3 px-4 text-gray-500">-</td>
+                    <td class="py-3 px-4"><input type="number" min="1" class="w-20 px-2 py-1.5 border border-gray-200 rounded text-sm"></td>
+                    <td class="py-3 px-4 text-gray-500">台</td>
+                    <td class="py-3 px-4"><input type="number" class="w-24 px-2 py-1.5 border border-gray-200 rounded text-sm"></td>
+                    <td class="py-3 px-4 font-medium text-gray-800">-</td>
+                    <td class="py-3 px-4"><button type="button" class="text-red-500 hover:text-red-700" onclick="this.closest('tr').remove()"><i class="fas fa-trash"></i></button></td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('beforeend', newRow);
+        }
+
+        function showImportModal() {
+            alert('Excel导入功能 - 演示模式');
+        }
+    </script>
+</body>
+
+</html>

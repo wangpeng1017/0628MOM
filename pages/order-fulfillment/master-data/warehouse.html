@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仓库管理 - 订单履约</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .warehouse-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .warehouse-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="p-6">
+        <!-- 面包屑 -->
+        <nav class="flex items-center text-sm text-gray-500 mb-4">
+            <a href="../index.html" class="hover:text-blue-600">订单履约</a>
+            <i class="fas fa-chevron-right mx-2 text-xs"></i>
+            <span class="text-gray-800 font-medium">仓库管理</span>
+        </nav>
+
+        <!-- 页面标题 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">仓库管理</h1>
+                <p class="text-gray-500 mt-1">管理成品仓库、发货仓位及库存容量</p>
+            </div>
+            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                <i class="fas fa-plus mr-2"></i>新增仓库
+            </button>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="glass-card rounded-xl p-5 border-l-4 border-blue-500">
+                <div class="text-gray-500 text-sm">仓库总数</div>
+                <div class="text-2xl font-bold text-gray-800 mt-1">12</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-green-500">
+                <div class="text-gray-500 text-sm">正常运营</div>
+                <div class="text-2xl font-bold text-green-600 mt-1">10</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-orange-500">
+                <div class="text-gray-500 text-sm">维护中</div>
+                <div class="text-2xl font-bold text-orange-600 mt-1">2</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-purple-500">
+                <div class="text-gray-500 text-sm">总仓位数</div>
+                <div class="text-2xl font-bold text-purple-600 mt-1">2,456</div>
+            </div>
+        </div>
+
+        <!-- 仓库卡片列表 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 仓库卡片1 -->
+            <div class="warehouse-card glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-warehouse text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">上海松江成品仓</h3>
+                            <p class="text-sm text-gray-500">WH-SH-001</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">正常</span>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">仓位使用率</span>
+                        <span class="font-medium text-gray-800">78%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-blue-500 h-2 rounded-full" style="width: 78%"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm pt-2">
+                        <div><span class="text-gray-500">总仓位：</span><span class="font-medium">800</span></div>
+                        <div><span class="text-gray-500">已用：</span><span class="font-medium">624</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 仓库卡片2 -->
+            <div class="warehouse-card glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-warehouse text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">海宁成品仓</h3>
+                            <p class="text-sm text-gray-500">WH-HN-001</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">正常</span>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">仓位使用率</span>
+                        <span class="font-medium text-gray-800">65%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-500 h-2 rounded-full" style="width: 65%"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm pt-2">
+                        <div><span class="text-gray-500">总仓位：</span><span class="font-medium">600</span></div>
+                        <div><span class="text-gray-500">已用：</span><span class="font-medium">390</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 仓库卡片3 -->
+            <div class="warehouse-card glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-warehouse text-orange-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">泰顺成品仓</h3>
+                            <p class="text-sm text-gray-500">WH-TS-001</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs">维护中</span>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">仓位使用率</span>
+                        <span class="font-medium text-gray-800">92%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-orange-500 h-2 rounded-full" style="width: 92%"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm pt-2">
+                        <div><span class="text-gray-500">总仓位：</span><span class="font-medium">400</span></div>
+                        <div><span class="text-gray-500">已用：</span><span class="font-medium">368</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 仓库卡片4 -->
+            <div class="warehouse-card glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-warehouse text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">杭州晞泰成品仓</h3>
+                            <p class="text-sm text-gray-500">WH-HZ-001</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">正常</span>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">仓位使用率</span>
+                        <span class="font-medium text-gray-800">45%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-purple-500 h-2 rounded-full" style="width: 45%"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm pt-2">
+                        <div><span class="text-gray-500">总仓位：</span><span class="font-medium">350</span></div>
+                        <div><span class="text-gray-500">已用：</span><span class="font-medium">158</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 仓库卡片5 -->
+            <div class="warehouse-card glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-cyan-100 rounded-lg flex items-center justify-center mr-4">
+                            <i class="fas fa-warehouse text-cyan-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">香港成品仓</h3>
+                            <p class="text-sm text-gray-500">WH-HK-001</p>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">正常</span>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-500">仓位使用率</span>
+                        <span class="font-medium text-gray-800">58%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-cyan-500 h-2 rounded-full" style="width: 58%"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-sm pt-2">
+                        <div><span class="text-gray-500">总仓位：</span><span class="font-medium">200</span></div>
+                        <div><span class="text-gray-500">已用：</span><span class="font-medium">116</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 新增仓库卡片 -->
+            <div
+                class="warehouse-card glass-card rounded-xl p-6 border-2 border-dashed border-gray-300 flex items-center justify-center">
+                <div class="text-center text-gray-400">
+                    <i class="fas fa-plus-circle text-4xl mb-2"></i>
+                    <p>添加新仓库</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>报表查询与分析 - 订单履约</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="p-6">
+        <!-- 面包屑导航 -->
+        <div class="mb-4">
+            <nav class="flex items-center text-sm text-gray-500">
+                <a href="../index.html" class="hover:text-blue-600">订单履约</a>
+                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                <a href="#" class="hover:text-blue-600">报表分析</a>
+                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                <span class="text-gray-800 font-medium">报表查询与分析</span>
+            </nav>
+        </div>
+
+        <!-- 页面标题 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">报表查询与分析</h1>
+                <p class="text-gray-500 mt-1">跨公司合并报表查询、多维度数据分析与可视化展示</p>
+            </div>
+            <div class="flex space-x-3">
+                <button
+                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm">
+                    <i class="fas fa-file-excel mr-2 text-green-600"></i>导出Excel
+                </button>
+                <button
+                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm">
+                    <i class="fas fa-file-pdf mr-2 text-red-600"></i>导出PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- 筛选条件 -->
+        <div class="glass-card rounded-xl p-5 mb-6">
+            <div class="flex flex-wrap items-end gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">公司主体</label>
+                    <select class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 min-w-40">
+                        <option value="">全部公司</option>
+                        <option value="sh">上海正泰电源</option>
+                        <option value="hk">正泰电源香港</option>
+                        <option value="hn">海宁晞泰</option>
+                        <option value="ts">泰顺正泰电源</option>
+                        <option value="hz">杭州晞泰</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">时间范围</label>
+                    <select class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600">
+                        <option value="today">今日</option>
+                        <option value="week">本周</option>
+                        <option value="month" selected>本月</option>
+                        <option value="quarter">本季度</option>
+                        <option value="year">本年度</option>
+                        <option value="custom">自定义</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">客户</label>
+                    <input type="text" placeholder="输入客户名称"
+                        class="px-4 py-2 border border-gray-200 rounded-lg text-sm min-w-40">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">产品型号</label>
+                    <select class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600">
+                        <option value="">全部型号</option>
+                        <option>CPS SCA100KTL</option>
+                        <option>CPS SCA225KTL</option>
+                        <option>CPS SCE125KTL-T</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">订单状态</label>
+                    <select class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600">
+                        <option value="">全部状态</option>
+                        <option value="pending">待审核</option>
+                        <option value="approved">已审核</option>
+                        <option value="producing">生产中</option>
+                        <option value="shipped">已发货</option>
+                        <option value="completed">已完成</option>
+                    </select>
+                </div>
+                <button class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium">
+                    <i class="fas fa-search mr-2"></i>查询
+                </button>
+                <button class="px-4 py-2 text-gray-600 hover:text-gray-800 text-sm">
+                    <i class="fas fa-redo mr-1"></i>重置
+                </button>
+            </div>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+            <div class="glass-card rounded-xl p-5 text-center">
+                <div class="text-3xl font-bold text-blue-600 mb-1">1,286</div>
+                <div class="text-sm text-gray-500">订单总数</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 text-center">
+                <div class="text-3xl font-bold text-green-600 mb-1">¥38.5M</div>
+                <div class="text-sm text-gray-500">订单金额</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 text-center">
+                <div class="text-3xl font-bold text-orange-600 mb-1">96.8%</div>
+                <div class="text-sm text-gray-500">交付准时率</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 text-center">
+                <div class="text-3xl font-bold text-purple-600 mb-1">4.2天</div>
+                <div class="text-sm text-gray-500">平均交付周期</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 text-center">
+                <div class="text-3xl font-bold text-cyan-600 mb-1">156</div>
+                <div class="text-sm text-gray-500">活跃客户数</div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 订单金额趋势 -->
+            <div class="glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold text-gray-800">订单金额趋势</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full">按周</button>
+                        <button class="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-full">按月</button>
+                    </div>
+                </div>
+                <div id="amountTrendChart" style="height: 280px;"></div>
+            </div>
+
+            <!-- 客户分布 -->
+            <div class="glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold text-gray-800">客户订单分布 (Top 10)</h3>
+                </div>
+                <div id="customerChart" style="height: 280px;"></div>
+            </div>
+        </div>
+
+        <!-- 数据表格 -->
+        <div class="glass-card rounded-xl overflow-hidden">
+            <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-semibold text-gray-800">查询结果</h3>
+                <div class="text-sm text-gray-500">共 <span class="font-medium text-blue-600">1,286</span> 条记录</div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600">订单号</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600">公司主体</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600">客户名称</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600">产品型号</th>
+                            <th class="text-right py-3 px-4 font-medium text-gray-600">数量</th>
+                            <th class="text-right py-3 px-4 font-medium text-gray-600">金额(¥)</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600">订单日期</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600">交货日期</th>
+                            <th class="text-center py-3 px-4 font-medium text-gray-600">状态</th>
+                            <th class="text-center py-3 px-4 font-medium text-gray-600">OTD</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 font-medium text-blue-600">SO-2026010601</td>
+                            <td class="py-3 px-4 text-gray-600">上海正泰电源</td>
+                            <td class="py-3 px-4 text-gray-800">韩国现代电气</td>
+                            <td class="py-3 px-4 text-gray-600">CPS SCA100KTL</td>
+                            <td class="py-3 px-4 text-right">500</td>
+                            <td class="py-3 px-4 text-right font-medium">14,000,000</td>
+                            <td class="py-3 px-4 text-gray-500">2026-01-06</td>
+                            <td class="py-3 px-4 text-gray-500">2026-01-15</td>
+                            <td class="py-3 px-4 text-center"><span
+                                    class="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">生产中</span></td>
+                            <td class="py-3 px-4 text-center"><span class="text-green-600 font-medium">预计准时</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 font-medium text-blue-600">SO-2026010602</td>
+                            <td class="py-3 px-4 text-gray-600">上海正泰电源</td>
+                            <td class="py-3 px-4 text-gray-800">国家电投集团</td>
+                            <td class="py-3 px-4 text-gray-600">CPS SCE125KTL-T</td>
+                            <td class="py-3 px-4 text-right">200</td>
+                            <td class="py-3 px-4 text-right font-medium">6,400,000</td>
+                            <td class="py-3 px-4 text-gray-500">2026-01-05</td>
+                            <td class="py-3 px-4 text-gray-500">2026-01-20</td>
+                            <td class="py-3 px-4 text-center"><span
+                                    class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">已审核</span></td>
+                            <td class="py-3 px-4 text-center"><span class="text-green-600 font-medium">预计准时</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 font-medium text-blue-600">SO-2026010503</td>
+                            <td class="py-3 px-4 text-gray-600">正泰电源香港</td>
+                            <td class="py-3 px-4 text-gray-800">巴西Solar Tech</td>
+                            <td class="py-3 px-4 text-gray-600">CPS SCA100KTL-DO</td>
+                            <td class="py-3 px-4 text-right">300</td>
+                            <td class="py-3 px-4 text-right font-medium">8,700,000</td>
+                            <td class="py-3 px-4 text-gray-500">2026-01-04</td>
+                            <td class="py-3 px-4 text-gray-500">2026-01-25</td>
+                            <td class="py-3 px-4 text-center"><span
+                                    class="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs">已发货</span></td>
+                            <td class="py-3 px-4 text-center"><span class="text-green-600 font-medium">已准时</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 font-medium text-blue-600">SO-2025123156</td>
+                            <td class="py-3 px-4 text-gray-600">海宁晞泰</td>
+                            <td class="py-3 px-4 text-gray-800">日本丸红株式会社</td>
+                            <td class="py-3 px-4 text-gray-600">CPS SCA225KTL</td>
+                            <td class="py-3 px-4 text-right">150</td>
+                            <td class="py-3 px-4 text-right font-medium">5,850,000</td>
+                            <td class="py-3 px-4 text-gray-500">2025-12-31</td>
+                            <td class="py-3 px-4 text-gray-500">2026-01-10</td>
+                            <td class="py-3 px-4 text-center"><span
+                                    class="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">已完成</span></td>
+                            <td class="py-3 px-4 text-center"><span class="text-orange-600 font-medium">延迟2天</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- 分页 -->
+            <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                <div class="text-sm text-gray-500">显示 1-20 条，共 1,286 条</div>
+                <div class="flex items-center space-x-2">
+                    <button class="px-3 py-1 border border-gray-200 rounded text-gray-500 hover:bg-gray-50 text-sm"><i
+                            class="fas fa-chevron-left"></i></button>
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button
+                        class="px-3 py-1 border border-gray-200 rounded text-gray-600 hover:bg-gray-50 text-sm">2</button>
+                    <button
+                        class="px-3 py-1 border border-gray-200 rounded text-gray-600 hover:bg-gray-50 text-sm">3</button>
+                    <span class="text-gray-400">...</span>
+                    <button
+                        class="px-3 py-1 border border-gray-200 rounded text-gray-600 hover:bg-gray-50 text-sm">65</button>
+                    <button class="px-3 py-1 border border-gray-200 rounded text-gray-500 hover:bg-gray-50 text-sm"><i
+                            class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 金额趋势图
+            const amountChart = echarts.init(document.getElementById('amountTrendChart'));
+            amountChart.setOption({
+                tooltip: { trigger: 'axis', formatter: '{b}<br/>订单金额: ¥{c}万' },
+                grid: { left: '3%', right: '4%', bottom: '10%', containLabel: true },
+                xAxis: {
+                    type: 'category',
+                    data: ['第1周', '第2周', '第3周', '第4周', '第5周']
+                },
+                yAxis: { type: 'value', name: '金额(万元)' },
+                series: [{
+                    type: 'bar',
+                    data: [850, 1200, 980, 1350, 1100],
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: '#3b82f6' },
+                            { offset: 1, color: '#60a5fa' }
+                        ])
+                    },
+                    barWidth: '50%'
+                }]
+            });
+
+            // 客户分布图
+            const customerChart = echarts.init(document.getElementById('customerChart'));
+            customerChart.setOption({
+                tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+                grid: { left: '3%', right: '10%', bottom: '3%', containLabel: true },
+                xAxis: { type: 'value' },
+                yAxis: {
+                    type: 'category',
+                    data: ['其他客户', '上海电气', '国家电投', '三峡新能源', '韩国现代']
+                },
+                series: [{
+                    type: 'bar',
+                    data: [320, 420, 580, 720, 850],
+                    itemStyle: {
+                        color: function (params) {
+                            const colors = ['#94a3b8', '#f59e0b', '#10b981', '#8b5cf6', '#3b82f6'];
+                            return colors[params.dataIndex];
+                        }
+                    },
+                    label: {
+                        show: true,
+                        position: 'right',
+                        formatter: '¥{c}万'
+                    }
+                }]
+            });
+
+            window.addEventListener('resize', function () {
+                amountChart.resize();
+                customerChart.resize();
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <style><![CDATA[
+      .title { font:700 46px 'Microsoft YaHei UI','Segoe UI','PingFang SC',Arial,sans-serif; fill:#e5e7eb; }
+      .subtitle { font:600 22px 'Microsoft YaHei UI','Segoe UI','PingFang SC',Arial,sans-serif; fill:#94a3b8; }
+      .lane-label { font:600 18px 'Microsoft YaHei UI','Segoe UI','PingFang SC',Arial,sans-serif; fill:#cbd5e1; }
+      .label { font:600 20px 'Microsoft YaHei UI','Segoe UI','PingFang SC',Arial,sans-serif; fill:#111827; }
+      .small { font:400 16px 'Microsoft YaHei UI','Segoe UI','PingFang SC',Arial,sans-serif; fill:#111827; }
+      .muted { fill:#64748b; }
+      .lane { fill:#0b1220; stroke:#1f2937; stroke-width:1.5; rx:14; }
+      .lane-tag { fill:#111827; stroke:#1f2937; stroke-width:1; rx:10; }
+      .box { fill:#f8fafc; stroke:#e5e7eb; stroke-width:2; rx:14; }
+      .box-primary { fill:#dbeafe; stroke:#2563eb; stroke-width:2; rx:16; }
+      .box-accent { fill:#d1fae5; stroke:#10b981; stroke-width:2; rx:14; }
+      .box-purple { fill:#ede9fe; stroke:#7c3aed; stroke-width:2; rx:14; }
+      .chip { fill:#ffffff; stroke:#e5e7eb; stroke-width:1.5; rx:10; }
+      .hline { stroke:#334155; stroke-width:2; }
+      .arrow { stroke:#cbd5e1; stroke-width:2.6; fill:none; marker-end:url(#arrow); stroke-linecap:round; stroke-linejoin:round; }
+      .arrow-halo { stroke:#0f172a; stroke-width:6; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+      .arrow-dash { stroke-dasharray:8 6; }
+    ]]></style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#cbd5e1"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1920" height="1080" fill="#0f172a"/>
+
+  <!-- 标题区 -->
+  <text x="80" y="86" class="title">设备智能体 · 架构 + 业务流程（融合）</text>
+  <text x="82" y="120" class="subtitle">上：业务流程（泳道与主干）  ·  下：系统架构（模块与数据流） · 深蓝背景 · SVG 可直接用于PPT</text>
+  <line x1="80" y1="134" x2="1840" y2="134" class="hline"/>
+
+  <!-- 顶部：业务流程泳道（压缩版） -->
+  <g id="lanes" transform="translate(0,0)">
+    <!-- 泳道容器 -->
+    <rect class="lane" x="80" y="160" width="1760" height="120"/>
+    <rect class="lane" x="80" y="300" width="1760" height="120"/>
+    <rect class="lane" x="80" y="440" width="1760" height="120"/>
+    <rect class="lane" x="80" y="580" width="1760" height="120"/>
+    <!-- 左侧标签条 -->
+    <g>
+      <rect class="lane-tag" x="80" y="160" width="90" height="120" rx="14"/>
+      <text x="92" y="194" class="lane-label">工程师/操作员</text>
+      <text x="92" y="224" class="lane-label" style="font-weight:400">移动端/网页</text>
+    </g>
+    <g>
+      <rect class="lane-tag" x="80" y="300" width="90" height="120" rx="14"/>
+      <text x="92" y="334" class="lane-label">设备智能体</text>
+      <text x="92" y="364" class="lane-label" style="font-weight:400">NLU · DM · RAG</text>
+    </g>
+    <g>
+      <rect class="lane-tag" x="80" y="440" width="90" height="120" rx="14"/>
+      <text x="92" y="474" class="lane-label">业务系统</text>
+      <text x="92" y="504" class="lane-label" style="font-weight:400">维保/备件/知识库/MES</text>
+    </g>
+    <g>
+      <rect class="lane-tag" x="80" y="580" width="90" height="120" rx="14"/>
+      <text x="92" y="614" class="lane-label">知识沉淀</text>
+      <text x="92" y="644" class="lane-label" style="font-weight:400">案例·SOP·盲点</text>
+    </g>
+
+    <!-- 关键步骤盒（w=240,h=100） -->
+    <g transform="translate(160,160)"><rect class="box" x="0" y="0" width="240" height="100"/><text x="16" y="36" class="label">1 发起问题</text><text x="16" y="66" class="small muted">文本/语音/图片 · 现场上下文</text></g>
+    <g transform="translate(460,300)"><rect class="box-primary" x="0" y="0" width="240" height="100"/><text x="16" y="36" class="label">2 澄清与上下文</text><text x="16" y="66" class="small muted">意图识别 · 参数追问</text></g>
+    <g transform="translate(740,300)"><rect class="box-primary" x="0" y="0" width="240" height="100"/><text x="16" y="36" class="label">3 智能推荐</text><text x="16" y="66" class="small muted">案例·SOP·备件（RAG）</text></g>
+    <g transform="translate(1020,160)"><rect class="box" x="0" y="0" width="240" height="100"/><text x="16" y="36" class="label">4 交互式排查</text><text x="16" y="66" class="small muted">验证与回传读数/图片</text></g>
+    <g transform="translate(1020,300)"><rect class="box-primary" x="0" y="0" width="240" height="100"/><text x="16" y="36" class="label">5 根因定位</text><text x="16" y="66" class="small muted">规则+案例+传感</text></g>
+    <g transform="translate(1020,440)"><rect class="box" x="0" y="0" width="240" height="100"/><text x="16" y="36" class="label">6 业务动作</text><text x="16" y="66" class="small muted">开工单/查库存/派工</text></g>
+    <g transform="translate(1300,160)"><rect class="box-accent" x="0" y="0" width="240" height="100"/><text x="16" y="36" class="label">7 结果反馈</text><text x="16" y="66" class="small muted">已解决/未解决</text></g>
+    <g transform="translate(1300,580)"><rect class="box" x="0" y="0" width="240" height="100"/><text x="16" y="36" class="label">8 知识沉淀</text><text x="16" y="66" class="small muted">案例草稿→审核入库</text></g>
+    <g transform="translate(1560,300)"><rect class="box-primary" x="0" y="0" width="220" height="100" rx="14"/><text x="16" y="36" class="label">9 持续优化</text><text x="16" y="66" class="small muted">策略&amp;提示词优化</text></g>
+  </g>
+
+  <!-- 分节：系统架构（模块与数据流） -->
+  <text x="80" y="646" class="subtitle" fill="#e5e7eb">系统架构（模块与数据流）</text>
+  <line x1="80" y1="660" x2="1840" y2="660" class="hline" stroke-width="3"/>
+  <rect x="80" y="670" width="1760" height="380" fill="#1e293b" stroke="#334155" stroke-width="2" rx="14"/>
+
+  <!-- 底部：系统架构（精简版） -->
+  <g id="architecture" transform="translate(0,660)">
+    <!-- 工程师/操作员 -->
+    <g transform="translate(80,20)">
+      <rect class="box" x="0" y="0" width="260" height="130"/>
+      <text x="16" y="36" class="label">工程师/操作员（移动端）</text>
+      <text x="16" y="66" class="small muted">文本/语音/图片</text>
+      <text x="16" y="94" class="small muted">现场拍照/声谱</text>
+    </g>
+    <!-- 接口层 -->
+    <g transform="translate(360,40)">
+      <rect class="box" x="0" y="0" width="190" height="90"/>
+      <text x="16" y="36" class="label">接口层</text>
+      <text x="16" y="66" class="small muted">API Gateway/WS/REST</text>
+    </g>
+    <!-- 智能体服务（核心） -->
+    <g transform="translate(580,0)">
+      <rect class="box-primary" x="0" y="0" width="460" height="200"/>
+      <text x="18" y="36" class="label" fill="#2563eb">设备智能体服务</text>
+      <g transform="translate(18,56)">
+        <rect class="chip" x="0" y="0" width="130" height="40"/>
+        <text x="10" y="26" class="small">NLU</text>
+        <rect class="chip" x="140" y="0" width="130" height="40"/>
+        <text x="150" y="26" class="small">对话管理DM</text>
+        <rect class="chip" x="280" y="0" width="160" height="40"/>
+        <text x="290" y="26" class="small">任务执行与编排</text>
+      </g>
+      <g transform="translate(18,106)">
+        <rect class="chip" x="0" y="0" width="160" height="40"/>
+        <text x="10" y="26" class="small">知识表示层（RAG）</text>
+        <rect class="chip" x="170" y="0" width="120" height="40"/>
+        <text x="180" y="26" class="small">安全审计</text>
+        <rect class="chip" x="300" y="0" width="140" height="40"/>
+        <text x="310" y="26" class="small">上下文管理</text>
+      </g>
+    </g>
+    <!-- 业务微服务 -->
+    <g transform="translate(1060,20)">
+      <rect class="box" x="0" y="0" width="280" height="170"/>
+      <text x="16" y="36" class="label">业务微服务</text>
+      <g transform="translate(16,54)">
+        <rect class="chip" x="0" y="0" width="116" height="36"/>
+        <text x="10" y="24" class="small">维保服务</text>
+        <rect class="chip" x="130" y="0" width="130" height="36"/>
+        <text x="140" y="24" class="small">备件服务</text>
+        <rect class="chip" x="0" y="46" width="116" height="36"/>
+        <text x="10" y="70" class="small">知识库</text>
+        <rect class="chip" x="130" y="46" width="130" height="36"/>
+        <text x="140" y="70" class="small">MES/其他</text>
+      </g>
+    </g>
+    <!-- 数据与AI平台 -->
+    <g transform="translate(580,230)">
+      <rect class="box-purple" x="0" y="0" width="460" height="150"/>
+      <text x="18" y="36" class="label" fill="#7c3aed">数据与AI平台</text>
+      <g transform="translate(18,56)">
+        <rect class="box" x="0" y="0" width="140" height="72"/>
+        <text x="12" y="32" class="label">向量数据库</text>
+        <text x="12" y="58" class="small muted">Milvus/Chroma</text>
+        <rect class="box" x="160" y="0" width="120" height="72"/>
+        <text x="172" y="32" class="label">LLM</text>
+        <text x="172" y="58" class="small muted">推理/审计</text>
+        <rect class="box" x="290" y="0" width="150" height="72"/>
+        <text x="302" y="32" class="label">多模态模型</text>
+        <text x="302" y="58" class="small muted">图像/声学</text>
+      </g>
+    </g>
+    <!-- 信息卡片输出 -->
+    <g transform="translate(80,210)">
+      <rect class="box-accent" x="0" y="0" width="260" height="120"/>
+      <text x="16" y="36" class="label" fill="#10b981">Agent输出 · 信息卡片</text>
+      <text x="16" y="66" class="small">Top1案例 · SOP · 诊断引导</text>
+      <text x="16" y="92" class="small">下一步建议</text>
+    </g>
+  </g>
+
+  <!-- 箭线路由（上层+Halo） -->
+  <g id="flow-arrows">
+    <!-- 顶部流程连接 -->
+    <path class="arrow-halo" d="M 400 210 L 420 210 L 420 300 L 580 300"/>
+    <path class="arrow" d="M 400 210 L 420 210 L 420 300 L 580 300"/>
+
+    <path class="arrow-halo" d="M 700 350 L 730 350 L 730 300 L 860 300 L 860 300"/>
+    <path class="arrow" d="M 700 350 L 730 350 L 730 300 L 860 300 L 860 300"/>
+
+    <path class="arrow-halo" d="M 860 350 L 1030 350 L 1030 160 L 1140 160"/>
+    <path class="arrow" d="M 860 350 L 1030 350 L 1030 160 L 1140 160"/>
+
+    <path class="arrow-halo" d="M 1140 260 L 1140 300"/>
+    <path class="arrow" d="M 1140 260 L 1140 300"/>
+
+    <path class="arrow-halo" d="M 1140 400 L 1140 440"/>
+    <path class="arrow" d="M 1140 400 L 1140 440"/>
+
+    <path class="arrow-halo" d="M 1140 540 L 1320 540 L 1320 160 L 1420 160"/>
+    <path class="arrow" d="M 1140 540 L 1320 540 L 1320 160 L 1420 160"/>
+
+    <path class="arrow-halo" d="M 1420 260 L 1420 580"/>
+    <path class="arrow" d="M 1420 260 L 1420 580"/>
+
+    <!-- 9 -> 2 反馈闭环（虚线） -->
+    <path class="arrow-halo arrow-dash" d="M 1670 350 L 1670 240 L 580 240 L 580 300"/>
+    <path class="arrow arrow-dash" d="M 1670 350 L 1670 240 L 580 240 L 580 300"/>
+
+    <!-- 底部架构连接 -->
+    <!-- 工程师 -> 接口层 -->
+    <path class="arrow-halo" d="M 340 700 L 350 700 L 350 720 L 360 720"/>
+    <path class="arrow" d="M 340 700 L 350 700 L 350 720 L 360 720"/>
+
+    <!-- 接口层 -> 智能体服务 -->
+    <path class="arrow-halo" d="M 550 760 L 580 760"/>
+    <path class="arrow" d="M 550 760 L 580 760"/>
+
+    <!-- 智能体服务 -> 信息卡片 -->
+    <path class="arrow-halo" d="M 580 80 L 360 80 L 360 230" transform="translate(0,660)"/>
+    <path class="arrow" d="M 580 80 L 360 80 L 360 230" transform="translate(0,660)"/>
+
+    <!-- 智能体服务 -> 业务微服务 -->
+    <path class="arrow-halo" d="M 1040 100 L 1060 100" transform="translate(0,660)"/>
+    <path class="arrow" d="M 1040 100 L 1060 100" transform="translate(0,660)"/>
+
+    <!-- RAG -> 向量数据库/LLM（示意） -->
+    <path class="arrow-halo" d="M 860 120 L 860 300" transform="translate(0,660)"/>
+    <path class="arrow" d="M 860 120 L 860 300" transform="translate(0,660)"/>
+  </g>
+
+  <!-- 页眉角标 -->
+  <g transform="translate(1760,72)">
+    <rect class="chip" x="-120" y="-28" width="120" height="36"/>
+    <text x="-106" y="-6" class="small">v1.0 · 融合</text>
+  </g>
+
+</svg>

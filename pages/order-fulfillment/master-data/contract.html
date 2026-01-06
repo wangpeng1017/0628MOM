@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合同管理 - 订单履约</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="p-6">
+        <!-- 面包屑 -->
+        <nav class="flex items-center text-sm text-gray-500 mb-4">
+            <a href="../index.html" class="hover:text-blue-600">订单履约</a>
+            <i class="fas fa-chevron-right mx-2 text-xs"></i>
+            <span class="text-gray-800 font-medium">合同管理</span>
+        </nav>
+
+        <!-- 标题 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">合同管理</h1>
+                <p class="text-gray-500 mt-1">管理销售合同、框架协议及价格条款</p>
+            </div>
+            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                <i class="fas fa-plus mr-2"></i>新增合同
+            </button>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="glass-card rounded-xl p-5 border-l-4 border-blue-500">
+                <div class="text-gray-500 text-sm">合同总数</div>
+                <div class="text-2xl font-bold text-gray-800 mt-1">86</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-green-500">
+                <div class="text-gray-500 text-sm">生效中</div>
+                <div class="text-2xl font-bold text-green-600 mt-1">72</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-orange-500">
+                <div class="text-gray-500 text-sm">即将到期(30天)</div>
+                <div class="text-2xl font-bold text-orange-600 mt-1">8</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-purple-500">
+                <div class="text-gray-500 text-sm">本年合同金额</div>
+                <div class="text-2xl font-bold text-purple-600 mt-1">¥2.8亿</div>
+            </div>
+        </div>
+
+        <!-- 合同列表 -->
+        <div class="glass-card rounded-xl overflow-hidden">
+            <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="搜索合同编号或客户..."
+                            class="pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm w-64">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <select class="px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-600">
+                        <option>全部状态</option>
+                        <option>生效中</option>
+                        <option>即将到期</option>
+                        <option>已过期</option>
+                    </select>
+                </div>
+            </div>
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="text-left py-4 px-4 font-medium text-gray-600">合同编号</th>
+                        <th class="text-left py-4 px-4 font-medium text-gray-600">客户名称</th>
+                        <th class="text-left py-4 px-4 font-medium text-gray-600">合同类型</th>
+                        <th class="text-right py-4 px-4 font-medium text-gray-600">合同金额(¥)</th>
+                        <th class="text-center py-4 px-4 font-medium text-gray-600">有效期</th>
+                        <th class="text-center py-4 px-4 font-medium text-gray-600">状态</th>
+                        <th class="text-center py-4 px-4 font-medium text-gray-600">操作</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-4 px-4 font-medium text-blue-600">CON-2026-001</td>
+                        <td class="py-4 px-4 text-gray-800">韩国现代电气</td>
+                        <td class="py-4 px-4"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">框架协议</span></td>
+                        <td class="py-4 px-4 text-right font-medium">80,000,000</td>
+                        <td class="py-4 px-4 text-center text-gray-600">2026/01-2026/12</td>
+                        <td class="py-4 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">生效中</span></td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-eye"></i></button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i
+                                    class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-4 px-4 font-medium text-blue-600">CON-2025-089</td>
+                        <td class="py-4 px-4 text-gray-800">国家电投集团</td>
+                        <td class="py-4 px-4"><span
+                                class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">战略合作</span></td>
+                        <td class="py-4 px-4 text-right font-medium">150,000,000</td>
+                        <td class="py-4 px-4 text-center text-gray-600">2025/06-2027/06</td>
+                        <td class="py-4 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">生效中</span></td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-eye"></i></button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i
+                                    class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 bg-orange-50">
+                        <td class="py-4 px-4 font-medium text-blue-600">CON-2025-045</td>
+                        <td class="py-4 px-4 text-gray-800">三峡新能源</td>
+                        <td class="py-4 px-4"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">框架协议</span></td>
+                        <td class="py-4 px-4 text-right font-medium">45,000,000</td>
+                        <td class="py-4 px-4 text-center text-orange-600">2025/02-2026/01 ⚠</td>
+                        <td class="py-4 px-4 text-center"><span
+                                class="px-2 py-1 bg-orange-100 text-orange-700 rounded-full text-xs">即将到期</span></td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-eye"></i></button>
+                            <button class="p-1.5 text-blue-600 hover:text-blue-700"><i class="fas fa-sync"></i></button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i
+                                    class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-4 px-4 font-medium text-blue-600">CON-2025-072</td>
+                        <td class="py-4 px-4 text-gray-800">巴西Solar Tech</td>
+                        <td class="py-4 px-4"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">采购合同</span></td>
+                        <td class="py-4 px-4 text-right font-medium">25,000,000</td>
+                        <td class="py-4 px-4 text-center text-gray-600">2025/08-2026/08</td>
+                        <td class="py-4 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">生效中</span></td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-eye"></i></button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i
+                                    class="fas fa-file-pdf"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                <div class="text-sm text-gray-500">共 <span class="font-medium">86</span> 条记录</div>
+                <div class="flex items-center space-x-2">
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-200 rounded text-gray-600 text-sm">2</button>
+                    <button class="px-3 py-1 border border-gray-200 rounded text-gray-600 text-sm">3</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

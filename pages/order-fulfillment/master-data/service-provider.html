@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服务商管理 - 订单履约</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="p-6">
+        <!-- 面包屑 -->
+        <nav class="flex items-center text-sm text-gray-500 mb-4">
+            <a href="../index.html" class="hover:text-blue-600">订单履约</a>
+            <i class="fas fa-chevron-right mx-2 text-xs"></i>
+            <span class="text-gray-800 font-medium">服务商管理</span>
+        </nav>
+
+        <!-- 标题 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">服务商管理</h1>
+                <p class="text-gray-500 mt-1">管理承运商、物流服务商及其服务能力</p>
+            </div>
+            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                <i class="fas fa-plus mr-2"></i>新增服务商
+            </button>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="glass-card rounded-xl p-5 border-l-4 border-blue-500">
+                <div class="text-gray-500 text-sm">服务商总数</div>
+                <div class="text-2xl font-bold text-gray-800 mt-1">18</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-green-500">
+                <div class="text-gray-500 text-sm">合作中</div>
+                <div class="text-2xl font-bold text-green-600 mt-1">15</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-orange-500">
+                <div class="text-gray-500 text-sm">国际物流</div>
+                <div class="text-2xl font-bold text-orange-600 mt-1">6</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-purple-500">
+                <div class="text-gray-500 text-sm">平均评分</div>
+                <div class="text-2xl font-bold text-purple-600 mt-1">4.5/5</div>
+            </div>
+        </div>
+
+        <!-- 搜索筛选 -->
+        <div class="glass-card rounded-xl p-4 mb-6">
+            <div class="flex flex-wrap items-center gap-4">
+                <div class="relative flex-1 min-w-64">
+                    <input type="text" placeholder="搜索服务商名称、编码..."
+                        class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                </div>
+                <select class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600">
+                    <option value="">服务类型</option>
+                    <option>国内物流</option>
+                    <option>国际物流</option>
+                    <option>仓储服务</option>
+                </select>
+                <select class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600">
+                    <option value="">状态</option>
+                    <option>合作中</option>
+                    <option>待审核</option>
+                    <option>已暂停</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 服务商列表 -->
+        <div class="glass-card rounded-xl overflow-hidden">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="text-left py-4 px-4 font-medium text-gray-600">服务商信息</th>
+                        <th class="text-left py-4 px-4 font-medium text-gray-600">服务类型</th>
+                        <th class="text-left py-4 px-4 font-medium text-gray-600">覆盖区域</th>
+                        <th class="text-center py-4 px-4 font-medium text-gray-600">评分</th>
+                        <th class="text-right py-4 px-4 font-medium text-gray-600">本月运单</th>
+                        <th class="text-center py-4 px-4 font-medium text-gray-600">状态</th>
+                        <th class="text-center py-4 px-4 font-medium text-gray-600">操作</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-4 px-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                                    <span class="text-red-600 font-bold">顺</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-gray-800">顺丰速运</div>
+                                    <div class="text-xs text-gray-500">SP-001</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">国内物流</span></td>
+                        <td class="py-4 px-4 text-gray-600">全国</td>
+                        <td class="py-4 px-4 text-center">
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="font-medium">4.8</span>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4 text-right font-medium">156</td>
+                        <td class="py-4 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">合作中</span></td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-eye"></i></button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-4 px-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                    <span class="text-blue-600 font-bold">中</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-gray-800">中远海运</div>
+                                    <div class="text-xs text-gray-500">SP-002</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4"><span
+                                class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">国际物流</span></td>
+                        <td class="py-4 px-4 text-gray-600">亚太、欧洲</td>
+                        <td class="py-4 px-4 text-center">
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="font-medium">4.6</span>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4 text-right font-medium">42</td>
+                        <td class="py-4 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">合作中</span></td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-eye"></i></button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-4 px-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                                    <span class="text-orange-600 font-bold">安</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-gray-800">安能物流</div>
+                                    <div class="text-xs text-gray-500">SP-003</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">国内物流</span></td>
+                        <td class="py-4 px-4 text-gray-600">华东、华南</td>
+                        <td class="py-4 px-4 text-center">
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="font-medium">4.3</span>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4 text-right font-medium">89</td>
+                        <td class="py-4 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">合作中</span></td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-eye"></i></button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-4 px-4">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                                    <span class="text-yellow-600 font-bold">D</span>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-gray-800">DHL Express</div>
+                                    <div class="text-xs text-gray-500">SP-004</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4"><span
+                                class="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">国际物流</span></td>
+                        <td class="py-4 px-4 text-gray-600">全球</td>
+                        <td class="py-4 px-4 text-center">
+                            <div class="flex items-center justify-center">
+                                <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                <span class="font-medium">4.7</span>
+                            </div>
+                        </td>
+                        <td class="py-4 px-4 text-right font-medium">28</td>
+                        <td class="py-4 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">合作中</span></td>
+                        <td class="py-4 px-4 text-center">
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-eye"></i></button>
+                            <button class="p-1.5 text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                <div class="text-sm text-gray-500">共 <span class="font-medium">18</span> 条记录</div>
+                <div class="flex items-center space-x-2">
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-200 rounded text-gray-600 text-sm">2</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

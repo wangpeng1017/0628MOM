@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <style><![CDATA[
+      .title { font:700 46px 'Microsoft YaHei UI','Segoe UI','PingFang SC',Arial,sans-serif; fill:#e5e7eb; }
+      .subtitle { font:600 22px 'Microsoft YaHei UI','Segoe UI','PingFang SC',Arial,sans-serif; fill:#94a3b8; }
+      .lane-label { font:600 18px 'Microsoft YaHei UI','Segoe UI','PingFang SC',Arial,sans-serif; fill:#cbd5e1; }
+      .label { font:600 20px 'Microsoft YaHei UI','Segoe UI','PingFang SC',Arial,sans-serif; fill:#111827; }
+      .small { font:400 16px 'Microsoft YaHei UI','Segoe UI','PingFang SC',Arial,sans-serif; fill:#111827; }
+      .muted { fill:#6b7280; }
+      .lane { fill:#0b1220; stroke:#1f2937; stroke-width:1.5; rx:14; }
+      .lane-tag { fill:#111827; stroke:#1f2937; stroke-width:1; rx:10; }
+      .box { fill:#f8fafc; stroke:#e5e7eb; stroke-width:2; rx:14; }
+      .box-primary { fill:#dbeafe; stroke:#2563eb; stroke-width:2; rx:16; }
+      .box-accent { fill:#d1fae5; stroke:#10b981; stroke-width:2; rx:14; }
+      .chip { fill:#ffffff; stroke:#e5e7eb; stroke-width:1.5; rx:10; }
+      .hline { stroke:#334155; stroke-width:2; }
+      .arrow { stroke:#cbd5e1; stroke-width:2.8; fill:none; marker-end:url(#arrow); stroke-linecap:round; stroke-linejoin:round; }
+      .arrow-halo { stroke:#0f172a; stroke-width:6; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+      .arrow-dash { stroke-dasharray:8 6; }
+    ]]></style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#cbd5e1"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1920" height="1080" fill="#0f172a"/>
+
+  <!-- 标题区 -->
+  <text x="80" y="86" class="title">设备智能体 · 业务流程视角</text>
+  <text x="82" y="120" class="subtitle">深蓝背景 · 泳道 + 流程主干 + 功能节点 · SVG 可直接用于PPT</text>
+  <line x1="80" y1="134" x2="1840" y2="134" class="hline"/>
+
+  <!-- 泳道：行布局 -->
+  <!-- 参数：top=180, laneH=160, gap=20, contentW=1760 (80..1840) -->
+  <g id="lanes">
+    <rect class="lane" x="80" y="180" width="1760" height="160"/>
+    <rect class="lane" x="80" y="360" width="1760" height="160"/>
+    <rect class="lane" x="80" y="540" width="1760" height="160"/>
+    <rect class="lane" x="80" y="720" width="1760" height="160"/>
+    <!-- 左侧标签条 -->
+    <g>
+      <rect class="lane-tag" x="80" y="180" width="90" height="160" rx="14"/>
+      <text x="92" y="214" class="lane-label">工程师/操作员</text>
+      <text x="92" y="244" class="lane-label" style="font-weight:400">移动端/网页</text>
+    </g>
+    <g>
+      <rect class="lane-tag" x="80" y="360" width="90" height="160" rx="14"/>
+      <text x="92" y="394" class="lane-label">设备智能体</text>
+      <text x="92" y="424" class="lane-label" style="font-weight:400">NLU · DM · RAG</text>
+    </g>
+    <g>
+      <rect class="lane-tag" x="80" y="540" width="90" height="160" rx="14"/>
+      <text x="92" y="574" class="lane-label">业务系统</text>
+      <text x="92" y="604" class="lane-label" style="font-weight:400">维保/备件/知识库/MES</text>
+    </g>
+    <g>
+      <rect class="lane-tag" x="80" y="720" width="90" height="160" rx="14"/>
+      <text x="92" y="754" class="lane-label">知识沉淀</text>
+      <text x="92" y="784" class="lane-label" style="font-weight:400">案例 · SOP · 盲点报告</text>
+    </g>
+  </g>
+
+  <!-- 关键步骤盒（统一尺寸 w=240,h=120） columns: 160,460,760,1060,1360,1660 -->
+  <!-- Lane Y: 180, 360, 540, 720 -->
+  <!-- 步骤1：发起问题（工程师）-->
+  <g transform="translate(160,180)">
+    <rect class="box" x="0" y="0" width="240" height="120"/>
+    <text x="16" y="38" class="label">1 发起问题</text>
+    <text x="16" y="68" class="small muted">文本/语音/图片 · 现场上下文</text>
+    <text x="16" y="94" class="small muted">示例：高速断线/温度超调</text>
+  </g>
+
+  <!-- 步骤2：澄清与上下文（Agent）-->
+  <g transform="translate(460,360)">
+    <rect class="box-primary" x="0" y="0" width="240" height="120"/>
+    <text x="16" y="38" class="label">2 澄清与上下文</text>
+    <text x="16" y="68" class="small muted">意图识别 · 关键参数追问</text>
+    <text x="16" y="94" class="small muted">上下文：设备型号/工况</text>
+  </g>
+
+  <!-- 步骤3：智能推荐（Agent）-->
+  <g transform="translate(760,360)">
+    <rect class="box-primary" x="0" y="0" width="240" height="120"/>
+    <text x="16" y="38" class="label">3 智能推荐</text>
+    <text x="16" y="68" class="small muted">Top案例 · SOP/图纸 · 备件</text>
+    <text x="16" y="94" class="small muted">RAG检索 · 相似度与摘要</text>
+  </g>
+
+  <!-- 步骤4：交互式排查（工程师）-->
+  <g transform="translate(1060,180)">
+    <rect class="box" x="0" y="0" width="240" height="120"/>
+    <text x="16" y="38" class="label">4 交互式排查</text>
+    <text x="16" y="68" class="small muted">按指导逐项验证/记录结果</text>
+    <text x="16" y="94" class="small muted">图片/读数回传</text>
+  </g>
+
+  <!-- 步骤5：根因定位（Agent）-->
+  <g transform="translate(1060,360)">
+    <rect class="box-primary" x="0" y="0" width="240" height="120"/>
+    <text x="16" y="38" class="label">5 根因定位</text>
+    <text x="16" y="68" class="small muted">规则+案例+传感读数综合判断</text>
+    <text x="16" y="94" class="small muted">给出明确根因与置信度</text>
+  </g>
+
+  <!-- 步骤6：调用业务动作（业务系统）-->
+  <g transform="translate(1060,540)">
+    <rect class="box" x="0" y="0" width="240" height="120"/>
+    <text x="16" y="38" class="label">6 调用业务动作</text>
+    <text x="16" y="68" class="small muted">开工单/查库存/生成工序任务</text>
+    <text x="16" y="94" class="small muted">维保/备件/知识库/MES</text>
+  </g>
+
+  <!-- 步骤7：结果反馈（工程师）-->
+  <g transform="translate(1360,180)">
+    <rect class="box-accent" x="0" y="0" width="240" height="120"/>
+    <text x="16" y="38" class="label">7 结果反馈</text>
+    <text x="16" y="68" class="small muted">确认已解决/仍有问题</text>
+    <text x="16" y="94" class="small muted">填报耗时/更换件</text>
+  </g>
+
+  <!-- 步骤8：知识沉淀（知识层）-->
+  <g transform="translate(1360,720)">
+    <rect class="box" x="0" y="0" width="240" height="120"/>
+    <text x="16" y="38" class="label">8 知识沉淀</text>
+    <text x="16" y="68" class="small muted">自动生成案例草稿→审核入库</text>
+    <text x="16" y="94" class="small muted">更新SOP/图谱 · 盲点报告</text>
+  </g>
+
+  <!-- 步骤9：持续优化（Agent）-->
+  <g transform="translate(1660,360)">
+    <rect class="box-primary" x="0" y="0" width="220" height="120" rx="14"/>
+    <text x="16" y="38" class="label">9 持续优化</text>
+    <text x="16" y="68" class="small muted">策略与提示词优化</text>
+    <text x="16" y="94" class="small muted">高频缺口→优先补齐</text>
+  </g>
+
+  <!-- 说明/功能注记（不喧宾夺主） -->
+  <g>
+    <rect class="chip" x="760" y="500" width="240" height="64"/>
+    <text x="772" y="524" class="small">RAG：向量检索 + 重排 + 片段引用</text>
+    <text x="772" y="548" class="small">来源可追溯，避免幻觉</text>
+  </g>
+
+  <!-- 箭线路由（上层+Halo，避免穿过文字且可视连续） -->
+  <g id="flow-arrows">
+    <!-- 1 -> 2 -->
+    <path class="arrow-halo" d="M 400 240 L 420 240 L 420 330 L 580 330 L 580 360"/>
+    <path class="arrow" d="M 400 240 L 420 240 L 420 330 L 580 330 L 580 360"/>
+
+    <!-- 2 -> 3 -->
+    <path class="arrow-halo" d="M 700 420 L 730 420 L 730 330 L 880 330 L 880 360"/>
+    <path class="arrow" d="M 700 420 L 730 420 L 730 330 L 880 330 L 880 360"/>
+
+    <!-- 3 -> 4 -->
+    <path class="arrow-halo" d="M 1000 420 L 1030 420 L 1030 210 L 1180 210 L 1180 180"/>
+    <path class="arrow" d="M 1000 420 L 1030 420 L 1030 210 L 1180 210 L 1180 180"/>
+
+    <!-- 4 -> 5 (竖直) -->
+    <path class="arrow-halo" d="M 1180 300 L 1180 360"/>
+    <path class="arrow" d="M 1180 300 L 1180 360"/>
+
+    <!-- 5 -> 6 (竖直) -->
+    <path class="arrow-halo" d="M 1180 480 L 1180 540"/>
+    <path class="arrow" d="M 1180 480 L 1180 540"/>
+
+    <!-- 6 -> 7 -->
+    <path class="arrow-halo" d="M 1300 600 L 1330 600 L 1330 210 L 1480 210 L 1480 180"/>
+    <path class="arrow" d="M 1300 600 L 1330 600 L 1330 210 L 1480 210 L 1480 180"/>
+
+    <!-- 7 -> 8 (竖直) -->
+    <path class="arrow-halo" d="M 1480 300 L 1480 720"/>
+    <path class="arrow" d="M 1480 300 L 1480 720"/>
+
+    <!-- 8 -> 9 -->
+    <path class="arrow-halo" d="M 1600 780 L 1630 780 L 1630 330 L 1780 330 L 1780 360"/>
+    <path class="arrow" d="M 1600 780 L 1630 780 L 1630 330 L 1780 330 L 1780 360"/>
+  </g>
+
+  <!-- 页眉角标 -->
+  <g transform="translate(1760,72)">
+    <rect class="chip" x="-120" y="-28" width="120" height="36"/>
+    <text x="-106" y="-6" class="small">v1.0 · 业务流程</text>
+  </g>
+
+  <!-- 页脚说明 -->
+  <g transform="translate(80,1020)">
+    <text x="0" y="0" class="small" fill="#94a3b8">说明：上为“工程师”与“设备智能体”的交互主干，下为“业务系统”与“知识沉淀”的支撑闭环；箭头为信息与动作流向。</text>
+  </g>
+</svg>

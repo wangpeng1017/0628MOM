@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S&OP数据收集 - 订单履约</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .data-source-card {
+            transition: all 0.3s ease;
+        }
+
+        .data-source-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="p-6">
+        <!-- 面包屑导航 -->
+        <div class="mb-4">
+            <nav class="flex items-center text-sm text-gray-500">
+                <a href="../index.html" class="hover:text-blue-600">订单履约</a>
+                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                <a href="#" class="hover:text-blue-600">S&OP计划</a>
+                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                <span class="text-gray-800 font-medium">数据收集</span>
+            </nav>
+        </div>
+
+        <!-- 页面标题 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">S&OP数据收集</h1>
+                <p class="text-gray-500 mt-1">自动抓取订单、库存、产能数据，为计划制定提供数据支撑</p>
+            </div>
+            <div class="flex space-x-3">
+                <button
+                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm">
+                    <i class="fas fa-sync-alt mr-2"></i>手动同步
+                </button>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                    <i class="fas fa-download mr-2"></i>导出数据
+                </button>
+            </div>
+        </div>
+
+        <!-- 数据同步状态 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="data-source-card glass-card rounded-xl p-5 border border-gray-100">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-file-invoice text-blue-600"></i>
+                    </div>
+                    <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs"><i
+                            class="fas fa-check mr-1"></i>已同步</span>
+                </div>
+                <h4 class="font-medium text-gray-800 mb-1">销售订单数据</h4>
+                <p class="text-sm text-gray-500 mb-2">来源：订单履约系统</p>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-400">最后同步：5分钟前</span>
+                    <span class="text-blue-600 font-medium">328 条</span>
+                </div>
+            </div>
+
+            <div class="data-source-card glass-card rounded-xl p-5 border border-gray-100">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-boxes text-green-600"></i>
+                    </div>
+                    <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs"><i
+                            class="fas fa-check mr-1"></i>已同步</span>
+                </div>
+                <h4 class="font-medium text-gray-800 mb-1">成品库存数据</h4>
+                <p class="text-sm text-gray-500 mb-2">来源：WMS系统</p>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-400">最后同步：10分钟前</span>
+                    <span class="text-green-600 font-medium">1,245 SKU</span>
+                </div>
+            </div>
+
+            <div class="data-source-card glass-card rounded-xl p-5 border border-gray-100">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-industry text-orange-600"></i>
+                    </div>
+                    <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs"><i
+                            class="fas fa-check mr-1"></i>已同步</span>
+                </div>
+                <h4 class="font-medium text-gray-800 mb-1">生产产能数据</h4>
+                <p class="text-sm text-gray-500 mb-2">来源：MES系统</p>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-400">最后同步：30分钟前</span>
+                    <span class="text-orange-600 font-medium">8 条产线</span>
+                </div>
+            </div>
+
+            <div class="data-source-card glass-card rounded-xl p-5 border border-gray-100">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-chart-line text-purple-600"></i>
+                    </div>
+                    <span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs"><i
+                            class="fas fa-clock mr-1"></i>待同步</span>
+                </div>
+                <h4 class="font-medium text-gray-800 mb-1">市场预测数据</h4>
+                <p class="text-sm text-gray-500 mb-2">来源：手动录入</p>
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-400">最后更新：2天前</span>
+                    <span class="text-purple-600 font-medium">需更新</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 订单汇总 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- 需求汇总表 -->
+            <div class="glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold text-gray-800">按产品系列需求汇总</h3>
+                    <select class="px-3 py-1 border border-gray-200 rounded-lg text-sm text-gray-600">
+                        <option>本月</option>
+                        <option>下月</option>
+                        <option>本季度</option>
+                    </select>
+                </div>
+                <div id="demandChart" style="height: 280px;"></div>
+            </div>
+
+            <!-- 产能匹配分析 -->
+            <div class="glass-card rounded-xl p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold text-gray-800">产能匹配分析</h3>
+                    <span class="text-sm text-gray-500">单位：台/周</span>
+                </div>
+                <div id="capacityChart" style="height: 280px;"></div>
+            </div>
+        </div>
+
+        <!-- 详细数据表 -->
+        <div class="glass-card rounded-xl overflow-hidden">
+            <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-semibold text-gray-800">本周需求明细（按产品系列）</h3>
+                <div class="flex space-x-2">
+                    <button class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">全部</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">组串式</button>
+                    <button class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">储能</button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600">产品系列</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600">产品型号</th>
+                            <th class="text-right py-3 px-4 font-medium text-gray-600">订单需求</th>
+                            <th class="text-right py-3 px-4 font-medium text-gray-600">当前库存</th>
+                            <th class="text-right py-3 px-4 font-medium text-gray-600">生产中</th>
+                            <th class="text-right py-3 px-4 font-medium text-gray-600">周产能</th>
+                            <th class="text-center py-3 px-4 font-medium text-gray-600">供需状态</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-600">优先级</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 font-medium text-gray-800">100kW组串</td>
+                            <td class="py-3 px-4 text-gray-600">CPS SCA100KTL</td>
+                            <td class="py-3 px-4 text-right font-medium text-gray-800">800</td>
+                            <td class="py-3 px-4 text-right text-gray-600">320</td>
+                            <td class="py-3 px-4 text-right text-blue-600">450</td>
+                            <td class="py-3 px-4 text-right text-gray-600">500</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">缺口30</span>
+                            </td>
+                            <td class="py-3 px-4"><span
+                                    class="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs">高</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 font-medium text-gray-800">225kW组串</td>
+                            <td class="py-3 px-4 text-gray-600">CPS SCA225KTL</td>
+                            <td class="py-3 px-4 text-right font-medium text-gray-800">350</td>
+                            <td class="py-3 px-4 text-right text-gray-600">150</td>
+                            <td class="py-3 px-4 text-right text-blue-600">200</td>
+                            <td class="py-3 px-4 text-right text-gray-600">300</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">充足</span>
+                            </td>
+                            <td class="py-3 px-4"><span
+                                    class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">中</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 font-medium text-gray-800">125kW储能</td>
+                            <td class="py-3 px-4 text-gray-600">CPS SCE125KTL-T</td>
+                            <td class="py-3 px-4 text-right font-medium text-gray-800">400</td>
+                            <td class="py-3 px-4 text-right text-gray-600">80</td>
+                            <td class="py-3 px-4 text-right text-blue-600">250</td>
+                            <td class="py-3 px-4 text-right text-gray-600">200</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs">缺口70</span>
+                            </td>
+                            <td class="py-3 px-4"><span
+                                    class="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs">高</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-3 px-4 font-medium text-gray-800">50kW分布式</td>
+                            <td class="py-3 px-4 text-gray-600">CPS SCA50KTL-DO</td>
+                            <td class="py-3 px-4 text-right font-medium text-gray-800">600</td>
+                            <td class="py-3 px-4 text-right text-gray-600">450</td>
+                            <td class="py-3 px-4 text-right text-blue-600">300</td>
+                            <td class="py-3 px-4 text-right text-gray-600">400</td>
+                            <td class="py-3 px-4 text-center">
+                                <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">充足</span>
+                            </td>
+                            <td class="py-3 px-4"><span
+                                    class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">低</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 需求汇总图表
+            const demandChart = echarts.init(document.getElementById('demandChart'));
+            demandChart.setOption({
+                tooltip: { trigger: 'axis' },
+                legend: { data: ['订单需求', '当前库存'], bottom: 0 },
+                grid: { left: '3%', right: '4%', bottom: '15%', containLabel: true },
+                xAxis: {
+                    type: 'category',
+                    data: ['100kW组串', '225kW组串', '125kW储能', '50kW分布式', '其他']
+                },
+                yAxis: { type: 'value', name: '数量(台)' },
+                series: [
+                    {
+                        name: '订单需求',
+                        type: 'bar',
+                        data: [800, 350, 400, 600, 150],
+                        itemStyle: { color: '#3b82f6' }
+                    },
+                    {
+                        name: '当前库存',
+                        type: 'bar',
+                        data: [320, 150, 80, 450, 200],
+                        itemStyle: { color: '#10b981' }
+                    }
+                ]
+            });
+
+            // 产能匹配图表
+            const capacityChart = echarts.init(document.getElementById('capacityChart'));
+            capacityChart.setOption({
+                tooltip: { trigger: 'axis' },
+                legend: { data: ['需求量', '产能'], bottom: 0 },
+                grid: { left: '3%', right: '4%', bottom: '15%', containLabel: true },
+                xAxis: {
+                    type: 'category',
+                    data: ['第1周', '第2周', '第3周', '第4周']
+                },
+                yAxis: { type: 'value', name: '数量(台)' },
+                series: [
+                    {
+                        name: '需求量',
+                        type: 'line',
+                        smooth: true,
+                        data: [550, 620, 580, 650],
+                        itemStyle: { color: '#f59e0b' },
+                        areaStyle: { color: 'rgba(245, 158, 11, 0.1)' }
+                    },
+                    {
+                        name: '产能',
+                        type: 'line',
+                        smooth: true,
+                        data: [600, 600, 600, 600],
+                        itemStyle: { color: '#10b981' },
+                        lineStyle: { type: 'dashed' }
+                    }
+                ]
+            });
+
+            window.addEventListener('resize', function () {
+                demandChart.resize();
+                capacityChart.resize();
+            });
+        });
+    </script>
+</body>
+
+</html>

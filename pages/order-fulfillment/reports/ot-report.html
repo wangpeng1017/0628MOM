@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OT表报表 - 订单履约</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="p-6">
+        <!-- 面包屑 -->
+        <nav class="flex items-center text-sm text-gray-500 mb-4">
+            <a href="../index.html" class="hover:text-blue-600">订单履约</a>
+            <i class="fas fa-chevron-right mx-2 text-xs"></i>
+            <a href="#" class="hover:text-blue-600">报表分析</a>
+            <i class="fas fa-chevron-right mx-2 text-xs"></i>
+            <span class="text-gray-800 font-medium">OT表报表</span>
+        </nav>
+
+        <!-- 标题 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">OT表报表（On-Time Delivery）</h1>
+                <p class="text-gray-500 mt-1">交货准时率分析，延迟原因统计，改善追踪</p>
+            </div>
+            <div class="flex space-x-3">
+                <button
+                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm">
+                    <i class="fas fa-download mr-2"></i>导出Excel
+                </button>
+                <button
+                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm">
+                    <i class="fas fa-print mr-2"></i>打印
+                </button>
+            </div>
+        </div>
+
+        <!-- 时间筛选 -->
+        <div class="glass-card rounded-xl p-4 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">统计周期：</span>
+                    <button class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-sm">本月</button>
+                    <button class="px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm">本季度</button>
+                    <button class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-sm">本年度</button>
+                    <input type="date" class="px-3 py-1 border border-gray-200 rounded text-sm">
+                    <span class="text-gray-400">至</span>
+                    <input type="date" class="px-3 py-1 border border-gray-200 rounded text-sm">
+                </div>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm">生成报表</button>
+            </div>
+        </div>
+
+        <!-- 核心指标 -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
+            <div class="glass-card rounded-xl p-5 text-center">
+                <div class="text-3xl font-bold text-blue-600">1,286</div>
+                <div class="text-sm text-gray-500">总交付订单</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 text-center">
+                <div class="text-3xl font-bold text-green-600">1,168</div>
+                <div class="text-sm text-gray-500">准时交付</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 text-center">
+                <div class="text-3xl font-bold text-red-600">118</div>
+                <div class="text-sm text-gray-500">延迟交付</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 text-center">
+                <div class="text-3xl font-bold text-purple-600">90.8%</div>
+                <div class="text-sm text-gray-500">OTD率</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 text-center">
+                <div class="text-3xl font-bold text-orange-600">2.3天</div>
+                <div class="text-sm text-gray-500">平均延迟</div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="glass-card rounded-xl p-6">
+                <h3 class="font-semibold text-gray-800 mb-4">月度OTD趋势</h3>
+                <div id="otdTrendChart" style="height: 280px;"></div>
+            </div>
+            <div class="glass-card rounded-xl p-6">
+                <h3 class="font-semibold text-gray-800 mb-4">延迟原因分析</h3>
+                <div id="delayReasonChart" style="height: 280px;"></div>
+            </div>
+        </div>
+
+        <!-- 详细数据表 -->
+        <div class="glass-card rounded-xl overflow-hidden">
+            <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-semibold text-gray-800">延迟订单明细</h3>
+                <select class="px-3 py-1 border border-gray-200 rounded text-sm text-gray-600">
+                    <option>按延迟天数排序</option>
+                    <option>按订单金额排序</option>
+                    <option>按客户排序</option>
+                </select>
+            </div>
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="text-left py-3 px-4 font-medium text-gray-600">订单号</th>
+                        <th class="text-left py-3 px-4 font-medium text-gray-600">客户</th>
+                        <th class="text-left py-3 px-4 font-medium text-gray-600">产品</th>
+                        <th class="text-center py-3 px-4 font-medium text-gray-600">计划交期</th>
+                        <th class="text-center py-3 px-4 font-medium text-gray-600">实际交期</th>
+                        <th class="text-center py-3 px-4 font-medium text-gray-600">延迟天数</th>
+                        <th class="text-left py-3 px-4 font-medium text-gray-600">延迟原因</th>
+                        <th class="text-center py-3 px-4 font-medium text-gray-600">改善状态</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 font-medium text-blue-600">SO-2025123156</td>
+                        <td class="py-3 px-4 text-gray-600">日本丸红株式会社</td>
+                        <td class="py-3 px-4 text-gray-600">CPS SCA225KTL×150</td>
+                        <td class="py-3 px-4 text-center text-gray-600">01-08</td>
+                        <td class="py-3 px-4 text-center text-red-600">01-10</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">2天</span></td>
+                        <td class="py-3 px-4 text-gray-600">物料短缺</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">已改善</span></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 font-medium text-blue-600">SO-2025123142</td>
+                        <td class="py-3 px-4 text-gray-600">三峡新能源</td>
+                        <td class="py-3 px-4 text-gray-600">CPS SCA100KTL×200</td>
+                        <td class="py-3 px-4 text-center text-gray-600">01-05</td>
+                        <td class="py-3 px-4 text-center text-red-600">01-08</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">3天</span></td>
+                        <td class="py-3 px-4 text-gray-600">生产排程冲突</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs">改善中</span></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 font-medium text-blue-600">SO-2025123128</td>
+                        <td class="py-3 px-4 text-gray-600">上海电气风电</td>
+                        <td class="py-3 px-4 text-gray-600">CPS SCA50KTL-DO×100</td>
+                        <td class="py-3 px-4 text-center text-gray-600">01-03</td>
+                        <td class="py-3 px-4 text-center text-red-600">01-04</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs">1天</span></td>
+                        <td class="py-3 px-4 text-gray-600">物流延误</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">已改善</span></td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 font-medium text-blue-600">SO-2025123115</td>
+                        <td class="py-3 px-4 text-gray-600">华能集团</td>
+                        <td class="py-3 px-4 text-gray-600">CPS SCE125KTL-T×80</td>
+                        <td class="py-3 px-4 text-center text-gray-600">12-28</td>
+                        <td class="py-3 px-4 text-center text-red-600">01-02</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">5天</span></td>
+                        <td class="py-3 px-4 text-gray-600">产能不足</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">待分析</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                <div class="text-sm text-gray-500">共 <span class="font-medium">118</span> 条延迟记录</div>
+                <div class="flex items-center space-x-2">
+                    <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                    <button class="px-3 py-1 border border-gray-200 rounded text-gray-600 text-sm">2</button>
+                    <button class="px-3 py-1 border border-gray-200 rounded text-gray-600 text-sm">3</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // OTD趋势图
+            const trendChart = echarts.init(document.getElementById('otdTrendChart'));
+            trendChart.setOption({
+                tooltip: { trigger: 'axis' },
+                legend: { data: ['OTD率', '目标'], bottom: 0 },
+                grid: { left: '3%', right: '4%', bottom: '15%', containLabel: true },
+                xAxis: { type: 'category', data: ['10月', '11月', '12月', '1月'] },
+                yAxis: { type: 'value', min: 80, max: 100, axisLabel: { formatter: '{value}%' } },
+                series: [
+                    { name: 'OTD率', type: 'line', data: [88.5, 91.2, 89.8, 90.8], itemStyle: { color: '#3b82f6' }, areaStyle: { color: 'rgba(59,130,246,0.1)' } },
+                    { name: '目标', type: 'line', data: [95, 95, 95, 95], itemStyle: { color: '#ef4444' }, lineStyle: { type: 'dashed' } }
+                ]
+            });
+
+            // 延迟原因分析
+            const reasonChart = echarts.init(document.getElementById('delayReasonChart'));
+            reasonChart.setOption({
+                tooltip: { trigger: 'item' },
+                legend: { bottom: 0 },
+                series: [{
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    data: [
+                        { value: 42, name: '物料短缺', itemStyle: { color: '#ef4444' } },
+                        { value: 28, name: '产能不足', itemStyle: { color: '#f59e0b' } },
+                        { value: 25, name: '生产排程', itemStyle: { color: '#3b82f6' } },
+                        { value: 15, name: '物流延误', itemStyle: { color: '#10b981' } },
+                        { value: 8, name: '其他', itemStyle: { color: '#94a3b8' } }
+                    ]
+                }]
+            });
+
+            window.addEventListener('resize', () => {
+                trendChart.resize();
+                reasonChart.resize();
+            });
+        });
+    </script>
+</body>
+
+</html>

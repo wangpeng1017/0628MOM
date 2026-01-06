@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="mes.title">MES制造执行系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- ECharts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.2/echarts.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mes-dark': '#0f172a',
+                        'mes-blue': '#1056c0'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-100 flex h-screen overflow-hidden font-sans">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-mes-dark text-white flex-shrink-0 flex flex-col transition-all duration-300">
+        <!-- Brand -->
+        <div class="h-16 flex items-center px-6 bg-slate-900 shadow-md">
+            <h1 class="text-lg font-bold truncate" data-i18n="mes.title">MES制造执行系统</h1>
+        </div>
+
+        <!-- Menu -->
+        <nav class="flex-1 overflow-y-auto py-4 space-y-1">
+            <!-- Active Item -->
+            <a href="#" class="flex items-center px-6 py-3 bg-mes-blue text-white border-l-4 border-white">
+                <i class="fas fa-th-large w-6"></i>
+                <span data-i18n="menu.workbench">工作台</span>
+            </a>
+
+            <!-- Items -->
+            <a href="#"
+                class="flex items-center px-6 py-3 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                <i class="fas fa-microchip w-6"></i>
+                <span data-i18n="menu.process">工艺管理</span>
+                <i class="fas fa-chevron-right ml-auto text-xs opacity-50"></i>
+            </a>
+            <a href="#"
+                class="flex items-center px-6 py-3 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                <i class="fas fa-calendar-check w-6"></i>
+                <span data-i18n="menu.dispatch">生产调度</span>
+                <i class="fas fa-chevron-right ml-auto text-xs opacity-50"></i>
+            </a>
+            <a href="#"
+                class="flex items-center px-6 py-3 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                <i class="fas fa-hammer w-6"></i>
+                <span data-i18n="menu.execution">生产执行</span>
+                <i class="fas fa-chevron-right ml-auto text-xs opacity-50"></i>
+            </a>
+            <a href="#"
+                class="flex items-center px-6 py-3 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                <i class="fas fa-cubes w-6"></i>
+                <span data-i18n="menu.material">物料管理</span>
+                <i class="fas fa-chevron-right ml-auto text-xs opacity-50"></i>
+            </a>
+            <a href="#"
+                class="flex items-center px-6 py-3 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                <i class="fas fa-chart-line w-6"></i>
+                <span data-i18n="menu.performance">绩效管理</span>
+            </a>
+            <a href="#"
+                class="flex items-center px-6 py-3 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                <i class="fas fa-database w-6"></i>
+                <span data-i18n="menu.master">主数据管理</span>
+                <i class="fas fa-chevron-right ml-auto text-xs opacity-50"></i>
+            </a>
+            <a href="#"
+                class="flex items-center px-6 py-3 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+                <i class="fas fa-file-invoice w-6"></i>
+                <span data-i18n="menu.report">报表管理</span>
+                <i class="fas fa-chevron-right ml-auto text-xs opacity-50"></i>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-w-0">
+        <!-- Header -->
+        <header class="h-16 bg-blue-600 text-white flex items-center justify-between px-6 shadow-sm flex-shrink-0 z-20">
+            <div class="flex items-center space-x-4">
+                <button class="text-white/80 hover:text-white">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="h-6 w-px bg-blue-400"></div>
+                <span class="text-sm font-medium opacity-90" data-i18n="mes.welcome">欢迎进入 MES制造执行系统</span>
+            </div>
+
+            <div class="flex items-center space-x-6">
+                <!-- User Profile -->
+                <div class="flex items-center space-x-2">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=random"
+                        class="w-8 h-8 rounded-full border border-white/50">
+                    <span class="text-sm" data-i18n="user.admin">管理员</span>
+                </div>
+
+                <!-- Language Switcher -->
+                <div class="relative">
+                    <button onclick="toggleLangDropdown()" id="langToggle"
+                        class="flex items-center space-x-1 text-sm text-white/90 hover:text-white">
+                        <i class="fas fa-globe"></i>
+                        <span id="currentLangLabel">中文</span>
+                        <i class="fas fa-chevron-down text-xs ml-1"></i>
+                    </button>
+                    <div id="langDropdown"
+                        class="absolute right-0 mt-2 w-32 bg-white rounded shadow-lg py-1 hidden z-50 text-gray-800">
+                        <button onclick="window.i18n.setLanguage('zh-CN'); toggleLangDropdown()"
+                            class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100">中文</button>
+                        <button onclick="window.i18n.setLanguage('en-US'); toggleLangDropdown()"
+                            class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100">English</button>
+                        <button onclick="window.i18n.setLanguage('pt-BR'); toggleLangDropdown()"
+                            class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100">Português</button>
+                        <button onclick="window.i18n.setLanguage('ar-SA'); toggleLangDropdown()"
+                            class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100">العربية</button>
+                    </div>
+                </div>
+
+                <!-- System Actions -->
+                <div class="flex items-center space-x-4 text-sm">
+                    <button class="hover:text-white flex items-center"
+                        onclick="location.href='smart_factory_landing.html'">
+                        <i class="fas fa-exchange-alt mr-1"></i>
+                        <span data-i18n="btn.switch">切换系统</span>
+                    </button>
+                    <button class="hover:text-white flex items-center">
+                        <i class="fas fa-sign-out-alt mr-1"></i>
+                        <span data-i18n="btn.logout">退出登录</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Breadcrumb / Tab -->
+        <div class="bg-white border-b border-gray-200 px-6 py-2">
+            <span class="text-blue-600 font-medium text-sm border-b-2 border-blue-600 pb-2 px-1"
+                data-i18n="menu.workbench">工作台</span>
+        </div>
+
+        <!-- Dashboard Content -->
+        <main class="flex-1 overflow-y-auto p-6 space-y-6">
+
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm flex items-center space-x-4">
+                    <div
+                        class="w-16 h-16 rounded-full bg-blue-500 text-white flex items-center justify-center text-2xl flex-shrink-0">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm mb-1" data-i18n="kpi.output">今日产量</p>
+                        <h3 class="text-2xl font-bold text-gray-800">1,286</h3>
+                        <p class="text-green-500 text-xs mt-1">
+                            <i class="fas fa-arrow-up"></i> 12.5%
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm flex items-center space-x-4">
+                    <div
+                        class="w-16 h-16 rounded-full bg-green-500 text-white flex items-center justify-center text-2xl flex-shrink-0">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm mb-1" data-i18n="kpi.plan">计划完成率</p>
+                        <h3 class="text-2xl font-bold text-gray-800">92.8%</h3>
+                        <p class="text-green-500 text-xs mt-1">
+                            <i class="fas fa-arrow-up"></i> 3.2%
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm flex items-center space-x-4">
+                    <div
+                        class="w-16 h-16 rounded-full bg-orange-400 text-white flex items-center justify-center text-2xl flex-shrink-0">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm mb-1" data-i18n="kpi.稼动率">设备稼动率</p>
+                        <h3 class="text-2xl font-bold text-gray-800">87.3%</h3>
+                        <p class="text-red-500 text-xs mt-1">
+                            <i class="fas fa-arrow-down"></i> 1.5%
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white rounded-lg p-6 shadow-sm flex items-center space-x-4">
+                    <div
+                        class="w-16 h-16 rounded-full bg-purple-600 text-white flex items-center justify-center text-2xl flex-shrink-0">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-sm mb-1" data-i18n="kpi.quality">质量合格率</p>
+                        <h3 class="text-2xl font-bold text-gray-800">98.6%</h3>
+                        <p class="text-green-500 text-xs mt-1">
+                            <i class="fas fa-arrow-up"></i> 0.8%
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- Plan Completion Rate Chart -->
+                <div class="bg-white rounded-lg p-6 shadow-sm flex flex-col">
+                    <h3 class="text-gray-700 font-bold mb-6" data-i18n="chart.plan">生产计划完成率</h3>
+
+                    <div class="space-y-6 flex-1 justify-center flex flex-col">
+                        <!-- Item 1 -->
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                <span>工单[5101-250918003]</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-3">
+                                <div class="bg-green-500 h-3 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                <span>工单[5106-250912002]</span>
+                                <span>82%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-3">
+                                <div class="bg-blue-500 h-3 rounded-full" style="width: 82%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                <span>工单[5101-250919001]</span>
+                                <span>68%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-3">
+                                <div class="bg-blue-500 h-3 rounded-full" style="width: 68%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-1">
+                                <span>工单[5106-250918002]</span>
+                                <span>45%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 rounded-full h-3">
+                                <div class="bg-red-500 h-3 rounded-full" style="width: 45%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quality Indicators Chart -->
+                <div class="bg-white rounded-lg p-6 shadow-sm">
+                    <h3 class="text-gray-700 font-bold mb-4" data-i18n="chart.quality">质量指标</h3>
+                    <div id="qualityChart" style="height: 300px; width: 100%;"></div>
+                </div>
+            </div>
+
+            <!-- Bottom Row (Placeholders for Equipment Status / Alerts) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg p-6 shadow-sm min-h-[200px]">
+                    <h3 class="text-gray-700 font-bold mb-4" data-i18n="chart.equipment">设备状态</h3>
+                    <div class="flex items-center justify-center h-full text-gray-400">
+                        Placeholder for Equipment Status
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-6 shadow-sm min-h-[200px]">
+                    <h3 class="text-gray-700 font-bold mb-4" data-i18n="chart.alert">系统告警</h3>
+                    <div class="flex items-center justify-center h-full text-gray-400">
+                        Placeholder for Alerts
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/i18n-data-v2.js"></script>
+    <script src="assets/js/i18n-v2.js"></script>
+    <script>
+        // Toggle Dropdown
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('hidden');
+        }
+        document.addEventListener('click', (e) => {
+            const toggle = document.getElementById('langToggle');
+            const dropdown = document.getElementById('langDropdown');
+            if (toggle && dropdown && !toggle.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // Initialize ECharts
+        const initChart = () => {
+            const chartDom = document.getElementById('qualityChart');
+            const myChart = echarts.init(chartDom);
+
+            const option = {
+                color: ['#4ade80', '#fbbf24', '#f87171'],
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    top: '5%',
+                    left: 'center'
+                },
+                series: [
+                    {
+                        name: 'Quality',
+                        type: 'pie',
+                        radius: ['50%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: true,
+                            position: 'outside',
+                            formatter: '{b}: {d}%'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 14,
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: true
+                        },
+                        data: [
+                            { value: 1048, name: '合格品' }, // Need to sync with i18n theoretically, but hard to do in static JS without reload chart.
+                            { value: 25, name: '轻微缺陷' }, // For now using Chinese as default in chart
+                            { value: 12, name: '严重缺陷' }
+                        ]
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+
+            // Hook into I18n to update chart
+            const originalApply = window.i18n ? window.i18n.applyLanguage : null;
+            if (window.i18n) {
+                window.i18n.applyLanguage = function (lang) {
+                    if (originalApply) originalApply.call(window.i18n, lang);
+
+                    // Update Chart Data
+                    const dict = i18nV2Data[lang];
+                    if (dict) {
+                        option.series[0].data = [
+                            { value: 1048, name: dict['status.good'] || '合格品' },
+                            { value: 25, name: dict['status.minor'] || '轻微缺陷' },
+                            { value: 12, name: dict['status.major'] || '严重缺陷' }
+                        ];
+                        myChart.setOption(option);
+                    }
+                };
+            }
+        };
+
+        // Init after DOM load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Delay slightly to ensure I18n is ready
+            setTimeout(initChart, 100);
+        });
+
+    </script>
+</body>
+
+</html>

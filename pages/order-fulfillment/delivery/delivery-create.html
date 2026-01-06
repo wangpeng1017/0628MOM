@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交货单创建 - 订单履约</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#1e40af',
+                        'primary-light': '#3b82f6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .order-card {
+            transition: all 0.2s ease;
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-card.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="p-6">
+        <!-- 面包屑导航 -->
+        <div class="mb-4">
+            <nav class="flex items-center text-sm text-gray-500">
+                <a href="../index.html" class="hover:text-blue-600">订单履约</a>
+                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                <a href="#" class="hover:text-blue-600">交货单管理</a>
+                <i class="fas fa-chevron-right mx-2 text-xs"></i>
+                <span class="text-gray-800 font-medium">交货单创建</span>
+            </nav>
+        </div>
+
+        <!-- 页面标题 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">交货单创建</h1>
+                <p class="text-gray-500 mt-1">根据已审核通过的销售订单快速创建交货单，支持批量或单个创建</p>
+            </div>
+        </div>
+
+        <!-- 步骤指示器 -->
+        <div class="glass-card rounded-xl p-6 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-full font-bold">
+                        1</div>
+                    <div class="ml-3">
+                        <div class="font-medium text-gray-800">选择销售订单</div>
+                        <div class="text-sm text-gray-500">从已审核订单中选择</div>
+                    </div>
+                </div>
+                <div class="flex-1 h-1 bg-gray-200 mx-6">
+                    <div class="w-1/3 h-full bg-blue-600"></div>
+                </div>
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 bg-gray-200 text-gray-500 rounded-full font-bold">
+                        2</div>
+                    <div class="ml-3">
+                        <div class="font-medium text-gray-400">填写交货信息</div>
+                        <div class="text-sm text-gray-400">填写发货详情</div>
+                    </div>
+                </div>
+                <div class="flex-1 h-1 bg-gray-200 mx-6"></div>
+                <div class="flex items-center">
+                    <div
+                        class="flex items-center justify-center w-10 h-10 bg-gray-200 text-gray-500 rounded-full font-bold">
+                        3</div>
+                    <div class="ml-3">
+                        <div class="font-medium text-gray-400">确认并提交</div>
+                        <div class="text-sm text-gray-400">核对信息后提交</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 左侧：可选订单列表 -->
+            <div class="lg:col-span-2">
+                <!-- 搜索过滤 -->
+                <div class="glass-card rounded-xl p-4 mb-4">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="flex-1 min-w-64">
+                            <div class="relative">
+                                <input type="text" placeholder="搜索订单号、客户名称..."
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">
+                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <select class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600">
+                            <option value="">所有客户</option>
+                            <option>韩国现代电气</option>
+                            <option>国家电投集团</option>
+                            <option>三峡新能源</option>
+                        </select>
+                        <button class="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg text-sm">
+                            <i class="fas fa-filter mr-1"></i>更多筛选
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 订单列表 -->
+                <div class="space-y-4">
+                    <!-- 订单卡片1 -->
+                    <div class="order-card glass-card rounded-xl p-5 border-2 border-blue-500 cursor-pointer selected"
+                        onclick="toggleOrderSelection(this)">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex items-center">
+                                <input type="checkbox" checked class="w-5 h-5 text-blue-600 rounded mr-3">
+                                <div>
+                                    <div class="font-semibold text-blue-600">SO-2026010601</div>
+                                    <div class="text-sm text-gray-500">韩国现代电气</div>
+                                </div>
+                            </div>
+                            <span
+                                class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">已审核</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-4 text-sm">
+                            <div>
+                                <div class="text-gray-500">产品型号</div>
+                                <div class="font-medium text-gray-800">CPS SCA100KTL</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500">订单数量</div>
+                                <div class="font-medium text-gray-800">500 台</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500">待发货数量</div>
+                                <div class="font-medium text-orange-600">500 台</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500">要求交货日期</div>
+                                <div class="font-medium text-gray-800">2026-01-15</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 订单卡片2 -->
+                    <div class="order-card glass-card rounded-xl p-5 border border-gray-200 cursor-pointer"
+                        onclick="toggleOrderSelection(this)">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex items-center">
+                                <input type="checkbox" class="w-5 h-5 text-blue-600 rounded mr-3">
+                                <div>
+                                    <div class="font-semibold text-blue-600">SO-2026010602</div>
+                                    <div class="text-sm text-gray-500">国家电投集团</div>
+                                </div>
+                            </div>
+                            <span
+                                class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">已审核</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-4 text-sm">
+                            <div>
+                                <div class="text-gray-500">产品型号</div>
+                                <div class="font-medium text-gray-800">CPS SCE125KTL-T</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500">订单数量</div>
+                                <div class="font-medium text-gray-800">200 台</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500">待发货数量</div>
+                                <div class="font-medium text-orange-600">200 台</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500">要求交货日期</div>
+                                <div class="font-medium text-gray-800">2026-01-20</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 订单卡片3 -->
+                    <div class="order-card glass-card rounded-xl p-5 border border-gray-200 cursor-pointer"
+                        onclick="toggleOrderSelection(this)">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex items-center">
+                                <input type="checkbox" class="w-5 h-5 text-blue-600 rounded mr-3">
+                                <div>
+                                    <div class="font-semibold text-blue-600">SO-2026010604</div>
+                                    <div class="text-sm text-gray-500">上海电气风电</div>
+                                </div>
+                            </div>
+                            <span
+                                class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">已审核</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-4 text-sm">
+                            <div>
+                                <div class="text-gray-500">产品型号</div>
+                                <div class="font-medium text-gray-800">CPS SCA225KTL</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500">订单数量</div>
+                                <div class="font-medium text-gray-800">150 台</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500">待发货数量</div>
+                                <div class="font-medium text-orange-600">150 台</div>
+                            </div>
+                            <div>
+                                <div class="text-gray-500">要求交货日期</div>
+                                <div class="font-medium text-gray-800">2026-01-18</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分页 -->
+                <div class="glass-card rounded-xl p-4 mt-4 flex items-center justify-between">
+                    <div class="text-sm text-gray-500">共 <span class="font-medium">12</span> 条待发货订单</div>
+                    <div class="flex items-center space-x-2">
+                        <button
+                            class="px-3 py-1 border border-gray-200 rounded text-gray-500 hover:bg-gray-50 text-sm"><i
+                                class="fas fa-chevron-left"></i></button>
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+                        <button
+                            class="px-3 py-1 border border-gray-200 rounded text-gray-600 hover:bg-gray-50 text-sm">2</button>
+                        <button
+                            class="px-3 py-1 border border-gray-200 rounded text-gray-500 hover:bg-gray-50 text-sm"><i
+                                class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：已选订单汇总 -->
+            <div class="lg:col-span-1">
+                <div class="glass-card rounded-xl p-5 sticky top-6">
+                    <h3 class="font-semibold text-gray-800 mb-4">
+                        <i class="fas fa-clipboard-list text-blue-600 mr-2"></i>已选订单汇总
+                    </h3>
+
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600">已选订单数</span>
+                            <span class="font-bold text-blue-600">1 单</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600">待发货产品</span>
+                            <span class="font-bold text-gray-800">500 台</span>
+                        </div>
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                            <span class="text-gray-600">涉及客户</span>
+                            <span class="font-bold text-gray-800">1 家</span>
+                        </div>
+                    </div>
+
+                    <!-- 已选订单列表 -->
+                    <div class="mb-6">
+                        <div class="text-sm text-gray-500 mb-2">已选订单明细</div>
+                        <div class="bg-blue-50 rounded-lg p-3 mb-2">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="font-medium text-blue-700">SO-2026010601</div>
+                                    <div class="text-xs text-gray-500">韩国现代电气 · 500台</div>
+                                </div>
+                                <button class="text-gray-400 hover:text-red-500">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 发货仓库选择 -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">发货仓库 <span
+                                class="text-red-500">*</span></label>
+                        <select
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">
+                            <option value="">请选择发货仓库</option>
+                            <option value="sh">上海松江成品仓</option>
+                            <option value="hz">海宁成品仓</option>
+                            <option value="ts">泰顺成品仓</option>
+                        </select>
+                    </div>
+
+                    <!-- 承运商选择 -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">承运商</label>
+                        <select
+                            class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm">
+                            <option value="">请选择承运商</option>
+                            <option value="sf">顺丰物流</option>
+                            <option value="jd">京东物流</option>
+                            <option value="zto">中通快运</option>
+                            <option value="self">自提</option>
+                        </select>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="space-y-3">
+                        <button
+                            class="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                            <i class="fas fa-arrow-right mr-2"></i>下一步：填写交货信息
+                        </button>
+                        <button
+                            class="w-full px-4 py-2 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 text-sm">
+                            <i class="fas fa-file-alt mr-2"></i>批量创建交货单
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleOrderSelection(card) {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            card.classList.toggle('selected', checkbox.checked);
+            card.classList.toggle('border-blue-500', checkbox.checked);
+            card.classList.toggle('border-gray-200', !checkbox.checked);
+            updateSummary();
+        }
+
+        function updateSummary() {
+            // 实际项目中在这里更新右侧汇总信息
+            console.log('Update summary');
+        }
+    </script>
+</body>
+
+</html>

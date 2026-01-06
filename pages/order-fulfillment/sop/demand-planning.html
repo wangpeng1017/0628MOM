@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>需求计划 - 订单履约</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <div class="p-6">
+        <!-- 面包屑 -->
+        <nav class="flex items-center text-sm text-gray-500 mb-4">
+            <a href="../index.html" class="hover:text-blue-600">订单履约</a>
+            <i class="fas fa-chevron-right mx-2 text-xs"></i>
+            <a href="#" class="hover:text-blue-600">S&OP计划</a>
+            <i class="fas fa-chevron-right mx-2 text-xs"></i>
+            <span class="text-gray-800 font-medium">需求计划</span>
+        </nav>
+
+        <!-- 标题 -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">需求计划</h1>
+                <p class="text-gray-500 mt-1">生成需求总量报表，订单优先级排序，支持市场预测数据整合</p>
+            </div>
+            <div class="flex space-x-3">
+                <button
+                    class="px-4 py-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 text-sm">
+                    <i class="fas fa-upload mr-2"></i>导入预测
+                </button>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
+                    <i class="fas fa-calculator mr-2"></i>生成计划
+                </button>
+            </div>
+        </div>
+
+        <!-- 时间范围选择 -->
+        <div class="glass-card rounded-xl p-4 mb-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-600">计划周期：</span>
+                    <button class="px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm">本月</button>
+                    <button class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-sm">下月</button>
+                    <button class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-sm">本季度</button>
+                    <button class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-sm">自定义</button>
+                </div>
+                <div class="text-sm text-gray-500">更新时间：2026-01-06 09:00</div>
+            </div>
+        </div>
+
+        <!-- 需求汇总 -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="glass-card rounded-xl p-5 border-l-4 border-blue-500">
+                <div class="text-gray-500 text-sm">预测需求总量</div>
+                <div class="text-2xl font-bold text-gray-800 mt-1">2,850 台</div>
+                <div class="text-xs text-green-500 mt-1"><i class="fas fa-arrow-up"></i> +8.5% 环比</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-green-500">
+                <div class="text-gray-500 text-sm">已确认订单</div>
+                <div class="text-2xl font-bold text-green-600 mt-1">1,680 台</div>
+                <div class="text-xs text-gray-500 mt-1">占预测 59%</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-orange-500">
+                <div class="text-gray-500 text-sm">预计缺口</div>
+                <div class="text-2xl font-bold text-orange-600 mt-1">320 台</div>
+                <div class="text-xs text-orange-500 mt-1">需协调产能</div>
+            </div>
+            <div class="glass-card rounded-xl p-5 border-l-4 border-purple-500">
+                <div class="text-gray-500 text-sm">计划达成率</div>
+                <div class="text-2xl font-bold text-purple-600 mt-1">88.8%</div>
+                <div class="text-xs text-gray-500 mt-1">目标 95%</div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="glass-card rounded-xl p-6">
+                <h3 class="font-semibold text-gray-800 mb-4">周需求趋势预测</h3>
+                <div id="demandTrendChart" style="height: 280px;"></div>
+            </div>
+            <div class="glass-card rounded-xl p-6">
+                <h3 class="font-semibold text-gray-800 mb-4">产品系列需求分布</h3>
+                <div id="productDemandChart" style="height: 280px;"></div>
+            </div>
+        </div>
+
+        <!-- 需求明细表 -->
+        <div class="glass-card rounded-xl overflow-hidden">
+            <div class="p-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 class="font-semibold text-gray-800">需求明细（按优先级排序）</h3>
+                <div class="flex items-center space-x-2">
+                    <select class="px-3 py-1 border border-gray-200 rounded text-sm text-gray-600">
+                        <option>全部产品</option>
+                        <option>组串式逆变器</option>
+                        <option>储能逆变器</option>
+                    </select>
+                </div>
+            </div>
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="text-left py-3 px-4 font-medium text-gray-600">优先级</th>
+                        <th class="text-left py-3 px-4 font-medium text-gray-600">产品型号</th>
+                        <th class="text-left py-3 px-4 font-medium text-gray-600">客户</th>
+                        <th class="text-right py-3 px-4 font-medium text-gray-600">需求数量</th>
+                        <th class="text-right py-3 px-4 font-medium text-gray-600">当前库存</th>
+                        <th class="text-right py-3 px-4 font-medium text-gray-600">在产数量</th>
+                        <th class="text-center py-3 px-4 font-medium text-gray-600">供需状态</th>
+                        <th class="text-left py-3 px-4 font-medium text-gray-600">交货日期</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4"><span
+                                class="w-6 h-6 bg-red-500 text-white rounded-full inline-flex items-center justify-center text-xs font-bold">1</span>
+                        </td>
+                        <td class="py-3 px-4 font-medium text-gray-800">CPS SCA100KTL</td>
+                        <td class="py-3 px-4 text-gray-600">韩国现代电气</td>
+                        <td class="py-3 px-4 text-right font-medium">500</td>
+                        <td class="py-3 px-4 text-right text-gray-600">320</td>
+                        <td class="py-3 px-4 text-right text-blue-600">200</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">充足</span></td>
+                        <td class="py-3 px-4 text-gray-600">2026-01-15</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 bg-red-50">
+                        <td class="py-3 px-4"><span
+                                class="w-6 h-6 bg-red-500 text-white rounded-full inline-flex items-center justify-center text-xs font-bold">2</span>
+                        </td>
+                        <td class="py-3 px-4 font-medium text-gray-800">CPS SCE125KTL-T</td>
+                        <td class="py-3 px-4 text-gray-600">国家电投集团</td>
+                        <td class="py-3 px-4 text-right font-medium">400</td>
+                        <td class="py-3 px-4 text-right text-gray-600">80</td>
+                        <td class="py-3 px-4 text-right text-blue-600">250</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs">缺口70</span></td>
+                        <td class="py-3 px-4 text-gray-600">2026-01-20</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4"><span
+                                class="w-6 h-6 bg-orange-500 text-white rounded-full inline-flex items-center justify-center text-xs font-bold">3</span>
+                        </td>
+                        <td class="py-3 px-4 font-medium text-gray-800">CPS SCA225KTL</td>
+                        <td class="py-3 px-4 text-gray-600">三峡新能源</td>
+                        <td class="py-3 px-4 text-right font-medium">350</td>
+                        <td class="py-3 px-4 text-right text-gray-600">150</td>
+                        <td class="py-3 px-4 text-right text-blue-600">220</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">充足</span></td>
+                        <td class="py-3 px-4 text-gray-600">2026-01-25</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50 bg-yellow-50">
+                        <td class="py-3 px-4"><span
+                                class="w-6 h-6 bg-orange-500 text-white rounded-full inline-flex items-center justify-center text-xs font-bold">4</span>
+                        </td>
+                        <td class="py-3 px-4 font-medium text-gray-800">CPS SCA100KTL</td>
+                        <td class="py-3 px-4 text-gray-600">巴西Solar Tech</td>
+                        <td class="py-3 px-4 text-right font-medium">300</td>
+                        <td class="py-3 px-4 text-right text-gray-600">100</td>
+                        <td class="py-3 px-4 text-right text-blue-600">150</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs">缺口50</span></td>
+                        <td class="py-3 px-4 text-gray-600">2026-02-01</td>
+                    </tr>
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4"><span
+                                class="w-6 h-6 bg-gray-400 text-white rounded-full inline-flex items-center justify-center text-xs font-bold">5</span>
+                        </td>
+                        <td class="py-3 px-4 font-medium text-gray-800">CPS SCA50KTL-DO</td>
+                        <td class="py-3 px-4 text-gray-600">上海电气风电</td>
+                        <td class="py-3 px-4 text-right font-medium">150</td>
+                        <td class="py-3 px-4 text-right text-gray-600">450</td>
+                        <td class="py-3 px-4 text-right text-blue-600">100</td>
+                        <td class="py-3 px-4 text-center"><span
+                                class="px-2 py-1 bg-green-100 text-green-700 rounded text-xs">充足</span></td>
+                        <td class="py-3 px-4 text-gray-600">2026-01-18</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 需求趋势图
+            const trendChart = echarts.init(document.getElementById('demandTrendChart'));
+            trendChart.setOption({
+                tooltip: { trigger: 'axis' },
+                legend: { data: ['预测需求', '确认订单', '产能'], bottom: 0 },
+                grid: { left: '3%', right: '4%', bottom: '15%', containLabel: true },
+                xAxis: { type: 'category', data: ['第1周', '第2周', '第3周', '第4周'] },
+                yAxis: { type: 'value', name: '数量(台)' },
+                series: [
+                    { name: '预测需求', type: 'bar', data: [680, 720, 750, 700], itemStyle: { color: '#3b82f6' } },
+                    { name: '确认订单', type: 'bar', data: [420, 450, 480, 330], itemStyle: { color: '#10b981' } },
+                    { name: '产能', type: 'line', data: [600, 600, 650, 650], itemStyle: { color: '#f59e0b' }, lineStyle: { type: 'dashed' } }
+                ]
+            });
+
+            // 产品需求分布
+            const productChart = echarts.init(document.getElementById('productDemandChart'));
+            productChart.setOption({
+                tooltip: { trigger: 'item' },
+                legend: { bottom: 0 },
+                series: [{
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    data: [
+                        { value: 800, name: '100kW组串', itemStyle: { color: '#3b82f6' } },
+                        { value: 400, name: '125kW储能', itemStyle: { color: '#10b981' } },
+                        { value: 350, name: '225kW组串', itemStyle: { color: '#f59e0b' } },
+                        { value: 600, name: '50kW分布式', itemStyle: { color: '#8b5cf6' } },
+                        { value: 700, name: '其他', itemStyle: { color: '#94a3b8' } }
+                    ]
+                }]
+            });
+
+            window.addEventListener('resize', () => {
+                trendChart.resize();
+                productChart.resize();
+            });
+        });
+    </script>
+</body>
+
+</html>
